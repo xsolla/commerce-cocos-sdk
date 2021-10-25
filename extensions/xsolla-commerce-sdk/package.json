@@ -1,0 +1,15 @@
+{
+  "name": "xsolla-commerce-sdk",
+  "version": "0.1.0",
+  "author": "Xsolla Inc.",
+  "main": "./browser.js",
+  "description": "Xsolla Commerce SDK for Cocos Creator",
+  "contributions": {
+    "asset-db": {
+      "mount": {
+          "path": "./assets",
+          "readonly": true
+      }
+    }
+  }
+}
