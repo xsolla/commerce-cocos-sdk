@@ -1,6 +1,6 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
-import { _decorator, Component, Enum } from 'cc';
+import { _decorator, Component, Enum, sys, VERSION } from 'cc';
 import { XsollaAuthenticationType, XsollaSettings, Xsolla } from './Xsolla';
 const { ccclass, property, disallowMultiple, type  } = _decorator;
  
@@ -36,7 +36,7 @@ export class XsollaSettingsManager extends Component {
     })
     clientId: number = 57;
 
-    start () {
+    start() {
         var settings: XsollaSettings = {
             loginId: this.loginId,
             projectId: this.projectId,
