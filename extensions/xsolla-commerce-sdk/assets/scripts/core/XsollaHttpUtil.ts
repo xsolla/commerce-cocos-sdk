@@ -56,29 +56,35 @@ export class XsollaHttpUtil {
                     onComplete(request.response);
                 }
                 else {
+                    let response = JSON.parse(request.response);
+
                     // Try parse Login API error
-                    if (request.response.hasOwnProperty('error')) {
+                    if (response.error) {
                         let error: XsollaHttpError = {
-                            code: request.response.error.code,
-                            description: request.response.error.description
+                            code: response.error.code,
+                            description: response.error.description
                         }
                         onError(error);
                         return;
-                    }                    
+                    }
+
                     // Try parse Commerce API error
-                    if (request.response.hasOwnProperty('errorMessage')) {
+                    if (response.errorMessage) {
                         let error: XsollaHttpError = {
-                            statusCode: request.response.statusCode,
-                            errorCode: request.response.errorCode,
-                            errorMessage: request.response.errorMessage,
+                            statusCode: response.statusCode,
+                            errorCode: response.errorCode,
+                            errorMessage: response.errorMessage,
                         }
                         onError(error);
                         return;
                     }
 
                     let error: XsollaHttpError = {
+                        code: 'Unknown error',
                         description: 'Unknown error',
                         errorMessage: 'Unknown error',
+                        statusCode: 0,
+                        errorCode: 0
                     }
                     onError(error);
                 }
@@ -87,8 +93,11 @@ export class XsollaHttpUtil {
 
         request.onerror = function () {
             let error: XsollaHttpError = {
+                code: 'Network error',
                 description: 'Network error',
                 errorMessage: 'Network error',
+                statusCode: 0,
+                errorCode: 0
             }
             onError(error);
         }
