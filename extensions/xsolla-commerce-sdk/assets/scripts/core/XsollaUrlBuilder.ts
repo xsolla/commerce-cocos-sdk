@@ -1,17 +1,20 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
 export class XsollaUrlBuilder {
-    private _url;
-    private _parameters: Record<string, string> = {};
+    private _url: string;
+    private _parameters = {};
 
     constructor(url:string) {
         this._url = url;
     }
 
     build() : string {
-        let url = new URL(this._url);        
-        url.search = new URLSearchParams(this._parameters).toString();
-        return url.toString();
+        var queryParamsStr: string = '';
+        for (var key in this._parameters) {
+            queryParamsStr += queryParamsStr ? '&' : '?';
+            queryParamsStr += key + '=' + encodeURIComponent(this._parameters[key]);
+        }
+        return this._url + queryParamsStr;
     }
 
     addStringParam(paramName:string, paramValue:string, ignoreEmpty:boolean = true) : XsollaUrlBuilder {
