@@ -12,7 +12,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "pref_ButtonNormal",
+    "_name": "pref_ButtonSecondary",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
