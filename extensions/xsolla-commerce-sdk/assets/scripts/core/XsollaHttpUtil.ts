@@ -104,6 +104,16 @@ export class XsollaHttpUtil {
 
         return request;
     }
+
+    static encodeFormData(data:object) : string {
+        var encodedFormData = [];
+        for (var key in data) {
+            if (data.hasOwnProperty(key)) {
+                encodedFormData.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]))                  
+            }
+        }
+        return encodedFormData.join("&");
+    }
 }
 
 export interface XsollaHttpError {

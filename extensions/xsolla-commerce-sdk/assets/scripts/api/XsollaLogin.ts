@@ -20,7 +20,7 @@ export class XsollaLogin {
             password: username,
             username: password
         };
-        
+
         let url = new XsollaUrlBuilder('https://login.xsolla.com/api/oauth2/login/token')
             .addNumberParam('client_id', Xsolla.settings.clientId)
             .addStringParam('scope', 'offline')
@@ -39,7 +39,7 @@ export class XsollaLogin {
             remember_me: rememberMe,
             username: password
         };
-        
+
         let url = new XsollaUrlBuilder('https://login.xsolla.com/api/login')
             .addStringParam('projectId', Xsolla.settings.loginId)
             .addStringParam('login_url', 'https://login.xsolla.com/api/blank')
@@ -48,17 +48,34 @@ export class XsollaLogin {
             .build();
 
         let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, result => {
-            let AuthUrl: AuthUrl = JSON.parse(result);
-                let url = new URL(AuthUrl.login_url);  
-                let urlParams = new URLSearchParams(url.search);
-                let tokenParam = urlParams.get('token');
-                let token: Token = {
-                    access_token: tokenParam,
-                    token_type: 'bearer'
-                };
-                onComplete(token);
+            let authUrl: AuthUrl = JSON.parse(result);
+            let url = new URL(authUrl.login_url);  
+            let urlParams = new URLSearchParams(url.search);
+            let tokenParam = urlParams.get('token');
+            let token: Token = {
+                access_token: tokenParam,
+                token_type: 'bearer'
+            };
+            onComplete(token);
         }, this.handleError(onError));
         request.send(JSON.stringify(body));
+    }
+
+    static refreshToken(refreshToken:string, onComplete?:(result:Token) => void, onError?:(error:LoginError) => void) {
+        let body = {
+            client_id: Xsolla.settings.clientId,
+            grant_type: 'refresh_token',
+            refresh_token: refreshToken,
+            redirect_uri: 'https://login.xsolla.com/api/blank'
+        };
+
+        let url = new XsollaUrlBuilder('https://login.xsolla.com/api/oauth2/token').build();
+
+        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.WwwForm, null, result => {
+            let token: Token = JSON.parse(result);
+            onComplete(token);
+        }, this.handleError(onError));
+        request.send(XsollaHttpUtil.encodeFormData(body));
     }
 
     private static handleError(onError:(error:LoginError) => void): (requestError:XsollaHttpError) => void {
