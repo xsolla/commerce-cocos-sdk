@@ -6,7 +6,7 @@ import { Xsolla, XsollaAuthenticationType } from "../Xsolla";
 
 export class XsollaLogin {
 
-    static authByUsernameAndPassword(username:string, password:string, rememberMe:boolean, payload?:string, onComplete?:(result:any) => void, onError?:(error:LoginError) => void) {
+    static authByUsernameAndPassword(username:string, password:string, rememberMe:boolean, payload?:string, onComplete?:(result:Token) => void, onError?:(error:LoginError) => void) {
         if(Xsolla.settings.authType == XsollaAuthenticationType.Oauth2) {
             this.authByUsernameAndPasswordOauth(username, password, onComplete, onError);
         }
@@ -15,7 +15,7 @@ export class XsollaLogin {
         }
     }
 
-    private static authByUsernameAndPasswordOauth(username:string, password:string, onComplete?:(result:any) => void, onError?:(error:LoginError) => void) {
+    private static authByUsernameAndPasswordOauth(username:string, password:string, onComplete?:(result:Token) => void, onError?:(error:LoginError) => void) {
         let body = {
             password: username,
             username: password
@@ -26,11 +26,14 @@ export class XsollaLogin {
             .addStringParam('scope', 'offline')
             .build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, onComplete, this.handleError(onError));
+        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, result => {
+            let token: Token = JSON.parse(result);
+            onComplete(token);
+        }, this.handleError(onError));
         request.send(JSON.stringify(body));
     }
 
-    private static authByUsernameAndPasswordJwt(username:string, password:string, rememberMe:boolean, payload?:string, onComplete?:(result:any) => void, onError?:(error:LoginError) => void) {
+    private static authByUsernameAndPasswordJwt(username:string, password:string, rememberMe:boolean, payload?:string, onComplete?:(result:Token) => void, onError?:(error:LoginError) => void) {
         let body = {
             password: username,
             remember_me: rememberMe,
@@ -44,7 +47,17 @@ export class XsollaLogin {
             .addStringParam('payload', payload)
             .build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, onComplete, this.handleError(onError));
+        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, result => {
+            let AuthUrl: AuthUrl = JSON.parse(result);
+                let url = new URL(AuthUrl.login_url);  
+                let urlParams = new URLSearchParams(url.search);
+                let tokenParam = urlParams.get('token');
+                let token: Token = {
+                    access_token: tokenParam,
+                    token_type: 'bearer'
+                };
+                onComplete(token);
+        }, this.handleError(onError));
         request.send(JSON.stringify(body));
     }
 
@@ -59,8 +72,15 @@ export class XsollaLogin {
     }
 }
 
-export interface LoginResponse {
-    login_url: string;
+export interface Token {
+    access_token: string,
+    expire_in?: number,
+    refresh_token?: string,
+    token_type: string
+}
+
+export interface AuthUrl {
+    login_url: string
 }
 
 export interface LoginError {
