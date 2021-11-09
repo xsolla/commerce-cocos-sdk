@@ -78,6 +78,23 @@ export class XsollaLogin {
         request.send(XsollaHttpUtil.encodeFormData(body));
     }
 
+    static exchangeAuthCode(authCode:string, onComplete?:(result:Token) => void, onError?:(error:LoginError) => void) {
+        let body = {
+            client_id: Xsolla.settings.clientId,
+            grant_type: 'authorization_code',
+            code: authCode,
+            redirect_uri: 'https://login.xsolla.com/api/blank'
+        };
+
+        let url = new XsollaUrlBuilder('https://login.xsolla.com/api/oauth2/token').build();
+
+        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.WwwForm, null, result => {
+            let token: Token = JSON.parse(result);
+            onComplete(token);
+        }, this.handleError(onError));
+        request.send(XsollaHttpUtil.encodeFormData(body));
+    }
+
     private static handleError(onError:(error:LoginError) => void): (requestError:XsollaHttpError) => void {
         return requestError => {
             let loginError: LoginError = {
