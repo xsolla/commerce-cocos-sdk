@@ -114,6 +114,21 @@ export class XsollaHttpUtil {
         }
         return encodedFormData.join("&");
     }
+
+    static decodeUrlParams(url:string) : any {
+        let hashes = url.slice(url.indexOf("?") + 1).split("&");
+        return hashes.reduce((params, hash) => {
+            let split = hash.indexOf("=");
+            if (split < 0) {
+                return Object.assign(params, {
+                    [hash]: null
+                });
+            }
+            let key = hash.slice(0, split);
+            let val = hash.slice(split + 1);
+            return Object.assign(params, { [key]: decodeURIComponent(val) });
+        }, {});
+    }
 }
 
 export interface XsollaHttpError {

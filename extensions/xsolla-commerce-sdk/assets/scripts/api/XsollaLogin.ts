@@ -49,11 +49,9 @@ export class XsollaLogin {
 
         let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, result => {
             let authUrl: AuthUrl = JSON.parse(result);
-            let url = new URL(authUrl.login_url);  
-            let urlParams = new URLSearchParams(url.search);
-            let tokenParam = urlParams.get('token');
+            let params = XsollaHttpUtil.decodeUrlParams(authUrl.login_url);
             let token: Token = {
-                access_token: tokenParam,
+                access_token: params['token'],
                 token_type: 'bearer'
             };
             onComplete(token);
