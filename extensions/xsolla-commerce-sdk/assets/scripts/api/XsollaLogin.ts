@@ -6,7 +6,7 @@ import { Xsolla, XsollaAuthenticationType } from "../Xsolla";
 
 export class XsollaLogin {
 
-    static authByUsernameAndPassword(username:string, password:string, rememberMe:boolean, payload?:string, onComplete?:(result:Token) => void, onError?:(error:LoginError) => void) {
+    static authByUsernameAndPassword(username:string, password:string, rememberMe:boolean, payload?:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
         if(Xsolla.settings.authType == XsollaAuthenticationType.Oauth2) {
             this.authByUsernameAndPasswordOauth(username, password, onComplete, onError);
         }
@@ -15,7 +15,7 @@ export class XsollaLogin {
         }
     }
 
-    private static authByUsernameAndPasswordOauth(username:string, password:string, onComplete?:(result:Token) => void, onError?:(error:LoginError) => void) {
+    private static authByUsernameAndPasswordOauth(username:string, password:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
         let body = {
             password: username,
             username: password
@@ -59,7 +59,7 @@ export class XsollaLogin {
         request.send(JSON.stringify(body));
     }
 
-    static refreshToken(refreshToken:string, onComplete?:(result:Token) => void, onError?:(error:LoginError) => void) {
+    static refreshToken(refreshToken:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
         let body = {
             client_id: Xsolla.settings.clientId,
             grant_type: 'refresh_token',
@@ -76,7 +76,7 @@ export class XsollaLogin {
         request.send(XsollaHttpUtil.encodeFormData(body));
     }
 
-    static exchangeAuthCode(authCode:string, onComplete?:(result:Token) => void, onError?:(error:LoginError) => void) {
+    static exchangeAuthCode(authCode:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
         let body = {
             client_id: Xsolla.settings.clientId,
             grant_type: 'authorization_code',
@@ -91,6 +91,105 @@ export class XsollaLogin {
             onComplete?.(token);
         }, this.handleError(onError));
         request.send(XsollaHttpUtil.encodeFormData(body));
+    }
+
+    static startAuthByPhoneNumber(phoneNumber:string, payload?:string, state?:string, onComplete?:(operationId:string) => void, onError?:(error:LoginError) => void) {
+        if(Xsolla.settings.authType == XsollaAuthenticationType.Oauth2) {
+            this.startAuthByPhoneNumberOauth(phoneNumber, state, onComplete, onError);
+        }
+        else {
+            this.startAuthByPhoneNumberJwt(phoneNumber, payload, onComplete, onError);
+        }
+    }
+
+    private static startAuthByPhoneNumberOauth(phoneNumber:string, state?:string, onComplete?:(operationId:string) => void, onError?:(error:LoginError) => void) {
+        let body = {
+            phone_number: phoneNumber
+        };
+
+        let url = new XsollaUrlBuilder('https://login.xsolla.com/api/oauth2/login/phone/request')
+            .addNumberParam('client_id', Xsolla.settings.clientId)
+            .addStringParam('response_type', 'code')
+            .addStringParam('redirect_uri', 'https://login.xsolla.com/api/blank')
+            .addStringParam('state', state)
+            .addStringParam('scope', 'offline')
+            .build();
+
+        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, result => {
+            let authOperationId: AuthOperationId = JSON.parse(result);
+            onComplete?.(authOperationId.operation_id);
+        }, this.handleError(onError));
+        request.send(JSON.stringify(body));
+    }
+
+    private static startAuthByPhoneNumberJwt(phoneNumber:string, payload?:string, onComplete?:(operationId:string) => void, onError?:(error:LoginError) => void) {
+        let body = {
+            phone_number: phoneNumber
+        };
+
+        let url = new XsollaUrlBuilder('https://login.xsolla.com/api/login/phone/request')
+            .addStringParam('projectId', Xsolla.settings.loginId)
+            .addStringParam('login_url', 'https://login.xsolla.com/api/blank')
+            .addBoolParam('with_logout', true)
+            .addStringParam('payload', payload)
+            .build();
+
+        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, result => {
+            let authOperationId: AuthOperationId = JSON.parse(result);
+            onComplete?.(authOperationId.operation_id);
+        }, this.handleError(onError));
+        request.send(JSON.stringify(body));
+    }
+
+    static completeAuthByPhoneNumber(confirmationCode:string, operationId:string, phoneNumber:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
+        if(Xsolla.settings.authType == XsollaAuthenticationType.Oauth2) {
+            this.completeAuthByPhoneNumberOauth(confirmationCode, operationId, phoneNumber, onComplete, onError);
+        }
+        else {
+            this.completeAuthByPhoneNumberJwt(confirmationCode, operationId, phoneNumber, onComplete, onError);
+        }
+    }
+
+    private static completeAuthByPhoneNumberOauth(confirmationCode:string, operationId:string, phoneNumber:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
+        let body = {
+            code: confirmationCode,
+            operation_id: operationId,
+            phone_number: phoneNumber
+        };
+
+        let url = new XsollaUrlBuilder('https://login.xsolla.com/api/oauth2/login/phone/confirm')
+            .addNumberParam('client_id', Xsolla.settings.clientId)
+            .build();
+
+        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, result => {
+            let authUrl: AuthUrl = JSON.parse(result);
+            let params = XsollaHttpUtil.decodeUrlParams(authUrl.login_url);
+            this.exchangeAuthCode(params['code'], onComplete, onError);
+        }, this.handleError(onError));
+        request.send(JSON.stringify(body));
+    }
+
+    private static completeAuthByPhoneNumberJwt(confirmationCode:string, operationId:string, phoneNumber:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
+        let body = {
+            code: confirmationCode,
+            operation_id: operationId,
+            phone_number: phoneNumber
+        };
+
+        let url = new XsollaUrlBuilder('https://login.xsolla.com/api/login/phone/confirm')
+            .addStringParam('projectId', Xsolla.settings.loginId)
+            .build();
+
+        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, result => {
+            let authUrl: AuthUrl = JSON.parse(result);
+            let params = XsollaHttpUtil.decodeUrlParams(authUrl.login_url);
+            let token: Token = {
+                access_token: params['token'],
+                token_type: 'bearer'
+            };
+            onComplete?.(token);
+        }, this.handleError(onError));
+        request.send(JSON.stringify(body));
     }
 
     private static handleError(onError:(error:LoginError) => void): (requestError:XsollaHttpError) => void {
@@ -113,6 +212,10 @@ export interface Token {
 
 export interface AuthUrl {
     login_url: string
+}
+
+export interface AuthOperationId {
+    operation_id: string
 }
 
 export interface LoginError {
