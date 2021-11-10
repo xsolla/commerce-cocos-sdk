@@ -28,7 +28,7 @@ export class XsollaLogin {
 
         let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, result => {
             let token: Token = JSON.parse(result);
-            onComplete(token);
+            onComplete?.(token);
         }, this.handleError(onError));
         request.send(JSON.stringify(body));
     }
@@ -54,7 +54,7 @@ export class XsollaLogin {
                 access_token: params['token'],
                 token_type: 'bearer'
             };
-            onComplete(token);
+            onComplete?.(token);
         }, this.handleError(onError));
         request.send(JSON.stringify(body));
     }
@@ -71,7 +71,7 @@ export class XsollaLogin {
 
         let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.WwwForm, null, result => {
             let token: Token = JSON.parse(result);
-            onComplete(token);
+            onComplete?.(token);
         }, this.handleError(onError));
         request.send(XsollaHttpUtil.encodeFormData(body));
     }
@@ -88,7 +88,7 @@ export class XsollaLogin {
 
         let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.WwwForm, null, result => {
             let token: Token = JSON.parse(result);
-            onComplete(token);
+            onComplete?.(token);
         }, this.handleError(onError));
         request.send(XsollaHttpUtil.encodeFormData(body));
     }
@@ -99,7 +99,7 @@ export class XsollaLogin {
                 code: requestError.code,
                 description: requestError.description
             };
-            onError(loginError);
+            onError?.(loginError);
         };
     }
 }
