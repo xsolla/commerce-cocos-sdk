@@ -59,6 +59,7 @@ export class BasicAuthManager extends Component {
             this.uiManager.openMainMenu(this.node);
         }, err => {
             console.log(err);
+            this.uiManager.openErrorScreen(err.description);
         })
     }
 
