@@ -46,7 +46,11 @@ export class UIManager extends Component {
         this.passwordlessAuth.active = true;
     }
 
-    openErrorScreen(errorMessage: string, onClosed?: () => void) {
-        this.errorScreen.showError(errorMessage, onClosed);
+    openErrorScreen(currentScreen:Node, errorMessage: string, onClosed?: () => void) {
+        currentScreen.active = false;
+        this.errorScreen.showError(errorMessage, () => {
+            currentScreen.active = true;
+            onClosed?.();
+        });
     }
 }
