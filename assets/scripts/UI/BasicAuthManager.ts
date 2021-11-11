@@ -54,8 +54,8 @@ export class BasicAuthManager extends Component {
     }
 
     onLoginClicked() {
-        XsollaLogin.authByUsernameAndPassword(this.usernameEditBox.string, this.passwordEditBox.string, this.remeberMeToggle.isChecked, 'xsollatest', res => {
-            console.log(res);
+        XsollaLogin.authByUsernameAndPassword(this.usernameEditBox.string, this.passwordEditBox.string, this.remeberMeToggle.isChecked, 'xsollatest', token => {
+            console.log(token);
             this.uiManager.openMainMenu(this.node);
         }, err => {
             console.log(err);

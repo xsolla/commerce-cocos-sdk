@@ -47,6 +47,6 @@ export class StartingScreenManager extends Component {
     }
 
     onOtherAuthClicked() {
-
+        this.uiManager.openPasswordlessAuth(this.node);
     }
 }

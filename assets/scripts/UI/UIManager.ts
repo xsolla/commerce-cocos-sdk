@@ -15,6 +15,9 @@ export class UIManager extends Component {
     @property(Node)
     mainMenu: Node;
 
+    @property(Node)
+    passwordlessAuth: Node;
+
     start() {
         this.startingScreen.active = true;
     }
@@ -32,5 +35,10 @@ export class UIManager extends Component {
     openMainMenu(currentScreen:Node) {
         currentScreen.active = false;
         this.mainMenu.active = true;
+    }
+
+    openPasswordlessAuth(currentScreen:Node) {
+        currentScreen.active = false;
+        this.passwordlessAuth.active = true;
     }
 }
