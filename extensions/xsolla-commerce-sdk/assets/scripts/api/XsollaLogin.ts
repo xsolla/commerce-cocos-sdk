@@ -172,6 +172,93 @@ export class XsollaLogin {
         request.send(JSON.stringify(body));
     }
 
+    static startAuthByEmail(emailAddress:string, payload?:string, state?:string, onComplete?:(operationId:string) => void, onError?:(error:LoginError) => void) {
+        if(Xsolla.settings.authType == XsollaAuthenticationType.Oauth2) {
+            this.startAuthByEmailOauth(emailAddress, state, onComplete, onError);
+        }
+        else {
+            this.startAuthByEmailJwt(emailAddress, payload, onComplete, onError);
+        }
+    }
+
+    private static startAuthByEmailOauth(emailAddress:string, state?:string, onComplete?:(operationId:string) => void, onError?:(error:LoginError) => void) {
+        let body = {
+            email: emailAddress
+        };
+
+        let url = new XsollaUrlBuilder('https://login.xsolla.com/api/oauth2/login/email/request')
+            .addNumberParam('client_id', Xsolla.settings.clientId)
+            .addStringParam('response_type', 'code')
+            .addStringParam('redirect_uri', 'https://login.xsolla.com/api/blank')
+            .addStringParam('state', state)
+            .addStringParam('scope', 'offline')
+            .build();
+
+        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, result => {
+            let authOperationId: AuthOperationId = JSON.parse(result);
+            onComplete?.(authOperationId.operation_id);
+        }, this.handleError(onError));
+        request.send(JSON.stringify(body));
+    }
+
+    private static startAuthByEmailJwt(emailAddress:string, payload?:string, onComplete?:(operationId:string) => void, onError?:(error:LoginError) => void) {
+        let body = {
+            email: emailAddress
+        };
+
+        let url = new XsollaUrlBuilder('https://login.xsolla.com/api/login/email/request')
+            .addStringParam('projectId', Xsolla.settings.loginId)
+            .addStringParam('login_url', 'https://login.xsolla.com/api/blank')
+            .addBoolParam('with_logout', true)
+            .addStringParam('payload', payload)
+            .build();
+
+        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, result => {
+            let authOperationId: AuthOperationId = JSON.parse(result);
+            onComplete?.(authOperationId.operation_id);
+        }, this.handleError(onError));
+        request.send(JSON.stringify(body));
+    }
+
+    static completeAuthByEmail(confirmationCode:string, operationId:string, emailAddress:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
+        if(Xsolla.settings.authType == XsollaAuthenticationType.Oauth2) {
+            this.completeAuthByEmailOauth(confirmationCode, operationId, emailAddress, onComplete, onError);
+        }
+        else {
+            this.completeAuthByEmailJwt(confirmationCode, operationId, emailAddress, onComplete, onError);
+        }
+    }
+
+    private static completeAuthByEmailOauth(confirmationCode:string, operationId:string, emailAddress:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
+        let body = {
+            code: confirmationCode,
+            operation_id: operationId,
+            email: emailAddress
+        };
+
+        let url = new XsollaUrlBuilder('https://login.xsolla.com/api/oauth2/login/email/confirm')
+            .addNumberParam('client_id', Xsolla.settings.clientId)
+            .build();
+
+        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, this.handleUrlWithCode(onComplete, onError), this.handleError(onError));
+        request.send(JSON.stringify(body));
+    }
+
+    private static completeAuthByEmailJwt(confirmationCode:string, operationId:string, emailAddress:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
+        let body = {
+            code: confirmationCode,
+            operation_id: operationId,
+            email: emailAddress
+        };
+
+        let url = new XsollaUrlBuilder('https://login.xsolla.com/api/login/email/confirm')
+            .addStringParam('projectId', Xsolla.settings.loginId)
+            .build();
+
+        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, this.handleUrlWithToken(onComplete), this.handleError(onError));
+        request.send(JSON.stringify(body));
+    }
+
     private static handleError(onError:(error:LoginError) => void): (requestError:XsollaHttpError) => void {
         return requestError => {
             let loginError: LoginError = {
