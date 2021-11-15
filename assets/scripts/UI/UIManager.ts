@@ -2,6 +2,7 @@
 
 import { _decorator, Component, Node, find } from 'cc';
 import { ErrorScreenManager } from './ErrorScreenManager';
+import { MessageScreenManager } from './MessageScreenManager';
 const { ccclass, property } = _decorator;
  
 @ccclass('UIManager')
@@ -21,6 +22,9 @@ export class UIManager extends Component {
 
     @property(ErrorScreenManager)
     errorScreen: ErrorScreenManager;
+
+    @property(MessageScreenManager)
+    messageScreen: MessageScreenManager;
 
     start() {
         this.startingScreen.active = true;
@@ -50,6 +54,13 @@ export class UIManager extends Component {
         currentScreen.active = false;
         this.errorScreen.showError(errorMessage, () => {
             currentScreen.active = true;
+            onClosed?.();
+        });
+    }
+
+    openMessageScreen(message: string, onClosed?: () => void) {
+        this.messageScreen.node.active = true;
+        this.messageScreen.showMessage(message, () => {
             onClosed?.();
         });
     }
