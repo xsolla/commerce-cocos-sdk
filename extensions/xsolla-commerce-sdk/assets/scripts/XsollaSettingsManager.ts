@@ -36,12 +36,19 @@ export class XsollaSettingsManager extends Component {
     })
     clientId: number = 57;
 
+    @property ({
+        displayName: 'Enable Sandbox',
+        tooltip: 'Enable to test the payment process: sandbox-secure.xsolla.com will be used instead of secure.xsolla.com.'
+    })
+    EnableSandbox: boolean = true;
+
     start() {
         var settings: XsollaSettings = {
             loginId: this.loginId,
             projectId: this.projectId,
             authType: this.authType,
-            clientId: this.clientId
+            clientId: this.clientId,
+            EnableSandbox: this.EnableSandbox
         }
 
         Xsolla.init(settings);

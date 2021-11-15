@@ -10,6 +10,7 @@ export interface XsollaSettings {
     projectId: string;
     authType: XsollaAuthenticationType;
     clientId: number;
+    EnableSandbox: boolean;
 }
 
 export class Xsolla {
