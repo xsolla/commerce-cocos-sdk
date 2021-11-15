@@ -15,6 +15,9 @@ export class MainMenuManager extends Component {
     @property(Button)
     logOutButton: Button;
 
+    @property(Button)
+    loadItemsButton: Button;
+
     onDestroy() {
         this.removeListeners();
     }
@@ -29,14 +32,25 @@ export class MainMenuManager extends Component {
 
     addListeners() {
         this.logOutButton.node.on('click', this.onLogoutClicked, this);
+        this.loadItemsButton.node.on('click', this.onLoadItemsClicked, this);
     }
 
     removeListeners() {
         this.logOutButton.node.off('click', this.onLogoutClicked, this);
+        this.loadItemsButton.node.off('click', this.onLoadItemsClicked, this);
     }
 
     onLogoutClicked() {
         this.uiManager.openStartingScreen(this.node);
+    }
+
+    onLoadItemsClicked() {
+       XsollaCommerce.updateItemGroups('', () => {
+            XsollaCommerce.itemsData.groups;
+            console.log('successfull loading');
+       }, error => {
+           console.log('error');
+       });
     }
 
     shortPollingCheckOrder(orderId: number) {
