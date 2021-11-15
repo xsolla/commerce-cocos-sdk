@@ -34,9 +34,32 @@ export class XsollaUrlBuilder {
 
     addStringParam(paramName:string, paramValue:string, ignoreEmpty:boolean = true) : XsollaUrlBuilder {
         if (ignoreEmpty && !paramValue) {
-            return;
+            return this;
         }
         this._parameters[paramName] = paramValue;
+        return this;
+    }
+
+    addArrayParam(paramName:string, paramValueArray:Array<string>, ignoreEmpty:boolean = true, asOneParam:boolean = false) : XsollaUrlBuilder {
+        if (ignoreEmpty && paramValueArray.length == 0)
+        {
+            return this;
+        }
+    
+        if (asOneParam)
+        {
+            let additionalFieldsString:string = paramValueArray.join(',');
+            additionalFieldsString = additionalFieldsString.substring(0, additionalFieldsString.length - 2);
+            this.addStringParam(paramName, additionalFieldsString, ignoreEmpty);
+        }
+        else
+        {
+            for (var param in paramValueArray)
+            {
+                this.addStringParam(paramName, param, ignoreEmpty);
+            }
+        }
+    
         return this;
     }
 
