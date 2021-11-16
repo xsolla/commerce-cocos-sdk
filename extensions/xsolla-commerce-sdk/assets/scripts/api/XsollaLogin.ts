@@ -6,8 +6,6 @@ import { Xsolla, XsollaAuthenticationType } from "../Xsolla";
 
 export class XsollaLogin {
 
-    static cachedToken:Token;
-
     static authByUsernameAndPassword(username:string, password:string, rememberMe:boolean, payload?:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
         if(Xsolla.settings.authType == XsollaAuthenticationType.Oauth2) {
             this.authByUsernameAndPasswordOauth(username, password, onComplete, onError);
@@ -29,8 +27,8 @@ export class XsollaLogin {
             .build();
 
         let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, result => {
-            this.cachedToken = JSON.parse(result);
-            onComplete?.(this.cachedToken);
+            let token: Token = JSON.parse(result);
+            onComplete?.(token);
         }, this.handleError(onError));
         request.send(JSON.stringify(body));
     }
@@ -64,8 +62,8 @@ export class XsollaLogin {
         let url = new XsollaUrlBuilder('https://login.xsolla.com/api/oauth2/token').build();
 
         let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.WwwForm, null, result => {
-            this.cachedToken = JSON.parse(result);
-            onComplete?.(this.cachedToken);
+            let token: Token = JSON.parse(result);
+            onComplete?.(token);
         }, this.handleError(onError));
         request.send(XsollaHttpUtil.encodeFormData(body));
     }
@@ -81,8 +79,8 @@ export class XsollaLogin {
         let url = new XsollaUrlBuilder('https://login.xsolla.com/api/oauth2/token').build();
 
         let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.WwwForm, null, result => {
-            this.cachedToken = JSON.parse(result);
-            onComplete?.(this.cachedToken);
+            let token: Token = JSON.parse(result);
+            onComplete?.(token);
         }, this.handleError(onError));
         request.send(XsollaHttpUtil.encodeFormData(body));
     }
@@ -275,11 +273,11 @@ export class XsollaLogin {
         return result => {
             let authUrl: AuthUrl = JSON.parse(result);
             let params = XsollaHttpUtil.decodeUrlParams(authUrl.login_url);
-            this.cachedToken = {
+            let token: Token = {
                 access_token: params['token'],
                 token_type: 'bearer'
             };
-            onComplete?.(this.cachedToken);
+            onComplete?.(token);
         };
     }
 

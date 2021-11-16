@@ -88,7 +88,7 @@
     "projectId": "77640",
     "authType": 1,
     "clientId": 57,
-    "EnableSandbox": true,
+    "enableSandbox": true,
     "_id": "26UMYqC91Gw4dDPKFX1m16"
   },
   {

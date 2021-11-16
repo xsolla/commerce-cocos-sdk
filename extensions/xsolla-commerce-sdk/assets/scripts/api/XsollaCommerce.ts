@@ -5,8 +5,6 @@ import { Xsolla, XsollaAuthenticationType } from "../Xsolla";
 
 export class XsollaCommerce {
 
-    static cachedPaymentResult: PaymentTokenResult;
-
     static itemsData: StoreItemsData;
 
     static virtualCurrencyData: VirtualCurrencyData;
@@ -116,7 +114,14 @@ export class XsollaCommerce {
 
         let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.Json, null, result => {
             let jsonResult = JSON.parse(result);
-            this.itemsData.groups = jsonResult.groups;
+            if(this.itemsData != null) {
+                this.itemsData = {
+                    items:[],
+                    groupIds:null,
+                    groups:[]
+                }
+            }
+            this.itemsData = jsonResult.groups;
             onComplete?.();
         }, this.handleError(onError));
         request.send(JSON.stringify({}));
@@ -127,7 +132,7 @@ export class XsollaCommerce {
             currency: currency,
             country: country,
             locale: locale,
-            sandbox: Xsolla.settings.EnableSandbox,
+            sandbox: Xsolla.settings.enableSandbox,
             customParameters: customParameters,
             quantity: quantity
         };
@@ -139,12 +144,12 @@ export class XsollaCommerce {
 
         let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, authToken, result => {
             let jsonResult = JSON.parse(result);
-            this.cachedPaymentResult = {
+            let tokenResult: PaymentTokenResult = {
                 token: jsonResult.token,
                 orderId: jsonResult.order_id
             };
 
-            onComplete?.(this.cachedPaymentResult);
+            onComplete?.(tokenResult);
         }, this.handleError(onError));
         request.send(JSON.stringify(body));
     }
@@ -184,47 +189,6 @@ export class XsollaCommerce {
         request.send(JSON.stringify({}));
     }
 
-    static openPaystationWidget(token: string, sandbox: boolean) {
-        var jsToken = token;
-        var isSandbox = sandbox;
-        var options = {
-            access_token: jsToken,
-            sandbox: isSandbox,
-            lightbox: {
-                width: '740px',
-                height: '760px',
-                spinner: 'round',
-                spinnerColor: '#cccccc',
-            }
-        };
-        
-        var s = document.createElement('script');
-        s.type = "text/javascript";
-        s.async = true;
-        s.src = "https://static.xsolla.com/embed/paystation/1.2.3/widget.min.js";
-    
-        s.addEventListener('load', function (e) {
-            XPayStationWidget.on(XPayStationWidget.eventTypes.STATUS, function (event, data) {
-                // PublishPaymentStatusUpdate
-            });
-    
-                XPayStationWidget.on(XPayStationWidget.eventTypes.CLOSE, function (event, data) {
-                if (data === undefined) {
-                    // PublishPaymentCancel
-                }
-                else {
-                    // PublishPaymentStatusUpdate
-                }
-            });
-    
-            XPayStationWidget.init(options);
-            XPayStationWidget.open();
-        }, false);
-    
-        var head = document.getElementsByTagName('head')[0];
-        head.appendChild(s);
-    }
-
     private static handleError(onError:(error:CommerceError) => void): (requestError:XsollaHttpError) => void {
         return requestError => {
             let commerceError: CommerceError = {
@@ -238,8 +202,8 @@ export class XsollaCommerce {
 }
 
 export interface CommerceError {
-    status?: string,
-    code: string,
+    status?: number,
+    code: number,
     description: string
 }
 
@@ -340,7 +304,8 @@ export interface XsollaItemGroup {
     image_url: string,
     level: number,
     order: number,
-    parent_external_id: string
+    parent_external_id: string,
+    children: Array<string>
 }
 
 export interface StoreItem {

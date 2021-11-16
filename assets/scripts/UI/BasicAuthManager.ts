@@ -67,7 +67,6 @@ export class BasicAuthManager extends Component {
     }
 
     onDemoUserClicked() {
-
         this.usernameEditBox.string = 'xsolla';
         this.passwordEditBox.string = 'xsolla';
 
