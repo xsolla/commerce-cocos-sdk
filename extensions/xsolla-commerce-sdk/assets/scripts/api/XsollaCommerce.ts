@@ -5,13 +5,7 @@ import { Xsolla, XsollaAuthenticationType } from "../Xsolla";
 
 export class XsollaCommerce {
 
-    static itemsData: StoreItemsData;
-
-    static virtualCurrencyData: VirtualCurrencyData;
-
-    static virtualCurrencyPackages: VirtualCurrencyPackagesData;
-
-    static updateVirtualItems(locale:string, country:string, additionalFields:Array<string>, onComplete?:() => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
+    static getVirtualItems(locale:string, country:string, additionalFields:Array<string>, onComplete?:(itemsData:StoreItemsData) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
 
         let url = new XsollaUrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/items/virtual_items')
             .setPathParam('projectID', Xsolla.settings.projectId)
@@ -24,13 +18,13 @@ export class XsollaCommerce {
 
         let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.Json, null, result => {
             let jsonResult = JSON.parse(result);
-            this.itemsData = jsonResult;
-            onComplete?.();
+            let itemsData:StoreItemsData = jsonResult;
+            onComplete?.(itemsData);
         }, this.handleError(onError));
         request.send(JSON.stringify({}));
     }
 
-    static getAllItemsList(locale:string, onComplete?:(itemsList: StoreItemsList) => void, onError?:(error:CommerceError) => void): void {
+    static getAllItemsList(locale:string, onComplete?:(data: StoreItemsList) => void, onError?:(error:CommerceError) => void): void {
 
         let url = new XsollaUrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/items/virtual_items')
             .setPathParam('projectID', Xsolla.settings.projectId)
@@ -45,7 +39,7 @@ export class XsollaCommerce {
         request.send(JSON.stringify({}));
     }
 
-    static updateVirtualCurrencies(locale:string, country:string, additionalFields:Array<string>, onComplete?:() => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
+    static getVirtualCurrencies(locale:string, country:string, additionalFields:Array<string>, onComplete?:(data:VirtualCurrencyData) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
 
         let url = new XsollaUrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/items/virtual_currency')
             .setPathParam('projectID', Xsolla.settings.projectId)
@@ -58,13 +52,13 @@ export class XsollaCommerce {
 
         let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.Json, null, result => {
             let jsonResult = JSON.parse(result);
-            this.virtualCurrencyData = jsonResult;
-            onComplete?.();
+            let virtualCurrencyData: VirtualCurrencyData = jsonResult;
+            onComplete?.(virtualCurrencyData);
         }, this.handleError(onError));
         request.send(JSON.stringify({}));
     }
 
-    static updateVirtualCurrencyPackages(locale:string, country:string, additionalFields:Array<string>, onComplete?:() => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
+    static getVirtualCurrencyPackages(locale:string, country:string, additionalFields:Array<string>, onComplete?:(data:VirtualCurrencyPackagesData) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
 
         let url = new XsollaUrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/items/virtual_currency/package')
             .setPathParam('projectID', Xsolla.settings.projectId)
@@ -77,8 +71,8 @@ export class XsollaCommerce {
 
         let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.Json, null, result => {
             let jsonResult = JSON.parse(result);
-            this.virtualCurrencyPackages = jsonResult;
-            onComplete?.();
+            let virtualCurrencyPackages: VirtualCurrencyPackagesData = jsonResult;
+            onComplete?.(virtualCurrencyPackages);
         }, this.handleError(onError));
         request.send(JSON.stringify({}));
     }
@@ -103,7 +97,7 @@ export class XsollaCommerce {
         request.send(JSON.stringify({}));
     }
 
-    static updateItemGroups(locale:string, onComplete?:() => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
+    static getItemGroups(locale:string, onComplete?:(groups:Array<XsollaItemGroup>) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
 
         let url = new XsollaUrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/items/groups')
             .setPathParam('projectID', Xsolla.settings.projectId)
@@ -114,15 +108,8 @@ export class XsollaCommerce {
 
         let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.Json, null, result => {
             let jsonResult = JSON.parse(result);
-            if(this.itemsData != null) {
-                this.itemsData = {
-                    items:[],
-                    groupIds:null,
-                    groups:[]
-                }
-            }
-            this.itemsData = jsonResult.groups;
-            onComplete?.();
+            let groups: Array<XsollaItemGroup> = jsonResult.groups;
+            onComplete?.(groups);
         }, this.handleError(onError));
         request.send(JSON.stringify({}));
     }
