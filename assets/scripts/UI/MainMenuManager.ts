@@ -1,8 +1,10 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
-import { _decorator, Component, Node, Button } from 'cc';
-import { PaymentTokenResult, StoreItemsList, XsollaCommerce } from '../../../extensions/xsolla-commerce-sdk/assets/scripts/api/XsollaCommerce';
-import { XsollaLogin } from '../../../extensions/xsolla-commerce-sdk/assets/scripts/api/XsollaLogin';
+import { _decorator, Component, Node, Button, sys } from 'cc';
+import { XsollaCommerce } from 'db://xsolla-commerce-sdk/scripts/api/XsollaCommerce';
+import { XsollaLogin } from 'db://xsolla-commerce-sdk/scripts/api/XsollaLogin';
+import { XsollaUrlBuilder } from '../../../extensions/xsolla-commerce-sdk/assets/scripts/core/XsollaUrlBuilder';
+import { Xsolla } from '../../../extensions/xsolla-commerce-sdk/assets/scripts/Xsolla';
 import { UIManager } from './UIManager';
 const { ccclass, property } = _decorator;
  
@@ -17,6 +19,8 @@ export class MainMenuManager extends Component {
 
     @property(Button)
     loadItemsButton: Button;
+
+    bIsPaymentWidgetClosed:boolean = false;
 
     onDestroy() {
         this.removeListeners();
@@ -45,28 +49,96 @@ export class MainMenuManager extends Component {
     }
 
     onLoadItemsClicked() {
-       XsollaCommerce.updateItemGroups('', () => {
-            XsollaCommerce.itemsData.groups;
-            console.log('successfull loading');
-       }, error => {
-           console.log('error');
-       });
+        XsollaCommerce.fetchPaymentToken("place token here",'booster_max_1', 1, undefined, undefined, undefined, undefined, result => {
+            if(sys.isMobile) {
+                let url: XsollaUrlBuilder;
+                if(Xsolla.settings.enableSandbox) {
+                    url = new XsollaUrlBuilder('https://sandbox-secure.xsolla.com/paystation3');
+                } else {
+                    url = new XsollaUrlBuilder('https://secure.xsolla.com/paystation3');
+                }
+                url.addStringParam('access_token', result.token);
+                this.shortPollingCheckOrder(result.orderId, result.token);
+                sys.openURL(url.build());
+            } else {
+                this.bIsPaymentWidgetClosed = false;
+                this.openPaystationWidget(result.orderId, result.token, Xsolla.settings.enableSandbox, () => {
+                    this.shortPollingCheckOrder(result.orderId, result.token);
+                }, () => {
+                    this.bIsPaymentWidgetClosed = true;
+                });
+            }
+        } );
     }
 
-    shortPollingCheckOrder(orderId: number) {
-        XsollaCommerce.checkOrder(XsollaLogin.cachedToken.access_token, XsollaCommerce.cachedPaymentResult.orderId, result => {
+    shortPollingCheckOrder(orderId: number, token: string) {
+        XsollaCommerce.checkOrder(token, orderId, result => {
             console.log('shortPollingCheckOrder ' + result.status);
-            if(result.status == 'done')
-            {
+            if(result.status == 'done') {
                 this.uiManager.openMessageScreen('success purchase!');
                 return;
             }
-            if(result.status == 'new' || result.status == 'paid')
-            {
-                setTimeout( result => {
-                    this.shortPollingCheckOrder(orderId);
+
+            if(this.bIsPaymentWidgetClosed) {
+                return;
+            }
+
+            if(result.status == 'new' || result.status == 'paid') {
+                setTimeout(result => {
+                    this.shortPollingCheckOrder(orderId, token);
                 }, 3000);
             }
         })
+    }
+
+    openPaystationWidget(orderId: number, token: string, sandbox: boolean, onComplete?:() => void, onClosed?:() => void) {
+        console.log('openPaystationWidget opened');
+        var jsToken = token;
+        var isSandbox = sandbox;
+        var options = {
+            access_token: jsToken,
+            sandbox: isSandbox,
+            lightbox: {
+                width: '740px',
+                height: '760px',
+                spinner: 'round',
+                spinnerColor: '#cccccc',
+            }
+        };
+        
+        var s = document.createElement('script');
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = "https://static.xsolla.com/embed/paystation/1.2.3/widget.min.js";
+    
+        let statusChangedFunction = function (event, data) {
+            console.log('openPaystationWidget status changed');
+            onComplete();
+        };
+
+        let closeWidgetFunction = function (event, data) {
+            if (data === undefined) {
+                onClosed();
+                s.removeEventListener('load', loadFunction, false);
+                XPayStationWidget.off(XPayStationWidget.eventTypes.STATUS, statusChangedFunction);
+                XPayStationWidget.off(XPayStationWidget.eventTypes.CLOSE, closeWidgetFunction);
+            }
+            else {
+
+            }
+        };
+
+        let loadFunction = function (e) {
+            XPayStationWidget.on(XPayStationWidget.eventTypes.STATUS, statusChangedFunction);
+            XPayStationWidget.on(XPayStationWidget.eventTypes.CLOSE, closeWidgetFunction);
+    
+            XPayStationWidget.init(options);
+            XPayStationWidget.open();
+        };
+
+        s.addEventListener('load', loadFunction, false);
+    
+        var head = document.getElementsByTagName('head')[0];
+        head.appendChild(s);
     }
 }
