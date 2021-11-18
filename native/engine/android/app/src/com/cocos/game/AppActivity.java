@@ -33,6 +33,8 @@ import com.cocos.lib.CocosActivity;
 
 public class AppActivity extends CocosActivity {
 
+    private static AppActivity app;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +49,7 @@ public class AppActivity extends CocosActivity {
         // DO OTHER INITIALIZATION BELOW
         SDKWrapper.shared().init(this);
 
+        app = this;
     }
 
     @Override
@@ -129,5 +132,9 @@ public class AppActivity extends CocosActivity {
     public void onLowMemory() {
         SDKWrapper.shared().onLowMemory();
         super.onLowMemory();
+    }
+
+    public static AppActivity getAppActivity() {
+        return app;
     }
 }
