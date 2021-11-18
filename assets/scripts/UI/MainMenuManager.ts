@@ -75,6 +75,9 @@ export class MainMenuManager extends Component {
         XsollaCommerce.checkOrder(token, orderId, result => {
             console.log('shortPollingCheckOrder ' + result.status);
             if(result.status == 'done') {
+                if(!sys.isMobile) {
+                    this.сlosePaystationWidget();
+                }
                 this.uiManager.openMessageScreen('success purchase!');
                 return;
             }
@@ -139,4 +142,15 @@ export class MainMenuManager extends Component {
         var head = document.getElementsByTagName('head')[0];
         head.appendChild(s);
     }
+
+    сlosePaystationWidget() {
+		if (typeof XPayStationWidget !== undefined) {
+			XPayStationWidget.off();
+		}
+
+		var elements = document.getElementsByClassName('xpaystation-widget-lightbox');
+		for (var i = 0; i < elements.length; i++) {
+			elements[i].style.display = 'none';
+		}
+	}
 }
