@@ -54,14 +54,19 @@ export class StartingScreenManager extends Component {
 
     onDeviceIdAuthClicked() {
         let deviceId: string;
+        let deviceName: string;
         if(sys.platform.toLowerCase() == 'android') {
             deviceId = jsb.reflection.callStaticMethod("com/cocos/game/XsollaNativeUtils", "getDeviceId", "()Ljava/lang/String;");
+            deviceName = jsb.reflection.callStaticMethod("com/cocos/game/XsollaNativeUtils", "getDeviceName", "()Ljava/lang/String;");
         }
         if(sys.platform.toLowerCase() == 'ios') {
-            deviceId = ''; // add native iOS implementation
+            deviceId = jsb.reflection.callStaticMethod("XsollaNativeUtils", "getDeviceId");
+            deviceName = jsb.reflection.callStaticMethod("XsollaNativeUtils", "getDeviceName");
+            console.log(deviceId)
+            console.log(deviceName)
         }
 
-        XsollaLogin.authByDeviceId('Test', deviceId, 'xsollatest', 'xsollatest', token => {
+        XsollaLogin.authByDeviceId(deviceName, deviceId, 'xsollatest', 'xsollatest', token => {
             console.log(token);
             this.uiManager.openMainMenu(this.node);
         }, err => {
