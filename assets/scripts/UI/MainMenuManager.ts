@@ -20,7 +20,7 @@ export class MainMenuManager extends Component {
     @property(Button)
     loadItemsButton: Button;
 
-    bIsPaymentWidgetClosed:boolean = false;
+    bIsPaymentWidgetOpened:boolean = false;
 
     onDestroy() {
         this.removeListeners();
@@ -49,7 +49,7 @@ export class MainMenuManager extends Component {
     }
 
     onLoadItemsClicked() {
-        XsollaCommerce.fetchPaymentToken("place token here",'booster_max_1', 1, undefined, undefined, undefined, undefined, result => {
+        XsollaCommerce.fetchPaymentToken('place token here','booster_max_1', 1, undefined, undefined, undefined, undefined, result => {
             if(sys.isMobile) {
                 let url: XsollaUrlBuilder;
                 if(Xsolla.settings.enableSandbox) {
@@ -61,11 +61,11 @@ export class MainMenuManager extends Component {
                 this.shortPollingCheckOrder(result.orderId, result.token);
                 sys.openURL(url.build());
             } else {
-                this.bIsPaymentWidgetClosed = false;
+                this.bIsPaymentWidgetOpened = true;
                 this.openPaystationWidget(result.orderId, result.token, Xsolla.settings.enableSandbox, () => {
                     this.shortPollingCheckOrder(result.orderId, result.token);
                 }, () => {
-                    this.bIsPaymentWidgetClosed = true;
+                    this.bIsPaymentWidgetOpened = false;
                 });
             }
         } );
@@ -79,14 +79,12 @@ export class MainMenuManager extends Component {
                 return;
             }
 
-            if(this.bIsPaymentWidgetClosed) {
-                return;
-            }
-
-            if(result.status == 'new' || result.status == 'paid') {
-                setTimeout(result => {
-                    this.shortPollingCheckOrder(orderId, token);
-                }, 3000);
+            if(sys.isMobile || this.bIsPaymentWidgetOpened) {
+                if(result.status == 'new' || result.status == 'paid') {
+                    setTimeout(result => {
+                        this.shortPollingCheckOrder(orderId, token);
+                    }, 3000);
+                }
             }
         })
     }
@@ -118,10 +116,10 @@ export class MainMenuManager extends Component {
 
         let closeWidgetFunction = function (event, data) {
             if (data === undefined) {
-                onClosed();
                 s.removeEventListener('load', loadFunction, false);
                 XPayStationWidget.off(XPayStationWidget.eventTypes.STATUS, statusChangedFunction);
                 XPayStationWidget.off(XPayStationWidget.eventTypes.CLOSE, closeWidgetFunction);
+                onClosed();
             }
             else {
 
