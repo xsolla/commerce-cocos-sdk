@@ -2,9 +2,8 @@
 
 import { _decorator, Component, Node, Button, sys } from 'cc';
 import { XsollaCommerce } from 'db://xsolla-commerce-sdk/scripts/api/XsollaCommerce';
-import { XsollaLogin } from 'db://xsolla-commerce-sdk/scripts/api/XsollaLogin';
-import { XsollaUrlBuilder } from '../../../extensions/xsolla-commerce-sdk/assets/scripts/core/XsollaUrlBuilder';
-import { Xsolla } from '../../../extensions/xsolla-commerce-sdk/assets/scripts/Xsolla';
+import { XsollaUrlBuilder } from 'db://xsolla-commerce-sdk/scripts/core/XsollaUrlBuilder';
+import { Xsolla } from 'db://xsolla-commerce-sdk/scripts/Xsolla';
 import { UIManager } from './UIManager';
 const { ccclass, property } = _decorator;
  

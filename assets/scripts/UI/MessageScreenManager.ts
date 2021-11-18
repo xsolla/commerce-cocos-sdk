@@ -2,6 +2,7 @@
 
 import { _decorator, Component, Node, Label, Button } from 'cc';
 const { ccclass, property } = _decorator;
+
 @ccclass('MessageScreenManager')
 export class MessageScreenManager extends Component {
 

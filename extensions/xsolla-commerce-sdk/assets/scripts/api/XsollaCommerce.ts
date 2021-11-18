@@ -1,12 +1,12 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
-import { XsollaHttpError, XsollaHttpUtil, XsollaRequestContentType, XsollaRequestVerb } from "../core/XsollaHttpUtil";
+
+import { XsollaHttpError, XsollaHttpUtil, XsollaRequestContentType } from "../core/XsollaHttpUtil";
 import { XsollaUrlBuilder } from "../core/XsollaUrlBuilder";
-import { Xsolla, XsollaAuthenticationType } from "../Xsolla";
+import { Xsolla } from "../Xsolla";
 
 export class XsollaCommerce {
 
     static getVirtualItems(locale:string, country:string, additionalFields:Array<string>, onComplete?:(itemsData:StoreItemsData) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
-
         let url = new XsollaUrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/items/virtual_items')
             .setPathParam('projectID', Xsolla.settings.projectId)
             .addStringParam('locale', locale)
@@ -25,7 +25,6 @@ export class XsollaCommerce {
     }
 
     static getAllItemsList(locale:string, onComplete?:(data: StoreItemsList) => void, onError?:(error:CommerceError) => void): void {
-
         let url = new XsollaUrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/items/virtual_items')
             .setPathParam('projectID', Xsolla.settings.projectId)
             .addStringParam('locale', locale)
@@ -40,7 +39,6 @@ export class XsollaCommerce {
     }
 
     static getVirtualCurrencies(locale:string, country:string, additionalFields:Array<string>, onComplete?:(data:VirtualCurrencyData) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
-
         let url = new XsollaUrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/items/virtual_currency')
             .setPathParam('projectID', Xsolla.settings.projectId)
             .addStringParam('locale', locale)
@@ -59,7 +57,6 @@ export class XsollaCommerce {
     }
 
     static getVirtualCurrencyPackages(locale:string, country:string, additionalFields:Array<string>, onComplete?:(data:VirtualCurrencyPackagesData) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
-
         let url = new XsollaUrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/items/virtual_currency/package')
             .setPathParam('projectID', Xsolla.settings.projectId)
             .addStringParam('locale', locale)
@@ -78,7 +75,6 @@ export class XsollaCommerce {
     }
 
     static getItemsListBySpecifiedGroup(externalId: string, locale:string, country:string, additionalFields:Array<string>, onComplete?:(itemsList: StoreItemsList) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
-
         let url = new XsollaUrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/items/virtual_items/group/{externalId}')
             .setPathParam('projectID', Xsolla.settings.projectId)
             .setPathParam('externalId', externalId.length != 0 ? externalId: 'all')
@@ -98,7 +94,6 @@ export class XsollaCommerce {
     }
 
     static getItemGroups(locale:string, onComplete?:(groups:Array<XsollaItemGroup>) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
-
         let url = new XsollaUrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/items/groups')
             .setPathParam('projectID', Xsolla.settings.projectId)
             .addStringParam('locale', locale)
@@ -142,7 +137,6 @@ export class XsollaCommerce {
     }
 
     static checkOrder(authToken:string, orderId:number, onComplete?:(checkOrderResult: CheckOrderResult) => void, onError?:(error:CommerceError) => void): void {
-
         let url = new XsollaUrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/order/{orderId}')
             .setPathParam('projectID', Xsolla.settings.projectId)
             .setPathParam('orderId', orderId.toString())
@@ -161,7 +155,6 @@ export class XsollaCommerce {
     }
 
     static buyItemWithVirtualCurrency(authToken:string, itemSKU:string, currencySKU:string, onComplete?:(orderId: number) => void, onError?:(error:CommerceError) => void): void {
-
         let url = new XsollaUrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/payment/item/{itemSKU}/virtual/{currencySKU}')
             .setPathParam('projectID', Xsolla.settings.projectId)
             .setPathParam('itemSKU', itemSKU.toString())
