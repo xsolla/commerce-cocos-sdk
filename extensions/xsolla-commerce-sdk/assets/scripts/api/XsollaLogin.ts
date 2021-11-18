@@ -1,5 +1,6 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
+import { sys } from "cc";
 import { XsollaHttpError, XsollaHttpUtil, XsollaRequestContentType, XsollaRequestVerb } from "../core/XsollaHttpUtil";
 import { XsollaUrlBuilder } from "../core/XsollaUrlBuilder";
 import { Xsolla, XsollaAuthenticationType } from "../Xsolla";
@@ -256,6 +257,58 @@ export class XsollaLogin {
             .build();
 
         let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, this.handleUrlWithToken(onComplete), this.handleError(onError));
+        request.send(JSON.stringify(body));
+    }
+
+    static authByDeviceId(deviceName:string, deviceId:string, payload?:string, state?:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
+        if(Xsolla.settings.authType == XsollaAuthenticationType.Oauth2) {
+            this.authByDeviceIdOauth(deviceName, deviceId, state, onComplete, onError);
+        }
+        else {
+            this.authByDeviceIdJwt(deviceName, deviceId, payload, onComplete, onError);
+        }
+    }
+
+    static authByDeviceIdOauth(deviceName:string, deviceId:string, state?:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
+        let body = {
+            device: deviceName,
+            device_id: deviceId
+        };
+
+        let url = new XsollaUrlBuilder('https://login.xsolla.com/api/oauth2/login/device/{PlatformName}')
+            .setPathParam('PlatformName', sys.platform.toLowerCase())
+            .addNumberParam('client_id', Xsolla.settings.clientId)
+            .addStringParam('response_type', 'code')
+            .addStringParam('redirect_uri', 'https://login.xsolla.com/api/blank')
+            .addStringParam('state', state)
+            .addStringParam('scope', 'offline')
+            .build();
+
+        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, this.handleUrlWithCode(onComplete, onError), this.handleError(onError));
+        request.send(JSON.stringify(body));
+    }
+
+    static authByDeviceIdJwt(deviceName:string, deviceId:string, payload?:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
+        let body = {
+            device: deviceName,
+            device_id: deviceId
+        };
+
+        let url = new XsollaUrlBuilder('https://login.xsolla.com/api/login/device/{PlatformName}')
+            .setPathParam('PlatformName', sys.platform.toLowerCase())
+            .addStringParam('projectId', Xsolla.settings.loginId)
+            .addBoolParam('with_logout', true)
+            .addStringParam('payload', payload)
+            .build();
+
+        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, result => {
+            let authResult = JSON.parse(result);
+            let token: Token = {
+                access_token: authResult.token,
+                token_type: 'bearer'
+            };
+            onComplete?.(token);
+        }, this.handleError(onError));
         request.send(JSON.stringify(body));
     }
 
