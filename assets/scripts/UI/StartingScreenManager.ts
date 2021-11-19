@@ -62,8 +62,6 @@ export class StartingScreenManager extends Component {
         if(sys.platform.toLowerCase() == 'ios') {
             deviceId = jsb.reflection.callStaticMethod("XsollaNativeUtils", "getDeviceId");
             deviceName = jsb.reflection.callStaticMethod("XsollaNativeUtils", "getDeviceName");
-            console.log(deviceId)
-            console.log(deviceName)
         }
 
         XsollaLogin.authByDeviceId(deviceName, deviceId, 'xsollatest', 'xsollatest', token => {
