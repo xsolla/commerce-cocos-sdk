@@ -4,6 +4,7 @@ import { _decorator, Component, Node, Button, sys } from 'cc';
 import { XsollaCommerce } from 'db://xsolla-commerce-sdk/scripts/api/XsollaCommerce';
 import { XsollaUrlBuilder } from 'db://xsolla-commerce-sdk/scripts/core/XsollaUrlBuilder';
 import { Xsolla } from 'db://xsolla-commerce-sdk/scripts/Xsolla';
+import { TokenStorage } from '../Common/TokenStorage';
 import { UIManager } from './UIManager';
 const { ccclass, property } = _decorator;
  
@@ -45,10 +46,11 @@ export class MainMenuManager extends Component {
 
     onLogoutClicked() {
         this.uiManager.openStartingScreen(this.node);
+        TokenStorage.clearToken();
     }
 
     onLoadItemsClicked() {
-        XsollaCommerce.fetchPaymentToken('place token here','booster_max_1', 1, undefined, undefined, undefined, undefined, result => {
+        XsollaCommerce.fetchPaymentToken(TokenStorage.getToken().access_token, 'booster_max_1', 1, undefined, undefined, undefined, undefined, result => {
             if(sys.isMobile) {
                 let url: XsollaUrlBuilder;
                 if(Xsolla.settings.enableSandbox) {

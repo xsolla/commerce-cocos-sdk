@@ -1,6 +1,7 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component, Node, find } from 'cc';
+import { TokenStorage } from '../Common/TokenStorage';
 import { ErrorScreenManager } from './ErrorScreenManager';
 import { MessageScreenManager } from './MessageScreenManager';
 const { ccclass, property } = _decorator;
@@ -28,6 +29,10 @@ export class UIManager extends Component {
 
     start() {
         this.startingScreen.active = true;
+
+        if(TokenStorage.getToken() != null) {
+            this.openMainMenu(this.startingScreen);
+        }
     }
 
     openStartingScreen(currentScreen:Node) {

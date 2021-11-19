@@ -2,6 +2,7 @@
 
 import { _decorator, Component, Node, Button, EditBox, EventHandler, sys, System, Toggle } from 'cc';
 import { XsollaLogin } from 'db://xsolla-commerce-sdk/scripts/api/XsollaLogin';
+import { TokenStorage } from '../Common/TokenStorage';
 import { UIManager } from './UIManager';
 const { ccclass, property } = _decorator;
  
@@ -59,6 +60,7 @@ export class BasicAuthManager extends Component {
     onLoginClicked() {
         XsollaLogin.authByUsernameAndPassword(this.usernameEditBox.string, this.passwordEditBox.string, this.remeberMeToggle.isChecked, 'xsollatest', token => {
             console.log(token);
+            TokenStorage.saveToken(token, this.remeberMeToggle.isChecked);
             this.uiManager.openMainMenu(this.node);
         }, err => {
             console.log(err);
