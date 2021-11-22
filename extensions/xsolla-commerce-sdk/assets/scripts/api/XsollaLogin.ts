@@ -352,6 +352,30 @@ export class XsollaLogin {
         request.send(JSON.stringify(body));
     }
 
+    static updateUserAttributes(token:string, attributes:Array<UserAttribute>, onComplete?:() => void, onError?:(error:LoginError) => void) {
+        let body = {
+            attributes: attributes,
+            publisher_project_id: parseInt(Xsolla.settings.projectId)
+        };
+
+        let url = new XsollaUrlBuilder('https://login.xsolla.com/api/attributes/users/me/update').build();
+
+        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, token, onComplete, this.handleError(onError));
+        request.send(JSON.stringify(body));
+    }
+
+    static removeUserAttributes(token:string, keys:Array<string>, onComplete?:() => void, onError?:(error:LoginError) => void) {
+        let body = {
+            removing_keys: keys,
+            publisher_project_id: parseInt(Xsolla.settings.projectId)
+        };
+
+        let url = new XsollaUrlBuilder('https://login.xsolla.com/api/attributes/users/me/update').build();
+
+        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, token, onComplete, this.handleError(onError));
+        request.send(JSON.stringify(body));
+    }
+
     private static handleError(onError:(error:LoginError) => void): (requestError:XsollaHttpError) => void {
         return requestError => {
             let loginError: LoginError = {
