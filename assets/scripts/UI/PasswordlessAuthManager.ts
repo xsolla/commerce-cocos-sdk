@@ -2,6 +2,7 @@
 
 import { _decorator, Component, Node, find, Button, EditBox } from 'cc';
 import { XsollaLogin } from 'db://xsolla-commerce-sdk/scripts/api/XsollaLogin';
+import { TokenStorage } from '../Common/TokenStorage';
 import { UIManager } from './UIManager';
 const { ccclass, property } = _decorator;
 
@@ -121,6 +122,7 @@ export class PasswordlessAuthManager extends Component {
         if(this._authOption == AuthOption.Phone) {
             XsollaLogin.completeAuthByPhoneNumber(this.confirmationCodeEditBox.string, this._operationId, this.credentialsEditBox.string, token => {
                 console.log(token);
+                TokenStorage.saveToken(token, true);
                 this.uiManager.openMainMenu(this.node);
             }, err => {
                 console.log(err);
@@ -131,6 +133,7 @@ export class PasswordlessAuthManager extends Component {
         if(this._authOption == AuthOption.Email) {
             XsollaLogin.completeAuthByEmail(this.confirmationCodeEditBox.string, this._operationId, this.credentialsEditBox.string, token => {
                 console.log(token);
+                TokenStorage.saveToken(token, true);
                 this.uiManager.openMainMenu(this.node);
             }, err => {
                 console.log(err);

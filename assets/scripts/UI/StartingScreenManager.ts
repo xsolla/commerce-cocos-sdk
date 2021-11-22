@@ -2,6 +2,7 @@
 
 import { _decorator, Component, Node, Button, sys } from 'cc';
 import { XsollaLogin } from 'db://xsolla-commerce-sdk/scripts/api/XsollaLogin';
+import { TokenStorage } from '../Common/TokenStorage';
 import { UIManager } from './UIManager';
 const { ccclass, property } = _decorator;
  
@@ -66,6 +67,7 @@ export class StartingScreenManager extends Component {
 
         XsollaLogin.authByDeviceId(deviceName, deviceId, 'xsollatest', 'xsollatest', token => {
             console.log(token);
+            TokenStorage.saveToken(token, true);
             this.uiManager.openMainMenu(this.node);
         }, err => {
             console.log(err);

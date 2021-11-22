@@ -12,6 +12,9 @@ export class TokenStorage {
         if(rememberMe) {
             sys.localStorage.setItem('xsolla_token', JSON.stringify(TokenStorage.token));
         }
+        else {
+            sys.localStorage.removeItem('xsolla_token');
+        }
     }
 
     static getToken() : Token {
