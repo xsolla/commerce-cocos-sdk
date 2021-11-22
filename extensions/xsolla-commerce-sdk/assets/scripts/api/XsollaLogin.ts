@@ -1,7 +1,7 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
 import { sys } from "cc";
-import { XsollaHttpError, XsollaHttpUtil, XsollaRequestContentType, XsollaRequestVerb } from "../core/XsollaHttpUtil";
+import { XsollaHttpError, XsollaHttpUtil, XsollaRequestContentType } from "../core/XsollaHttpUtil";
 import { XsollaUrlBuilder } from "../core/XsollaUrlBuilder";
 import { Xsolla, XsollaAuthenticationType } from "../Xsolla";
 
@@ -312,6 +312,46 @@ export class XsollaLogin {
         request.send(JSON.stringify(body));
     }
 
+    static getUserAttributes(token:string, userId?:string, keys?:Array<string>, onComplete?:(attributes:Array<UserAttribute>) => void, onError?:(error:LoginError) => void) {
+        let body = {
+            publisher_project_id: parseInt(Xsolla.settings.projectId)
+        };
+        if(userId && userId.length > 0) {
+            body['user_id'] = userId;
+        }
+        if(keys && keys.length > 0) {
+            body['keys'] = keys;
+        }
+
+        let url = new XsollaUrlBuilder('https://login.xsolla.com/api/attributes/users/me/get').build();
+
+        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, token, result => {
+            let attributes = JSON.parse(result);
+            onComplete?.(attributes);
+        }, this.handleError(onError));
+        request.send(JSON.stringify(body));
+    }
+
+    static getUserReadOnlyAttributes(token:string, userId?:string, keys?:Array<string>, onComplete?:(attributes:Array<UserAttribute>) => void, onError?:(error:LoginError) => void) {
+        let body = {
+            publisher_project_id: parseInt(Xsolla.settings.projectId)
+        };
+        if(userId && userId.length > 0) {
+            body['user_id'] = userId;
+        }
+        if(keys && keys.length > 0) {
+            body['keys'] = keys;
+        }
+
+        let url = new XsollaUrlBuilder('https://login.xsolla.com/api/attributes/users/me/get_read_only').build();
+
+        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, token, result => {
+            let attributes = JSON.parse(result);
+            onComplete?.(attributes);
+        }, this.handleError(onError));
+        request.send(JSON.stringify(body));
+    }
+
     private static handleError(onError:(error:LoginError) => void): (requestError:XsollaHttpError) => void {
         return requestError => {
             let loginError: LoginError = {
@@ -356,6 +396,12 @@ export interface AuthUrl {
 
 export interface AuthOperationId {
     operation_id: string
+}
+
+export interface UserAttribute {
+    key: string,
+    permission: string;
+    value: string
 }
 
 export interface LoginError {
