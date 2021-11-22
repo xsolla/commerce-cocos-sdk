@@ -35,13 +35,13 @@ export class MainMenuManager extends Component {
     }
 
     addListeners() {
-        this.logOutButton.node.on('click', this.onLogoutClicked, this);
-        this.loadItemsButton.node.on('click', this.onLoadItemsClicked, this);
+        this.logOutButton.node.on(Button.EventType.CLICK, this.onLogoutClicked, this);
+        this.loadItemsButton.node.on(Button.EventType.CLICK, this.onLoadItemsClicked, this);
     }
 
     removeListeners() {
-        this.logOutButton.node.off('click', this.onLogoutClicked, this);
-        this.loadItemsButton.node.off('click', this.onLoadItemsClicked, this);
+        this.logOutButton.node.off(Button.EventType.CLICK, this.onLogoutClicked, this);
+        this.loadItemsButton.node.off(Button.EventType.CLICK, this.onLoadItemsClicked, this);
     }
 
     onLogoutClicked() {

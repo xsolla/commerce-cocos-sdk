@@ -164,24 +164,24 @@ export class PasswordlessAuthManager extends Component {
     }
 
     addListeners () {
-        this.backButton.node.on('click', this.onBackClicked, this);
-        this.phoneButton.node.on('click', this.phoneClicked, this);
-        this.emailButton.node.on('click', this.emailClicked, this);
-        this.sendCodeButton.node.on('click', this.sendCodeClicked, this);
-        this.confirmCodeButton.node.on('click', this.confirmCodeClicked, this);
+        this.backButton.node.on(Button.EventType.CLICK, this.onBackClicked, this);
+        this.phoneButton.node.on(Button.EventType.CLICK, this.phoneClicked, this);
+        this.emailButton.node.on(Button.EventType.CLICK, this.emailClicked, this);
+        this.sendCodeButton.node.on(Button.EventType.CLICK, this.sendCodeClicked, this);
+        this.confirmCodeButton.node.on(Button.EventType.CLICK, this.confirmCodeClicked, this);
 
-        this.credentialsEditBox.node.on('text-changed', this.onCredentialsChanged, this);
-        this.confirmationCodeEditBox.node.on('text-changed', this.onConfirmCodeChanged, this);
+        this.credentialsEditBox.node.on(EditBox.EventType.TEXT_CHANGED, this.onCredentialsChanged, this);
+        this.confirmationCodeEditBox.node.on(EditBox.EventType.TEXT_CHANGED, this.onConfirmCodeChanged, this);
     }
 
     removeListeners () {
-        this.backButton.node.off('click', this.onBackClicked, this);
-        this.phoneButton.node.off('click', this.phoneClicked, this);
-        this.emailButton.node.off('click', this.emailClicked, this);
-        this.sendCodeButton.node.off('click', this.sendCodeClicked, this);
-        this.confirmCodeButton.node.off('click', this.confirmCodeClicked, this);
+        this.backButton.node.off(Button.EventType.CLICK, this.onBackClicked, this);
+        this.phoneButton.node.off(Button.EventType.CLICK, this.phoneClicked, this);
+        this.emailButton.node.off(Button.EventType.CLICK, this.emailClicked, this);
+        this.sendCodeButton.node.off(Button.EventType.CLICK, this.sendCodeClicked, this);
+        this.confirmCodeButton.node.off(Button.EventType.CLICK, this.confirmCodeClicked, this);
 
-        this.credentialsEditBox.node.off('text-changed', this.onCredentialsChanged, this);
-        this.confirmationCodeEditBox.node.off('text-changed', this.onConfirmCodeChanged, this);
+        this.credentialsEditBox.node.off(EditBox.EventType.TEXT_CHANGED, this.onCredentialsChanged, this);
+        this.confirmationCodeEditBox.node.off(EditBox.EventType.TEXT_CHANGED, this.onConfirmCodeChanged, this);
     }
 }

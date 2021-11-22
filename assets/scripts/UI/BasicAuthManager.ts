@@ -80,18 +80,18 @@ export class BasicAuthManager extends Component {
     }
 
     addListeners () {
-        this.backButton.node.on('click', this.onBackClicked, this);
-        this.logInButton.node.on('click', this.onLoginClicked, this);
-        this.demoUserButton.node.on('click', this.onDemoUserClicked, this);
-        this.usernameEditBox.node.on('text-changed', this.onCredentialsChanged, this);
-        this.passwordEditBox.node.on('text-changed', this.onCredentialsChanged, this);
+        this.backButton.node.on(Button.EventType.CLICK, this.onBackClicked, this);
+        this.logInButton.node.on(Button.EventType.CLICK, this.onLoginClicked, this);
+        this.demoUserButton.node.on(Button.EventType.CLICK, this.onDemoUserClicked, this);
+        this.usernameEditBox.node.on(EditBox.EventType.TEXT_CHANGED, this.onCredentialsChanged, this);
+        this.passwordEditBox.node.on(EditBox.EventType.TEXT_CHANGED, this.onCredentialsChanged, this);
     }
 
     removeListeners () {
-        this.backButton.node.off('click', this.onBackClicked, this);
-        this.logInButton.node.off('click', this.onLoginClicked, this);
-        this.demoUserButton.node.off('click', this.onDemoUserClicked, this);
-        this.usernameEditBox.node.off('text-changed', this.onCredentialsChanged, this);
-        this.passwordEditBox.node.off('text-changed', this.onCredentialsChanged, this);
+        this.backButton.node.off(Button.EventType.CLICK, this.onBackClicked, this);
+        this.logInButton.node.off(Button.EventType.CLICK, this.onLoginClicked, this);
+        this.demoUserButton.node.off(Button.EventType.CLICK, this.onDemoUserClicked, this);
+        this.usernameEditBox.node.off(EditBox.EventType.TEXT_CHANGED, this.onCredentialsChanged, this);
+        this.passwordEditBox.node.off(EditBox.EventType.TEXT_CHANGED, this.onCredentialsChanged, this);
     }
 }

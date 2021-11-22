@@ -29,11 +29,11 @@ export class ErrorScreenManager extends Component {
     }
 
     addListeners() {
-        this.tryAgainButton.node.on('click', this.onTryAgainClicked, this);
+        this.tryAgainButton.node.on(Button.EventType.CLICK, this.onTryAgainClicked, this);
     }
 
     removeListeners() {
-        this.tryAgainButton.node.off('click', this.onTryAgainClicked, this);
+        this.tryAgainButton.node.off(Button.EventType.CLICK, this.onTryAgainClicked, this);
     }
 
     showError(errorMessage: string, onClosed?: () => void) {

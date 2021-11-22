@@ -32,9 +32,9 @@ export class EditBoxController extends Component {
     start () {
         this._editBox = this.getComponent(EditBox);
         if (this._editBox != null) {
-            this._editBox.node.on('editing-did-began', this.onEditingDidBegin, this);
-            this._editBox.node.on('editing-did-ended', this.onEditingDidEnd, this);
-            this._editBox.node.on('editing-return', this.onEditingReturn, this);
+            this._editBox.node.on(EditBox.EventType.EDITING_DID_BEGAN, this.onEditingDidBegin, this);
+            this._editBox.node.on(EditBox.EventType.EDITING_DID_ENDED, this.onEditingDidEnd, this);
+            this._editBox.node.on(EditBox.EventType.EDITING_RETURN, this.onEditingReturn, this);
 
             this.node.on(Node.EventType.MOUSE_ENTER, () => {
                 this._isMouseOver = true;

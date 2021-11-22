@@ -38,15 +38,15 @@ export class StartingScreenManager extends Component {
     }
 
     addListeners() {
-        this.basicAuthButton.node.on('click', this.onBasicAuthClicked, this);
-        this.deviceIdAuthButton.node.on('click', this.onDeviceIdAuthClicked, this);
-        this.otherAuthButton.node.on('click', this.onOtherAuthClicked, this);
+        this.basicAuthButton.node.on(Button.EventType.CLICK, this.onBasicAuthClicked, this);
+        this.deviceIdAuthButton.node.on(Button.EventType.CLICK, this.onDeviceIdAuthClicked, this);
+        this.otherAuthButton.node.on(Button.EventType.CLICK, this.onOtherAuthClicked, this);
     }
 
     removeListeners() {
-        this.basicAuthButton.node.off('click', this.onBasicAuthClicked, this);
-        this.deviceIdAuthButton.node.off('click', this.onDeviceIdAuthClicked, this);
-        this.otherAuthButton.node.off('click', this.onOtherAuthClicked, this);
+        this.basicAuthButton.node.off(Button.EventType.CLICK, this.onBasicAuthClicked, this);
+        this.deviceIdAuthButton.node.off(Button.EventType.CLICK, this.onDeviceIdAuthClicked, this);
+        this.otherAuthButton.node.off(Button.EventType.CLICK, this.onOtherAuthClicked, this);
     }
 
     onBasicAuthClicked() {

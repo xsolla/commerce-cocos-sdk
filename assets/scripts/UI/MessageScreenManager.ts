@@ -29,11 +29,11 @@ export class MessageScreenManager extends Component {
     }
 
     addListeners() {
-        this.okButton.node.on('click', this.onOkClicked, this);
+        this.okButton.node.on(Button.EventType.CLICK, this.onOkClicked, this);
     }
 
     removeListeners() {
-        this.okButton.node.off('click', this.onOkClicked, this);
+        this.okButton.node.off(Button.EventType.CLICK, this.onOkClicked, this);
     }
 
     showMessage(message: string, onClosed?: () => void) {
