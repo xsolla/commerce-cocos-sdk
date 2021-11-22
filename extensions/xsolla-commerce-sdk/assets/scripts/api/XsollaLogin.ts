@@ -18,8 +18,8 @@ export class XsollaLogin {
 
     private static authByUsernameAndPasswordOauth(username:string, password:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
         let body = {
-            password: username,
-            username: password
+            password: password,
+            username: username
         };
 
         let url = new XsollaUrlBuilder('https://login.xsolla.com/api/oauth2/login/token')
@@ -36,9 +36,9 @@ export class XsollaLogin {
 
     private static authByUsernameAndPasswordJwt(username:string, password:string, rememberMe:boolean, payload?:string, onComplete?:(result:Token) => void, onError?:(error:LoginError) => void) {
         let body = {
-            password: username,
+            password: password,
             remember_me: rememberMe,
-            username: password
+            username: username
         };
 
         let url = new XsollaUrlBuilder('https://login.xsolla.com/api/login')
