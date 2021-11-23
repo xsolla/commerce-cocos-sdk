@@ -21,6 +21,9 @@ export class UIManager extends Component {
     @property(Node)
     passwordlessAuth: Node;
 
+    @property(Node)
+    characterScreen: Node;
+
     @property(ErrorScreenManager)
     errorScreen: ErrorScreenManager;
 
@@ -53,6 +56,11 @@ export class UIManager extends Component {
     openPasswordlessAuth(currentScreen:Node) {
         currentScreen.active = false;
         this.passwordlessAuth.active = true;
+    }
+
+    openCharacterScreen(currentScreen:Node) {
+        currentScreen.active = false;
+        this.characterScreen.active = true;
     }
 
     openErrorScreen(currentScreen:Node, errorMessage: string, onClosed?: () => void) {

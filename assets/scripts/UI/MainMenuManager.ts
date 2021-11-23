@@ -18,6 +18,9 @@ export class MainMenuManager extends Component {
     logOutButton: Button;
 
     @property(Button)
+    characterButton: Button;
+
+    @property(Button)
     loadItemsButton: Button;
 
     bIsPaymentWidgetOpened:boolean = false;
@@ -36,17 +39,23 @@ export class MainMenuManager extends Component {
 
     addListeners() {
         this.logOutButton.node.on(Button.EventType.CLICK, this.onLogoutClicked, this);
+        this.characterButton.node.on(Button.EventType.CLICK, this.onCharacterClicked, this);
         this.loadItemsButton.node.on(Button.EventType.CLICK, this.onLoadItemsClicked, this);
     }
 
     removeListeners() {
         this.logOutButton.node.off(Button.EventType.CLICK, this.onLogoutClicked, this);
+        this.characterButton.node.off(Button.EventType.CLICK, this.onCharacterClicked, this);
         this.loadItemsButton.node.off(Button.EventType.CLICK, this.onLoadItemsClicked, this);
     }
 
     onLogoutClicked() {
         this.uiManager.openStartingScreen(this.node);
         TokenStorage.clearToken();
+    }
+
+    onCharacterClicked() {
+        this.uiManager.openCharacterScreen(this.node);
     }
 
     onLoadItemsClicked() {
