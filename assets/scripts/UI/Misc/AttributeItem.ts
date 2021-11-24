@@ -2,7 +2,6 @@
 
 import { _decorator, Component, Node, Label, Event, Button } from 'cc';
 import { UserAttribute, XsollaLogin } from '../../../../extensions/xsolla-commerce-sdk/assets/scripts/api/XsollaLogin';
-import { TokenStorage } from '../../Common/TokenStorage';
 import { CharacterManager } from '../CharacterManager';
 const { ccclass, property } = _decorator;
  
@@ -18,12 +17,14 @@ export class AttributeItem extends Component {
     @property(Button)
     removeButton: Button;
 
+    private _parent: CharacterManager;
+
     start() {
         
     }
 
     onDestroy() {
-        this.removeListeners();
+
     }
 
     onEnable() {
@@ -34,17 +35,14 @@ export class AttributeItem extends Component {
         this.removeListeners();
     }
 
-    init(data: UserAttribute) {
+    init(data: UserAttribute, parent:CharacterManager) {
         this.attributeKey.string = data.key;
         this.attributeValue.string = data.value;
+        this._parent = parent;
     }
 
     onRemoveClicked() {
-        XsollaLogin.removeUserAttributes(TokenStorage.token.access_token, [this.attributeKey.string], () => {
-            this.node.parent.removeChild(this.node);
-        }, err => {
-            console.log(err);
-        });
+        this._parent.removeAttribute(this.attributeKey.string, this.node);
     }
 
     addListeners () {

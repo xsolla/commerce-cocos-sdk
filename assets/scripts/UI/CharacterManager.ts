@@ -44,6 +44,14 @@ export class CharacterManager extends Component {
         this.addListeners();
     }
 
+    removeAttribute(key:string, attributeItem:Node) {
+        XsollaLogin.removeUserAttributes(TokenStorage.token.access_token, [key], () => {
+            this.attributesList.content.removeChild(attributeItem);
+        }, err => {
+            console.log(err);
+        });
+    }
+
     onDisable() {
         this.clearAttributesList();
         this.removeListeners();
@@ -58,7 +66,7 @@ export class CharacterManager extends Component {
             let attributeItem = instantiate(this.attributeItemPrefab);            
             this.attributesList.content.addChild(attributeItem);
             let attributesData = attributes[i];
-            attributeItem.getComponent(AttributeItem).init(attributesData);
+            attributeItem.getComponent(AttributeItem).init(attributesData, this);
         }
     }
 
