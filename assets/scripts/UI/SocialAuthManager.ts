@@ -2,6 +2,7 @@
 
 import { _decorator, Component, Node, Button, EditBox, EventHandler, sys, System, Toggle, ScrollView, Prefab, SpriteFrame, instantiate } from 'cc';
 import { XsollaLogin } from 'db://xsolla-commerce-sdk/scripts/api/XsollaLogin';
+import { Xsolla } from 'db://xsolla-commerce-sdk/scripts/Xsolla';
 import { TokenStorage } from '../Common/TokenStorage';
 import { SocialNetworkItem } from './Misc/SocialNetworkItem';
 import { UIManager } from './UIManager';
@@ -83,7 +84,10 @@ export class SocialAuthManager extends Component {
     }
 
     authViaSocialNetwork(socialNetworkName:string) {
-
+        if(sys.platform.toLowerCase() == 'ios') {
+            jsb.reflection.callStaticMethod("XsollaNativeUtils", "authViaSocialNetwork:client:state:redirect:",
+                socialNetworkName, Xsolla.settings.clientId, 'xsollatest', 'app://xsollalogin');
+        }
     }
 
     onSocialNetworkFilterChanged() {
