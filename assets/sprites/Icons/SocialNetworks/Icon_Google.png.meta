@@ -11,7 +11,7 @@
     "6c48a": {
       "importer": "texture",
       "uuid": "3a30e04b-313b-4b67-bc07-f9e0ba9419bc@6c48a",
-      "displayName": "Icon_Gogle",
+      "displayName": "Icon_Google",
       "id": "6c48a",
       "name": "texture",
       "userData": {
@@ -34,7 +34,7 @@
     "f9941": {
       "importer": "sprite-frame",
       "uuid": "3a30e04b-313b-4b67-bc07-f9e0ba9419bc@f9941",
-      "displayName": "Icon_Gogle",
+      "displayName": "Icon_Google",
       "id": "f9941",
       "name": "spriteFrame",
       "userData": {
