@@ -9,8 +9,10 @@ const { ccclass, property } = _decorator;
 
 @ccclass('SocialNetworkItemData')
 export class SocialNetworkItemData {
+
     @property(String)
     name: String = '';
+
     @property(SpriteFrame)
     logo: SpriteFrame = null;
 }
@@ -37,7 +39,7 @@ export class SocialAuthManager extends Component {
     socialNetworksData: SocialNetworkItemData[] = [];
 
     start() {
-        this.populateAttributesList(this.socialNetworksData);
+        this.populateSocialNetworksList();
     }
 
     onDestroy() {
@@ -46,7 +48,7 @@ export class SocialAuthManager extends Component {
 
     onEnable() {
         this.socialNetworkFilterEditBox.string = '';
-
+        this.refreshSocialNetworksList();
         this.addListeners();
     }
 
@@ -58,21 +60,34 @@ export class SocialAuthManager extends Component {
         this.uiManager.openStartingScreen(this.node);
     }
 
-    populateAttributesList(attributes: SocialNetworkItemData[]) {
-        for (let i = 0; i < attributes.length; ++i) {
+    populateSocialNetworksList() {
+        for (let i = 0; i < this.socialNetworksData.length; ++i) {
             let socialNetworkItem = instantiate(this.socialNetworkItemPrefab);            
             this.socialNetworksList.content.addChild(socialNetworkItem);
             let itemData = this.socialNetworksData[i];
-            socialNetworkItem.getComponent(SocialNetworkItem).init(itemData.name.toString(), itemData.logo, this);
+            socialNetworkItem.getComponent(SocialNetworkItem).init(itemData, this);
         }
     }
 
-    authViaSocialNetwork(platform:string) {
+    refreshSocialNetworksList() {
+        let socialNetworkFilter = this.socialNetworkFilterEditBox.string;
+        let socialNetworkItems = this.socialNetworksList.content.getComponentsInChildren(SocialNetworkItem);
+        for (let i = 0; i < socialNetworkItems.length; ++i) {
+            if(socialNetworkFilter.length == 0) {
+                socialNetworkItems[i].node.active = true;
+            }   
+            else {
+                socialNetworkItems[i].node.active = socialNetworkItems[i].data.name.toLowerCase().startsWith(socialNetworkFilter);
+            }
+        }
+    }
+
+    authViaSocialNetwork(socialNetworkName:string) {
 
     }
 
     onSocialNetworkFilterChanged() {
-        
+        this.refreshSocialNetworksList();
     }
 
     addListeners () {

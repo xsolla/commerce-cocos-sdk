@@ -1,7 +1,7 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
-import { _decorator, Component, Node, Label, Event, Button, SpriteFrame, Sprite, Color } from 'cc';
-import { SocialAuthManager } from '../SocialAuthManager';
+import { _decorator, Component, Node, Label, Button, Sprite, Color } from 'cc';
+import { SocialAuthManager, SocialNetworkItemData } from '../SocialAuthManager';
 const { ccclass, property } = _decorator;
  
 @ccclass('SocialNetworkItem')
@@ -17,21 +17,24 @@ export class SocialNetworkItem extends Component {
     socialNetworkButton: Button;
 
     @property(Color)
-    NormalColor: Color = new Color(255, 255, 255, 255);
+    normalColor: Color = new Color(255, 255, 255, 255);
 
     @property(Color)
-    HoverColor: Color = new Color(255, 0, 91, 255);
+    hoverColor: Color = new Color(255, 0, 91, 255);
+
+    @property(SocialNetworkItemData)
+    data: SocialNetworkItemData = null;
 
     private _parent: SocialAuthManager;
 
     start() {
         this.node.on(Node.EventType.MOUSE_ENTER, () => {
-            this.socialNetworkName.color = this.HoverColor;
-            this.socialNetworkLogo.color = this.HoverColor;         
+            this.socialNetworkName.color = this.hoverColor;
+            this.socialNetworkLogo.color = this.hoverColor;         
         });
         this.node.on(Node.EventType.MOUSE_LEAVE, () => {
-            this.socialNetworkName.color = this.NormalColor;
-            this.socialNetworkLogo.color = this.NormalColor;
+            this.socialNetworkName.color = this.normalColor;
+            this.socialNetworkLogo.color = this.normalColor;
         });
     }
 
@@ -47,9 +50,10 @@ export class SocialNetworkItem extends Component {
         this.removeListeners();
     }
 
-    init(name:string, logo:SpriteFrame, parent:SocialAuthManager) {
-        this.socialNetworkName.string = name;
-        this.socialNetworkLogo.spriteFrame = logo;
+    init(data:SocialNetworkItemData, parent:SocialAuthManager) {
+        this.socialNetworkName.string = data.name.toString();
+        this.socialNetworkLogo.spriteFrame = data.logo;
+        this.data = data;
         this._parent = parent;
     }
 
