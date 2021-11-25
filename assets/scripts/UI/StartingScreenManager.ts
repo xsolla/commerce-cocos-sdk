@@ -19,6 +19,9 @@ export class StartingScreenManager extends Component {
     deviceIdAuthButton: Button;
 
     @property(Button)
+    passwordlessAuthButton: Button;
+
+    @property(Button)
     otherAuthButton: Button;
 
     start() {
@@ -36,13 +39,15 @@ export class StartingScreenManager extends Component {
     addListeners() {
         this.basicAuthButton.node.on(Button.EventType.CLICK, this.onBasicAuthClicked, this);
         this.deviceIdAuthButton.node.on(Button.EventType.CLICK, this.onDeviceIdAuthClicked, this);
-        this.otherAuthButton.node.on(Button.EventType.CLICK, this.onOtherAuthClicked, this);
+        this.passwordlessAuthButton.node.on(Button.EventType.CLICK, this.onPasswordlessAuthClicked, this);
+        this.otherAuthButton.node.on(Button.EventType.CLICK, this.onSocialAuthClicked, this);
     }
 
     removeListeners() {
         this.basicAuthButton.node.off(Button.EventType.CLICK, this.onBasicAuthClicked, this);
         this.deviceIdAuthButton.node.off(Button.EventType.CLICK, this.onDeviceIdAuthClicked, this);
-        this.otherAuthButton.node.off(Button.EventType.CLICK, this.onOtherAuthClicked, this);
+        this.passwordlessAuthButton.node.off(Button.EventType.CLICK, this.onPasswordlessAuthClicked, this);
+        this.otherAuthButton.node.off(Button.EventType.CLICK, this.onSocialAuthClicked, this);
     }
 
     onBasicAuthClicked() {
@@ -71,7 +76,11 @@ export class StartingScreenManager extends Component {
         })
     }
 
-    onOtherAuthClicked() {
+    onPasswordlessAuthClicked() {
         this.uiManager.openPasswordlessAuth(this.node);
+    }
+
+    onSocialAuthClicked() {
+        this.uiManager.openSocialAuth(this.node);
     }
 }

@@ -23,6 +23,9 @@ export class UIManager extends Component {
     passwordlessAuth: Node;
 
     @property(Node)
+    socialAuth: Node;
+
+    @property(Node)
     characterScreen: Node;
 
     @property(Node)
@@ -63,6 +66,11 @@ export class UIManager extends Component {
     openPasswordlessAuth(currentScreen:Node) {
         currentScreen.active = false;
         this.passwordlessAuth.active = true;
+    }
+
+    openSocialAuth(currentScreen:Node) {
+        currentScreen.active = false;
+        this.socialAuth.active = true;
     }
 
     openCharacterScreen(currentScreen:Node) {
