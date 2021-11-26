@@ -45,6 +45,7 @@ list(APPEND PROJ_SOURCES
     ${CMAKE_CURRENT_LIST_DIR}/ViewController.mm
     ${CMAKE_CURRENT_LIST_DIR}/ViewController.h
 	${CMAKE_CURRENT_LIST_DIR}/XsollaNativeUtils.mm
+	${CMAKE_CURRENT_LIST_DIR}/XsollaSDKLoginKitUnity-Bridging-Header.h
     ${UI_RESOURCES}
 )
 
@@ -63,10 +64,17 @@ if(COMMAND service_insert_library)
 endif()
 # --------------  END ----------------
 
-target_link_libraries(${LIB_NAME} cocos2d)
+target_link_libraries(${LIB_NAME} cocos2d
+    ${CMAKE_CURRENT_LIST_DIR}/Frameworks/XsollaSDKLoginKit.framework
+	${CMAKE_CURRENT_LIST_DIR}/Frameworks/XsollaSDKLoginKitUnity.framework
+	${CMAKE_CURRENT_LIST_DIR}/Frameworks/XsollaSDKUtilities.framework
+)
 target_include_directories(${LIB_NAME} PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/../common/Classes
     ${CMAKE_CURRENT_LIST_DIR}/service
+	${CMAKE_CURRENT_LIST_DIR}/Frameworks/XsollaSDKLoginKit.framework/Headers
+	${CMAKE_CURRENT_LIST_DIR}/Frameworks/XsollaSDKLoginKitUnity.framework/Headers
+	${CMAKE_CURRENT_LIST_DIR}/Frameworks/XsollaSDKUtilities.framework/Headers
 )
 
 set(EXECUTABLE_NAME ${LIB_NAME}) # referenced in Info.plist
