@@ -65,9 +65,9 @@ endif()
 # --------------  END ----------------
 
 target_link_libraries(${LIB_NAME} cocos2d
+	${CMAKE_CURRENT_LIST_DIR}/Frameworks/XsollaSDKUtilities.framework
     ${CMAKE_CURRENT_LIST_DIR}/Frameworks/XsollaSDKLoginKit.framework
 	${CMAKE_CURRENT_LIST_DIR}/Frameworks/XsollaSDKLoginKitUnity.framework
-	${CMAKE_CURRENT_LIST_DIR}/Frameworks/XsollaSDKUtilities.framework
 )
 target_include_directories(${LIB_NAME} PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/../common/Classes
@@ -76,6 +76,8 @@ target_include_directories(${LIB_NAME} PRIVATE
 	${CMAKE_CURRENT_LIST_DIR}/Frameworks/XsollaSDKLoginKitUnity.framework/Headers
 	${CMAKE_CURRENT_LIST_DIR}/Frameworks/XsollaSDKUtilities.framework/Headers
 )
+
+set_target_properties(${LIB_NAME} PROPERTIES XCODE_ATTRIBUTE_LD_RUNPATH_SEARCH_PATHS "@executable_path/Frameworks")
 
 set(EXECUTABLE_NAME ${LIB_NAME}) # referenced in Info.plist
 set(PRODUCT_NAME ${APP_NAME})
@@ -96,4 +98,49 @@ set_target_properties(${LIB_NAME} PROPERTIES
     IOS_INSTALL_COMBINED YES
     XCODE_ATTRIBUTE_SKIP_INSTALL NO
     XCODE_ATTRIBUTE_INSTALL_PATH "$(LOCAL_APPS_DIR)"
+)
+
+add_custom_command(
+    TARGET
+    ${LIB_NAME}
+    POST_BUILD COMMAND /bin/sh -c
+    \"COMMAND_DONE=0 \;
+    if ${CMAKE_COMMAND} -E make_directory
+        ${PROJECT_BINARY_DIR}/\${CONFIGURATION}\${EFFECTIVE_PLATFORM_NAME}/${LIB_NAME}.app/Frameworks
+        \&\>/dev/null \; then
+        COMMAND_DONE=1 \;
+    fi \;
+    if ${CMAKE_COMMAND} -E make_directory
+        \${BUILT_PRODUCTS_DIR}/${LIB_NAME}.app/Frameworks
+        \&\>/dev/null \; then
+        COMMAND_DONE=1 \;
+    fi \;
+    if [ \\$$COMMAND_DONE -eq 0 ] \; then
+        echo Failed to create Frameworks directory in app bundle \;
+        exit 1 \;
+    fi\"
+)
+
+# Copy the framework into the app bundle
+add_custom_command(
+    TARGET
+    ${LIB_NAME}
+    POST_BUILD COMMAND /bin/sh -c
+    \"COMMAND_DONE=0 \;
+    if ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_CURRENT_LIST_DIR}/Frameworks
+        \${CONFIGURATION}\${EFFECTIVE_PLATFORM_NAME}/${LIB_NAME}.app/Frameworks
+        \&\>/dev/null \; then
+        COMMAND_DONE=1 \;
+    fi \;
+    if ${CMAKE_COMMAND} -E copy_directory
+        \${BUILT_PRODUCTS_DIR}/${FRAMEWORK_NAME}.framework
+        \${BUILT_PRODUCTS_DIR}/${LIB_NAME}.app/Frameworks/${FRAMEWORK_NAME}.framework
+        \&\>/dev/null \; then
+        COMMAND_DONE=1 \;
+    fi \;
+    if [ \\$$COMMAND_DONE -eq 0 ] \; then
+        echo Failed to copy the framework into the app bundle \;
+        exit 1 \;
+    fi\"
 )
