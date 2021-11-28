@@ -1,7 +1,7 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component, Enum, sys, VERSION } from 'cc';
-import { XsollaAuthenticationType, XsollaSettings, Xsolla } from './Xsolla';
+import { XsollaAuthenticationType, XsollaSettings, Xsolla, XsollaPublishingPlatform } from './Xsolla';
 const { ccclass, property, disallowMultiple, type  } = _decorator;
  
 @ccclass('XsollaSettingsManager')
@@ -42,13 +42,30 @@ export class XsollaSettingsManager extends Component {
     })
     enableSandbox: boolean = true;
 
+    @property ({
+        displayName: 'Use cross platform account linking',
+        tooltip: 'If enabled, SDK will imitate platform-specific requests so you can try account linking from different platforms.'
+    })
+    useCrossPlatformAccountLinking: boolean = false;
+
+    @property ({
+        displayName: 'Platform',
+        tooltip: 'Target platform for cross-platform account linking. If using Xsolla Login, make sure that in the Login settings the same platform is chosen.',
+        visible: function(): boolean {
+            return this.useCrossPlatformAccountLinking;
+        }
+    })
+    platform: XsollaPublishingPlatform;
+
     start() {
         var settings: XsollaSettings = {
             loginId: this.loginId,
             projectId: this.projectId,
             authType: this.authType,
             clientId: this.clientId,
-            enableSandbox: this.enableSandbox
+            enableSandbox: this.enableSandbox,
+            useCrossPlatformAccountLinking: this.useCrossPlatformAccountLinking,
+            platform: this.platform
         }
 
         Xsolla.init(settings);
