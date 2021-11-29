@@ -1,6 +1,6 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
-import { _decorator, Component, Node, Button, Label } from 'cc';
+import { _decorator, Component, Label } from 'cc';
 const { ccclass, property } = _decorator;
  
 @ccclass('ErrorScreenManager')
