@@ -55,7 +55,8 @@ export class XsollaSettingsManager extends Component {
             return this.useCrossPlatformAccountLinking;
         }
     })
-    platform: XsollaPublishingPlatform;
+    @type(Enum(XsollaPublishingPlatform))
+    platform: XsollaPublishingPlatform = XsollaPublishingPlatform.playstation_network;
 
     start() {
         var settings: XsollaSettings = {

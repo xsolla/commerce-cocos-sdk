@@ -1,5 +1,6 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
+import { CommonError, XsollaError } from "../core/XsollaError";
 import { XsollaHttpError, XsollaHttpUtil, XsollaRequestContentType } from "../core/XsollaHttpUtil";
 import { XsollaUrlBuilder } from "../core/XsollaUrlBuilder";
 import { Xsolla } from "../Xsolla";
@@ -7,94 +8,51 @@ import { XsollaItemAttribute, XsollaItemGroup } from "./XsollaCommerce";
 
 export class XsollaInventory {
 
-    static getInventory(authToken:string, onComplete?:(itemsData:InventoryItemsData) => void, onError?:(error:InventoryError) => void, limit:number = 50, offset:number = 0): void {
+    static getInventory(authToken:string, platform?:string, onComplete?:(itemsData:InventoryItemsData) => void, onError?:(error:CommonError) => void, limit:number = 50, offset:number = 0): void {
         let url = new XsollaUrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/user/inventory/items')
             .setPathParam('projectID', Xsolla.settings.projectId)
             .addNumberParam('limit', limit)
             .addNumberParam('offset', offset)
-            .addStringParam('platform', XsollaInventory.getPublishingPlatformName())
+            //.addStringParam('platform', platform)
             .build();
 
         let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.Json, authToken, result => {
-            let jsonResult = JSON.parse(result);
-            let intentoryData: InventoryItemsData  = jsonResult;
+            let intentoryData: InventoryItemsData  = JSON.parse(result);
             onComplete?.(intentoryData);
-        }, this.handleError(onError));
+        }, XsollaError.handleError(onError));
         request.send(JSON.stringify({}));
     }
 
-    static getVirtualCurrencyBalance(authToken:string, onComplete?:(currencyData:VirtualCurrencyBalanceData) => void, onError?:(error:InventoryError) => void): void {
+    static getVirtualCurrencyBalance(authToken:string, platform?:string, onComplete?:(currencyData:VirtualCurrencyBalanceData) => void, onError?:(error:CommonError) => void): void {
         let url = new XsollaUrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/user/virtual_currency_balance')
             .setPathParam('projectID', Xsolla.settings.projectId)
-            .addStringParam('platform', XsollaInventory.getPublishingPlatformName())
+            .addStringParam('platform', platform)
             .build();
 
         let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.Json, authToken, result => {
-            let jsonResult = JSON.parse(result);
-            let currencyData: VirtualCurrencyBalanceData  = jsonResult;
+            let currencyData: VirtualCurrencyBalanceData  = JSON.parse(result);
             onComplete?.(currencyData);
-        }, this.handleError(onError));
+        }, XsollaError.handleError(onError));
         request.send(JSON.stringify({}));
     }
 
-    static consumeInventoryItem(authToken:string, sku:string, quantity:number, instanceID:string, onComplete?:() => void, onError?:(error:InventoryError) => void): void {
+    static consumeInventoryItem(authToken:string, sku:string, quantity?:number, instanceID?:string, platform?:string, onComplete?:() => void, onError?:(error:CommonError) => void): void {
         let body = {
             sku: sku
         };
-
-        if(quantity == 0) {
-            body['quantity'] = null;
-        } else {
-            body['quantity'] = quantity;
-        }
-
-        if(instanceID == '') {
-            body['instance_id'] = null;
-        } else {
-            body['instance_id'] = instanceID;
-        }
+        body['quantity'] = quantity == null ||quantity == 0 ? null : quantity;
+        body['instance_id'] = instanceID == null || instanceID == '' ? null : instanceID;
 
         let url = new XsollaUrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/user/inventory/item/consume')
             .setPathParam('projectID', Xsolla.settings.projectId)
-            .addStringParam('platform', XsollaInventory.getPublishingPlatformName())
+            .addStringParam('platform', platform)
             .build();
 
         let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, authToken, result => {
             onComplete?.();
-        }, this.handleError(onError));
+        }, XsollaError.handleError(onError));
         request.send(JSON.stringify(body));
     }
-
-    static getPublishingPlatformName() {
-        if(!Xsolla.settings.useCrossPlatformAccountLinking) {
-            return '';
-        }
-
-        return Xsolla.settings.platform.toString();
-    }
-
-    static isItemInInventory(items:Array<InventoryItem>, itemSku:string)
-    {
-        let found = items.find(x => x.sku == itemSku)
-        return found != null;
-    }
-
-    private static handleError(onError:(error:InventoryError) => void): (requestError:XsollaHttpError) => void {
-        return requestError => {
-            let commerceError: InventoryError = {
-                code: requestError.errorCode,
-                description: requestError.errorMessage,
-                status: requestError.statusCode
-            };
-            onError?.(commerceError);
-        };
-    }
-}
-
-export interface InventoryError {
-    status?: number,
-    code: number,
-    description: string
 }
 
 export interface InventoryItem {
