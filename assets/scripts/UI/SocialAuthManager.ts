@@ -3,6 +3,7 @@
 import { _decorator, Component, Node, Button, EditBox, EventHandler, sys, System, Toggle, ScrollView, Prefab, SpriteFrame, instantiate } from 'cc';
 import { XsollaLogin } from 'db://xsolla-commerce-sdk/scripts/api/XsollaLogin';
 import { Xsolla } from 'db://xsolla-commerce-sdk/scripts/Xsolla';
+import { Token } from 'db://xsolla-commerce-sdk/scripts/api/XsollaLogin';
 import { TokenStorage } from '../Common/TokenStorage';
 import { SocialNetworkItem } from './Misc/SocialNetworkItem';
 import { UIManager } from './UIManager';
@@ -88,6 +89,16 @@ export class SocialAuthManager extends Component {
             jsb.reflection.callStaticMethod("XsollaNativeUtils", "authViaSocialNetwork:client:state:redirect:",
                 socialNetworkName, Xsolla.settings.clientId, 'xsollatest', 'app://xsollalogin');
         }
+    }
+
+    handleSuccessfulSocialAuth(token:Token) {
+        TokenStorage.saveToken(token, true);
+        this.uiManager.openMainMenu(this.node);
+    }
+
+    handleErrorSocialAuth(error:string) {
+        console.log(error);
+        this.uiManager.openErrorScreen(this.node, error);
     }
 
     onSocialNetworkFilterChanged() {

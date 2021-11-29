@@ -44,6 +44,8 @@ list(APPEND PROJ_SOURCES
     ${CMAKE_CURRENT_LIST_DIR}/main.m
     ${CMAKE_CURRENT_LIST_DIR}/ViewController.mm
     ${CMAKE_CURRENT_LIST_DIR}/ViewController.h
+	${CMAKE_CURRENT_LIST_DIR}/XsollaUtils.h
+	${CMAKE_CURRENT_LIST_DIR}/XsollaUtils.mm
 	${CMAKE_CURRENT_LIST_DIR}/XsollaNativeUtils.mm
 	${CMAKE_CURRENT_LIST_DIR}/XsollaSDKLoginKitUnity-Bridging-Header.h
     ${UI_RESOURCES}
