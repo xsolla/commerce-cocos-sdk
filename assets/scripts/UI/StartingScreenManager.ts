@@ -71,7 +71,7 @@ export class StartingScreenManager extends Component {
             this.uiManager.openMainMenu(this.node);
         }, err => {
             console.log(err);
-            this.uiManager.openErrorScreen(this.node, err.description);
+            this.uiManager.openErrorScreen(err.description);
         })
     }
 

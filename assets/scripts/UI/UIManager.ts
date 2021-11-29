@@ -2,6 +2,7 @@
 
 import { _decorator, Component, Node, find } from 'cc';
 import { TokenStorage } from '../Common/TokenStorage';
+import { ConfirmationScreenManager } from './ConfirmationScreenManager';
 import { ErrorScreenManager } from './ErrorScreenManager';
 import { MessageScreenManager } from './MessageScreenManager';
 const { ccclass, property } = _decorator;
@@ -24,11 +25,17 @@ export class UIManager extends Component {
     @property(Node)
     characterScreen: Node;
 
+    @property(Node)
+    storeScreen: Node;
+
     @property(ErrorScreenManager)
     errorScreen: ErrorScreenManager;
 
     @property(MessageScreenManager)
     messageScreen: MessageScreenManager;
+
+    @property(ConfirmationScreenManager)
+    confirmationScreen: ConfirmationScreenManager;
 
     start() {
         this.startingScreen.active = true;
@@ -63,10 +70,15 @@ export class UIManager extends Component {
         this.characterScreen.active = true;
     }
 
-    openErrorScreen(currentScreen:Node, errorMessage: string, onClosed?: () => void) {
+    openStoreScreen(currentScreen:Node) {
         currentScreen.active = false;
+        this.storeScreen.active = true;
+    }
+
+    openErrorScreen(errorMessage: string, onClosed?: () => void) {
+        this.errorScreen.node.active = true;
         this.errorScreen.showError(errorMessage, () => {
-            currentScreen.active = true;
+            this.errorScreen.node.active = false;
             onClosed?.();
         });
     }
@@ -74,6 +86,17 @@ export class UIManager extends Component {
     openMessageScreen(message: string, onClosed?: () => void) {
         this.messageScreen.node.active = true;
         this.messageScreen.showMessage(message, () => {
+            onClosed?.();
+        });
+    }
+
+    openConfirmationScreen(message: string, confirmBtnText: string,  onComfirm?: () => void, onClosed?: () => void) {
+        this.confirmationScreen.node.active = true;
+        this.confirmationScreen.showMessage(message, confirmBtnText, () => {
+            this.confirmationScreen.node.active = false;
+            onComfirm?.();
+        }, () => {
+            this.confirmationScreen.node.active = false;
             onClosed?.();
         });
     }

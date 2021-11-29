@@ -88,7 +88,7 @@ export class CharacterManager extends Component {
             this.attributesList.scrollToTop();
         }, err => {
             console.log(err);
-            this.uiManager.openErrorScreen(this.node, err.description);
+            this.uiManager.openErrorScreen(err.description);
         });
 
         currentScreen.active = false;
@@ -125,7 +125,7 @@ export class CharacterManager extends Component {
             this.openAllAttributesScreen(this.addAttributeScreen);
         }, err => {
             console.log(err);
-            this.uiManager.openErrorScreen(this.node, err.description);
+            this.uiManager.openErrorScreen(err.description);
         });
     }
 
@@ -134,7 +134,7 @@ export class CharacterManager extends Component {
             this.attributesList.content.removeChild(attributeItem);
         }, err => {
             console.log(err);
-            this.uiManager.openErrorScreen(this.node, err.description);
+            this.uiManager.openErrorScreen(err.description);
         });
     }
 

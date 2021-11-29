@@ -6,39 +6,18 @@ const { ccclass, property } = _decorator;
 @ccclass('MessageScreenManager')
 export class MessageScreenManager extends Component {
 
-    @property(Button)
-    okButton: Button;
-
     @property(Label)
     messageLabel: Label;
 
-    onDestroy() {
-        this.removeListeners();
-    }
-
-    onEnable() {
-        this.addListeners();
-    }
-
-    onDisable() {
-        this.removeListeners();
-    }
+    private _onClosed: () => void;
 
     onOkClicked() {
         this.node.active = false;
-    }
-
-    addListeners() {
-        this.okButton.node.on(Button.EventType.CLICK, this.onOkClicked, this);
-    }
-
-    removeListeners() {
-        this.okButton.node.off(Button.EventType.CLICK, this.onOkClicked, this);
+        this._onClosed();
     }
 
     showMessage(message: string, onClosed?: () => void) {
         this.messageLabel.string = message;
-        onClosed?.();
+        this._onClosed = onClosed;
     }
-
 }
