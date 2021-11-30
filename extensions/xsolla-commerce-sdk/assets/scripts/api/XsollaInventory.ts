@@ -3,17 +3,17 @@
 import { CommonError, XsollaError } from "../core/XsollaError";
 import { XsollaHttpError, XsollaHttpUtil, XsollaRequestContentType } from "../core/XsollaHttpUtil";
 import { XsollaUrlBuilder } from "../core/XsollaUrlBuilder";
-import { Xsolla } from "../Xsolla";
+import { Xsolla, XsollaPublishingPlatform } from "../Xsolla";
 import { XsollaItemAttribute, XsollaItemGroup } from "./XsollaCommerce";
 
 export class XsollaInventory {
 
-    static getInventory(authToken:string, platform?:string, onComplete?:(itemsData:InventoryItemsData) => void, onError?:(error:CommonError) => void, limit:number = 50, offset:number = 0): void {
+    static getInventory(authToken:string, platform?:XsollaPublishingPlatform, onComplete?:(itemsData:InventoryItemsData) => void, onError?:(error:CommonError) => void, limit:number = 50, offset:number = 0): void {
         let url = new XsollaUrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/user/inventory/items')
             .setPathParam('projectID', Xsolla.settings.projectId)
             .addNumberParam('limit', limit)
             .addNumberParam('offset', offset)
-            //.addStringParam('platform', platform)
+            .addStringParam('platform', platform ? platform.toString() : null)
             .build();
 
         let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.Json, authToken, result => {
@@ -23,10 +23,10 @@ export class XsollaInventory {
         request.send(JSON.stringify({}));
     }
 
-    static getVirtualCurrencyBalance(authToken:string, platform?:string, onComplete?:(currencyData:VirtualCurrencyBalanceData) => void, onError?:(error:CommonError) => void): void {
+    static getVirtualCurrencyBalance(authToken:string, platform?:XsollaPublishingPlatform, onComplete?:(currencyData:VirtualCurrencyBalanceData) => void, onError?:(error:CommonError) => void): void {
         let url = new XsollaUrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/user/virtual_currency_balance')
             .setPathParam('projectID', Xsolla.settings.projectId)
-            .addStringParam('platform', platform)
+            .addStringParam('platform', platform ? platform.toString() : null)
             .build();
 
         let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.Json, authToken, result => {
@@ -36,7 +36,7 @@ export class XsollaInventory {
         request.send(JSON.stringify({}));
     }
 
-    static consumeInventoryItem(authToken:string, sku:string, quantity?:number, instanceID?:string, platform?:string, onComplete?:() => void, onError?:(error:CommonError) => void): void {
+    static consumeInventoryItem(authToken:string, sku:string, quantity?:number, instanceID?:string, platform?:XsollaPublishingPlatform, onComplete?:() => void, onError?:(error:CommonError) => void): void {
         let body = {
             sku: sku
         };
@@ -45,7 +45,7 @@ export class XsollaInventory {
 
         let url = new XsollaUrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/user/inventory/item/consume')
             .setPathParam('projectID', Xsolla.settings.projectId)
-            .addStringParam('platform', platform)
+            .addStringParam('platform', platform ? platform.toString() : null)
             .build();
 
         let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, authToken, result => {

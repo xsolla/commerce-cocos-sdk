@@ -26,8 +26,6 @@ export interface XsollaSettings {
     authType: XsollaAuthenticationType;
     clientId: number;
     enableSandbox: boolean;
-    useCrossPlatformAccountLinking: boolean;
-    platform: XsollaPublishingPlatform;
 }
 
 export class Xsolla {
