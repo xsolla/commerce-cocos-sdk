@@ -3,19 +3,19 @@
 import { XsollaHttpError } from "./XsollaHttpUtil";
 
 export class XsollaError {
-    static handleError(onError:(error:CommonError) => void): (requestError:XsollaHttpError) => void {
+    static handleError(onError:(error:CommerceError) => void): (requestError:XsollaHttpError) => void {
         return requestError => {
-            let commonError: CommonError = {
+            let commerceError: CommerceError = {
                 code: requestError.errorCode,
                 description: requestError.errorMessage,
                 status: requestError.statusCode
             };
-            onError?.(commonError);
+            onError?.(commerceError);
         };
     }
 }
 
-export interface CommonError {
+export interface CommerceError {
     status?: number,
     code: number,
     description: string

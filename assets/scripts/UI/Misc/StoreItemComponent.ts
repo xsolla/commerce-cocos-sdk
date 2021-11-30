@@ -1,7 +1,7 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component, Node, Sprite, Label, assetManager, ImageAsset, SpriteFrame, Texture2D, Button } from 'cc';
-import { StoreItem } from 'db://xsolla-commerce-sdk/scripts/api/XsollaCommerce';
+import { StoreItem } from 'db://xsolla-commerce-sdk/scripts/api/XsollaStore';
 import { StoreManager } from '../StoreManager';
 const { ccclass, property } = _decorator;
  

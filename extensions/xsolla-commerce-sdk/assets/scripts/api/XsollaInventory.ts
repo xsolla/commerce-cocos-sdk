@@ -1,14 +1,14 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
-import { CommonError, XsollaError } from "../core/XsollaError";
+import { CommerceError, XsollaError } from "../core/XsollaError";
 import { XsollaHttpError, XsollaHttpUtil, XsollaRequestContentType } from "../core/XsollaHttpUtil";
 import { XsollaUrlBuilder } from "../core/XsollaUrlBuilder";
 import { Xsolla, XsollaPublishingPlatform } from "../Xsolla";
-import { XsollaItemAttribute, XsollaItemGroup } from "./XsollaCommerce";
+import { XsollaItemAttribute, XsollaItemGroup } from "./XsollaStore";
 
 export class XsollaInventory {
 
-    static getInventory(authToken:string, platform?:XsollaPublishingPlatform, onComplete?:(itemsData:InventoryItemsData) => void, onError?:(error:CommonError) => void, limit:number = 50, offset:number = 0): void {
+    static getInventory(authToken:string, platform?:XsollaPublishingPlatform, onComplete?:(itemsData:InventoryItemsData) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
         let url = new XsollaUrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/user/inventory/items')
             .setPathParam('projectID', Xsolla.settings.projectId)
             .addNumberParam('limit', limit)
@@ -20,10 +20,10 @@ export class XsollaInventory {
             let intentoryData: InventoryItemsData  = JSON.parse(result);
             onComplete?.(intentoryData);
         }, XsollaError.handleError(onError));
-        request.send(JSON.stringify({}));
+        request.send();
     }
 
-    static getVirtualCurrencyBalance(authToken:string, platform?:XsollaPublishingPlatform, onComplete?:(currencyData:VirtualCurrencyBalanceData) => void, onError?:(error:CommonError) => void): void {
+    static getVirtualCurrencyBalance(authToken:string, platform?:XsollaPublishingPlatform, onComplete?:(currencyData:VirtualCurrencyBalanceData) => void, onError?:(error:CommerceError) => void): void {
         let url = new XsollaUrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/user/virtual_currency_balance')
             .setPathParam('projectID', Xsolla.settings.projectId)
             .addStringParam('platform', platform ? platform.toString() : null)
@@ -33,10 +33,10 @@ export class XsollaInventory {
             let currencyData: VirtualCurrencyBalanceData  = JSON.parse(result);
             onComplete?.(currencyData);
         }, XsollaError.handleError(onError));
-        request.send(JSON.stringify({}));
+        request.send();
     }
 
-    static consumeInventoryItem(authToken:string, sku:string, quantity?:number, instanceID?:string, platform?:XsollaPublishingPlatform, onComplete?:() => void, onError?:(error:CommonError) => void): void {
+    static consumeInventoryItem(authToken:string, sku:string, quantity?:number, instanceID?:string, platform?:XsollaPublishingPlatform, onComplete?:() => void, onError?:(error:CommerceError) => void): void {
         let body = {
             sku: sku
         };

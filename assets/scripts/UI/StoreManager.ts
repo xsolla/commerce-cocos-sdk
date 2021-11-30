@@ -1,7 +1,7 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component, Node, ScrollView, instantiate, Prefab, JsonAsset, sys } from 'cc';
-import { StoreItem, XsollaCommerce} from 'db://xsolla-commerce-sdk/scripts/api/XsollaCommerce';
+import { StoreItem, XsollaStore} from 'db://xsolla-commerce-sdk/scripts/api/XsollaStore';
 import { XsollaUrlBuilder } from 'db://xsolla-commerce-sdk/scripts/core/XsollaUrlBuilder';
 import { Xsolla } from 'db://xsolla-commerce-sdk/scripts/Xsolla';
 import { InventoryItem, XsollaInventory } from 'db://xsolla-commerce-sdk/scripts/api/XsollaInventory';
@@ -68,8 +68,8 @@ export class StoreManager extends Component {
 
     onEnable() {
         this.addListeners();
-        XsollaCommerce.getVirtualItems('', '', [], storeItemsData => {
-            XsollaCommerce.getBundles('', '', [], bundlesList => {
+        XsollaStore.getVirtualItems('', '', [], storeItemsData => {
+            XsollaStore.getBundles('', '', [], bundlesList => {
                 XsollaInventory.getInventory(TokenStorage.getToken().access_token, StoreManager.getPublishingPlatformName(), inventoryData => {
                     for(let bundle of bundlesList.items) {
                         let castedBundle: any = bundle;
@@ -197,7 +197,7 @@ export class StoreManager extends Component {
         let isVirtual = item.virtual_prices.length > 0;
         if(isVirtual) {
             this.uiManager.openConfirmationScreen('Are you sure you want to purchase this item?', 'CONFIRM', () => {
-                XsollaCommerce.buyItemWithVirtualCurrency(TokenStorage.getToken().access_token, item.sku, item.virtual_prices[0].sku, orderId => {
+                XsollaStore.buyItemWithVirtualCurrency(TokenStorage.getToken().access_token, item.sku, item.virtual_prices[0].sku, orderId => {
                     this.uiManager.openMessageScreen('Your order has been successfully processed!');
                 }, error => {
                     console.log(error.description);
@@ -207,7 +207,7 @@ export class StoreManager extends Component {
             return;
         }
 
-        XsollaCommerce.fetchPaymentToken(TokenStorage.getToken().access_token, item.sku, 1, undefined, undefined, undefined, undefined, result => {
+        XsollaStore.fetchPaymentToken(TokenStorage.getToken().access_token, item.sku, 1, undefined, undefined, undefined, undefined, result => {
             if(sys.isMobile) {
                 let url: XsollaUrlBuilder;
                 if(Xsolla.settings.enableSandbox) {
@@ -232,7 +232,7 @@ export class StoreManager extends Component {
     showItemInfo(item: StoreItem) {
         let isBundle = item.bundle_type && item.bundle_type.length > 0;
         if(isBundle) {
-            XsollaCommerce.getSpecifiedBundle(item.sku, bundle => {
+            XsollaStore.getSpecifiedBundle(item.sku, bundle => {
                 this.itemInfoManager.init(item, this, bundle.content);
                 this.openItemInfoScreen();
             }, error => {
@@ -247,7 +247,7 @@ export class StoreManager extends Component {
     }
 
     shortPollingCheckOrder(orderId: number, token: string) {
-        XsollaCommerce.checkOrder(token, orderId, result => {
+        XsollaStore.checkOrder(token, orderId, result => {
             console.log('shortPollingCheckOrder ' + result.status);
             if(result.status == 'done') {
                 if(!sys.isMobile) {
