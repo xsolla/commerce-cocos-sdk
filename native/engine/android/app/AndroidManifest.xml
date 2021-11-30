@@ -32,6 +32,14 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.cocos.game.XsollaNativeAuthActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@android:style/Theme.NoTitleBar"/>
+        <activity
+            android:name="com.cocos.game.wxapi.WXEntryActivity"
+            android:exported="true"
+            android:theme="@android:style/Theme.NoTitleBar"/>
+        <activity
             android:name="com.cocos.lib.CocosEditBoxActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|screenLayout"
             android:screenOrientation="behind"
