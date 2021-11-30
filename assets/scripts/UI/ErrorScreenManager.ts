@@ -1,6 +1,6 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
-import { _decorator, Component, Label } from 'cc';
+import { _decorator, Component, Label, Button } from 'cc';
 const { ccclass, property } = _decorator;
  
 @ccclass('ErrorScreenManager')
@@ -9,7 +9,30 @@ export class ErrorScreenManager extends Component {
     @property(Label)
     errorDescriptionLabel: Label;
 
+    @property(Button)
+    tryAgainBtn: Button;
+
     private _onClosed: () => void;
+
+    onDestroy() {
+        this.removeListeners();
+    }
+
+    onEnable() {
+        this.addListeners();
+    }
+
+    onDisable() {
+        this.removeListeners();
+    }
+
+    addListeners () {
+        this.tryAgainBtn.node.on(Button.EventType.CLICK, this.onTryAgainClicked, this);
+    }
+
+    removeListeners () {
+        this.tryAgainBtn.node.off(Button.EventType.CLICK, this.onTryAgainClicked, this);
+    }
 
     onTryAgainClicked() {
         this.node.active = false;

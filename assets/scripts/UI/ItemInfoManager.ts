@@ -1,6 +1,6 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
-import { _decorator, Component, Node, Label, Sprite, assetManager, ImageAsset, SpriteFrame, Texture2D, instantiate } from 'cc';
+import { _decorator, Component, Node, Label, Sprite, assetManager, ImageAsset, SpriteFrame, Texture2D, instantiate, Button } from 'cc';
 import { StoreBundleContent, StoreItem } from 'db://xsolla-commerce-sdk/scripts/api/XsollaCommerce';
 import { BundleItemComponent } from './Misc/BundleItemComponent';
 import { StoreManager } from './StoreManager';
@@ -36,9 +36,32 @@ export class ItemInfoManager extends Component {
     @property(Label)
     priceWithoutDiscount: Label;
 
+    @property(Button)
+    buyBtn: Button;
+
     private _parent: StoreManager;
 
     private _data: StoreItem;
+
+    onDestroy() {
+        this.removeListeners();
+    }
+
+    onEnable() {
+        this.addListeners();
+    }
+
+    onDisable() {
+        this.removeListeners();
+    }
+
+    addListeners () {
+        this.buyBtn.node.on(Button.EventType.CLICK, this.buyItemClicked, this);
+    }
+
+    removeListeners () {
+        this.buyBtn.node.off(Button.EventType.CLICK, this.buyItemClicked, this);
+    }
 
     init(item:StoreItem, parent:StoreManager, bundleContent?:Array<StoreBundleContent>) {
 
@@ -95,7 +118,7 @@ export class ItemInfoManager extends Component {
         }
     }
 
-    buyItem() {
+    buyItemClicked() {
         this._parent.buyItem(this._data);
     }
 }

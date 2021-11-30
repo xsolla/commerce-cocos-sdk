@@ -28,7 +28,7 @@
     },
     "autoReleaseAssets": false,
     "_globals": {
-      "__id__": 1135
+      "__id__": 1145
     },
     "_id": "4893a19a-a304-4253-a9b1-7d67f26f25cc"
   },
@@ -89,8 +89,6 @@
     "authType": 1,
     "clientId": 57,
     "enableSandbox": true,
-    "useCrossPlatformAccountLinking": false,
-    "platform": 0,
     "_id": "26UMYqC91Gw4dDPKFX1m16"
   },
   {
@@ -15663,7 +15661,7 @@
       "clickEvents",
       "length"
     ],
-    "value": 1
+    "value": 0
   },
   {
     "__type__": "cc.TargetInfo",
@@ -15931,6 +15929,7 @@
     "priceWithoutDiscount": {
       "__id__": 805
     },
+    "buyBtn": null,
     "_id": "83v7LBt7lHWY/rsg1KwUJC"
   },
   {
@@ -16082,6 +16081,7 @@
     "errorDescriptionLabel": {
       "__id__": 866
     },
+    "tryAgainBtn": null,
     "_id": "5bGLzIqD1EW52kzezs8YyN"
   },
   {
@@ -16826,7 +16826,7 @@
       "clickEvents",
       "length"
     ],
-    "value": 1
+    "value": 0
   },
   {
     "__type__": "cc.TargetInfo",
@@ -16970,6 +16970,7 @@
     "messageLabel": {
       "__id__": 908
     },
+    "okBtn": null,
     "_id": "b875DtjW9IhL0bY+RCX/a9"
   },
   {
@@ -17714,7 +17715,7 @@
       "clickEvents",
       "length"
     ],
-    "value": 1
+    "value": 0
   },
   {
     "__type__": "cc.TargetInfo",
@@ -17859,6 +17860,8 @@
       "__id__": 950
     },
     "confirmBtnLabel": null,
+    "confirmBtn": null,
+    "cancelBtn": null,
     "_id": "147o1VGRVNW6/XMwp0G37w"
   },
   {
@@ -18659,7 +18662,7 @@
       "clickEvents",
       "length"
     ],
-    "value": 1
+    "value": 0
   },
   {
     "__type__": "cc.TargetInfo",
@@ -18976,7 +18979,7 @@
       "clickEvents",
       "length"
     ],
-    "value": 1
+    "value": 0
   },
   {
     "__type__": "cc.TargetInfo",
@@ -19359,6 +19362,21 @@
       },
       {
         "__id__": 1133
+      },
+      {
+        "__id__": 1135
+      },
+      {
+        "__id__": 1137
+      },
+      {
+        "__id__": 1139
+      },
+      {
+        "__id__": 1141
+      },
+      {
+        "__id__": 1143
       }
     ]
   },
@@ -20834,18 +20852,128 @@
     ]
   },
   {
+    "__type__": "cc.TargetOverrideInfo",
+    "source": {
+      "__id__": 938
+    },
+    "sourceInfo": null,
+    "propertyPath": [
+      "confirmBtn"
+    ],
+    "target": {
+      "__id__": 953
+    },
+    "targetInfo": {
+      "__id__": 1136
+    }
+  },
+  {
+    "__type__": "cc.TargetInfo",
+    "localID": [
+      "1aOJcrOMZIwp3tuCM+8Vx4"
+    ]
+  },
+  {
+    "__type__": "cc.TargetOverrideInfo",
+    "source": {
+      "__id__": 938
+    },
+    "sourceInfo": null,
+    "propertyPath": [
+      "cancelBtn"
+    ],
+    "target": {
+      "__id__": 978
+    },
+    "targetInfo": {
+      "__id__": 1138
+    }
+  },
+  {
+    "__type__": "cc.TargetInfo",
+    "localID": [
+      "1aOJcrOMZIwp3tuCM+8Vx4"
+    ]
+  },
+  {
+    "__type__": "cc.TargetOverrideInfo",
+    "source": {
+      "__id__": 854
+    },
+    "sourceInfo": null,
+    "propertyPath": [
+      "tryAgainBtn"
+    ],
+    "target": {
+      "__id__": 868
+    },
+    "targetInfo": {
+      "__id__": 1140
+    }
+  },
+  {
+    "__type__": "cc.TargetInfo",
+    "localID": [
+      "1aOJcrOMZIwp3tuCM+8Vx4"
+    ]
+  },
+  {
+    "__type__": "cc.TargetOverrideInfo",
+    "source": {
+      "__id__": 849
+    },
+    "sourceInfo": null,
+    "propertyPath": [
+      "buyBtn"
+    ],
+    "target": {
+      "__id__": 812
+    },
+    "targetInfo": {
+      "__id__": 1142
+    }
+  },
+  {
+    "__type__": "cc.TargetInfo",
+    "localID": [
+      "1aOJcrOMZIwp3tuCM+8Vx4"
+    ]
+  },
+  {
+    "__type__": "cc.TargetOverrideInfo",
+    "source": {
+      "__id__": 896
+    },
+    "sourceInfo": null,
+    "propertyPath": [
+      "okBtn"
+    ],
+    "target": {
+      "__id__": 910
+    },
+    "targetInfo": {
+      "__id__": 1144
+    }
+  },
+  {
+    "__type__": "cc.TargetInfo",
+    "localID": [
+      "1aOJcrOMZIwp3tuCM+8Vx4"
+    ]
+  },
+  {
     "__type__": "cc.SceneGlobals",
     "ambient": {
-      "__id__": 1136
+      "__id__": 1146
     },
     "shadows": {
-      "__id__": 1137
+      "__id__": 1147
     },
     "_skybox": {
-      "__id__": 1138
+      "__id__": 1148
     },
     "fog": {
-      "__id__": 1139
+      "__id__": 1149
     }
   },
   {

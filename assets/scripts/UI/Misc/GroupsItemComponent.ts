@@ -1,6 +1,6 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
-import { _decorator, Component, Label, Sprite, Color } from 'cc';
+import { _decorator, Component, Label, Sprite, Color, Button } from 'cc';
 import { StoreManager } from '../StoreManager';
 const { ccclass, property } = _decorator;
  
@@ -13,6 +13,9 @@ export class GroupsItemComponent extends Component {
     @property(Sprite)
     line: Sprite;
 
+    @property(Button)
+    btn: Button;
+
     groupId: string;
 
     isSelected: boolean;
@@ -21,6 +24,26 @@ export class GroupsItemComponent extends Component {
 
     _redColor: Color = new Color(255, 0, 91);
     _whiteColor: Color = new Color(255, 255, 255);
+
+    onDestroy() {
+        this.removeListeners();
+    }
+
+    onEnable() {
+        this.addListeners();
+    }
+
+    onDisable() {
+        this.removeListeners();
+    }
+
+    addListeners () {
+        this.btn.node.on(Button.EventType.CLICK, this.onClicked, this);
+    }
+
+    removeListeners () {
+        this.btn.node.off(Button.EventType.CLICK, this.onClicked, this);
+    }
 
     init(groupId: string, groupName: string, parent: StoreManager) {
         this._parent = parent;

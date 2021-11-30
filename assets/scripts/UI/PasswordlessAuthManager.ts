@@ -102,7 +102,7 @@ export class PasswordlessAuthManager extends Component {
                 this.openConfirmationScreen(this.credentialsScreen);
             }, err => {
                 console.log(err);
-                this.uiManager.openErrorScreen(this.node, err.description);
+                this.uiManager.openErrorScreen(err.description);
             });
             return;
         }
@@ -112,7 +112,7 @@ export class PasswordlessAuthManager extends Component {
                 this.openConfirmationScreen(this.credentialsScreen);
             }, err => {
                 console.log(err);
-                this.uiManager.openErrorScreen(this.node, err.description);
+                this.uiManager.openErrorScreen(err.description);
             });
             return;
         }
@@ -126,7 +126,7 @@ export class PasswordlessAuthManager extends Component {
                 this.uiManager.openMainMenu(this.node);
             }, err => {
                 console.log(err);
-                this.uiManager.openErrorScreen(this.node, err.description);
+                this.uiManager.openErrorScreen(err.description);
             });
             return;
         }
@@ -137,7 +137,7 @@ export class PasswordlessAuthManager extends Component {
                 this.uiManager.openMainMenu(this.node);
             }, err => {
                 console.log(err);
-                this.uiManager.openErrorScreen(this.node, err.description);
+                this.uiManager.openErrorScreen(err.description);
             });
             return;
         }

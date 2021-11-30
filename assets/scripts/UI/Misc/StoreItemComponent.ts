@@ -44,6 +44,28 @@ export class StoreItemComponent extends Component {
 
     private _isVirtualCurrency: boolean;
 
+    onDestroy() {
+        this.removeListeners();
+    }
+
+    onEnable() {
+        this.addListeners();
+    }
+
+    onDisable() {
+        this.removeListeners();
+    }
+
+    addListeners () {
+        this.buyBtn.node.on(Button.EventType.CLICK, this.onBuyClicked, this);
+        this.previewBtn.node.on(Button.EventType.CLICK, this.onInfoClicked, this);
+    }
+
+    removeListeners () {
+        this.buyBtn.node.off(Button.EventType.CLICK, this.onBuyClicked, this);
+        this.previewBtn.node.off(Button.EventType.CLICK, this.onInfoClicked, this);
+    }
+
     init(data: StoreItem, parent:StoreManager, isItemInInventory: boolean) {
         this._parent = parent;
         this._data = data;
@@ -92,11 +114,11 @@ export class StoreItemComponent extends Component {
         }
     }
 
-    onInfoClicked() {
-        this._parent.showItemInfo(this._data);
-    }
-
     onBuyClicked() {
         this._parent.buyItem(this._data);
+    }
+
+    onInfoClicked() {
+        this._parent.showItemInfo(this._data);
     }
 }
