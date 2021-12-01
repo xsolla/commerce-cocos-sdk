@@ -9,17 +9,21 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.cocos.lib.CocosHelper;
+import com.cocos.lib.CocosJavascriptJavaBridge;
 import com.xsolla.android.login.XLogin;
 import com.xsolla.android.login.callback.FinishSocialCallback;
 import com.xsolla.android.login.callback.StartSocialCallback;
 import com.xsolla.android.login.social.SocialNetwork;
 import com.xsolla.android.login.token.TokenUtils;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class XsollaNativeAuthActivity extends Activity {
     public static String ARG_SOCIAL_NETWORK = "social_network";
     public static String ARG_WITH_LOGOUT = "with_logout";
 	public static String REMEMBER_ME = "remember_me";
-    public static String CALLBACK_ADDRESS = "callback_address";
 
     private TokenUtils tokenUtils;
 
@@ -56,19 +60,30 @@ public class XsollaNativeAuthActivity extends Activity {
         XLogin.finishSocialAuth(this, socialNetwork, requestCode, resultCode, data, withLogout, new FinishSocialCallback() {
             @Override
             public void onAuthSuccess() {
-                Log.d("XsollaAuthActivity", "onAuthSuccess");                
-//                onAuthSuccessCallback(getIntent().getLongExtra(CALLBACK_ADDRESS, 0),
-//					XLogin.getToken(),
-//					tokenUtils.getOauthRefreshToken(),
-//					tokenUtils.getOauthExpireTimeUnixSec(),
-//					getIntent().getBooleanExtra(REMEMBER_ME, false));
+                Log.d("XsollaAuthActivity", "onAuthSuccess");
+
+                JSONObject tokenJson = new JSONObject();
+                try {
+                    tokenJson.put("access_token", XLogin.getToken());
+                    tokenJson.put("refresh_token", tokenUtils.getOauthRefreshToken());
+                    tokenJson.put("token_type", "bearer");
+                    tokenJson.put("expires_in", tokenUtils.getOauthExpireTimeUnixSec());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                CocosHelper.runOnGameThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        CocosJavascriptJavaBridge.evalString("cc.find(\"Canvas/Widget_SocialAuth\").getComponent(\"SocialAuthManager\").handleSuccessfulSocialAuth(" + tokenJson.toString() + ")");
+                    }
+                });
                 finish();
             }
 
             @Override
             public void onAuthCancelled() {
                 Log.d("XsollaAuthActivity", "onAuthCancelled");
-                //onAuthCancelCallback(getIntent().getLongExtra(CALLBACK_ADDRESS, 0));
                 finish();
             }
 
@@ -76,7 +91,12 @@ public class XsollaNativeAuthActivity extends Activity {
             public void onAuthError(Throwable throwable, String error) {
                 Log.d("XsollaAuthActivity", "onAuthError");
                 String errorMessage = (error != null && !error.isEmpty()) ? error : "Unknown error";
-                //onAuthErrorCallback(getIntent().getLongExtra(CALLBACK_ADDRESS, 0), errorMessage);
+                CocosHelper.runOnGameThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        CocosJavascriptJavaBridge.evalString("cc.find(\"Canvas/Widget_SocialAuth\").getComponent(\"SocialAuthManager\").handleErrorSocialAuth(\"" + errorMessage + "\")");
+                    }
+                });
                 finish();
             }
         });
