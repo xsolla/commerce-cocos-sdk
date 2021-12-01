@@ -62,10 +62,6 @@ export class StoreManager extends Component {
         
     }
 
-    onDestroy() {
-        this.removeListeners();
-    }
-
     onEnable() {
         this.addListeners();
         XsollaStore.getVirtualItems('', '', [], storeItemsData => {

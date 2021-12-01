@@ -14,10 +14,6 @@ export class ErrorScreenManager extends Component {
 
     private _onClosed: () => void;
 
-    onDestroy() {
-        this.removeListeners();
-    }
-
     onEnable() {
         this.addListeners();
     }

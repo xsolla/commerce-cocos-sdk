@@ -23,10 +23,6 @@ export class AttributeItem extends Component {
         
     }
 
-    onDestroy() {
-        this.removeListeners();
-    }
-
     onEnable() {
         this.addListeners();
     }

@@ -54,10 +54,6 @@ export class PasswordlessAuthManager extends Component {
 
     }
 
-    onDestroy() {
-        this.removeListeners();
-    }
-
     onEnable() {
         this.credentialsEditBox.string = '';
         this.confirmationCodeEditBox.string = '';

@@ -43,10 +43,6 @@ export class ItemInfoManager extends Component {
 
     private _data: StoreItem;
 
-    onDestroy() {
-        this.removeListeners();
-    }
-
     onEnable() {
         this.addListeners();
     }

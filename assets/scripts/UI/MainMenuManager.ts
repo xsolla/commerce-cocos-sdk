@@ -20,10 +20,6 @@ export class MainMenuManager extends Component {
     @property(Button)
     storeButton: Button;
 
-    onDestroy() {
-        this.removeListeners();
-    }
-
     onEnable() {
         this.addListeners();
     }

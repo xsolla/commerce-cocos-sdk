@@ -44,10 +44,6 @@ export class StoreItemComponent extends Component {
 
     private _isVirtualCurrency: boolean;
 
-    onDestroy() {
-        this.removeListeners();
-    }
-
     onEnable() {
         this.addListeners();
     }

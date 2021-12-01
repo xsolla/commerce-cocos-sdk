@@ -25,10 +25,6 @@ export class GroupsItemComponent extends Component {
     _redColor: Color = new Color(255, 0, 91);
     _whiteColor: Color = new Color(255, 255, 255);
 
-    onDestroy() {
-        this.removeListeners();
-    }
-
     onEnable() {
         this.addListeners();
     }

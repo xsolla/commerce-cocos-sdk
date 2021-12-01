@@ -22,10 +22,6 @@ export class ConfirmationScreenManager extends Component {
 
     private _onCancel: () => void;
 
-    onDestroy() {
-        this.removeListeners();
-    }
-
     onEnable() {
         this.addListeners();
     }

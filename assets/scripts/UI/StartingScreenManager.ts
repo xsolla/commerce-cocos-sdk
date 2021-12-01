@@ -25,10 +25,6 @@ export class StartingScreenManager extends Component {
         this.deviceIdAuthButton.node.active = sys.isMobile;
     }
 
-    onDestroy() {
-        this.removeListeners();
-    }
-
     onEnable() {
         this.addListeners();
     }

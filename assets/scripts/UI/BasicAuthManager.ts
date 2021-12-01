@@ -34,10 +34,6 @@ export class BasicAuthManager extends Component {
         
     }
 
-    onDestroy() {
-        this.removeListeners();
-    }
-
     onEnable() {
         this.usernameEditBox.string = '';
         this.passwordEditBox.string = '';

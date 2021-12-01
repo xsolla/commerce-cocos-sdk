@@ -47,10 +47,6 @@ export class CharacterManager extends Component {
         
     }
 
-    onDestroy() {
-        this.removeListeners();
-    }
-
     onEnable() {
         this.openAllAttributesScreen(this.addAttributeScreen);
         this.addListeners();
