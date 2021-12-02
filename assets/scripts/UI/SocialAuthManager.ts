@@ -41,16 +41,16 @@ export class SocialAuthManager extends Component {
     socialNetworksData: SocialNetworkItemData[] = [];
 
     @property(CCString)
-    facebookAppId: String;
+    facebookAppId: String = '';
 
     @property(CCString)
-    googleAppId: String;
+    googleAppId: String = '';
 
     @property(CCString)
-    wechatAppId: String;
+    wechatAppId: String = '';
 
     @property(CCString)
-    qqAppId: String;
+    qqAppId: String = '';
 
     start() {
         this.populateSocialNetworksList();
