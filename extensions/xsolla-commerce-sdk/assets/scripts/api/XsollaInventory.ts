@@ -53,6 +53,19 @@ export class XsollaInventory {
         }, XsollaError.handleError(onError));
         request.send(JSON.stringify(body));
     }
+
+    static getSubscriptions(authToken:string, platform?:XsollaPublishingPlatform, onComplete?:(subscriptionData:SubscriptionData) => void, onError?:(error:CommerceError) => void): void {
+        let url = new XsollaUrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/user/subscriptions')
+            .setPathParam('projectID', Xsolla.settings.projectId)
+            .addStringParam('platform', platform ? platform.toString() : null)
+            .build();
+
+        let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.Json, authToken, result => {
+            let subscriptionData: SubscriptionData  = JSON.parse(result);
+            onComplete?.(subscriptionData);
+        }, XsollaError.handleError(onError));
+        request.send();
+    }
 }
 
 export interface InventoryItem {
@@ -84,4 +97,19 @@ export interface VirtualCurrencyBalance {
 
 export interface VirtualCurrencyBalanceData {
     items: Array<VirtualCurrencyBalance>
+}
+
+export interface SubscriptionItem {
+    sku: string,
+    name: string,
+    type: string,
+    virtual_item_type: string,
+    description: string,
+    image_url: string,
+    expired_at: number,
+    status: string
+}
+
+export interface SubscriptionData {
+    items: Array<SubscriptionItem>
 }
