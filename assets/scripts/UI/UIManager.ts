@@ -5,6 +5,7 @@ import { TokenStorage } from '../Common/TokenStorage';
 import { ConfirmationScreenManager } from './ConfirmationScreenManager';
 import { ErrorScreenManager } from './ErrorScreenManager';
 import { MessageScreenManager } from './MessageScreenManager';
+import { CurrencyFormatter } from './Utils/CurrencyFormatter';
 const { ccclass, property } = _decorator;
  
 @ccclass('UIManager')
@@ -31,6 +32,9 @@ export class UIManager extends Component {
     @property(Node)
     storeScreen: Node;
 
+    @property(Node)
+    inventoryScreen: Node;
+
     @property(ErrorScreenManager)
     errorScreen: ErrorScreenManager;
 
@@ -40,9 +44,12 @@ export class UIManager extends Component {
     @property(ConfirmationScreenManager)
     confirmationScreen: ConfirmationScreenManager;
 
+    static instance: UIManager;
+
     start() {
         this.startingScreen.active = true;
-
+        UIManager.instance = this;
+        CurrencyFormatter.init();
         if(TokenStorage.getToken() != null) {
             this.openMainMenu(this.startingScreen);
         }
@@ -81,6 +88,11 @@ export class UIManager extends Component {
     openStoreScreen(currentScreen:Node) {
         currentScreen.active = false;
         this.storeScreen.active = true;
+    }
+
+    openInventoryScreen(currentScreen:Node) {
+        currentScreen.active = false;
+        this.inventoryScreen.active = true;
     }
 
     openErrorScreen(errorMessage: string, onClosed?: () => void) {

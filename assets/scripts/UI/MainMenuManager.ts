@@ -20,6 +20,9 @@ export class MainMenuManager extends Component {
     @property(Button)
     storeButton: Button;
 
+    @property(Button)
+    inventoryButton: Button;
+
     onEnable() {
         this.addListeners();
     }
@@ -32,12 +35,14 @@ export class MainMenuManager extends Component {
         this.logOutButton.node.on(Button.EventType.CLICK, this.onLogoutClicked, this);
         this.characterButton.node.on(Button.EventType.CLICK, this.onCharacterClicked, this);
         this.storeButton.node.on(Button.EventType.CLICK, this.onStoreClicked, this);
+        this.inventoryButton.node.on(Button.EventType.CLICK, this.onInventoryClicked, this);
     }
 
     removeListeners() {
         this.logOutButton.node.off(Button.EventType.CLICK, this.onLogoutClicked, this);
         this.characterButton.node.off(Button.EventType.CLICK, this.onCharacterClicked, this);
         this.storeButton.node.off(Button.EventType.CLICK, this.onStoreClicked, this);
+        this.inventoryButton.node.off(Button.EventType.CLICK, this.onInventoryClicked, this);
     }
 
     onLogoutClicked() {
@@ -51,5 +56,9 @@ export class MainMenuManager extends Component {
 
     onStoreClicked() {
         this.uiManager.openStoreScreen(this.node);
+    }
+
+    onInventoryClicked() {
+        this.uiManager.openInventoryScreen(this.node);
     }
 }
