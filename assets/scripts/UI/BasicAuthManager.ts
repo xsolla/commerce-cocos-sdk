@@ -1,6 +1,6 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
-import { _decorator, Component, Node, Button, EditBox, EventHandler, sys, System, Toggle } from 'cc';
+import { _decorator, Component, Button, EditBox, Toggle } from 'cc';
 import { XsollaLogin } from 'db://xsolla-commerce-sdk/scripts/api/XsollaLogin';
 import { TokenStorage } from '../Common/TokenStorage';
 import { UIManager } from './UIManager';

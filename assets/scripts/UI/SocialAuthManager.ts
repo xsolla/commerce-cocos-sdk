@@ -128,7 +128,7 @@ export class SocialAuthManager extends Component {
 
     handleErrorSocialAuth(error:string) {
         console.log(error);
-        this.uiManager.openErrorScreen(this.node, error);
+        this.uiManager.openErrorScreen(error);
     }
 
     onSocialNetworkFilterChanged() {
