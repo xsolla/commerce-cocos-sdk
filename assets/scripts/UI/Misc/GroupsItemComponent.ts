@@ -1,7 +1,6 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component, Label, Sprite, Color, Button } from 'cc';
-import { StoreManager } from '../StoreManager';
 const { ccclass, property } = _decorator;
  
 @ccclass('GroupsItemComponent')
@@ -20,10 +19,10 @@ export class GroupsItemComponent extends Component {
 
     isSelected: boolean;
 
-    _parent: StoreManager;
-
     _redColor: Color = new Color(255, 0, 91);
     _whiteColor: Color = new Color(255, 255, 255);
+
+    static GROUP_CLICK: string = 'groupClick';
 
     onEnable() {
         this.addListeners();
@@ -41,8 +40,7 @@ export class GroupsItemComponent extends Component {
         this.btn.node.off(Button.EventType.CLICK, this.onClicked, this);
     }
 
-    init(groupId: string, groupName: string, parent: StoreManager) {
-        this._parent = parent;
+    init(groupId: string, groupName: string) {
         this.groupNameLabel.string = groupName.toUpperCase();
         this.groupId = groupId;
     }
@@ -51,7 +49,7 @@ export class GroupsItemComponent extends Component {
         if(this.isSelected) {
             return;
         }
-        this._parent.groupSelected(this.groupId);
+        this.node.emit(GroupsItemComponent.GROUP_CLICK, this.groupId);
     }
 
     onSelected(isSelected: boolean) {

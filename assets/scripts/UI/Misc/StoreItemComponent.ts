@@ -1,8 +1,10 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
-import { _decorator, Component, Node, Sprite, Label, assetManager, ImageAsset, SpriteFrame, Texture2D, Button } from 'cc';
+import { _decorator, Component, Node, Sprite, Label, assetManager, ImageAsset, SpriteFrame, Texture2D, Button, UITransform } from 'cc';
 import { StoreItem } from 'db://xsolla-commerce-sdk/scripts/api/XsollaStore';
 import { StoreManager } from '../StoreManager';
+import { CurrencyFormatter } from '../Utils/CurrencyFormatter';
+import { PurchaseUtil } from '../Utils/PurchaseUtil';
 const { ccclass, property } = _decorator;
  
 @ccclass('StoreItemComponent')
@@ -83,8 +85,8 @@ export class StoreItemComponent extends Component {
             price =  data.virtual_prices[0].amount.toString();
             priceWithoutDiscount =  data.virtual_prices[0].amount_without_discount.toString();
         } else {
-            price = this._parent.formatPrice(parseFloat(data.price.amount), data.price.currency);
-            priceWithoutDiscount = this._parent.formatPrice(parseFloat(data.price.amount_without_discount), data.price.currency);
+            price = CurrencyFormatter.formatPrice(parseFloat(data.price.amount), data.price.currency);
+            priceWithoutDiscount = CurrencyFormatter.formatPrice(parseFloat(data.price.amount_without_discount), data.price.currency);
         }
 
         this.price.string = price;
@@ -106,12 +108,13 @@ export class StoreItemComponent extends Component {
                 texture.image = imageAsset;
                 spriteFrame.texture = texture;
                 this.currencyIcon.spriteFrame = spriteFrame;
+                this.currencyIcon.getComponent(UITransform).setContentSize(40, 40); 
             });
         }
     }
 
     onBuyClicked() {
-        this._parent.buyItem(this._data);
+        PurchaseUtil.buyItem(this._data);
     }
 
     onInfoClicked() {

@@ -4,10 +4,12 @@ import { _decorator, Component, Node, Label, Sprite, assetManager, ImageAsset, S
 import { StoreBundleContent, StoreItem } from 'db://xsolla-commerce-sdk/scripts/api/XsollaStore';
 import { BundleItemComponent } from './Misc/BundleItemComponent';
 import { StoreManager } from './StoreManager';
+import { CurrencyFormatter } from './Utils/CurrencyFormatter';
+import { PurchaseUtil } from './Utils/PurchaseUtil';
 const { ccclass, property } = _decorator;
 
-@ccclass('ItemInfoManager')
-export class ItemInfoManager extends Component {
+@ccclass('StoreItemInfoManager')
+export class StoreItemInfoManager extends Component {
 
     @property(Sprite)
     icon: Sprite;
@@ -39,6 +41,9 @@ export class ItemInfoManager extends Component {
     @property(Button)
     buyBtn: Button;
 
+    @property(Button)
+    closeBtn: Button;
+
     private _parent: StoreManager;
 
     private _data: StoreItem;
@@ -53,10 +58,12 @@ export class ItemInfoManager extends Component {
 
     addListeners () {
         this.buyBtn.node.on(Button.EventType.CLICK, this.buyItemClicked, this);
+        this.closeBtn.node.on(Button.EventType.CLICK, this.closeClicked, this);
     }
 
     removeListeners () {
         this.buyBtn.node.off(Button.EventType.CLICK, this.buyItemClicked, this);
+        this.closeBtn.node.on(Button.EventType.CLICK, this.closeClicked, this);
     }
 
     init(item:StoreItem, parent:StoreManager, bundleContent?:Array<StoreBundleContent>) {
@@ -82,8 +89,8 @@ export class ItemInfoManager extends Component {
             price =  item.virtual_prices[0].amount.toString();
             priceWithoutDiscount =  item.virtual_prices[0].amount_without_discount.toString();
         } else {
-            price = this._parent.formatPrice(parseFloat(item.price.amount), item.price.currency);
-            priceWithoutDiscount = this._parent.formatPrice(parseFloat(item.price.amount_without_discount), item.price.currency);
+            price = CurrencyFormatter.formatPrice(parseFloat(item.price.amount), item.price.currency);
+            priceWithoutDiscount = CurrencyFormatter.formatPrice(parseFloat(item.price.amount_without_discount), item.price.currency);
         }
 
         this.price.string = price;
@@ -115,6 +122,10 @@ export class ItemInfoManager extends Component {
     }
 
     buyItemClicked() {
-        this._parent.buyItem(this._data);
+        PurchaseUtil.buyItem(this._data);
+    }
+
+    closeClicked() {
+        this._parent.openAllItemsScreen();
     }
 }
