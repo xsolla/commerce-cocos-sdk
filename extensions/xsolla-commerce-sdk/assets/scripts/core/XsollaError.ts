@@ -3,7 +3,7 @@
 import { XsollaHttpError } from "./XsollaHttpUtil";
 
 export class XsollaError {
-    static handleError(onError:(error:CommerceError) => void): (requestError:XsollaHttpError) => void {
+    static handleCommerceError(onError:(error:CommerceError) => void): (requestError:XsollaHttpError) => void {
         return requestError => {
             let commerceError: CommerceError = {
                 code: requestError.errorCode,
@@ -13,10 +13,25 @@ export class XsollaError {
             onError?.(commerceError);
         };
     }
+
+    static handleLoginError(onError:(error:LoginError) => void): (requestError:XsollaHttpError) => void {
+        return requestError => {
+            let loginError: LoginError = {
+                code: requestError.code,
+                description: requestError.description
+            };
+            onError?.(loginError);
+        };
+    }
 }
 
 export interface CommerceError {
     status?: number,
     code: number,
+    description: string
+}
+
+export interface LoginError {
+    code: string,
     description: string
 }

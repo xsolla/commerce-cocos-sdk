@@ -1,7 +1,8 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
 import { sys } from "cc";
-import { XsollaHttpError, XsollaHttpUtil, XsollaRequestContentType } from "../core/XsollaHttpUtil";
+import { LoginError, XsollaError } from "../core/XsollaError";
+import { XsollaHttpUtil, XsollaRequestContentType } from "../core/XsollaHttpUtil";
 import { XsollaUrlBuilder } from "../core/XsollaUrlBuilder";
 import { Xsolla, XsollaAuthenticationType } from "../Xsolla";
 
@@ -30,7 +31,7 @@ export class XsollaLogin {
         let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, result => {
             let token: Token = JSON.parse(result);
             onComplete?.(token);
-        }, this.handleError(onError));
+        }, XsollaError.handleLoginError(onError));
         request.send(JSON.stringify(body));
     }
 
@@ -48,7 +49,7 @@ export class XsollaLogin {
             .addStringParam('payload', payload)
             .build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, this.handleUrlWithToken(onComplete), this.handleError(onError));
+        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, this.handleUrlWithToken(onComplete), XsollaError.handleLoginError(onError));
         request.send(JSON.stringify(body));
     }
 
@@ -65,7 +66,7 @@ export class XsollaLogin {
         let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.WwwForm, null, result => {
             let token: Token = JSON.parse(result);
             onComplete?.(token);
-        }, this.handleError(onError));
+        }, XsollaError.handleLoginError(onError));
         request.send(XsollaHttpUtil.encodeFormData(body));
     }
 
@@ -82,7 +83,7 @@ export class XsollaLogin {
         let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.WwwForm, null, result => {
             let token: Token = JSON.parse(result);
             onComplete?.(token);
-        }, this.handleError(onError));
+        }, XsollaError.handleLoginError(onError));
         request.send(XsollaHttpUtil.encodeFormData(body));
     }
 
@@ -111,7 +112,7 @@ export class XsollaLogin {
         let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, result => {
             let authOperationId: AuthOperationId = JSON.parse(result);
             onComplete?.(authOperationId.operation_id);
-        }, this.handleError(onError));
+        }, XsollaError.handleLoginError(onError));
         request.send(JSON.stringify(body));
     }
 
@@ -130,7 +131,7 @@ export class XsollaLogin {
         let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, result => {
             let authOperationId: AuthOperationId = JSON.parse(result);
             onComplete?.(authOperationId.operation_id);
-        }, this.handleError(onError));
+        }, XsollaError.handleLoginError(onError));
         request.send(JSON.stringify(body));
     }
 
@@ -154,7 +155,7 @@ export class XsollaLogin {
             .addNumberParam('client_id', Xsolla.settings.clientId)
             .build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, this.handleUrlWithCode(onComplete, onError), this.handleError(onError));
+        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, this.handleUrlWithCode(onComplete, onError), XsollaError.handleLoginError(onError));
         request.send(JSON.stringify(body));
     }
 
@@ -169,7 +170,7 @@ export class XsollaLogin {
             .addStringParam('projectId', Xsolla.settings.loginId)
             .build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, this.handleUrlWithToken(onComplete), this.handleError(onError));
+        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, this.handleUrlWithToken(onComplete), XsollaError.handleLoginError(onError));
         request.send(JSON.stringify(body));
     }
 
@@ -198,7 +199,7 @@ export class XsollaLogin {
         let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, result => {
             let authOperationId: AuthOperationId = JSON.parse(result);
             onComplete?.(authOperationId.operation_id);
-        }, this.handleError(onError));
+        }, XsollaError.handleLoginError(onError));
         request.send(JSON.stringify(body));
     }
 
@@ -217,7 +218,7 @@ export class XsollaLogin {
         let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, result => {
             let authOperationId: AuthOperationId = JSON.parse(result);
             onComplete?.(authOperationId.operation_id);
-        }, this.handleError(onError));
+        }, XsollaError.handleLoginError(onError));
         request.send(JSON.stringify(body));
     }
 
@@ -241,7 +242,7 @@ export class XsollaLogin {
             .addNumberParam('client_id', Xsolla.settings.clientId)
             .build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, this.handleUrlWithCode(onComplete, onError), this.handleError(onError));
+        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, this.handleUrlWithCode(onComplete, onError), XsollaError.handleLoginError(onError));
         request.send(JSON.stringify(body));
     }
 
@@ -256,7 +257,7 @@ export class XsollaLogin {
             .addStringParam('projectId', Xsolla.settings.loginId)
             .build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, this.handleUrlWithToken(onComplete), this.handleError(onError));
+        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, this.handleUrlWithToken(onComplete), XsollaError.handleLoginError(onError));
         request.send(JSON.stringify(body));
     }
 
@@ -284,7 +285,7 @@ export class XsollaLogin {
             .addStringParam('scope', 'offline')
             .build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, this.handleUrlWithCode(onComplete, onError), this.handleError(onError));
+        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, this.handleUrlWithCode(onComplete, onError), XsollaError.handleLoginError(onError));
         request.send(JSON.stringify(body));
     }
 
@@ -308,7 +309,7 @@ export class XsollaLogin {
                 token_type: 'bearer'
             };
             onComplete?.(token);
-        }, this.handleError(onError));
+        }, XsollaError.handleLoginError(onError));
         request.send(JSON.stringify(body));
     }
 
@@ -328,7 +329,7 @@ export class XsollaLogin {
         let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, token, result => {
             let attributes = JSON.parse(result);
             onComplete?.(attributes);
-        }, this.handleError(onError));
+        }, XsollaError.handleLoginError(onError));
         request.send(JSON.stringify(body));
     }
 
@@ -348,7 +349,7 @@ export class XsollaLogin {
         let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, token, result => {
             let attributes = JSON.parse(result);
             onComplete?.(attributes);
-        }, this.handleError(onError));
+        }, XsollaError.handleLoginError(onError));
         request.send(JSON.stringify(body));
     }
 
@@ -360,7 +361,7 @@ export class XsollaLogin {
 
         let url = new XsollaUrlBuilder('https://login.xsolla.com/api/attributes/users/me/update').build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, token, onComplete, this.handleError(onError));
+        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, token, onComplete, XsollaError.handleLoginError(onError));
         request.send(JSON.stringify(body));
     }
 
@@ -372,18 +373,8 @@ export class XsollaLogin {
 
         let url = new XsollaUrlBuilder('https://login.xsolla.com/api/attributes/users/me/update').build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, token, onComplete, this.handleError(onError));
+        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, token, onComplete, XsollaError.handleLoginError(onError));
         request.send(JSON.stringify(body));
-    }
-
-    private static handleError(onError:(error:LoginError) => void): (requestError:XsollaHttpError) => void {
-        return requestError => {
-            let loginError: LoginError = {
-                code: requestError.code,
-                description: requestError.description
-            };
-            onError?.(loginError);
-        };
     }
 
     private static handleUrlWithToken(onComplete: (token: Token) => void): (result: any) => void {
@@ -426,10 +417,5 @@ export interface UserAttribute {
     key: string,
     permission: string;
     value: string
-}
-
-export interface LoginError {
-    code: string,
-    description: string
 }
 
