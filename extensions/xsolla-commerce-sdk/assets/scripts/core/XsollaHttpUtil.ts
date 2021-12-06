@@ -1,6 +1,6 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
-import { VERSION } from 'cc';
+import { sys, VERSION } from 'cc';
 import { SDK_VERSION } from '../XsollaConstants';
 
 export enum XsollaRequestContentType {
@@ -19,10 +19,12 @@ export class XsollaHttpUtil {
         request.open(verb, url, true);
 
         // TODO Check what can be done in relation to CORS issue for WebGL
-        // request.setRequestHeader('X-ENGINE', 'COCOS');
-        // request.setRequestHeader('X-ENGINE-V', VERSION);
-        // request.setRequestHeader('X-SDK', 'COMMERCE');
-        // request.setRequestHeader('X-SDK-V', SDK_VERSION);
+        if(!sys.isBrowser) {
+            request.setRequestHeader('X-ENGINE', 'COCOS');
+            request.setRequestHeader('X-ENGINE-V', VERSION);
+            request.setRequestHeader('X-SDK', 'COMMERCE');
+            request.setRequestHeader('X-SDK-V', SDK_VERSION);
+        }
 
         switch(contentType) {
             case XsollaRequestContentType.Json: {
