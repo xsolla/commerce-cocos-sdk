@@ -1,32 +1,47 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
-import { sys } from "cc";
 import { XsollaStore } from "db://xsolla-commerce-sdk/scripts/api/XsollaStore";
+import { XsollaUrlBuilder } from "db://xsolla-commerce-sdk/scripts/core/XsollaUrlBuilder";
+import { Xsolla } from "db://xsolla-commerce-sdk/scripts/Xsolla";
+import { TokenStorage } from "../../Common/TokenStorage";
 import { UIManager } from "../UIManager";
-import { PurchaseUtil } from "./PurchaseUtil";
+import { XsollaOrderCheckObject } from "../XsollaOrderCheckObject";
 
 export class OrderTracker {
-
-    
-    static shortPollingCheckOrder(orderId: number, token: string,  onSuccessPurchase?:() => void) {
-        XsollaStore.checkOrder(token, orderId, result => {
+    static shortPollingCheckOrder(orderId: number, onSuccessPurchase:() => void) {
+        XsollaStore.checkOrder(TokenStorage.getToken().access_token, orderId, result => {
             console.log('shortPollingCheckOrder ' + result.status);
             if(result.status == 'done') {
-                if(!sys.isMobile) {
-                    PurchaseUtil.сlosePaystationWidget();
-                }
                 UIManager.instance.openMessageScreen('success purchase!');
-                onSuccessPurchase?.();
+                onSuccessPurchase();
                 return;
             }
 
-            if(sys.isMobile || PurchaseUtil.bIsPaymentWidgetOpened) {
-                if(result.status == 'new' || result.status == 'paid') {
-                    setTimeout(result => {
-                        this.shortPollingCheckOrder(orderId, token, onSuccessPurchase);
-                    }, 3000);
-                }
+            if(result.status == 'new' || result.status == 'paid') {
+                setTimeout(result => {
+                    this.shortPollingCheckOrder(orderId, onSuccessPurchase);
+                }, 3000);
             }
         })
     }
+
+    static createOrderCheckObject(orderId:number, onStatusReceived:(orderId:string, orderStatus:XsollaOrderStatus) => void, onError:(errorMessage:string) => void, onTimeout:() => void,
+    socketLifeTime:number = 300) {
+        let url = new XsollaUrlBuilder('wss://store-ws.xsolla.com/sub/order/status')
+            .addStringParam('order_id', orderId.toString())
+            .addStringParam('project_id', Xsolla.settings.projectId)
+            .build();
+
+        let orderCheckObject = new XsollaOrderCheckObject();
+        orderCheckObject.init(url, onStatusReceived, onError, onTimeout, socketLifeTime);
+        return orderCheckObject;
+    }
+}
+
+export enum XsollaOrderStatus {
+    unknown = 0,
+	new = 1,
+	paid = 2,
+	done = 3,
+	canceled = 4
 }

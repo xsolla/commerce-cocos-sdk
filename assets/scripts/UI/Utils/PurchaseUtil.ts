@@ -6,11 +6,14 @@ import { XsollaUrlBuilder } from "db://xsolla-commerce-sdk/scripts/core/XsollaUr
 import { Xsolla } from "db://xsolla-commerce-sdk/scripts/Xsolla";
 import { TokenStorage } from "../../Common/TokenStorage";
 import { UIManager } from "../UIManager";
-import { OrderTracker } from "./OrderTracker";
+import { XsollaOrderCheckObject } from "../XsollaOrderCheckObject";
+import { OrderTracker, XsollaOrderStatus } from "./OrderTracker";
 
 export class PurchaseUtil {
 
-    static bIsPaymentWidgetOpened:boolean = false;
+    private static _cachedOrderCheckObjects: Array<XsollaOrderCheckObject> = [];
+
+    static bIsSuccessPurchase:boolean = false;
 
     static buyItem(item: StoreItem, onSuccessPurchase?:() => void) {
         let isVirtual = item.virtual_prices.length > 0;
@@ -36,21 +39,51 @@ export class PurchaseUtil {
                     url = new XsollaUrlBuilder('https://secure.xsolla.com/paystation3');
                 }
                 url.addStringParam('access_token', result.token);
-                OrderTracker.shortPollingCheckOrder(result.orderId, result.token, onSuccessPurchase);
+
+                this.checkPendingOrder(result.orderId, () => {
+                    onSuccessPurchase?.();
+                });
                 sys.openURL(url.build());
             } else {
-                this.bIsPaymentWidgetOpened = true;
                 this.openPaystationWidget(result.orderId, result.token, Xsolla.settings.enableSandbox, () => {
-                    OrderTracker.shortPollingCheckOrder(result.orderId, result.token, onSuccessPurchase);
+                    this.checkPendingOrder(result.orderId, () => {
+                        onSuccessPurchase?.();
+                        this.сlosePaystationWidget();
+                    });
                 }, () => {
-                    this.bIsPaymentWidgetOpened = false;
+                    this.сlosePaystationWidget();
                 });
             }
+        }, error => {
+            console.log(error.description);
+            UIManager.instance.openErrorScreen(error.description);
         } );
+    }
+
+    static checkPendingOrder(orderId:number, onSuccess:() => void) {
+        let orderCheckObject = OrderTracker.createOrderCheckObject(orderId, (resultOrderId, orderStatus) => {
+            if(orderStatus == XsollaOrderStatus.done) {
+                UIManager.instance.openMessageScreen('success purchase!');
+                onSuccess();
+                this._cachedOrderCheckObjects = this._cachedOrderCheckObjects.filter(obj => obj !== orderCheckObject);
+                orderCheckObject.destroy();
+            }
+        }, errorMessage => {
+            OrderTracker.shortPollingCheckOrder(orderId, onSuccess);
+            this._cachedOrderCheckObjects = this._cachedOrderCheckObjects.filter(obj => obj !== orderCheckObject);
+            orderCheckObject.destroy();
+        }, () => {
+            OrderTracker.shortPollingCheckOrder(orderId, onSuccess);
+            this._cachedOrderCheckObjects = this._cachedOrderCheckObjects.filter(obj => obj !== orderCheckObject);
+            orderCheckObject.destroy();
+        });
+
+        this._cachedOrderCheckObjects.push(orderCheckObject);
     }
 
     static openPaystationWidget(orderId: number, token: string, sandbox: boolean, onComplete?:() => void, onClosed?:() => void) {
         console.log('openPaystationWidget opened');
+        PurchaseUtil.bIsSuccessPurchase = false;
         var jsToken = token;
         var isSandbox = sandbox;
         var options = {
@@ -69,35 +102,32 @@ export class PurchaseUtil {
         s.async = true;
         s.src = "https://static.xsolla.com/embed/paystation/1.2.3/widget.min.js";
     
-        let statusChangedFunction = function (event, data) {
-            console.log('openPaystationWidget status changed');
-            onComplete();
-        };
-
-        let closeWidgetFunction = function (event, data) {
-                console.log('unbind');
-                s.removeEventListener('load', loadFunction, false);
-                XPayStationWidget.off(XPayStationWidget.eventTypes.STATUS, statusChangedFunction);
-                XPayStationWidget.off(XPayStationWidget.eventTypes.CLOSE, closeWidgetFunction);
-                onClosed();
-        };
-
-        let loadFunction = function (e) {
-            console.log('bind');
-            XPayStationWidget.on(XPayStationWidget.eventTypes.STATUS, statusChangedFunction);
-            XPayStationWidget.on(XPayStationWidget.eventTypes.CLOSE, closeWidgetFunction);
+        s.addEventListener('load', function (e) {
+            console.log('openPaystationWidget load event');
+            XPayStationWidget.on(XPayStationWidget.eventTypes.STATUS, function (event, data) {
+                console.log('openPaystationWidget status event');
+                if(!PurchaseUtil.bIsSuccessPurchase) {
+                    console.log('onComplete');
+                    PurchaseUtil.bIsSuccessPurchase = true;
+                    onComplete();
+                }
+            });
+    
+                XPayStationWidget.on(XPayStationWidget.eventTypes.CLOSE, function (event, data) {
+                    console.log('openPaystationWidget close event');
+                    onClosed();
+            });
     
             XPayStationWidget.init(options);
             XPayStationWidget.open();
-        };
-
-        s.addEventListener('load', loadFunction, false);
+        }, false);
     
         var head = document.getElementsByTagName('head')[0];
         head.appendChild(s);
     }
 
     static сlosePaystationWidget() {
+        console.log('сlosePaystationWidget');
 		if (typeof XPayStationWidget !== undefined) {
 			XPayStationWidget.off();
 		}
