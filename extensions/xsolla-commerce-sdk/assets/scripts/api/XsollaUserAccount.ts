@@ -14,6 +14,16 @@ export class XsollaUserAccount {
         }, XsollaError.handleLoginError(onError));
         request.send();
     }
+
+    static updateUserDetails(token:string, userDetailsUpdate:UserDetailsUpdate, onComplete?:(userDetails:UserDetails) => void, onError?:(error:LoginError) => void) {
+        let url = new XsollaUrlBuilder('https://login.xsolla.com/api/users/me').build();
+
+        let request = XsollaHttpUtil.createRequest(url, 'PATCH', XsollaRequestContentType.Json, token, result => {
+            let user = JSON.parse(result);
+            onComplete?.(user);
+        }, XsollaError.handleLoginError(onError));
+        request.send(JSON.stringify(userDetailsUpdate));
+    }
 }
 
 export interface UserBan {
@@ -51,4 +61,12 @@ export interface UserDetails {
     registered: string,
     tag: string,
     username: string
+}
+
+export interface UserDetailsUpdate {
+    birthday?:string,
+    gender?:string,
+    firstName?:string,
+    lastName?:string,
+    nickname?:string
 }
