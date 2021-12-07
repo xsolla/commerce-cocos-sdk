@@ -16,7 +16,7 @@ export class XsollaInventory {
             .addStringParam('platform', platform ? platform.toString() : null)
             .build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.Json, authToken, result => {
+        let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.None, authToken, result => {
             let intentoryData: InventoryItemsData  = JSON.parse(result);
             onComplete?.(intentoryData);
         }, XsollaError.handleCommerceError(onError));
@@ -29,7 +29,7 @@ export class XsollaInventory {
             .addStringParam('platform', platform ? platform.toString() : null)
             .build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.Json, authToken, result => {
+        let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.None, authToken, result => {
             let currencyData: VirtualCurrencyBalanceData  = JSON.parse(result);
             onComplete?.(currencyData);
         }, XsollaError.handleCommerceError(onError));
@@ -60,7 +60,7 @@ export class XsollaInventory {
             .addStringParam('platform', platform ? platform.toString() : null)
             .build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.Json, authToken, result => {
+        let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.None, authToken, result => {
             let subscriptionData: SubscriptionData  = JSON.parse(result);
             onComplete?.(subscriptionData);
         }, XsollaError.handleCommerceError(onError));

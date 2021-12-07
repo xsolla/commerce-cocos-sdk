@@ -17,7 +17,7 @@ export class XsollaStore {
             .addStringParam('offset', offset.toString())
             .build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.Json, null, result => {
+        let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.None, null, result => {
             let itemsData:StoreItemsData = JSON.parse(result);
             itemsData.groupIds = new Set<string>();
             for(let item of itemsData.items) {
@@ -41,7 +41,7 @@ export class XsollaStore {
             .addStringParam('offset', offset.toString())
             .build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.Json, null, result => {
+        let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.None, null, result => {
             let bundlesList: StoreListOfBundles = JSON.parse(result);
             onComplete?.(bundlesList);
         }, XsollaError.handleCommerceError(onError));
@@ -54,7 +54,7 @@ export class XsollaStore {
             .setPathParam('sku', sku)
             .build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.Json, null, result => {
+        let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.None, null, result => {
             let bundle: StoreBundle = JSON.parse(result);
             onComplete?.(bundle);
         }, XsollaError.handleCommerceError(onError));
@@ -67,7 +67,7 @@ export class XsollaStore {
             .addStringParam('locale', locale)
             .build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.Json, null, result => {
+        let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.None, null, result => {
             let itemsList: StoreItemsList = JSON.parse(result);
             onComplete?.(itemsList);
         }, XsollaError.handleCommerceError(onError));
@@ -84,7 +84,7 @@ export class XsollaStore {
             .addStringParam('offset', offset.toString())
             .build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.Json, null, result => {
+        let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.None, null, result => {
             let virtualCurrencyData: VirtualCurrencyData = JSON.parse(result);
             onComplete?.(virtualCurrencyData);
         }, XsollaError.handleCommerceError(onError));
@@ -101,7 +101,7 @@ export class XsollaStore {
             .addStringParam('offset', offset.toString())
             .build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.Json, null, result => {
+        let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.None, null, result => {
             let virtualCurrencyPackages: VirtualCurrencyPackagesData = JSON.parse(result);
             onComplete?.(virtualCurrencyPackages);
         }, XsollaError.handleCommerceError(onError));
@@ -119,7 +119,7 @@ export class XsollaStore {
             .addStringParam('offset', offset.toString())
             .build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.Json, null, result => {
+        let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.None, null, result => {
             let itemsList: StoreItemsList = JSON.parse(result);
             onComplete?.(itemsList);
         }, XsollaError.handleCommerceError(onError));
@@ -134,7 +134,7 @@ export class XsollaStore {
             .addStringParam('offset', offset.toString())
             .build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.Json, null, result => {
+        let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.None, null, result => {
             let groups: Array<XsollaItemGroup> = JSON.parse(result).groups;
             onComplete?.(groups);
         }, XsollaError.handleCommerceError(onError));
@@ -174,7 +174,7 @@ export class XsollaStore {
             .setPathParam('orderId', orderId.toString())
             .build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.Json, authToken, result => {
+        let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.None, authToken, result => {
             let jsonResult = JSON.parse(result);
             let checkOrderResult: CheckOrderResult = {
                 orderId: jsonResult.order_id,
@@ -193,7 +193,7 @@ export class XsollaStore {
             .setPathParam('currencySKU', currencySKU.toString())
             .build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, authToken, result => {
+        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.None, authToken, result => {
             let orderId: number  = JSON.parse(result).order_id;
             onComplete?.(orderId);
         }, XsollaError.handleCommerceError(onError));
