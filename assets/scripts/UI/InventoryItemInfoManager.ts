@@ -143,7 +143,7 @@ export class InventoryItemInfoManager extends Component {
         }
         let types: Array<string> = [];
         data.groups.forEach(x => types.push(x.name));
-        this.typesLabel.string = types.join(',');
+        this.typesLabel.string = types.join(', ');
 
         this.buyAgainContainer.active = isNonRenewingSubscription && storeItem != null;
         if(storeItem != null) {

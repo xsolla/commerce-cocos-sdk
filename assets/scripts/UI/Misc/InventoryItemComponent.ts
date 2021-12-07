@@ -77,11 +77,13 @@ export class InventoryItemComponent extends Component {
             this.timerLabel.string = InventoryItemComponent.expireText(expires_at);
         }
         assetManager.loadRemote<ImageAsset>(data.image_url, (err, imageAsset) => {
-            const spriteFrame = new SpriteFrame();
-            const texture = new Texture2D();
-            texture.image = imageAsset;
-            spriteFrame.texture = texture;
-            this.icon.spriteFrame = spriteFrame;
+            if(imageAsset != null) {
+                const spriteFrame = new SpriteFrame();
+                const texture = new Texture2D();
+                texture.image = imageAsset;
+                spriteFrame.texture = texture;
+                this.icon.spriteFrame = spriteFrame;
+            }
         });
     }
 
