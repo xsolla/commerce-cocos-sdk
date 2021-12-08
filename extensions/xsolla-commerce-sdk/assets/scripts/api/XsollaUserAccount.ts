@@ -146,8 +146,8 @@ export interface UserDetails {
 export interface UserDetailsUpdate {
     birthday?: string,
     gender?: string,
-    firstName?: string,
-    lastName?: string,
+    first_name?: string,
+    last_name?: string,
     nickname?: string
 }
 
