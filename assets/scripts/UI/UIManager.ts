@@ -27,6 +27,9 @@ export class UIManager extends Component {
     socialAuth: Node;
 
     @property(Node)
+    userAccountScreen: Node;
+
+    @property(Node)
     characterScreen: Node;
 
     @property(Node)
@@ -78,6 +81,11 @@ export class UIManager extends Component {
     openSocialAuth(currentScreen:Node) {
         currentScreen.active = false;
         this.socialAuth.active = true;
+    }
+
+    openUserAccountScreen(currentScreen:Node) {
+        currentScreen.active = false;
+        this.userAccountScreen.active = true;
     }
 
     openCharacterScreen(currentScreen:Node) {

@@ -15,6 +15,9 @@ export class MainMenuManager extends Component {
     logOutButton: Button;
 
     @property(Button)
+    userAccountButton: Button;
+
+    @property(Button)
     characterButton: Button;
 
     @property(Button)
@@ -33,6 +36,7 @@ export class MainMenuManager extends Component {
 
     addListeners() {
         this.logOutButton.node.on(Button.EventType.CLICK, this.onLogoutClicked, this);
+        this.userAccountButton.node.on(Button.EventType.CLICK, this.onUserAccountClicked, this);
         this.characterButton.node.on(Button.EventType.CLICK, this.onCharacterClicked, this);
         this.storeButton.node.on(Button.EventType.CLICK, this.onStoreClicked, this);
         this.inventoryButton.node.on(Button.EventType.CLICK, this.onInventoryClicked, this);
@@ -40,6 +44,7 @@ export class MainMenuManager extends Component {
 
     removeListeners() {
         this.logOutButton.node.off(Button.EventType.CLICK, this.onLogoutClicked, this);
+        this.userAccountButton.node.off(Button.EventType.CLICK, this.onUserAccountClicked, this);
         this.characterButton.node.off(Button.EventType.CLICK, this.onCharacterClicked, this);
         this.storeButton.node.off(Button.EventType.CLICK, this.onStoreClicked, this);
         this.inventoryButton.node.off(Button.EventType.CLICK, this.onInventoryClicked, this);
@@ -48,6 +53,10 @@ export class MainMenuManager extends Component {
     onLogoutClicked() {
         this.uiManager.openStartingScreen(this.node);
         TokenStorage.clearToken();
+    }
+
+    onUserAccountClicked() {
+        this.uiManager.openUserAccountScreen(this.node);
     }
 
     onCharacterClicked() {
