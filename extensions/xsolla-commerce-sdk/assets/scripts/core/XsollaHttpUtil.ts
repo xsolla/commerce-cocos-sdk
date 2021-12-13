@@ -6,7 +6,8 @@ import { SDK_VERSION } from '../XsollaConstants';
 export enum XsollaRequestContentType {
     None = 0,
     Json = 1,
-    WwwForm = 2
+    WwwForm = 2,
+    MultipartForm = 3
 }
 
 export class XsollaHttpUtil {
@@ -33,6 +34,11 @@ export class XsollaHttpUtil {
             } 
             case XsollaRequestContentType.WwwForm: {
                 request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                break;
+            } 
+            case XsollaRequestContentType.MultipartForm: {
+                let boundary: string = '---------------------------' + Date.now;
+                request.setRequestHeader('Content-Type', (`multipart/form-data; boundary =${boundary}`));
                 break;
             } 
             default: {
