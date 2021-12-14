@@ -104,6 +104,47 @@ export class XsollaUserAccount {
         }, XsollaError.handleLoginError(onError));
         request.send(JSON.stringify(body));
     }
+
+    static modifyUserProfilePicture(token:string, buffer?:Uint8Array, onComplete?:() => void, onError?:(error:LoginError) => void) {
+        if (buffer == null) {
+            onError?.({ code:'-1', description:'Picture is invalid.'});
+            return;
+        }
+        let boundary = '---------------------------' + Date.now.toString();
+        let beginBoundary = '\r\n--' + boundary + '\r\n';
+        let endBoundary = '\r\n--' + boundary + '--\r\n';
+
+        let pictureHeaderStr = 'Content-Disposition: form-data;';
+        pictureHeaderStr = pictureHeaderStr.concat('name=\"picture\";');
+        pictureHeaderStr = pictureHeaderStr.concat('filename=\"avatar.png\"');
+        pictureHeaderStr = pictureHeaderStr.concat('\r\nContent-Type: \r\n\r\n');
+
+        let length = beginBoundary.length + pictureHeaderStr.length + buffer.length + endBoundary.length;
+        let uploadContent:Uint8Array = new Uint8Array(length);
+        let offset = 0;
+        let enc = new TextEncoder(); 
+        uploadContent.set(enc.encode(beginBoundary));
+        offset += beginBoundary.length;
+        uploadContent.set(enc.encode(pictureHeaderStr), offset);
+        offset += pictureHeaderStr.length;
+        uploadContent.set(buffer, offset);
+        offset += buffer.length;
+        uploadContent.set(enc.encode(endBoundary), offset);
+
+        let url = new XsollaUrlBuilder('https://login.xsolla.com/api/users/me/picture').build();
+        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.MultipartForm, token, result => {
+            onComplete?.();
+        }, XsollaError.handleLoginError(onError));
+        request.send(uploadContent);
+    }
+
+    static removeProfilePicture(token:string, onComplete?:() => void, onError?:(error:LoginError) => void) {
+        let url = new XsollaUrlBuilder('https://login.xsolla.com/api/users/me/picture').build();
+        let request = XsollaHttpUtil.createRequest(url, 'DELETE', XsollaRequestContentType.None, token, result => {
+            onComplete?.();
+        }, XsollaError.handleLoginError(onError));
+        request.send();
+    }
 }
 
 export interface UserBan {

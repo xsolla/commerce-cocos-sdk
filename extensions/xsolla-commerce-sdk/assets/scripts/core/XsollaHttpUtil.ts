@@ -37,7 +37,7 @@ export class XsollaHttpUtil {
                 break;
             } 
             case XsollaRequestContentType.MultipartForm: {
-                let boundary: string = '---------------------------' + Date.now;
+                let boundary: string = '---------------------------' + Date.now.toString();
                 request.setRequestHeader('Content-Type', (`multipart/form-data; boundary =${boundary}`));
                 break;
             } 
