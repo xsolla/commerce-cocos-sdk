@@ -1,7 +1,7 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component, Node, Button, Prefab, ScrollView, instantiate, EditBox } from 'cc';
-import { UserAttribute, XsollaLogin } from 'db://xsolla-commerce-sdk/scripts/api/XsollaLogin';
+import { UserAttribute, XsollaAttributes } from 'db://xsolla-commerce-sdk/scripts/api/XsollaAttributes';
 import { TokenStorage } from '../Common/TokenStorage';
 import { AttributeItem } from './Misc/AttributeItem';
 import { UIManager } from './UIManager';
@@ -79,7 +79,7 @@ export class CharacterManager extends Component {
     openAllAttributesScreen(currentScreen:Node) {
         this.clearAttributesList();
 
-        XsollaLogin.getUserAttributes(TokenStorage.token.access_token, null, null, attributes => {
+        XsollaAttributes.getUserAttributes(TokenStorage.token.access_token, null, null, attributes => {
             this.populateAttributesList(attributes);
             this.attributesList.scrollToTop();
         }, err => {
@@ -117,7 +117,7 @@ export class CharacterManager extends Component {
             value: value
         };
 
-        XsollaLogin.updateUserAttributes(TokenStorage.token.access_token, [newAttrinbute], () => {
+        XsollaAttributes.updateUserAttributes(TokenStorage.token.access_token, [newAttrinbute], () => {
             this.openAllAttributesScreen(this.addAttributeScreen);
         }, err => {
             console.log(err);
@@ -126,7 +126,7 @@ export class CharacterManager extends Component {
     }
 
     removeAttribute(key:string, attributeItem:Node) {
-        XsollaLogin.removeUserAttributes(TokenStorage.token.access_token, [key], () => {
+        XsollaAttributes.removeUserAttributes(TokenStorage.token.access_token, [key], () => {
             this.attributesList.content.removeChild(attributeItem);
         }, err => {
             console.log(err);
