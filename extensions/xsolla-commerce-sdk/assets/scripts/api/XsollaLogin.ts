@@ -270,7 +270,7 @@ export class XsollaLogin {
         }
     }
 
-    static authByDeviceIdOauth(deviceName:string, deviceId:string, state?:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
+    private static authByDeviceIdOauth(deviceName:string, deviceId:string, state?:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
         let body = {
             device: deviceName,
             device_id: deviceId
@@ -289,7 +289,7 @@ export class XsollaLogin {
         request.send(JSON.stringify(body));
     }
 
-    static authByDeviceIdJwt(deviceName:string, deviceId:string, payload?:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
+    private static authByDeviceIdJwt(deviceName:string, deviceId:string, payload?:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
         let body = {
             device: deviceName,
             device_id: deviceId
