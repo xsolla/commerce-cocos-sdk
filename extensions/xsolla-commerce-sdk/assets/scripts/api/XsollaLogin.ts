@@ -336,7 +336,7 @@ export class XsollaLogin {
 
 export interface Token {
     access_token: string,
-    expire_in?: number,
+    expires_in?: number,
     refresh_token?: string,
     token_type: string
 }
