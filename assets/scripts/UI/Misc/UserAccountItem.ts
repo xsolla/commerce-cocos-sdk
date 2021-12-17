@@ -3,8 +3,8 @@
 import { _decorator, Component, Node, Button, EditBox, Label } from 'cc';
 const { ccclass, property } = _decorator;
  
-@ccclass('UserAccountItemComponent')
-export class UserAccountItemComponent extends Component {
+@ccclass('UserAccountItem')
+export class UserAccountItem extends Component {
     
     @property(Button)
     editButton: Button;
@@ -42,7 +42,7 @@ export class UserAccountItemComponent extends Component {
 
     onValueEdited() {
         if (this.valueEditBox.string != this.valueLabel.string) {
-            this.node.emit(UserAccountItemComponent.ITEM_EDIT, this.valueEditBox.string);
+            this.node.emit(UserAccountItem.ITEM_EDIT, this.valueEditBox.string);
         }
 
         this.editButton.node.active = true;

@@ -3,7 +3,7 @@
 import { _decorator, Component, Node, Button, Label } from 'cc';
 import { UserDetails, UserDetailsUpdate, XsollaUserAccount } from 'db://xsolla-commerce-sdk/scripts/api/XsollaUserAccount';
 import { TokenStorage } from '../../Common/TokenStorage';
-import { UserAccountItemComponent } from '../Misc/UserAccountItemComponent';
+import { UserAccountItem } from '../Misc/UserAccountItem';
 import { UIManager, UIScreenType } from '../UIManager';
 const { ccclass, property } = _decorator;
  
@@ -13,23 +13,23 @@ export class UserAccountManager extends Component {
     @property(Button)
     backButton: Button;
 
-    @property(UserAccountItemComponent)
-    emailItem: UserAccountItemComponent;
+    @property(UserAccountItem)
+    emailItem: UserAccountItem;
 
-    @property(UserAccountItemComponent)
-    usernameItem: UserAccountItemComponent;
+    @property(UserAccountItem)
+    usernameItem: UserAccountItem;
 
-    @property(UserAccountItemComponent)
-    nicknameItem: UserAccountItemComponent;
+    @property(UserAccountItem)
+    nicknameItem: UserAccountItem;
 
-    @property(UserAccountItemComponent)
-    firstNameItem: UserAccountItemComponent;
+    @property(UserAccountItem)
+    firstNameItem: UserAccountItem;
 
-    @property(UserAccountItemComponent)
-    lastNameItem: UserAccountItemComponent;
+    @property(UserAccountItem)
+    lastNameItem: UserAccountItem;
 
-    @property(UserAccountItemComponent)
-    phoneNumberItem: UserAccountItemComponent;
+    @property(UserAccountItem)
+    phoneNumberItem: UserAccountItem;
 
     start() {
 
@@ -109,17 +109,17 @@ export class UserAccountManager extends Component {
 
     addListeners () {
         this.backButton.node.on(Button.EventType.CLICK, this.onBackClicked, this);
-        this.nicknameItem.node.on(UserAccountItemComponent.ITEM_EDIT, this.onNicknameEdited, this);
-        this.firstNameItem.node.on(UserAccountItemComponent.ITEM_EDIT, this.onFirstNameEdited, this);
-        this.lastNameItem.node.on(UserAccountItemComponent.ITEM_EDIT, this.onLastNameEdited, this);
-        this.phoneNumberItem.node.on(UserAccountItemComponent.ITEM_EDIT, this.onPhoneNumberEdited, this);
+        this.nicknameItem.node.on(UserAccountItem.ITEM_EDIT, this.onNicknameEdited, this);
+        this.firstNameItem.node.on(UserAccountItem.ITEM_EDIT, this.onFirstNameEdited, this);
+        this.lastNameItem.node.on(UserAccountItem.ITEM_EDIT, this.onLastNameEdited, this);
+        this.phoneNumberItem.node.on(UserAccountItem.ITEM_EDIT, this.onPhoneNumberEdited, this);
     }
 
     removeListeners () {
         this.backButton.node.off(Button.EventType.CLICK, this.onBackClicked, this);
-        this.nicknameItem.node.off(UserAccountItemComponent.ITEM_EDIT, this.onNicknameEdited, this);
-        this.firstNameItem.node.off(UserAccountItemComponent.ITEM_EDIT, this.onFirstNameEdited, this);
-        this.lastNameItem.node.off(UserAccountItemComponent.ITEM_EDIT, this.onLastNameEdited, this);
-        this.phoneNumberItem.node.off(UserAccountItemComponent.ITEM_EDIT, this.onPhoneNumberEdited, this);
+        this.nicknameItem.node.off(UserAccountItem.ITEM_EDIT, this.onNicknameEdited, this);
+        this.firstNameItem.node.off(UserAccountItem.ITEM_EDIT, this.onFirstNameEdited, this);
+        this.lastNameItem.node.off(UserAccountItem.ITEM_EDIT, this.onLastNameEdited, this);
+        this.phoneNumberItem.node.off(UserAccountItem.ITEM_EDIT, this.onPhoneNumberEdited, this);
     }
 }
