@@ -3,7 +3,7 @@
 import { _decorator, Component, Node, Button, sys } from 'cc';
 import { XsollaLogin } from 'db://xsolla-commerce-sdk/scripts/api/XsollaLogin';
 import { TokenStorage } from '../Common/TokenStorage';
-import { UIManager } from './UIManager';
+import { UIManager, UIScreenType } from './UIManager';
 const { ccclass, property } = _decorator;
  
 @ccclass('StartingScreenManager')
@@ -52,7 +52,7 @@ export class StartingScreenManager extends Component {
     }
 
     onBasicAuthClicked() {
-        this.uiManager.openBasicAuth(this.node);
+        this.uiManager.openScreen(UIScreenType.BasicAuth, this.node);
     }
 
     onDeviceIdAuthClicked() {
@@ -70,7 +70,7 @@ export class StartingScreenManager extends Component {
         XsollaLogin.authByDeviceId(deviceName, deviceId, 'xsollatest', 'xsollatest', token => {
             console.log(token);
             TokenStorage.saveToken(token, true);
-            this.uiManager.openMainMenu(this.node);
+            this.uiManager.openScreen(UIScreenType.MainMenu, this.node);
         }, err => {
             console.log(err);
             this.uiManager.openErrorScreen(err.description);
@@ -78,10 +78,10 @@ export class StartingScreenManager extends Component {
     }
 
     onPasswordlessAuthClicked() {
-        this.uiManager.openPasswordlessAuth(this.node);
+        this.uiManager.openScreen(UIScreenType.PasswordlessAuth, this.node);
     }
 
     onSocialAuthClicked() {
-        this.uiManager.openSocialAuth(this.node);
+        this.uiManager.openScreen(UIScreenType.SocialAuth, this.node);
     }
 }

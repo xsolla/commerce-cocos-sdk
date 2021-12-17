@@ -6,7 +6,7 @@ import { Xsolla, XsollaAuthenticationType } from 'db://xsolla-commerce-sdk/scrip
 import { Token } from 'db://xsolla-commerce-sdk/scripts/api/XsollaLogin';
 import { TokenStorage } from '../Common/TokenStorage';
 import { SocialNetworkItem } from './Misc/SocialNetworkItem';
-import { UIManager } from './UIManager';
+import { UIManager, UIScreenType } from './UIManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('SocialNetworkItemData')
@@ -86,7 +86,7 @@ export class SocialAuthManager extends Component {
     }
 
     onBackClicked() {
-        this.uiManager.openStartingScreen(this.node);
+        this.uiManager.openScreen(UIScreenType.Starting, this.node);
     }
 
     populateSocialNetworksList() {
@@ -123,7 +123,7 @@ export class SocialAuthManager extends Component {
 
     handleSuccessfulSocialAuth(token:Token) {
         TokenStorage.saveToken(token, true);
-        this.uiManager.openMainMenu(this.node);
+        this.uiManager.openScreen(UIScreenType.MainMenu, this.node);
     }
 
     handleErrorSocialAuth(error:string) {

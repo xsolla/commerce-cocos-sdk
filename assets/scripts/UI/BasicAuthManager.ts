@@ -3,7 +3,7 @@
 import { _decorator, Component, Button, EditBox, Toggle } from 'cc';
 import { XsollaLogin } from 'db://xsolla-commerce-sdk/scripts/api/XsollaLogin';
 import { TokenStorage } from '../Common/TokenStorage';
-import { UIManager } from './UIManager';
+import { UIManager, UIScreenType } from './UIManager';
 const { ccclass, property } = _decorator;
  
 @ccclass('BasicAuthManager')
@@ -50,14 +50,14 @@ export class BasicAuthManager extends Component {
     }
 
     onBackClicked() {
-        this.uiManager.openStartingScreen(this.node);
+        this.uiManager.openScreen(UIScreenType.Starting, this.node);
     }
 
     onLoginClicked() {
         XsollaLogin.authByUsernameAndPassword(this.usernameEditBox.string, this.passwordEditBox.string, this.remeberMeToggle.isChecked, 'xsollatest', token => {
             console.log(token);
             TokenStorage.saveToken(token, this.remeberMeToggle.isChecked);
-            this.uiManager.openMainMenu(this.node);
+            this.uiManager.openScreen(UIScreenType.MainMenu, this.node);
         }, err => {
             console.log(err);
             this.uiManager.openErrorScreen(err.description);

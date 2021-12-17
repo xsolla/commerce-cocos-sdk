@@ -4,7 +4,7 @@ import { _decorator, Component, Node, Button, Label } from 'cc';
 import { UserDetails, UserDetailsUpdate, XsollaUserAccount } from 'db://xsolla-commerce-sdk/scripts/api/XsollaUserAccount';
 import { TokenStorage } from '../Common/TokenStorage';
 import { UserAccountItemComponent } from './Misc/UserAccountItemComponent';
-import { UIManager } from './UIManager';
+import { UIManager, UIScreenType } from './UIManager';
 const { ccclass, property } = _decorator;
  
 @ccclass('UserAccountManager')
@@ -48,7 +48,7 @@ export class UserAccountManager extends Component {
     }
 
     onBackClicked() {
-        this.uiManager.openMainMenu(this.node);
+        this.uiManager.openScreen(UIScreenType.MainMenu, this.node);
     }
 
     refreshUserAccountScreen() {

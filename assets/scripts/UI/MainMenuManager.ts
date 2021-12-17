@@ -2,7 +2,7 @@
 
 import { _decorator, Component, Button } from 'cc';
 import { TokenStorage } from '../Common/TokenStorage';
-import { UIManager } from './UIManager';
+import { UIManager, UIScreenType } from './UIManager';
 const { ccclass, property } = _decorator;
  
 @ccclass('MainMenuManager')
@@ -51,23 +51,23 @@ export class MainMenuManager extends Component {
     }
 
     onLogoutClicked() {
-        this.uiManager.openStartingScreen(this.node);
+        this.uiManager.openScreen(UIScreenType.Starting, this.node);
         TokenStorage.clearToken();
     }
 
     onUserAccountClicked() {
-        this.uiManager.openUserAccountScreen(this.node);
+        this.uiManager.openScreen(UIScreenType.UserAccount, this.node);
     }
 
     onCharacterClicked() {
-        this.uiManager.openCharacterScreen(this.node);
+        this.uiManager.openScreen(UIScreenType.Character, this.node);
     }
 
     onStoreClicked() {
-        this.uiManager.openStoreScreen(this.node);
+        this.uiManager.openScreen(UIScreenType.Store, this.node);
     }
 
     onInventoryClicked() {
-        this.uiManager.openInventoryScreen(this.node);
+        this.uiManager.openScreen(UIScreenType.Inventory, this.node);
     }
 }

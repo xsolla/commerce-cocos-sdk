@@ -3,7 +3,7 @@
 import { _decorator, Component, Node, Button, EditBox } from 'cc';
 import { XsollaLogin } from 'db://xsolla-commerce-sdk/scripts/api/XsollaLogin';
 import { TokenStorage } from '../Common/TokenStorage';
-import { UIManager } from './UIManager';
+import { UIManager, UIScreenType } from './UIManager';
 const { ccclass, property } = _decorator;
 
 enum AuthOption {
@@ -76,7 +76,7 @@ export class PasswordlessAuthManager extends Component {
         this.credentialsScreen.active = false;
         this.confirmationScreen.active = false;
 
-        this.uiManager.openStartingScreen(this.node);
+        this.uiManager.openScreen(UIScreenType.Starting, this.node);
     }
 
     phoneClicked() {
@@ -119,7 +119,7 @@ export class PasswordlessAuthManager extends Component {
             XsollaLogin.completeAuthByPhoneNumber(this.confirmationCodeEditBox.string, this._operationId, this.credentialsEditBox.string, token => {
                 console.log(token);
                 TokenStorage.saveToken(token, true);
-                this.uiManager.openMainMenu(this.node);
+                this.uiManager.openScreen(UIScreenType.MainMenu, this.node);
             }, err => {
                 console.log(err);
                 this.uiManager.openErrorScreen(err.description);
@@ -130,7 +130,7 @@ export class PasswordlessAuthManager extends Component {
             XsollaLogin.completeAuthByEmail(this.confirmationCodeEditBox.string, this._operationId, this.credentialsEditBox.string, token => {
                 console.log(token);
                 TokenStorage.saveToken(token, true);
-                this.uiManager.openMainMenu(this.node);
+                this.uiManager.openScreen(UIScreenType.MainMenu, this.node);
             }, err => {
                 console.log(err);
                 this.uiManager.openErrorScreen(err.description);

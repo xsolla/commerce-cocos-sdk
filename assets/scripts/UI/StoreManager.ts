@@ -7,7 +7,7 @@ import { TokenStorage } from '../Common/TokenStorage';
 import { StoreItemInfoManager } from './StoreItemInfoManager';
 import { GroupsItemComponent } from './Misc/GroupsItemComponent';
 import { StoreItemComponent } from './Misc/StoreItemComponent';
-import { UIManager } from './UIManager';
+import { UIManager, UIScreenType } from './UIManager';
 const { ccclass, property } = _decorator;
  
 @ccclass('StoreManager')
@@ -110,7 +110,7 @@ export class StoreManager extends Component {
     }
 
     onBackClicked() {
-        this.uiManager.openMainMenu(this.node);
+        this.uiManager.openScreen(UIScreenType.MainMenu, this.node);
     }
 
     openAllItemsScreen() {

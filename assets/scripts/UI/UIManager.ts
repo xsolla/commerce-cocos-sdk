@@ -7,6 +7,18 @@ import { ErrorScreenManager } from './ErrorScreenManager';
 import { MessageScreenManager } from './MessageScreenManager';
 import { CurrencyFormatter } from './Utils/CurrencyFormatter';
 const { ccclass, property } = _decorator;
+
+export enum UIScreenType {
+    Starting = 0,
+    BasicAuth = 1,
+    PasswordlessAuth = 2,
+    SocialAuth = 3,
+    MainMenu = 4,
+    Store = 5,
+    Inventory = 6,
+    Character = 7,
+    UserAccount = 8
+}
  
 @ccclass('UIManager')
 export class UIManager extends Component {
@@ -54,53 +66,50 @@ export class UIManager extends Component {
         UIManager.instance = this;
         CurrencyFormatter.init();
         if(TokenStorage.getToken() != null) {
-            this.openMainMenu(this.startingScreen);
+            this.openScreen(UIScreenType.MainMenu, this.startingScreen);
         }
     }
 
-    openStartingScreen(currentScreen:Node) {
+    openScreen(screenToOpen:UIScreenType, currentScreen:Node) {
         currentScreen.active = false;
-        this.startingScreen.active = true;
-    }
-
-    openBasicAuth(currentScreen:Node) {
-        currentScreen.active = false;
-        this.basicAuth.active = true;
-    }
-
-    openMainMenu(currentScreen:Node) {
-        currentScreen.active = false;
-        this.mainMenu.active = true;
-    }
-
-    openPasswordlessAuth(currentScreen:Node) {
-        currentScreen.active = false;
-        this.passwordlessAuth.active = true;
-    }
-
-    openSocialAuth(currentScreen:Node) {
-        currentScreen.active = false;
-        this.socialAuth.active = true;
-    }
-
-    openUserAccountScreen(currentScreen:Node) {
-        currentScreen.active = false;
-        this.userAccountScreen.active = true;
-    }
-
-    openCharacterScreen(currentScreen:Node) {
-        currentScreen.active = false;
-        this.characterScreen.active = true;
-    }
-
-    openStoreScreen(currentScreen:Node) {
-        currentScreen.active = false;
-        this.storeScreen.active = true;
-    }
-
-    openInventoryScreen(currentScreen:Node) {
-        currentScreen.active = false;
-        this.inventoryScreen.active = true;
+        switch(screenToOpen) {
+            case UIScreenType.Starting: {
+                this.startingScreen.active = true;
+                break;
+            }
+            case UIScreenType.BasicAuth: {
+                this.basicAuth.active = true;
+                break;
+            } 
+            case UIScreenType.PasswordlessAuth: {
+                this.passwordlessAuth.active = true;
+                break;
+            }
+            case UIScreenType.SocialAuth: {
+                this.socialAuth.active = true;
+                break;
+            }
+            case UIScreenType.MainMenu: {
+                this.mainMenu.active = true;
+                break;
+            }
+            case UIScreenType.Store: {
+                this.storeScreen.active = true;
+                break;
+            } 
+            case UIScreenType.Inventory: {
+                this.inventoryScreen.active = true;
+                break;
+            } 
+            case UIScreenType.Character: {
+                this.characterScreen.active = true;
+                break;
+            } 
+            case UIScreenType.UserAccount: {
+                this.userAccountScreen.active = true;
+                break;
+            } 
+        }
     }
 
     openErrorScreen(errorMessage: string, onClosed?: () => void) {

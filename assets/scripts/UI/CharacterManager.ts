@@ -4,7 +4,7 @@ import { _decorator, Component, Node, Button, Prefab, ScrollView, instantiate, E
 import { UserAttribute, XsollaAttributes } from 'db://xsolla-commerce-sdk/scripts/api/XsollaAttributes';
 import { TokenStorage } from '../Common/TokenStorage';
 import { AttributeItem } from './Misc/AttributeItem';
-import { UIManager } from './UIManager';
+import { UIManager, UIScreenType } from './UIManager';
 const { ccclass, property } = _decorator;
  
 @ccclass('CharacterManager')
@@ -57,7 +57,7 @@ export class CharacterManager extends Component {
     }
 
     onBackClicked() {
-        this.uiManager.openMainMenu(this.node);
+        this.uiManager.openScreen(UIScreenType.MainMenu, this.node);
     }
 
     onAddAttributeClicked() {

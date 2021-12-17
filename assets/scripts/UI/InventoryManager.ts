@@ -7,7 +7,7 @@ import { TokenStorage } from '../Common/TokenStorage';
 import { InventoryItemInfoManager } from './InventoryItemInfoManager';
 import { GroupsItemComponent } from './Misc/GroupsItemComponent';
 import { InventoryItemComponent } from './Misc/InventoryItemComponent';
-import { UIManager } from './UIManager';
+import { UIManager, UIScreenType } from './UIManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('InventoryManager')
@@ -102,7 +102,7 @@ export class InventoryManager extends Component {
     }
 
     onBackClicked() {
-        this.uiManager.openMainMenu(this.node);
+        this.uiManager.openScreen(UIScreenType.MainMenu, this.node);
     }
 
     openAllItemsScreen() {
