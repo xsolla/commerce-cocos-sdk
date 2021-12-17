@@ -1,12 +1,12 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component, Node, ScrollView, instantiate, Prefab, Button } from 'cc';
-import { StoreItem, XsollaStore} from 'db://xsolla-commerce-sdk/scripts/api/XsollaStore';
+import { StoreItem as XsollaStoreItem, XsollaStore} from 'db://xsolla-commerce-sdk/scripts/api/XsollaStore';
 import { InventoryItem, XsollaInventory } from 'db://xsolla-commerce-sdk/scripts/api/XsollaInventory';
 import { StoreItemInfoManager } from './StoreItemInfoManager';
 import { TokenStorage } from '../../Common/TokenStorage';
 import { UIManager, UIScreenType } from '../UIManager';
-import { StoreItemComponent } from '../Misc/StoreItemComponent';
+import { StoreItem } from '../Misc/StoreItem';
 import { GroupsItem } from '../Misc/GroupsItem';
 const { ccclass, property } = _decorator;
  
@@ -43,7 +43,7 @@ export class StoreManager extends Component {
     @property(Prefab)
     groupItemPrefab: Prefab;
 
-    storeItems: Array<StoreItem>;
+    storeItems: Array<XsollaStoreItem>;
 
     inventoryItems: Array<InventoryItem>;
 
@@ -141,9 +141,8 @@ export class StoreManager extends Component {
                 let storeItem = instantiate(this.storeItemPrefab);
                 this.itemsList.content.addChild(storeItem);
                 let itemData = this.storeItems[i];
-                let storeItemComponent = storeItem.getComponent(StoreItemComponent);
                 let isItemInInventory = this.inventoryItems.find(x => x.sku == this.storeItems[i].sku) != null;
-                storeItemComponent.init(itemData, this, isItemInInventory);
+                storeItem.getComponent(StoreItem).init(itemData, this, isItemInInventory);
             }
         }
     }
@@ -185,7 +184,7 @@ export class StoreManager extends Component {
         this.populateItemsList();
     }
 
-    showItemInfo(item: StoreItem) {
+    showItemInfo(item: XsollaStoreItem) {
         let isBundle = item.bundle_type && item.bundle_type.length > 0;
         if(isBundle) {
             XsollaStore.getSpecifiedBundle(item.sku, bundle => {
@@ -202,7 +201,7 @@ export class StoreManager extends Component {
         this.openItemInfoScreen();
     }
 
-    isStoreIteminBattlepassGroup(storeItem:StoreItem) {
+    isStoreIteminBattlepassGroup(storeItem: XsollaStoreItem) {
         let found = storeItem.groups.find(x => x.name == '#BATTLEPASS#');
         return found != null;
     }

@@ -1,14 +1,14 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component, Node, Sprite, Label, assetManager, ImageAsset, SpriteFrame, Texture2D, Button, UITransform } from 'cc';
-import { StoreItem } from 'db://xsolla-commerce-sdk/scripts/api/XsollaStore';
+import { StoreItem as XsollaStoreItem } from 'db://xsolla-commerce-sdk/scripts/api/XsollaStore';
 import { CurrencyFormatter } from '../../Common/CurrencyFormatter';
 import { PurchaseUtil } from '../../Common/PurchaseUtil';
 import { StoreManager } from '../Screens/StoreManager';
 const { ccclass, property } = _decorator;
  
-@ccclass('StoreItemComponent')
-export class StoreItemComponent extends Component {
+@ccclass('StoreItem')
+export class StoreItem extends Component {
 
     @property(Sprite)
     icon: Sprite;
@@ -42,7 +42,7 @@ export class StoreItemComponent extends Component {
 
     private _parent: StoreManager;
 
-    private _data: StoreItem;
+    private _data: XsollaStoreItem;
 
     private _isVirtualCurrency: boolean;
 
@@ -64,7 +64,7 @@ export class StoreItemComponent extends Component {
         this.previewBtn.node.off(Button.EventType.CLICK, this.onInfoClicked, this);
     }
 
-    init(data: StoreItem, parent:StoreManager, isItemInInventory: boolean) {
+    init(data: XsollaStoreItem, parent:StoreManager, isItemInInventory: boolean) {
         this._parent = parent;
         this._data = data;
         this.timerContainer.active = data.virtual_item_type == 'non_renewing_subscription';
