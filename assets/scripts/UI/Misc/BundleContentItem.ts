@@ -4,8 +4,8 @@ import { _decorator, Component, Node, Sprite, Label, assetManager, ImageAsset, S
 import { StoreBundleContent } from 'db://xsolla-commerce-sdk/scripts/api/XsollaStore';
 const { ccclass, property } = _decorator;
  
-@ccclass('BundleItemComponent')
-export class BundleItemComponent extends Component {
+@ccclass('BundleContentItem')
+export class BundleContentItem extends Component {
 
     @property(Sprite)
     icon: Sprite;

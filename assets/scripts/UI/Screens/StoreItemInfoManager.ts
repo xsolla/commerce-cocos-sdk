@@ -4,7 +4,7 @@ import { _decorator, Component, Node, Label, Sprite, assetManager, ImageAsset, S
 import { StoreBundleContent, StoreItem } from 'db://xsolla-commerce-sdk/scripts/api/XsollaStore';
 import { CurrencyFormatter } from '../../Common/CurrencyFormatter';
 import { PurchaseUtil } from '../../Common/PurchaseUtil';
-import { BundleItemComponent } from '../Misc/BundleItemComponent';
+import { BundleContentItem } from '../Misc/BundleContentItem';
 import { StoreManager } from './StoreManager';
 const { ccclass, property } = _decorator;
 
@@ -115,8 +115,7 @@ export class StoreItemInfoManager extends Component {
             for(let bundle of bundleContent) {
                 let bundleItem = instantiate(this._parent.bundleItemPrefab);
                 this.bundleList.addChild(bundleItem);
-                let bundleItemComponent = bundleItem.getComponent(BundleItemComponent);
-                bundleItemComponent.init(bundle);
+                bundleItem.getComponent(BundleContentItem).init(bundle);
             }
         }
     }
