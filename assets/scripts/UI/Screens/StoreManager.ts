@@ -7,7 +7,7 @@ import { StoreItemInfoManager } from './StoreItemInfoManager';
 import { TokenStorage } from '../../Common/TokenStorage';
 import { UIManager, UIScreenType } from '../UIManager';
 import { StoreItemComponent } from '../Misc/StoreItemComponent';
-import { GroupsItemComponent } from '../Misc/GroupsItemComponent';
+import { GroupsItem } from '../Misc/GroupsItem';
 const { ccclass, property } = _decorator;
  
 @ccclass('StoreManager')
@@ -165,26 +165,22 @@ export class StoreManager extends Component {
         for(let groupData of this.itemGroups) {
             let groupItem = instantiate(this.groupItemPrefab);
             this.groupsList.content.addChild(groupItem);
-            let groupItemComponent = groupItem.getComponent(GroupsItemComponent);
-            groupItem.on(GroupsItemComponent.GROUP_CLICK, this.groupSelected, this);
-            groupItemComponent.init(groupData[0], groupData[1]);
+            groupItem.getComponent(GroupsItem).init(groupData[0], groupData[1]);
+            groupItem.on(GroupsItem.GROUP_CLICK, this.groupSelected, this);
         }
     }
 
     destroyGroups() {
         for(let groupItem of this.groupsList.content.children) {
-            groupItem.off(GroupsItemComponent.GROUP_CLICK, this.groupSelected, this);
+            groupItem.off(GroupsItem.GROUP_CLICK, this.groupSelected, this);
         }
         this.groupsList.content.destroyAllChildren();
     }
 
     groupSelected(groupId: string) {
         this.selectedGroup = groupId;
-        for(let groupItem of this.groupsList.content.children) {
-            let groupItemComponent = groupItem.getComponent(GroupsItemComponent);
-            if(groupItemComponent) {
-                groupItemComponent.onSelected(groupItemComponent.groupId == this.selectedGroup);
-            }
+        for(let groupItem of this.groupsList.content.getComponentsInChildren(GroupsItem)) {
+            groupItem.select(groupItem.groupId == this.selectedGroup);
         }
         this.populateItemsList();
     }

@@ -3,8 +3,8 @@
 import { _decorator, Component, Label, Sprite, Color, Button } from 'cc';
 const { ccclass, property } = _decorator;
  
-@ccclass('GroupsItemComponent')
-export class GroupsItemComponent extends Component {
+@ccclass('GroupsItem')
+export class GroupsItem extends Component {
 
     @property(Label)
     groupNameLabel: Label;
@@ -49,10 +49,10 @@ export class GroupsItemComponent extends Component {
         if(this.isSelected) {
             return;
         }
-        this.node.emit(GroupsItemComponent.GROUP_CLICK, this.groupId);
+        this.node.emit(GroupsItem.GROUP_CLICK, this.groupId);
     }
 
-    onSelected(isSelected: boolean) {
+    select(isSelected: boolean) {
         this.isSelected = isSelected;
         this.groupNameLabel.color = this.isSelected ? this._redColor : this._whiteColor;
         this.line.node.active = this.isSelected;

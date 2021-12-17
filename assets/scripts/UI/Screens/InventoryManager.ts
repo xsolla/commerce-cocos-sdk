@@ -4,7 +4,7 @@ import { _decorator, Component, Node, ScrollView, Prefab, instantiate, Button } 
 import { InventoryItem, SubscriptionItem, XsollaInventory} from 'db://xsolla-commerce-sdk/scripts/api/XsollaInventory';
 import { StoreItem, XsollaStore } from 'db://xsolla-commerce-sdk/scripts/api/XsollaStore';
 import { TokenStorage } from '../../Common/TokenStorage';
-import { GroupsItemComponent } from '../Misc/GroupsItemComponent';
+import { GroupsItem } from '../Misc/GroupsItem';
 import { InventoryItemComponent } from '../Misc/InventoryItemComponent';
 import { UIManager, UIScreenType } from '../UIManager';
 import { InventoryItemInfoManager } from './InventoryItemInfoManager';
@@ -159,26 +159,22 @@ export class InventoryManager extends Component {
         for(let groupData of this.itemGroups) {
             let groupItem = instantiate(this.groupItemPrefab);
             this.groupsList.content.addChild(groupItem);
-            let groupItemComponent = groupItem.getComponent(GroupsItemComponent);
-            groupItem.on(GroupsItemComponent.GROUP_CLICK, this.groupSelected, this);
-            groupItemComponent.init(groupData[0], groupData[1]);
+            groupItem.getComponent(GroupsItem).init(groupData[0], groupData[1]);
+            groupItem.on(GroupsItem.GROUP_CLICK, this.groupSelected, this);
         }
     }
 
     destroyGroups() {
         for(let groupItem of this.groupsList.content.children) {
-            groupItem.off(GroupsItemComponent.GROUP_CLICK, this.groupSelected, this);
+            groupItem.off(GroupsItem.GROUP_CLICK, this.groupSelected, this);
         }
         this.groupsList.content.destroyAllChildren();
     }
 
     groupSelected(groupId: string) {
         this.selectedGroup = groupId;
-        for(let groupItem of this.groupsList.content.children) {
-            let groupItemComponent = groupItem.getComponent(GroupsItemComponent);
-            if(groupItemComponent) {
-                groupItemComponent.onSelected(groupItemComponent.groupId == this.selectedGroup);
-            }
+        for(let groupItem of this.groupsList.content.getComponentsInChildren(GroupsItem)) {
+            groupItem.select(groupItem.groupId == this.selectedGroup);
         }
         this.populateItemsList();
     }
