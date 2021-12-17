@@ -21,8 +21,7 @@ export class XsollaStore {
             let itemsData:StoreItemsData = JSON.parse(result);
             itemsData.groupIds = new Set<string>();
             for(let item of itemsData.items) {
-                for(let itemGroup of item.groups) {
-                    
+                for(let itemGroup of item.groups) {                    
                     itemsData.groupIds.add(itemGroup.external_id);
                 }
             }
@@ -162,7 +161,6 @@ export class XsollaStore {
                 token: jsonResult.token,
                 orderId: jsonResult.order_id
             };
-
             onComplete?.(tokenResult);
         }, XsollaError.handleCommerceError(onError));
         request.send(JSON.stringify(body));

@@ -10,7 +10,6 @@ export class XsollaUrlBuilder {
     }
 
     build() : string {
-
         for (var key in this._pathParameters) {
             let paramPlaceholder = '{' + key + '}';
             if(this._url.includes(paramPlaceholder)) {
@@ -42,8 +41,7 @@ export class XsollaUrlBuilder {
     addArrayParam(paramName:string, paramValueArray:Array<string>, ignoreEmpty:boolean = true, asOneParam:boolean = false) : XsollaUrlBuilder {
         if (ignoreEmpty && paramValueArray.length == 0) {
             return this;
-        }
-    
+        }    
         if (asOneParam) {
             let additionalFieldsString = paramValueArray.join(',');
             additionalFieldsString = additionalFieldsString.substring(0, additionalFieldsString.length - 2);
@@ -53,8 +51,7 @@ export class XsollaUrlBuilder {
             for (var param in paramValueArray) {
                 this.addStringParam(paramName, param, ignoreEmpty);
             }
-        }
-    
+        }    
         return this;
     }
 

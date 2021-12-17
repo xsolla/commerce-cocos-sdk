@@ -47,8 +47,7 @@ export class XsollaUserAccount {
             else {
                 // phone number is not set
                 onComplete?.('');
-            }
-            
+            }            
         }, XsollaError.handleLoginError(onError));
         request.send();
     }
@@ -140,6 +139,7 @@ export class XsollaUserAccount {
 
     static removeProfilePicture(token:string, onComplete?:() => void, onError?:(error:LoginError) => void) {
         let url = new XsollaUrlBuilder('https://login.xsolla.com/api/users/me/picture').build();
+        
         let request = XsollaHttpUtil.createRequest(url, 'DELETE', XsollaRequestContentType.None, token, result => {
             onComplete?.();
         }, XsollaError.handleLoginError(onError));

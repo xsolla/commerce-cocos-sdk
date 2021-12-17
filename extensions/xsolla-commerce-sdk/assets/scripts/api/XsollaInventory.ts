@@ -40,7 +40,7 @@ export class XsollaInventory {
         let body = {
             sku: sku
         };
-        body['quantity'] = quantity == null ||quantity == 0 ? null : quantity;
+        body['quantity'] = quantity == null || quantity == 0 ? null : quantity;
         body['instance_id'] = instanceID == null || instanceID == '' ? null : instanceID;
 
         let url = new XsollaUrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/user/inventory/item/consume')
