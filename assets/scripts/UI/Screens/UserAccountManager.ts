@@ -2,9 +2,9 @@
 
 import { _decorator, Component, Node, Button, Label } from 'cc';
 import { UserDetails, UserDetailsUpdate, XsollaUserAccount } from 'db://xsolla-commerce-sdk/scripts/api/XsollaUserAccount';
-import { TokenStorage } from '../Common/TokenStorage';
-import { UserAccountItemComponent } from './Misc/UserAccountItemComponent';
-import { UIManager, UIScreenType } from './UIManager';
+import { TokenStorage } from '../../Common/TokenStorage';
+import { UserAccountItemComponent } from '../Misc/UserAccountItemComponent';
+import { UIManager, UIScreenType } from '../UIManager';
 const { ccclass, property } = _decorator;
  
 @ccclass('UserAccountManager')

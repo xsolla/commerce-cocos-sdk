@@ -2,12 +2,12 @@
 import { _decorator, Component, Node, Sprite, Label, Button, Color, ImageAsset, assetManager, SpriteFrame, Texture2D } from 'cc';
 import { InventoryItem, XsollaInventory } from 'db://xsolla-commerce-sdk/scripts/api/XsollaInventory';
 import { StoreItem } from 'db://xsolla-commerce-sdk/scripts/api/XsollaStore';
-import { TokenStorage } from '../Common/TokenStorage';
+import { CurrencyFormatter } from '../../Common/CurrencyFormatter';
+import { PurchaseUtil } from '../../Common/PurchaseUtil';
+import { TokenStorage } from '../../Common/TokenStorage';
+import { InventoryItemComponent } from '../Misc/InventoryItemComponent';
+import { UIManager } from '../UIManager';
 import { InventoryManager } from './InventoryManager';
-import { InventoryItemComponent } from './Misc/InventoryItemComponent';
-import { UIManager } from './UIManager';
-import { CurrencyFormatter } from './Utils/CurrencyFormatter';
-import { PurchaseUtil } from './Utils/PurchaseUtil';
 const { ccclass, property } = _decorator;
  
 @ccclass('InventoryItemInfoManager')

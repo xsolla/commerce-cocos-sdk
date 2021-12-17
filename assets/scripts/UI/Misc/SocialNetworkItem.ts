@@ -1,7 +1,7 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component, Node, Label, Button, Sprite, Color } from 'cc';
-import { SocialAuthManager, SocialNetworkItemData } from '../SocialAuthManager';
+import { SocialAuthManager, SocialNetworkItemData } from '../Screens/SocialAuthManager';
 const { ccclass, property } = _decorator;
  
 @ccclass('SocialNetworkItem')

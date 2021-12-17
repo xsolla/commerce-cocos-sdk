@@ -2,10 +2,10 @@
 
 import { _decorator, Component, Node, Label, Sprite, assetManager, ImageAsset, SpriteFrame, Texture2D, instantiate, Button } from 'cc';
 import { StoreBundleContent, StoreItem } from 'db://xsolla-commerce-sdk/scripts/api/XsollaStore';
-import { BundleItemComponent } from './Misc/BundleItemComponent';
+import { CurrencyFormatter } from '../../Common/CurrencyFormatter';
+import { PurchaseUtil } from '../../Common/PurchaseUtil';
+import { BundleItemComponent } from '../Misc/BundleItemComponent';
 import { StoreManager } from './StoreManager';
-import { CurrencyFormatter } from './Utils/CurrencyFormatter';
-import { PurchaseUtil } from './Utils/PurchaseUtil';
 const { ccclass, property } = _decorator;
 
 @ccclass('StoreItemInfoManager')

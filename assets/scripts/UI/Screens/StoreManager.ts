@@ -3,11 +3,11 @@
 import { _decorator, Component, Node, ScrollView, instantiate, Prefab, Button } from 'cc';
 import { StoreItem, XsollaStore} from 'db://xsolla-commerce-sdk/scripts/api/XsollaStore';
 import { InventoryItem, XsollaInventory } from 'db://xsolla-commerce-sdk/scripts/api/XsollaInventory';
-import { TokenStorage } from '../Common/TokenStorage';
 import { StoreItemInfoManager } from './StoreItemInfoManager';
-import { GroupsItemComponent } from './Misc/GroupsItemComponent';
-import { StoreItemComponent } from './Misc/StoreItemComponent';
-import { UIManager, UIScreenType } from './UIManager';
+import { TokenStorage } from '../../Common/TokenStorage';
+import { UIManager, UIScreenType } from '../UIManager';
+import { StoreItemComponent } from '../Misc/StoreItemComponent';
+import { GroupsItemComponent } from '../Misc/GroupsItemComponent';
 const { ccclass, property } = _decorator;
  
 @ccclass('StoreManager')

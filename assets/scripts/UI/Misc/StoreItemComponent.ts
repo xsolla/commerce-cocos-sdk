@@ -2,9 +2,9 @@
 
 import { _decorator, Component, Node, Sprite, Label, assetManager, ImageAsset, SpriteFrame, Texture2D, Button, UITransform } from 'cc';
 import { StoreItem } from 'db://xsolla-commerce-sdk/scripts/api/XsollaStore';
-import { StoreManager } from '../StoreManager';
-import { CurrencyFormatter } from '../Utils/CurrencyFormatter';
-import { PurchaseUtil } from '../Utils/PurchaseUtil';
+import { CurrencyFormatter } from '../../Common/CurrencyFormatter';
+import { PurchaseUtil } from '../../Common/PurchaseUtil';
+import { StoreManager } from '../Screens/StoreManager';
 const { ccclass, property } = _decorator;
  
 @ccclass('StoreItemComponent')

@@ -2,7 +2,7 @@
 
 import { _decorator, Component, Node, Label, Event, Button } from 'cc';
 import { UserAttribute } from 'db://xsolla-commerce-sdk/scripts/api/XsollaAttributes';
-import { CharacterManager } from '../CharacterManager';
+import { CharacterManager } from '../Screens/CharacterManager';
 const { ccclass, property } = _decorator;
  
 @ccclass('AttributeItem')

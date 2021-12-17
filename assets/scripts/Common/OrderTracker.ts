@@ -3,9 +3,9 @@
 import { XsollaStore } from "db://xsolla-commerce-sdk/scripts/api/XsollaStore";
 import { XsollaUrlBuilder } from "db://xsolla-commerce-sdk/scripts/core/XsollaUrlBuilder";
 import { Xsolla } from "db://xsolla-commerce-sdk/scripts/Xsolla";
-import { TokenStorage } from "../../Common/TokenStorage";
-import { UIManager } from "../UIManager";
-import { XsollaOrderCheckObject } from "../XsollaOrderCheckObject";
+import { UIManager } from "../UI/UIManager";
+import { TokenStorage } from "./TokenStorage";
+import { XsollaOrderCheckObject } from "./XsollaOrderCheckObject";
 
 export class OrderTracker {
     static shortPollingCheckOrder(orderId: number, onSuccessPurchase:() => void) {

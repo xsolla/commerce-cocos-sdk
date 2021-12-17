@@ -1,6 +1,6 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
-import { XsollaOrderStatus } from "./Utils/OrderTracker";
+import { XsollaOrderStatus } from "./OrderTracker";
 
 export class XsollaOrderCheckObject {
 

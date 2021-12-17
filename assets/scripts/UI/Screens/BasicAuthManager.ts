@@ -2,8 +2,8 @@
 
 import { _decorator, Component, Button, EditBox, Toggle } from 'cc';
 import { XsollaLogin } from 'db://xsolla-commerce-sdk/scripts/api/XsollaLogin';
-import { TokenStorage } from '../Common/TokenStorage';
-import { UIManager, UIScreenType } from './UIManager';
+import { TokenStorage } from '../../Common/TokenStorage';
+import { UIManager, UIScreenType } from '../UIManager';
 const { ccclass, property } = _decorator;
  
 @ccclass('BasicAuthManager')

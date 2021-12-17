@@ -2,9 +2,9 @@
 
 import { _decorator, Component, Node, Button, Prefab, ScrollView, instantiate, EditBox } from 'cc';
 import { UserAttribute, XsollaAttributes } from 'db://xsolla-commerce-sdk/scripts/api/XsollaAttributes';
-import { TokenStorage } from '../Common/TokenStorage';
-import { AttributeItem } from './Misc/AttributeItem';
-import { UIManager, UIScreenType } from './UIManager';
+import { TokenStorage } from '../../Common/TokenStorage';
+import { AttributeItem } from '../Misc/AttributeItem';
+import { UIManager, UIScreenType } from '../UIManager';
 const { ccclass, property } = _decorator;
  
 @ccclass('CharacterManager')

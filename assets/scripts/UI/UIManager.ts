@@ -1,11 +1,12 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component, Node, find } from 'cc';
+import { CurrencyFormatter } from '../Common/CurrencyFormatter';
 import { TokenStorage } from '../Common/TokenStorage';
-import { ConfirmationScreenManager } from './ConfirmationScreenManager';
-import { ErrorScreenManager } from './ErrorScreenManager';
-import { MessageScreenManager } from './MessageScreenManager';
-import { CurrencyFormatter } from './Utils/CurrencyFormatter';
+import { ConfirmationScreenManager } from './Popups/ConfirmationScreenManager';
+import { ErrorScreenManager } from './Popups/ErrorScreenManager';
+import { MessageScreenManager } from './Popups/MessageScreenManager';
+
 const { ccclass, property } = _decorator;
 
 export enum UIScreenType {

@@ -4,9 +4,9 @@ import { _decorator, Component, Node, Button, EditBox, EventHandler, sys, System
 import { XsollaLogin } from 'db://xsolla-commerce-sdk/scripts/api/XsollaLogin';
 import { Xsolla, XsollaAuthenticationType } from 'db://xsolla-commerce-sdk/scripts/Xsolla';
 import { Token } from 'db://xsolla-commerce-sdk/scripts/api/XsollaLogin';
-import { TokenStorage } from '../Common/TokenStorage';
-import { SocialNetworkItem } from './Misc/SocialNetworkItem';
-import { UIManager, UIScreenType } from './UIManager';
+import { UIManager, UIScreenType } from '../UIManager';
+import { SocialNetworkItem } from '../Misc/SocialNetworkItem';
+import { TokenStorage } from '../../Common/TokenStorage';
 const { ccclass, property } = _decorator;
 
 @ccclass('SocialNetworkItemData')

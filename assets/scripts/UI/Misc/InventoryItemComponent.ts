@@ -2,7 +2,7 @@
 
 import { _decorator, Component, Node, Sprite, Label, Button, ImageAsset, SpriteFrame, Texture2D, assetManager, Color } from 'cc';
 import { InventoryItem } from 'db://xsolla-commerce-sdk/scripts/api/XsollaInventory';
-import { InventoryManager } from '../InventoryManager';
+import { InventoryManager } from '../Screens/InventoryManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('InventoryItemComponent')
