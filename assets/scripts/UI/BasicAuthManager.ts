@@ -9,9 +9,6 @@ const { ccclass, property } = _decorator;
 @ccclass('BasicAuthManager')
 export class BasicAuthManager extends Component {
 
-    @property(UIManager)
-    uiManager: UIManager;
-
     @property(Button)
     backButton: Button;
 
@@ -50,17 +47,17 @@ export class BasicAuthManager extends Component {
     }
 
     onBackClicked() {
-        this.uiManager.openScreen(UIScreenType.Starting, this.node);
+        UIManager.instance.openScreen(UIScreenType.Starting, this.node);
     }
 
     onLoginClicked() {
         XsollaLogin.authByUsernameAndPassword(this.usernameEditBox.string, this.passwordEditBox.string, this.remeberMeToggle.isChecked, 'xsollatest', token => {
             console.log(token);
             TokenStorage.saveToken(token, this.remeberMeToggle.isChecked);
-            this.uiManager.openScreen(UIScreenType.MainMenu, this.node);
+            UIManager.instance.openScreen(UIScreenType.MainMenu, this.node);
         }, err => {
             console.log(err);
-            this.uiManager.openErrorScreen(err.description);
+            UIManager.instance.openErrorScreen(err.description);
         })
     }
 

@@ -22,9 +22,6 @@ export class SocialNetworkItemData {
 @ccclass('SocialAuthManager')
 export class SocialAuthManager extends Component {
 
-    @property(UIManager)
-    uiManager: UIManager;
-
     @property(Button)
     backButton: Button;
 
@@ -86,7 +83,7 @@ export class SocialAuthManager extends Component {
     }
 
     onBackClicked() {
-        this.uiManager.openScreen(UIScreenType.Starting, this.node);
+        UIManager.instance.openScreen(UIScreenType.Starting, this.node);
     }
 
     populateSocialNetworksList() {
@@ -123,12 +120,12 @@ export class SocialAuthManager extends Component {
 
     handleSuccessfulSocialAuth(token:Token) {
         TokenStorage.saveToken(token, true);
-        this.uiManager.openScreen(UIScreenType.MainMenu, this.node);
+        UIManager.instance.openScreen(UIScreenType.MainMenu, this.node);
     }
 
     handleErrorSocialAuth(error:string) {
         console.log(error);
-        this.uiManager.openErrorScreen(error);
+        UIManager.instance.openErrorScreen(error);
     }
 
     onSocialNetworkFilterChanged() {

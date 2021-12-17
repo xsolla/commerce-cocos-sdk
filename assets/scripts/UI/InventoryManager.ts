@@ -13,9 +13,6 @@ const { ccclass, property } = _decorator;
 @ccclass('InventoryManager')
 export class InventoryManager extends Component {
 
-    @property(UIManager)
-    uiManager: UIManager;
-
     @property(Button)
     backBtn: Button;
 
@@ -89,20 +86,20 @@ export class InventoryManager extends Component {
                     }
                 }, error => {
                     console.log(error);
-                    this.uiManager.openErrorScreen(error.description);
+                    UIManager.instance.openErrorScreen(error.description);
                 });
             }, error => {
                 console.log(error);
-                this.uiManager.openErrorScreen(error.description);
+                UIManager.instance.openErrorScreen(error.description);
             });
         }, error => {
             console.log(error);
-            this.uiManager.openErrorScreen(error.description);
+            UIManager.instance.openErrorScreen(error.description);
         });
     }
 
     onBackClicked() {
-        this.uiManager.openScreen(UIScreenType.MainMenu, this.node);
+        UIManager.instance.openScreen(UIScreenType.MainMenu, this.node);
     }
 
     openAllItemsScreen() {

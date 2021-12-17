@@ -14,9 +14,6 @@ enum AuthOption {
 @ccclass('PasswordlessAuthManager')
 export class PasswordlessAuthManager extends Component {
 
-    @property(UIManager)
-    uiManager: UIManager;
-
     @property(Node)
     authOptionsScreen: Node;
 
@@ -76,7 +73,7 @@ export class PasswordlessAuthManager extends Component {
         this.credentialsScreen.active = false;
         this.confirmationScreen.active = false;
 
-        this.uiManager.openScreen(UIScreenType.Starting, this.node);
+        UIManager.instance.openScreen(UIScreenType.Starting, this.node);
     }
 
     phoneClicked() {
@@ -98,7 +95,7 @@ export class PasswordlessAuthManager extends Component {
                 this.openConfirmationScreen(this.credentialsScreen);
             }, err => {
                 console.log(err);
-                this.uiManager.openErrorScreen(err.description);
+                UIManager.instance.openErrorScreen(err.description);
             });
             return;
         }
@@ -108,7 +105,7 @@ export class PasswordlessAuthManager extends Component {
                 this.openConfirmationScreen(this.credentialsScreen);
             }, err => {
                 console.log(err);
-                this.uiManager.openErrorScreen(err.description);
+                UIManager.instance.openErrorScreen(err.description);
             });
             return;
         }
@@ -119,10 +116,10 @@ export class PasswordlessAuthManager extends Component {
             XsollaLogin.completeAuthByPhoneNumber(this.confirmationCodeEditBox.string, this._operationId, this.credentialsEditBox.string, token => {
                 console.log(token);
                 TokenStorage.saveToken(token, true);
-                this.uiManager.openScreen(UIScreenType.MainMenu, this.node);
+                UIManager.instance.openScreen(UIScreenType.MainMenu, this.node);
             }, err => {
                 console.log(err);
-                this.uiManager.openErrorScreen(err.description);
+                UIManager.instance.openErrorScreen(err.description);
             });
             return;
         }
@@ -130,10 +127,10 @@ export class PasswordlessAuthManager extends Component {
             XsollaLogin.completeAuthByEmail(this.confirmationCodeEditBox.string, this._operationId, this.credentialsEditBox.string, token => {
                 console.log(token);
                 TokenStorage.saveToken(token, true);
-                this.uiManager.openScreen(UIScreenType.MainMenu, this.node);
+                UIManager.instance.openScreen(UIScreenType.MainMenu, this.node);
             }, err => {
                 console.log(err);
-                this.uiManager.openErrorScreen(err.description);
+                UIManager.instance.openErrorScreen(err.description);
             });
             return;
         }

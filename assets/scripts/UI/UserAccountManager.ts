@@ -10,9 +10,6 @@ const { ccclass, property } = _decorator;
 @ccclass('UserAccountManager')
 export class UserAccountManager extends Component {
 
-    @property(UIManager)
-    uiManager: UIManager;
-
     @property(Button)
     backButton: Button;
 
@@ -48,7 +45,7 @@ export class UserAccountManager extends Component {
     }
 
     onBackClicked() {
-        this.uiManager.openScreen(UIScreenType.MainMenu, this.node);
+        UIManager.instance.openScreen(UIScreenType.MainMenu, this.node);
     }
 
     refreshUserAccountScreen() {
@@ -56,7 +53,7 @@ export class UserAccountManager extends Component {
             this.fillUserAccountItems(userDetails);
         }, err => {
             console.log(err);
-            this.uiManager.openErrorScreen(err.description);
+            UIManager.instance.openErrorScreen(err.description);
         });
     }
 
@@ -65,7 +62,7 @@ export class UserAccountManager extends Component {
             this.fillUserAccountItems(userDetails);
         }, err => {
             console.log(err);
-            this.uiManager.openErrorScreen(err.description);
+            UIManager.instance.openErrorScreen(err.description);
             this.refreshUserAccountScreen();
         });
     }
@@ -105,7 +102,7 @@ export class UserAccountManager extends Component {
             this.phoneNumberItem.setValue(value);
         }, err => {
             console.log(err);
-            this.uiManager.openErrorScreen(err.description);
+            UIManager.instance.openErrorScreen(err.description);
             this.refreshUserAccountScreen();
         });
     }

@@ -8,9 +8,6 @@ const { ccclass, property } = _decorator;
 @ccclass('MainMenuManager')
 export class MainMenuManager extends Component {
 
-    @property(UIManager)
-    uiManager: UIManager;
-
     @property(Button)
     logOutButton: Button;
 
@@ -51,23 +48,23 @@ export class MainMenuManager extends Component {
     }
 
     onLogoutClicked() {
-        this.uiManager.openScreen(UIScreenType.Starting, this.node);
+        UIManager.instance.openScreen(UIScreenType.Starting, this.node);
         TokenStorage.clearToken();
     }
 
     onUserAccountClicked() {
-        this.uiManager.openScreen(UIScreenType.UserAccount, this.node);
+        UIManager.instance.openScreen(UIScreenType.UserAccount, this.node);
     }
 
     onCharacterClicked() {
-        this.uiManager.openScreen(UIScreenType.Character, this.node);
+        UIManager.instance.openScreen(UIScreenType.Character, this.node);
     }
 
     onStoreClicked() {
-        this.uiManager.openScreen(UIScreenType.Store, this.node);
+        UIManager.instance.openScreen(UIScreenType.Store, this.node);
     }
 
     onInventoryClicked() {
-        this.uiManager.openScreen(UIScreenType.Inventory, this.node);
+        UIManager.instance.openScreen(UIScreenType.Inventory, this.node);
     }
 }

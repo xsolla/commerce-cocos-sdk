@@ -9,9 +9,6 @@ const { ccclass, property } = _decorator;
 @ccclass('StartingScreenManager')
 export class StartingScreenManager extends Component {
 
-    @property(UIManager)
-    uiManager: UIManager;
-
     @property(Button)
     basicAuthButton: Button;
 
@@ -52,7 +49,7 @@ export class StartingScreenManager extends Component {
     }
 
     onBasicAuthClicked() {
-        this.uiManager.openScreen(UIScreenType.BasicAuth, this.node);
+        UIManager.instance.openScreen(UIScreenType.BasicAuth, this.node);
     }
 
     onDeviceIdAuthClicked() {
@@ -70,18 +67,18 @@ export class StartingScreenManager extends Component {
         XsollaLogin.authByDeviceId(deviceName, deviceId, 'xsollatest', 'xsollatest', token => {
             console.log(token);
             TokenStorage.saveToken(token, true);
-            this.uiManager.openScreen(UIScreenType.MainMenu, this.node);
+            UIManager.instance.openScreen(UIScreenType.MainMenu, this.node);
         }, err => {
             console.log(err);
-            this.uiManager.openErrorScreen(err.description);
+            UIManager.instance.openErrorScreen(err.description);
         })
     }
 
     onPasswordlessAuthClicked() {
-        this.uiManager.openScreen(UIScreenType.PasswordlessAuth, this.node);
+        UIManager.instance.openScreen(UIScreenType.PasswordlessAuth, this.node);
     }
 
     onSocialAuthClicked() {
-        this.uiManager.openScreen(UIScreenType.SocialAuth, this.node);
+        UIManager.instance.openScreen(UIScreenType.SocialAuth, this.node);
     }
 }

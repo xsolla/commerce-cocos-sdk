@@ -13,9 +13,6 @@ const { ccclass, property } = _decorator;
 @ccclass('StoreManager')
 export class StoreManager extends Component {
 
-    @property(UIManager)
-    uiManager: UIManager;
-
     @property(Button)
     backBtn: Button;
 
@@ -84,15 +81,15 @@ export class StoreManager extends Component {
                     }
                 }, error => {
                     console.log(error);
-                    this.uiManager.openErrorScreen(error.description);
+                    UIManager.instance.openErrorScreen(error.description);
                 });
             }, error => {
                 console.log(error);
-                this.uiManager.openErrorScreen(error.description);
+                UIManager.instance.openErrorScreen(error.description);
             }) 
         }, err => {
             console.log(err);
-            this.uiManager.openErrorScreen(err.description);
+            UIManager.instance.openErrorScreen(err.description);
         })
     }
 
@@ -110,7 +107,7 @@ export class StoreManager extends Component {
     }
 
     onBackClicked() {
-        this.uiManager.openScreen(UIScreenType.MainMenu, this.node);
+        UIManager.instance.openScreen(UIScreenType.MainMenu, this.node);
     }
 
     openAllItemsScreen() {
@@ -200,7 +197,7 @@ export class StoreManager extends Component {
                 this.openItemInfoScreen();
             }, error => {
                 console.log(error.description);
-                this.uiManager.openErrorScreen(error.description);
+                UIManager.instance.openErrorScreen(error.description);
             });
             return;
         }
