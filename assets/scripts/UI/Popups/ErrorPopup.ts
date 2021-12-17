@@ -3,8 +3,8 @@
 import { _decorator, Component, Label, Button } from 'cc';
 const { ccclass, property } = _decorator;
  
-@ccclass('ErrorScreenManager')
-export class ErrorScreenManager extends Component {
+@ccclass('ErrorPopup')
+export class ErrorPopup extends Component {
 
     @property(Label)
     errorDescriptionLabel: Label;

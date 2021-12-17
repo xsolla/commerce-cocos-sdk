@@ -3,9 +3,9 @@
 import { _decorator, Component, Node, find } from 'cc';
 import { CurrencyFormatter } from '../Common/CurrencyFormatter';
 import { TokenStorage } from '../Common/TokenStorage';
-import { ConfirmationScreenManager } from './Popups/ConfirmationScreenManager';
-import { ErrorScreenManager } from './Popups/ErrorScreenManager';
-import { MessageScreenManager } from './Popups/MessageScreenManager';
+import { ConfirmationPopup } from './Popups/ConfirmationPopup';
+import { ErrorPopup } from './Popups/ErrorPopup';
+import { MessagePopup } from './Popups/MessagePopup';
 
 const { ccclass, property } = _decorator;
 
@@ -51,14 +51,14 @@ export class UIManager extends Component {
     @property(Node)
     inventoryScreen: Node;
 
-    @property(ErrorScreenManager)
-    errorScreen: ErrorScreenManager;
+    @property(ErrorPopup)
+    errorScreen: ErrorPopup;
 
-    @property(MessageScreenManager)
-    messageScreen: MessageScreenManager;
+    @property(MessagePopup)
+    messageScreen: MessagePopup;
 
-    @property(ConfirmationScreenManager)
-    confirmationScreen: ConfirmationScreenManager;
+    @property(ConfirmationPopup)
+    confirmationScreen: ConfirmationPopup;
 
     static instance: UIManager;
 
