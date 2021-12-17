@@ -1,11 +1,11 @@
 
 import { _decorator, Component, Node, Sprite, Label, Button, Color, ImageAsset, assetManager, SpriteFrame, Texture2D } from 'cc';
-import { InventoryItem, XsollaInventory } from 'db://xsolla-commerce-sdk/scripts/api/XsollaInventory';
+import { InventoryItem as XsollaInventoryItem, XsollaInventory } from 'db://xsolla-commerce-sdk/scripts/api/XsollaInventory';
 import { StoreItem } from 'db://xsolla-commerce-sdk/scripts/api/XsollaStore';
 import { CurrencyFormatter } from '../../Common/CurrencyFormatter';
 import { PurchaseUtil } from '../../Common/PurchaseUtil';
 import { TokenStorage } from '../../Common/TokenStorage';
-import { InventoryItemComponent } from '../Misc/InventoryItemComponent';
+import { InventoryItem } from '../Misc/InventoryItem';
 import { UIManager } from '../UIManager';
 import { InventoryManager } from './InventoryManager';
 const { ccclass, property } = _decorator;
@@ -78,7 +78,7 @@ export class InventoryItemInfoManager extends Component {
 
     private _parent: InventoryManager;
 
-    private _data: InventoryItem;
+    private _data: XsollaInventoryItem;
 
     private _storeItem: StoreItem;
 
@@ -111,7 +111,7 @@ export class InventoryItemInfoManager extends Component {
         this.plusBtn.node.off(Button.EventType.CLICK, this.plusClicked, this);
     }
 
-    init(data:InventoryItem, storeItem:StoreItem, expires_at: number, parent:InventoryManager) {
+    init(data:XsollaInventoryItem, storeItem:StoreItem, expires_at: number, parent:InventoryManager) {
         this._data = data;
         this._parent = parent;
         this._storeItem = storeItem;
@@ -128,7 +128,7 @@ export class InventoryItemInfoManager extends Component {
         this.itemName.string = data.name;
         this.description.string = data.description;
 
-        let utcNow = InventoryItemComponent.convertDateToUTC(new Date());
+        let utcNow = InventoryItem.convertDateToUTC(new Date());
         let isExpired = (expires_at * 1000) < utcNow.getTime();
         let isNonRenewingSubscription = data.virtual_item_type == 'non_renewing_subscription';
         let isConsumable = data.virtual_item_type == 'consumable';
@@ -139,7 +139,7 @@ export class InventoryItemInfoManager extends Component {
         this.expiredContainer.active = isNonRenewingSubscription;
         if(isNonRenewingSubscription) {
             this.expiredLabel.color = isExpired ? this._redColor : this._whiteColor;
-            this.expiredLabel.string = InventoryItemComponent.expireText(expires_at);
+            this.expiredLabel.string = InventoryItem.expireText(expires_at);
         }
         let types: Array<string> = [];
         data.groups.forEach(x => types.push(x.name));

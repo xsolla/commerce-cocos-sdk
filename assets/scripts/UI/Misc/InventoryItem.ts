@@ -1,12 +1,12 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component, Node, Sprite, Label, Button, ImageAsset, SpriteFrame, Texture2D, assetManager, Color } from 'cc';
-import { InventoryItem } from 'db://xsolla-commerce-sdk/scripts/api/XsollaInventory';
+import { InventoryItem as XsollaInventoryItem } from 'db://xsolla-commerce-sdk/scripts/api/XsollaInventory';
 import { InventoryManager } from '../Screens/InventoryManager';
 const { ccclass, property } = _decorator;
 
-@ccclass('InventoryItemComponent')
-export class InventoryItemComponent extends Component {
+@ccclass('InventoryItem')
+export class InventoryItem extends Component {
 
     @property(Sprite)
     icon: Sprite;
@@ -34,7 +34,7 @@ export class InventoryItemComponent extends Component {
 
     private _parent: InventoryManager;
 
-    private _data: InventoryItem;
+    private _data: XsollaInventoryItem;
 
     private _expires_at: number;
 
@@ -57,14 +57,14 @@ export class InventoryItemComponent extends Component {
         this.btn.node.off(Button.EventType.CLICK, this.onClicked, this);
     }
 
-    init(data: InventoryItem, parent:InventoryManager, expires_at: number) {
+    init(data: XsollaInventoryItem, parent:InventoryManager, expires_at: number) {
         this._data = data;
         this._parent = parent;
         this._expires_at = expires_at;
 
         this.itemName.string = data.name;
 
-        let utcNow = InventoryItemComponent.convertDateToUTC(new Date());
+        let utcNow = InventoryItem.convertDateToUTC(new Date());
         let isExpired = (expires_at * 1000) < utcNow.getTime();
         this.timerIcon.node.active = !isExpired;
         let isNonRenewingSubscription = data.virtual_item_type == 'non_renewing_subscription';
@@ -74,7 +74,7 @@ export class InventoryItemComponent extends Component {
         this.timerContainer.active = isNonRenewingSubscription;
         if(isNonRenewingSubscription) {
             this.timerLabel.color = isExpired ? this._redColor : this._whiteColor;
-            this.timerLabel.string = InventoryItemComponent.expireText(expires_at);
+            this.timerLabel.string = InventoryItem.expireText(expires_at);
         }
         assetManager.loadRemote<ImageAsset>(data.image_url, (err, imageAsset) => {
             if(imageAsset != null) {
@@ -92,14 +92,14 @@ export class InventoryItemComponent extends Component {
     }
 
     static expireText(expires_at: number) {
-        let utcNow = InventoryItemComponent.convertDateToUTC(new Date());
-        let expireDate = InventoryItemComponent.toDate(expires_at);
+        let utcNow = InventoryItem.convertDateToUTC(new Date());
+        let expireDate = InventoryItem.toDate(expires_at);
         let isExpired = (expires_at * 1000) < utcNow.getTime();
         if(isExpired) {
-            let diff = InventoryItemComponent.showDiff(expireDate, utcNow);
+            let diff = InventoryItem.showDiff(expireDate, utcNow);
             return 'Expired ' + diff.days + ' day(s) ago';
         } else {
-            let diff = InventoryItemComponent.showDiff(utcNow, expireDate);
+            let diff = InventoryItem.showDiff(utcNow, expireDate);
             if(diff.months > 0) {
                 return diff.months + 'm '+ diff.days +'d remaining';
             } else if(diff.days > 0) {

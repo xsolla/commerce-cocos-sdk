@@ -1,11 +1,11 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component, Node, ScrollView, Prefab, instantiate, Button } from 'cc';
-import { InventoryItem, SubscriptionItem, XsollaInventory} from 'db://xsolla-commerce-sdk/scripts/api/XsollaInventory';
+import { InventoryItem as XsollaInventoryItem, SubscriptionItem, XsollaInventory} from 'db://xsolla-commerce-sdk/scripts/api/XsollaInventory';
 import { StoreItem, XsollaStore } from 'db://xsolla-commerce-sdk/scripts/api/XsollaStore';
 import { TokenStorage } from '../../Common/TokenStorage';
 import { GroupsItem } from '../Misc/GroupsItem';
-import { InventoryItemComponent } from '../Misc/InventoryItemComponent';
+import { InventoryItem } from '../Misc/InventoryItem';
 import { UIManager, UIScreenType } from '../UIManager';
 import { InventoryItemInfoManager } from './InventoryItemInfoManager';
 const { ccclass, property } = _decorator;
@@ -42,7 +42,7 @@ export class InventoryManager extends Component {
 
     storeItems: Array<StoreItem>;
 
-    inventoryItems: Array<InventoryItem>;
+    inventoryItems: Array<XsollaInventoryItem>;
 
     subscriptionItems: Array<SubscriptionItem>;
 
@@ -133,8 +133,7 @@ export class InventoryManager extends Component {
                 let inventoryItem = instantiate(this.inventoryItemPrefab);
                 this.itemsList.content.addChild(inventoryItem);
                 let itemData = this.inventoryItems[i];
-                let intentoryItemComponent = inventoryItem.getComponent(InventoryItemComponent);
-                intentoryItemComponent.init(itemData, this, this.getSubscriptionExpirationTime(this.inventoryItems[i].sku));
+                inventoryItem.getComponent(InventoryItem).init(itemData, this, this.getSubscriptionExpirationTime(this.inventoryItems[i].sku));
             }
         }
         this.itemsList.scrollToTop();
