@@ -1,9 +1,10 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
-import { _decorator, Component, Node, Button, Label } from 'cc';
+import { _decorator, Component, Node, Button, Label, Texture2D, instantiate, Prefab, sys, Sprite, assetManager, ImageAsset, SpriteFrame, UITransform } from 'cc';
 import { UserDetails, UserDetailsUpdate, XsollaUserAccount } from 'db://xsolla-commerce-sdk/scripts/api/XsollaUserAccount';
 import { TokenStorage } from '../../Common/TokenStorage';
 import { UserAccountItem } from '../Misc/UserAccountItem';
+import { UserAvatarItem } from '../Misc/UserAvatarItem';
 import { UIManager, UIScreenType } from '../UIManager';
 const { ccclass, property } = _decorator;
  
@@ -31,12 +32,46 @@ export class UserAccountManager extends Component {
     @property(UserAccountItem)
     phoneNumberItem: UserAccountItem;
 
-    start() {
+    @property(Sprite)
+    avatar: Sprite;
 
+    @property(Prefab)
+    avatarItemPrefab: Prefab;
+
+    @property(Texture2D)
+    noAvatar: Texture2D;
+
+    @property(Node)
+    avatarPicker: Node;
+
+    @property(Node)
+    avatarModifier: Node;
+
+    @property(Node)
+    avatarEditRemoveContainer: Node;
+
+    @property(Button)
+    avatarEditButton: Button;
+
+    @property(Button)
+    avatarRemoveButton: Button;
+
+    @property(Texture2D)
+    defaultAvatars: Texture2D[] = [];
+
+    start() {
+        this.avatarPicker.destroyAllChildren();
+        for(let avatarTexture of this.defaultAvatars) {
+            let avatarItem = instantiate(this.avatarItemPrefab);
+            this.avatarPicker.addChild(avatarItem);
+            avatarItem.getComponent(UserAvatarItem).init(avatarTexture, this);
+        }
+        this.avatarModifier.active = !sys.isMobile;
     }
 
     onEnable() {
         this.refreshUserAccountScreen();
+        this.setAvatarEditMode(false);
         this.addListeners();
     }
 
@@ -74,6 +109,26 @@ export class UserAccountManager extends Component {
         this.firstNameItem.setValue(userDetails.first_name);
         this.lastNameItem.setValue(userDetails.last_name);
         this.phoneNumberItem.setValue(userDetails.phone);
+        let isPictureExist = userDetails.picture != null && userDetails.picture.length > 0;
+        this.avatarRemoveButton.node.active = isPictureExist;
+        if(isPictureExist) {
+            assetManager.loadRemote<ImageAsset>(userDetails.picture, (err, imageAsset) => {
+                if(imageAsset != null) {
+                    const spriteFrame = new SpriteFrame();
+                    const texture = new Texture2D();
+                    texture.image = imageAsset;
+                    spriteFrame.texture = texture;
+                    this.avatar.spriteFrame = spriteFrame;
+                } else {
+                    UIManager.instance.openErrorScreen(err.message);
+                }
+            });
+        } else {
+            const spriteFrame = new SpriteFrame();
+            spriteFrame.texture = this.noAvatar;
+            this.avatar.spriteFrame = spriteFrame;
+        }
+        this.avatar.getComponent(UITransform).setContentSize(100, 100); 
     }
 
     onNicknameEdited(value: string) {
@@ -107,12 +162,81 @@ export class UserAccountManager extends Component {
         });
     }
 
+    setAvatarEditMode(isPickerVisible: boolean) {
+        this.avatarPicker.active = isPickerVisible;
+        this.avatarEditRemoveContainer.active = !isPickerVisible;
+    }
+
+    onAvatarEdited() {
+        this.setAvatarEditMode(true);
+    }
+
+    onAvatarRemoved() {
+        XsollaUserAccount.removeProfilePicture(TokenStorage.getToken().access_token, () => {
+            this.avatarRemoveButton.node.active = false;
+            this.refreshUserAccountScreen();
+            this.setAvatarEditMode(false);
+        }, error => {
+            UIManager.instance.openErrorScreen(error.description);
+            this.setAvatarEditMode(false);
+        });
+    }
+
+    getBase64Image(imageSrc: string, onComplete:(base64image: string) => void, outputFormat: string) {
+        const img = new Image();
+        img.crossOrigin = 'Anonymous';
+        img.onload = () => {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.height = img.naturalHeight;
+            canvas.width = img.naturalWidth;
+            ctx.drawImage(img, 0, 0);
+            let dataURL = canvas.toDataURL(outputFormat);
+            onComplete(dataURL);
+        };
+        img.src = imageSrc;
+    }
+
+    base64ToArrayBuffer(base64: string): ArrayBuffer {
+        var binary_string = window.atob(base64);
+        var len = binary_string.length;
+        var bytes = new Uint8Array(len);
+        for (var i = 0; i < len; i++) {
+            bytes[i] = binary_string.charCodeAt(i);
+        }
+        return bytes.buffer;
+    }
+
+    onSaveAvatar(texture: Texture2D, item: UserAvatarItem) {
+        item.selectionSprite.node.active = true;
+        let data = texture.image.data;
+        if(data instanceof HTMLImageElement){
+            let img: HTMLImageElement = data;
+            this.getBase64Image(img.src, base64image => {
+                let base64imageWithoutHeader:string = base64image.substring(base64image.indexOf(',') + 1);
+                let buffer = Uint8Array.from(atob(base64imageWithoutHeader), c => c.charCodeAt(0))
+                XsollaUserAccount.modifyUserProfilePicture(TokenStorage.getToken().access_token, buffer, () => {
+                    item.selectionSprite.node.active = false;
+                    this.avatarRemoveButton.node.active = true;
+                    this.refreshUserAccountScreen();
+                    this.setAvatarEditMode(false);
+                }, error => {
+                    item.selectionSprite.node.active = false;
+                    UIManager.instance.openErrorScreen(error.description);
+                    this.setAvatarEditMode(false);
+                });
+            }, 'png');
+        }
+    }
+
     addListeners () {
         this.backButton.node.on(Button.EventType.CLICK, this.onBackClicked, this);
         this.nicknameItem.node.on(UserAccountItem.ITEM_EDIT, this.onNicknameEdited, this);
         this.firstNameItem.node.on(UserAccountItem.ITEM_EDIT, this.onFirstNameEdited, this);
         this.lastNameItem.node.on(UserAccountItem.ITEM_EDIT, this.onLastNameEdited, this);
         this.phoneNumberItem.node.on(UserAccountItem.ITEM_EDIT, this.onPhoneNumberEdited, this);
+        this.avatarEditButton.node.on(Button.EventType.CLICK, this.onAvatarEdited, this);
+        this.avatarRemoveButton.node.on(Button.EventType.CLICK, this.onAvatarRemoved, this);
     }
 
     removeListeners () {
@@ -121,5 +245,7 @@ export class UserAccountManager extends Component {
         this.firstNameItem.node.off(UserAccountItem.ITEM_EDIT, this.onFirstNameEdited, this);
         this.lastNameItem.node.off(UserAccountItem.ITEM_EDIT, this.onLastNameEdited, this);
         this.phoneNumberItem.node.off(UserAccountItem.ITEM_EDIT, this.onPhoneNumberEdited, this);
+        this.avatarEditButton.node.off(Button.EventType.CLICK, this.onAvatarEdited, this);
+        this.avatarRemoveButton.node.off(Button.EventType.CLICK, this.onAvatarRemoved, this);
     }
 }
