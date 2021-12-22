@@ -6,6 +6,7 @@ import { TokenStorage } from '../../Common/TokenStorage';
 import { UserAccountItem } from '../Misc/UserAccountItem';
 import { UserAvatarItem } from '../Misc/UserAvatarItem';
 import { UIManager, UIScreenType } from '../UIManager';
+import { ImageUtils } from '../Utils/ImageUtils';
 const { ccclass, property } = _decorator;
  
 @ccclass('UserAccountManager')
@@ -182,51 +183,24 @@ export class UserAccountManager extends Component {
         });
     }
 
-    getBase64Image(imageSrc: string, onComplete:(base64image: string) => void, outputFormat: string) {
-        const img = new Image();
-        img.crossOrigin = 'Anonymous';
-        img.onload = () => {
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.height = img.naturalHeight;
-            canvas.width = img.naturalWidth;
-            ctx.drawImage(img, 0, 0);
-            let dataURL = canvas.toDataURL(outputFormat);
-            onComplete(dataURL);
-        };
-        img.src = imageSrc;
-    }
-
-    base64ToArrayBuffer(base64: string): ArrayBuffer {
-        var binary_string = window.atob(base64);
-        var len = binary_string.length;
-        var bytes = new Uint8Array(len);
-        for (var i = 0; i < len; i++) {
-            bytes[i] = binary_string.charCodeAt(i);
-        }
-        return bytes.buffer;
-    }
-
     onSaveAvatar(texture: Texture2D, item: UserAvatarItem) {
         item.selectionSprite.node.active = true;
-        let data = texture.image.data;
-        if(data instanceof HTMLImageElement){
-            let img: HTMLImageElement = data;
-            this.getBase64Image(img.src, base64image => {
-                let base64imageWithoutHeader:string = base64image.substring(base64image.indexOf(',') + 1);
-                let buffer = Uint8Array.from(atob(base64imageWithoutHeader), c => c.charCodeAt(0))
-                XsollaUserAccount.modifyUserProfilePicture(TokenStorage.getToken().access_token, buffer, () => {
-                    item.selectionSprite.node.active = false;
-                    this.avatarRemoveButton.node.active = true;
-                    this.refreshUserAccountScreen();
-                    this.setAvatarEditMode(false);
-                }, error => {
-                    item.selectionSprite.node.active = false;
-                    UIManager.instance.openErrorScreen(error.description);
-                    this.setAvatarEditMode(false);
-                });
-            }, 'png');
-        }
+        ImageUtils.getBase64Image(texture, base64image => {
+            let base64imageWithoutHeader:string = base64image.substring(base64image.indexOf(',') + 1);
+            let buffer = Uint8Array.from(atob(base64imageWithoutHeader), c => c.charCodeAt(0))
+            XsollaUserAccount.modifyUserProfilePicture(TokenStorage.getToken().access_token, buffer, () => {
+                item.selectionSprite.node.active = false;
+                this.avatarRemoveButton.node.active = true;
+                this.refreshUserAccountScreen();
+                this.setAvatarEditMode(false);
+            }, error => {
+                item.selectionSprite.node.active = false;
+                UIManager.instance.openErrorScreen(error.description);
+                this.setAvatarEditMode(false);
+            });
+        }, errorMessage => {
+            UIManager.instance.openErrorScreen(errorMessage);
+        });
     }
 
     addListeners () {
