@@ -48,23 +48,23 @@ export class MainMenuManager extends Component {
     }
 
     onLogoutClicked() {
-        UIManager.instance.openScreen(UIScreenType.Starting, this.node);
+        UIManager.instance.openScreen(UIScreenType.Starting);
         TokenStorage.clearToken();
     }
 
     onUserAccountClicked() {
-        UIManager.instance.openScreen(UIScreenType.UserAccount, this.node);
+        UIManager.instance.openScreen(UIScreenType.UserAccount);
     }
 
     onCharacterClicked() {
-        UIManager.instance.openScreen(UIScreenType.Character, this.node);
+        UIManager.instance.openScreen(UIScreenType.Character);
     }
 
     onStoreClicked() {
-        UIManager.instance.openScreen(UIScreenType.Store, this.node);
+        UIManager.instance.openScreen(UIScreenType.Store);
     }
 
     onInventoryClicked() {
-        UIManager.instance.openScreen(UIScreenType.Inventory, this.node);
+        UIManager.instance.openScreen(UIScreenType.Inventory);
     }
 }

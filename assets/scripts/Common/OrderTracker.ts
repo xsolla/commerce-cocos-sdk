@@ -12,7 +12,7 @@ export class OrderTracker {
         XsollaStore.checkOrder(TokenStorage.getToken().access_token, orderId, result => {
             console.log('shortPollingCheckOrder ' + result.status);
             if(result.status == 'done') {
-                UIManager.instance.openMessageScreen('success purchase!');
+                UIManager.instance.showMessagePopup('success purchase!');
                 onSuccessPurchase();
                 return;
             }

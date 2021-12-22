@@ -54,7 +54,7 @@ export class CharacterManager extends Component {
     }
 
     onBackClicked() {
-        UIManager.instance.openScreen(UIScreenType.MainMenu, this.node);
+        UIManager.instance.openScreen(UIScreenType.MainMenu);
     }
 
     onAddAttributeClicked() {
@@ -81,7 +81,7 @@ export class CharacterManager extends Component {
             this.attributesList.scrollToTop();
         }, err => {
             console.log(err);
-            UIManager.instance.openErrorScreen(err.description);
+            UIManager.instance.showErrorPopup(err.description);
         });
 
         currentScreen.active = false;
@@ -118,7 +118,7 @@ export class CharacterManager extends Component {
             this.openAllAttributesScreen(this.addAttributeScreen);
         }, err => {
             console.log(err);
-            UIManager.instance.openErrorScreen(err.description);
+            UIManager.instance.showErrorPopup(err.description);
         });
     }
 
@@ -127,7 +127,7 @@ export class CharacterManager extends Component {
             this.attributesList.content.removeChild(attributeItem);
         }, err => {
             console.log(err);
-            UIManager.instance.openErrorScreen(err.description);
+            UIManager.instance.showErrorPopup(err.description);
         });
     }
 

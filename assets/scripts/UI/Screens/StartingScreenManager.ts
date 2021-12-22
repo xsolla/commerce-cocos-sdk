@@ -49,7 +49,7 @@ export class StartingScreenManager extends Component {
     }
 
     onBasicAuthClicked() {
-        UIManager.instance.openScreen(UIScreenType.BasicAuth, this.node);
+        UIManager.instance.openScreen(UIScreenType.BasicAuth);
     }
 
     onDeviceIdAuthClicked() {
@@ -67,18 +67,18 @@ export class StartingScreenManager extends Component {
         XsollaLogin.authByDeviceId(deviceName, deviceId, 'xsollatest', 'xsollatest', token => {
             console.log(token);
             TokenStorage.saveToken(token, true);
-            UIManager.instance.openScreen(UIScreenType.MainMenu, this.node);
+            UIManager.instance.openScreen(UIScreenType.MainMenu);
         }, err => {
             console.log(err);
-            UIManager.instance.openErrorScreen(err.description);
+            UIManager.instance.showErrorPopup(err.description);
         })
     }
 
     onPasswordlessAuthClicked() {
-        UIManager.instance.openScreen(UIScreenType.PasswordlessAuth, this.node);
+        UIManager.instance.openScreen(UIScreenType.PasswordlessAuth);
     }
 
     onSocialAuthClicked() {
-        UIManager.instance.openScreen(UIScreenType.SocialAuth, this.node);
+        UIManager.instance.openScreen(UIScreenType.SocialAuth);
     }
 }

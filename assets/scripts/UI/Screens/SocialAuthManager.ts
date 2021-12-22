@@ -83,7 +83,7 @@ export class SocialAuthManager extends Component {
     }
 
     onBackClicked() {
-        UIManager.instance.openScreen(UIScreenType.Starting, this.node);
+        UIManager.instance.openScreen(UIScreenType.Starting);
     }
 
     populateSocialNetworksList() {
@@ -120,12 +120,12 @@ export class SocialAuthManager extends Component {
 
     handleSuccessfulSocialAuth(token:Token) {
         TokenStorage.saveToken(token, true);
-        UIManager.instance.openScreen(UIScreenType.MainMenu, this.node);
+        UIManager.instance.openScreen(UIScreenType.MainMenu);
     }
 
     handleErrorSocialAuth(error:string) {
         console.log(error);
-        UIManager.instance.openErrorScreen(error);
+        UIManager.instance.showErrorPopup(error);
     }
 
     onSocialNetworkFilterChanged() {

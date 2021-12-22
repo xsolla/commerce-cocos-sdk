@@ -1,6 +1,6 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
-import { _decorator, Component, Node, find } from 'cc';
+import { _decorator, Component, Node, find, Prefab, instantiate } from 'cc';
 import { CurrencyFormatter } from '../Common/CurrencyFormatter';
 import { TokenStorage } from '../Common/TokenStorage';
 import { ConfirmationPopup } from './Popups/ConfirmationPopup';
@@ -24,118 +24,126 @@ export enum UIScreenType {
 @ccclass('UIManager')
 export class UIManager extends Component {
 
-    @property(Node)
-    startingScreen: Node;
+    @property(Prefab)
+    startingScreen: Prefab;
 
-    @property(Node)
-    basicAuth: Node;
+    @property(Prefab)
+    basicAuth: Prefab;
 
-    @property(Node)
-    mainMenu: Node;
+    @property(Prefab)
+    mainMenu: Prefab;
 
-    @property(Node)
-    passwordlessAuth: Node;
+    @property(Prefab)
+    passwordlessAuth: Prefab;
 
-    @property(Node)
-    socialAuth: Node;
+    @property(Prefab)
+    socialAuth: Prefab;
 
-    @property(Node)
-    userAccountScreen: Node;
+    @property(Prefab)
+    userAccountScreen: Prefab;
 
-    @property(Node)
-    characterScreen: Node;
+    @property(Prefab)
+    characterScreen: Prefab;
 
-    @property(Node)
-    storeScreen: Node;
+    @property(Prefab)
+    storeScreen: Prefab;
 
-    @property(Node)
-    inventoryScreen: Node;
+    @property(Prefab)
+    inventoryScreen: Prefab;
 
-    @property(ErrorPopup)
-    errorScreen: ErrorPopup;
+    @property(Prefab)
+    errorPopup: Prefab;
 
-    @property(MessagePopup)
-    messageScreen: MessagePopup;
+    @property(Prefab)
+    messagePopup: Prefab;
 
-    @property(ConfirmationPopup)
-    confirmationScreen: ConfirmationPopup;
+    @property(Prefab)
+    confirmationPopup: Prefab;
 
     static instance: UIManager;
 
-    start() {
-        this.startingScreen.active = true;
+    private _currentScreen: Node;
+    private _previousScreen: Node;
+
+    start() {        
         UIManager.instance = this;
         CurrencyFormatter.init();
+        this.openScreen(UIScreenType.Starting);
         if(TokenStorage.getToken() != null) {
-            this.openScreen(UIScreenType.MainMenu, this.startingScreen);
+            this.openScreen(UIScreenType.MainMenu);
         }
     }
 
-    openScreen(screenToOpen:UIScreenType, currentScreen:Node) {
-        currentScreen.active = false;
+    openScreen(screenToOpen:UIScreenType) {
+        this._previousScreen = this._currentScreen;        
         switch(screenToOpen) {
             case UIScreenType.Starting: {
-                this.startingScreen.active = true;
+                this._currentScreen = instantiate(this.startingScreen);
                 break;
             }
             case UIScreenType.BasicAuth: {
-                this.basicAuth.active = true;
+                this._currentScreen = instantiate(this.basicAuth);
                 break;
             } 
             case UIScreenType.PasswordlessAuth: {
-                this.passwordlessAuth.active = true;
+                this._currentScreen = instantiate(this.passwordlessAuth);
                 break;
             }
             case UIScreenType.SocialAuth: {
-                this.socialAuth.active = true;
+                this._currentScreen = instantiate(this.socialAuth);
                 break;
             }
             case UIScreenType.MainMenu: {
-                this.mainMenu.active = true;
+                this._currentScreen = instantiate(this.mainMenu);
                 break;
             }
             case UIScreenType.Store: {
-                this.storeScreen.active = true;
+                this._currentScreen = instantiate(this.storeScreen);
                 break;
             } 
             case UIScreenType.Inventory: {
-                this.inventoryScreen.active = true;
+                this._currentScreen = instantiate(this.inventoryScreen);
                 break;
             } 
             case UIScreenType.Character: {
-                this.characterScreen.active = true;
+                this._currentScreen = instantiate(this.characterScreen);
                 break;
             } 
             case UIScreenType.UserAccount: {
-                this.userAccountScreen.active = true;
+                this._currentScreen = instantiate(this.userAccountScreen);
                 break;
             } 
         }
+        this.node.addChild(this._currentScreen);
+        this._previousScreen?.destroy();
     }
 
-    openErrorScreen(errorMessage: string, onClosed?: () => void) {
-        this.errorScreen.node.active = true;
-        this.errorScreen.showError(errorMessage, () => {
-            this.errorScreen.node.active = false;
+    showErrorPopup(errorMessage: string, onClosed?: () => void) {
+        let errorPopupInstance = instantiate(this.errorPopup);
+        errorPopupInstance.getComponent(ErrorPopup).showError(errorMessage, () => {
             onClosed?.();
+            errorPopupInstance.destroy();
         });
+        this.node.addChild(errorPopupInstance);
     }
 
-    openMessageScreen(message: string, onClosed?: () => void) {
-        this.messageScreen.node.active = true;
-        this.messageScreen.showMessage(message, () => {
+    showMessagePopup(message: string, onClosed?: () => void) {
+        let messagePopupInstance = instantiate(this.messagePopup);
+        messagePopupInstance.getComponent(MessagePopup).showMessage(message, () => {
             onClosed?.();
+            messagePopupInstance.destroy();
         });
+        this.node.addChild(messagePopupInstance);
     }
 
-    openConfirmationScreen(message: string, confirmBtnText: string,  onComfirm?: () => void, onClosed?: () => void) {
-        this.confirmationScreen.node.active = true;
-        this.confirmationScreen.showMessage(message, confirmBtnText, () => {
-            this.confirmationScreen.node.active = false;
+    showConfirmationPopup(message: string, confirmBtnText: string,  onComfirm?: () => void, onClosed?: () => void) {
+        let confirmationPopupInstance = instantiate(this.confirmationPopup);
+        confirmationPopupInstance.getComponent(ConfirmationPopup).showMessage(message, confirmBtnText, () => {
             onComfirm?.();
+            confirmationPopupInstance.destroy();
         }, () => {
-            this.confirmationScreen.node.active = false;
             onClosed?.();
+            confirmationPopupInstance.destroy();
         });
     }
 }

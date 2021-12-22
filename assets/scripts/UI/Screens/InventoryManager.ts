@@ -86,20 +86,20 @@ export class InventoryManager extends Component {
                     }
                 }, error => {
                     console.log(error);
-                    UIManager.instance.openErrorScreen(error.description);
+                    UIManager.instance.showErrorPopup(error.description);
                 });
             }, error => {
                 console.log(error);
-                UIManager.instance.openErrorScreen(error.description);
+                UIManager.instance.showErrorPopup(error.description);
             });
         }, error => {
             console.log(error);
-            UIManager.instance.openErrorScreen(error.description);
+            UIManager.instance.showErrorPopup(error.description);
         });
     }
 
     onBackClicked() {
-        UIManager.instance.openScreen(UIScreenType.MainMenu, this.node);
+        UIManager.instance.openScreen(UIScreenType.MainMenu);
     }
 
     openAllItemsScreen() {

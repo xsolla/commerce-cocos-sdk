@@ -18,13 +18,13 @@ export class PurchaseUtil {
     static buyItem(item: StoreItem, onSuccessPurchase?:() => void) {
         let isVirtual = item.virtual_prices.length > 0;
         if(isVirtual) {
-            UIManager.instance.openConfirmationScreen('Are you sure you want to purchase this item?', 'CONFIRM', () => {
+            UIManager.instance.showConfirmationPopup('Are you sure you want to purchase this item?', 'CONFIRM', () => {
                 XsollaStore.buyItemWithVirtualCurrency(TokenStorage.getToken().access_token, item.sku, item.virtual_prices[0].sku, orderId => {
-                    UIManager.instance.openMessageScreen('Your order has been successfully processed!');
+                    UIManager.instance.showMessagePopup('Your order has been successfully processed!');
                     onSuccessPurchase?.();
                 }, error => {
                     console.log(error.description);
-                    UIManager.instance.openErrorScreen(error.description);
+                    UIManager.instance.showErrorPopup(error.description);
                 })
             });
             return;
@@ -56,14 +56,14 @@ export class PurchaseUtil {
             }
         }, error => {
             console.log(error.description);
-            UIManager.instance.openErrorScreen(error.description);
+            UIManager.instance.showErrorPopup(error.description);
         } );
     }
 
     static checkPendingOrder(orderId:number, onSuccess:() => void) {
         let orderCheckObject = OrderTracker.createOrderCheckObject(orderId, (resultOrderId, orderStatus) => {
             if(orderStatus == XsollaOrderStatus.done) {
-                UIManager.instance.openMessageScreen('success purchase!');
+                UIManager.instance.showMessagePopup('success purchase!');
                 onSuccess();
                 this._cachedOrderCheckObjects = this._cachedOrderCheckObjects.filter(obj => obj !== orderCheckObject);
                 orderCheckObject.destroy();

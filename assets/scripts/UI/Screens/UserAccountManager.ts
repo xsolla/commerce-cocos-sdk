@@ -81,7 +81,7 @@ export class UserAccountManager extends Component {
     }
 
     onBackClicked() {
-        UIManager.instance.openScreen(UIScreenType.MainMenu, this.node);
+        UIManager.instance.openScreen(UIScreenType.MainMenu);
     }
 
     refreshUserAccountScreen() {
@@ -89,7 +89,7 @@ export class UserAccountManager extends Component {
             this.fillUserAccountItems(userDetails);
         }, err => {
             console.log(err);
-            UIManager.instance.openErrorScreen(err.description);
+            UIManager.instance.showErrorPopup(err.description);
         });
     }
 
@@ -98,7 +98,7 @@ export class UserAccountManager extends Component {
             this.fillUserAccountItems(userDetails);
         }, err => {
             console.log(err);
-            UIManager.instance.openErrorScreen(err.description);
+            UIManager.instance.showErrorPopup(err.description);
             this.refreshUserAccountScreen();
         });
     }
@@ -121,7 +121,7 @@ export class UserAccountManager extends Component {
                     spriteFrame.texture = texture;
                     this.avatar.spriteFrame = spriteFrame;
                 } else {
-                    UIManager.instance.openErrorScreen(err.message);
+                    UIManager.instance.showErrorPopup(err.message);
                 }
             });
         } else {
@@ -158,7 +158,7 @@ export class UserAccountManager extends Component {
             this.phoneNumberItem.setValue(value);
         }, err => {
             console.log(err);
-            UIManager.instance.openErrorScreen(err.description);
+            UIManager.instance.showErrorPopup(err.description);
             this.refreshUserAccountScreen();
         });
     }
@@ -178,7 +178,7 @@ export class UserAccountManager extends Component {
             this.refreshUserAccountScreen();
             this.setAvatarEditMode(false);
         }, error => {
-            UIManager.instance.openErrorScreen(error.description);
+            UIManager.instance.showErrorPopup(error.description);
             this.setAvatarEditMode(false);
         });
     }
@@ -195,11 +195,11 @@ export class UserAccountManager extends Component {
                 this.setAvatarEditMode(false);
             }, error => {
                 item.selectionSprite.node.active = false;
-                UIManager.instance.openErrorScreen(error.description);
+                UIManager.instance.showErrorPopup(error.description);
                 this.setAvatarEditMode(false);
             });
         }, errorMessage => {
-            UIManager.instance.openErrorScreen(errorMessage);
+            UIManager.instance.showErrorPopup(errorMessage);
         });
     }
 

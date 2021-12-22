@@ -81,15 +81,15 @@ export class StoreManager extends Component {
                     }
                 }, error => {
                     console.log(error);
-                    UIManager.instance.openErrorScreen(error.description);
+                    UIManager.instance.showErrorPopup(error.description);
                 });
             }, error => {
                 console.log(error);
-                UIManager.instance.openErrorScreen(error.description);
+                UIManager.instance.showErrorPopup(error.description);
             }) 
         }, err => {
             console.log(err);
-            UIManager.instance.openErrorScreen(err.description);
+            UIManager.instance.showErrorPopup(err.description);
         })
     }
 
@@ -107,7 +107,7 @@ export class StoreManager extends Component {
     }
 
     onBackClicked() {
-        UIManager.instance.openScreen(UIScreenType.MainMenu, this.node);
+        UIManager.instance.openScreen(UIScreenType.MainMenu);
     }
 
     openAllItemsScreen() {
@@ -192,7 +192,7 @@ export class StoreManager extends Component {
                 this.openItemInfoScreen();
             }, error => {
                 console.log(error.description);
-                UIManager.instance.openErrorScreen(error.description);
+                UIManager.instance.showErrorPopup(error.description);
             });
             return;
         }
