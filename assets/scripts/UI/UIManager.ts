@@ -1,8 +1,6 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
-import { _decorator, Component, Node, find, Prefab, instantiate } from 'cc';
-import { CurrencyFormatter } from '../Common/CurrencyFormatter';
-import { TokenStorage } from '../Common/TokenStorage';
+import { _decorator, Component, Node, Prefab, instantiate } from 'cc';
 import { ConfirmationPopup } from './Popups/ConfirmationPopup';
 import { ErrorPopup } from './Popups/ErrorPopup';
 import { MessagePopup } from './Popups/MessagePopup';
@@ -65,13 +63,8 @@ export class UIManager extends Component {
     private _currentScreen: Node;
     private _previousScreen: Node;
 
-    start() {        
+    onLoad() {
         UIManager.instance = this;
-        CurrencyFormatter.init();
-        this.openScreen(UIScreenType.Starting);
-        if(TokenStorage.getToken() != null) {
-            this.openScreen(UIScreenType.MainMenu);
-        }
     }
 
     openScreen(screenToOpen:UIScreenType) {
