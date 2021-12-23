@@ -7,6 +7,12 @@ import { Xsolla } from "../Xsolla";
 
 export class XsollaStore {
 
+    /**
+     * @en
+     * Gets a list of virtual items available for the configured project.
+     * @zh
+     * 
+     */
     static getVirtualItems(locale:string, country:string, additionalFields:Array<string>, onComplete?:(itemsData:StoreItemsData) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
         let url = new XsollaUrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/items/virtual_items')
             .setPathParam('projectID', Xsolla.settings.projectId)
@@ -30,6 +36,12 @@ export class XsollaStore {
         request.send();
     }
 
+    /**
+     * @en
+     * Gets a list of bundles for building a catalog.
+     * @zh
+     * 
+     */
     static getBundles(locale:string, country:string, additionalFields:Array<string>, onComplete?:(itemsData:StoreListOfBundles) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0) {
         let url = new XsollaUrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/items/bundle')
             .setPathParam('projectID', Xsolla.settings.projectId)
@@ -47,6 +59,12 @@ export class XsollaStore {
         request.send();
     }
 
+    /**
+     * @en
+     * Gets a specified bundle.
+     * @zh
+     * 
+     */
     static getSpecifiedBundle(sku:string, onComplete?:(bundle:StoreBundle) => void, onError?:(error:CommerceError) => void) {
         let url = new XsollaUrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/items/bundle/sku/{sku}')
             .setPathParam('projectID', Xsolla.settings.projectId)
@@ -60,6 +78,12 @@ export class XsollaStore {
         request.send();
     }
 
+    /**
+     * @en
+     * Gets a list of all virtual items.
+     * @zh
+     * 
+     */
     static getAllItemsList(locale:string, onComplete?:(data: StoreItemsList) => void, onError?:(error:CommerceError) => void): void {
         let url = new XsollaUrlBuilder('https://store.xsolla.com/api/v2/project/{ProjectID}/items/virtual_items/all')
             .setPathParam('projectID', Xsolla.settings.projectId)
@@ -73,6 +97,12 @@ export class XsollaStore {
         request.send();
     }
 
+    /**
+     * @en
+     * Gets the list of virtual currencies.
+     * @zh
+     * 
+     */
     static getVirtualCurrencies(locale:string, country:string, additionalFields:Array<string>, onComplete?:(data:VirtualCurrencyData) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
         let url = new XsollaUrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/items/virtual_currency')
             .setPathParam('projectID', Xsolla.settings.projectId)
@@ -90,6 +120,12 @@ export class XsollaStore {
         request.send();
     }
 
+    /**
+     * @en
+     * Gets the list of virtual currency packages
+     * @zh
+     * 
+     */
     static getVirtualCurrencyPackages(locale:string, country:string, additionalFields:Array<string>, onComplete?:(data:VirtualCurrencyPackagesData) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
         let url = new XsollaUrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/items/virtual_currency/package')
             .setPathParam('projectID', Xsolla.settings.projectId)
@@ -107,6 +143,12 @@ export class XsollaStore {
         request.send();
     }
 
+    /**
+     * @en
+     * Gets an item list from the specified group for building a catalog.
+     * @zh
+     * 
+     */
     static getItemsListBySpecifiedGroup(externalId: string, locale:string, country:string, additionalFields:Array<string>, onComplete?:(itemsList: StoreItemsList) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
         let url = new XsollaUrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/items/virtual_items/group/{externalId}')
             .setPathParam('projectID', Xsolla.settings.projectId)
@@ -125,6 +167,12 @@ export class XsollaStore {
         request.send();
     }
 
+    /**
+     * @en
+     * Gets the list of virtual item groups.
+     * @zh
+     * 
+     */
     static getItemGroups(locale:string, onComplete?:(groups:Array<XsollaItemGroup>) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
         let url = new XsollaUrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/items/groups')
             .setPathParam('projectID', Xsolla.settings.projectId)
@@ -140,6 +188,12 @@ export class XsollaStore {
         request.send();
     }
 
+    /**
+     * @en
+     * Initiates an item purchase session and fetches token for payment console.
+     * @zh
+     * 
+     */
     static fetchPaymentToken(authToken:string, itemSKU:string, quantity:number, currency?:string, country?:string, locale?:string, customParameters?:object, onComplete?:(tokenResult: PaymentTokenResult) => void, onError?:(error:CommerceError) => void): void {
         let body = {
             currency: currency,
@@ -166,6 +220,12 @@ export class XsollaStore {
         request.send(JSON.stringify(body));
     }
 
+    /**
+     * @en
+     * Checks pending order status by its ID.
+     * @zh
+     * 
+     */
     static checkOrder(authToken:string, orderId:number, onComplete?:(checkOrderResult: CheckOrderResult) => void, onError?:(error:CommerceError) => void): void {
         let url = new XsollaUrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/order/{orderId}')
             .setPathParam('projectID', Xsolla.settings.projectId)
@@ -184,6 +244,12 @@ export class XsollaStore {
         request.send();
     }
 
+    /**
+     * @en
+     * Buys an item using virtual currency.
+     * @zh
+     * 
+     */
     static buyItemWithVirtualCurrency(authToken:string, itemSKU:string, currencySKU:string, onComplete?:(orderId: number) => void, onError?:(error:CommerceError) => void): void {
         let url = new XsollaUrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/payment/item/{itemSKU}/virtual/{currencySKU}')
             .setPathParam('projectID', Xsolla.settings.projectId)

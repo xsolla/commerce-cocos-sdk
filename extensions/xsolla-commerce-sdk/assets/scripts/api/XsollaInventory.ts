@@ -8,6 +8,12 @@ import { XsollaItemAttribute, XsollaItemGroup } from "./XsollaStore";
 
 export class XsollaInventory {
 
+    /**
+     * @en
+     * Gets the list of purchased virtual items.
+     * @zh
+     * 
+     */
     static getInventory(authToken:string, platform?:XsollaPublishingPlatform, onComplete?:(itemsData:InventoryItemsData) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
         let url = new XsollaUrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/user/inventory/items')
             .setPathParam('projectID', Xsolla.settings.projectId)
@@ -23,6 +29,12 @@ export class XsollaInventory {
         request.send();
     }
 
+    /**
+     * @en
+     * Gets virtual currency balance.
+     * @zh
+     * 
+     */
     static getVirtualCurrencyBalance(authToken:string, platform?:XsollaPublishingPlatform, onComplete?:(currencyData:VirtualCurrencyBalanceData) => void, onError?:(error:CommerceError) => void): void {
         let url = new XsollaUrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/user/virtual_currency_balance')
             .setPathParam('projectID', Xsolla.settings.projectId)
@@ -36,6 +48,12 @@ export class XsollaInventory {
         request.send();
     }
 
+    /**
+     * @en
+     * Consumes an inventory item.
+     * @zh
+     * 
+     */
     static consumeInventoryItem(authToken:string, sku:string, quantity?:number, instanceID?:string, platform?:XsollaPublishingPlatform, onComplete?:() => void, onError?:(error:CommerceError) => void): void {
         let body = {
             sku: sku
@@ -54,6 +72,12 @@ export class XsollaInventory {
         request.send(JSON.stringify(body));
     }
 
+    /**
+     * @en
+     * Gets the list of user subscriptions.
+     * @zh
+     * 
+     */
     static getSubscriptions(authToken:string, platform?:XsollaPublishingPlatform, onComplete?:(subscriptionData:SubscriptionData) => void, onError?:(error:CommerceError) => void): void {
         let url = new XsollaUrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/user/subscriptions')
             .setPathParam('projectID', Xsolla.settings.projectId)

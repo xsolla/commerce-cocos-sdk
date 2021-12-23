@@ -7,6 +7,12 @@ import { Xsolla } from "../Xsolla";
 
 export class XsollaAttributes {
 
+    /**
+     * @en
+     * Gets user attributes.
+     * @zh
+     * 
+     */
     static getUserAttributes(token:string, userId?:string, keys?:Array<string>, onComplete?:(attributes:Array<UserAttribute>) => void, onError?:(error:LoginError) => void) {
         let body = {
             publisher_project_id: parseInt(Xsolla.settings.projectId)
@@ -27,6 +33,12 @@ export class XsollaAttributes {
         request.send(JSON.stringify(body));
     }
 
+    /**
+     * @en
+     * Gets user read-only attributes.
+     * @zh
+     * 
+     */
     static getUserReadOnlyAttributes(token:string, userId?:string, keys?:Array<string>, onComplete?:(attributes:Array<UserAttribute>) => void, onError?:(error:LoginError) => void) {
         let body = {
             publisher_project_id: parseInt(Xsolla.settings.projectId)
@@ -47,6 +59,12 @@ export class XsollaAttributes {
         request.send(JSON.stringify(body));
     }
 
+    /**
+     * @en
+     * Modifies the list of user attributes by creating/editing its items (changes made on the server side).
+     * @zh
+     * 
+     */
     static updateUserAttributes(token:string, attributes:Array<UserAttribute>, onComplete?:() => void, onError?:(error:LoginError) => void) {
         let body = {
             attributes: attributes,
@@ -59,6 +77,12 @@ export class XsollaAttributes {
         request.send(JSON.stringify(body));
     }
 
+    /**
+     * @en
+     * Removes user attributes with specified keys (changes made on the server side).
+     * @zh
+     * 
+     */
     static removeUserAttributes(token:string, keys:Array<string>, onComplete?:() => void, onError?:(error:LoginError) => void) {
         let body = {
             removing_keys: keys,

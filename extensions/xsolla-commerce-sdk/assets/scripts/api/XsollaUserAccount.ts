@@ -6,6 +6,13 @@ import { XsollaUrlBuilder } from "../core/XsollaUrlBuilder";
 import { Xsolla } from "../Xsolla";
 
 export class XsollaUserAccount {
+
+    /**
+     * @en
+     * Gets user details.
+     * @zh
+     * 
+     */
     static getUserDetails(token:string, onComplete?:(userDetails:UserDetails) => void, onError?:(error:LoginError) => void) {
         let url = new XsollaUrlBuilder('https://login.xsolla.com/api/users/me').build();
 
@@ -16,6 +23,12 @@ export class XsollaUserAccount {
         request.send();
     }
 
+    /**
+     * @en
+     * Modifies specified user details.
+     * @zh
+     * 
+     */
     static updateUserDetails(token:string, userDetailsUpdate:UserDetailsUpdate, onComplete?:(userDetails:UserDetails) => void, onError?:(error:LoginError) => void) {
         let url = new XsollaUrlBuilder('https://login.xsolla.com/api/users/me').build();
 
@@ -26,6 +39,12 @@ export class XsollaUserAccount {
         request.send(JSON.stringify(userDetailsUpdate));
     }
 
+    /**
+     * @en
+     * Gets user email.
+     * @zh
+     * 
+     */
     static getUserEmail(token:string, onComplete?:(email:string) => void, onError?:(error:LoginError) => void) {
         let url = new XsollaUrlBuilder('https://login.xsolla.com/api/users/me/email').build();
 
@@ -36,6 +55,12 @@ export class XsollaUserAccount {
         request.send();
     }
 
+    /**
+     * @en
+     * Gets user phone number.
+     * @zh
+     * 
+     */
     static getUserPhoneNumber(token:string, onComplete?:(phone:string) => void, onError?:(error:LoginError) => void) {
         let url = new XsollaUrlBuilder('https://login.xsolla.com/api/users/me/phone').build();
 
@@ -52,6 +77,12 @@ export class XsollaUserAccount {
         request.send();
     }
 
+    /**
+     * @en
+     * Deletes the user phone number.
+     * @zh
+     * 
+     */
     static deleteUserPhoneNumber(token:string, phoneNumber:string, onComplete?:() => void, onError?:(error:LoginError) => void) {
         let url = new XsollaUrlBuilder('https://login.xsolla.com/api/users/me/phone/{phoneNumber}')
             .setPathParam('phoneNumber', phoneNumber)
@@ -61,6 +92,12 @@ export class XsollaUserAccount {
         request.send();
     }
 
+    /**
+     * @en
+     * Gets user phone number.
+     * @zh
+     * 
+     */
     static updateUserPhoneNumber(token:string, phoneNumber:string, onComplete?:() => void, onError?:(error:LoginError) => void) {
         let body = {
             phone_number: phoneNumber,
@@ -72,6 +109,12 @@ export class XsollaUserAccount {
         request.send(JSON.stringify(body));
     }
 
+    /**
+     * @en
+     * Checks user age for a particular region. The age requirements depend on the region. Service determines the user location by the IP address.
+     * @zh
+     * 
+     */
     static checkUserAge(token:string, dateOfBirth:string, onComplete?:(accepted:boolean) => void, onError?:(error:LoginError) => void) {
         let body = {
             dob: dateOfBirth,
@@ -87,6 +130,13 @@ export class XsollaUserAccount {
         request.send(JSON.stringify(body));
     }
 
+    /**
+     * @en
+     * Adds the username/email and password authentication to the existing user account. 
+     * This call is used if the account is created via the device ID or phone number.
+     * @zh
+     * 
+     */
     static addUsernameAndEmailToAccount(token:string, email:string, password:string, username:string, receiveNewsteltters: boolean, onComplete?:(confirmationRequired:boolean) => void, onError?:(error:LoginError) => void) {
         let body = {
             email: email,
@@ -104,6 +154,12 @@ export class XsollaUserAccount {
         request.send(JSON.stringify(body));
     }
 
+    /**
+     * @en
+     * Modifies user profile picture.
+     * @zh
+     * 
+     */
     static modifyUserProfilePicture(token:string, buffer?:Uint8Array, onComplete?:() => void, onError?:(error:LoginError) => void) {
         if (buffer == null) {
             onError?.({ code:'-1', description:'Picture is invalid.'});
@@ -137,6 +193,12 @@ export class XsollaUserAccount {
         request.send(uploadContent);
     }
 
+    /**
+     * @en
+     * Removes user profile picture.
+     * @zh
+     * 
+     */
     static removeProfilePicture(token:string, onComplete?:() => void, onError?:(error:LoginError) => void) {
         let url = new XsollaUrlBuilder('https://login.xsolla.com/api/users/me/picture').build();
         

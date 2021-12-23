@@ -8,6 +8,12 @@ import { Xsolla, XsollaAuthenticationType } from "../Xsolla";
 
 export class XsollaLogin {
 
+    /**
+     * @en
+     * Authenticates the user by the username and password specified via the authentication interface.
+     * @zh
+     * 
+     */
     static authByUsernameAndPassword(username:string, password:string, rememberMe:boolean, payload?:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
         if(Xsolla.settings.authType == XsollaAuthenticationType.Oauth2) {
             this.authByUsernameAndPasswordOauth(username, password, onComplete, onError);
@@ -53,6 +59,12 @@ export class XsollaLogin {
         request.send(JSON.stringify(body));
     }
 
+    /**
+     * @en
+     * Refreshes the token in case it is expired. Works only when OAuth 2.0 is enabled.
+     * @zh
+     * 
+     */
     static refreshToken(refreshToken:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
         let body = {
             client_id: Xsolla.settings.clientId,
@@ -70,6 +82,12 @@ export class XsollaLogin {
         request.send(XsollaHttpUtil.encodeFormData(body));
     }
 
+    /**
+     * @en
+     * Exchanges the user authentication code to a valid JWT. Works only when OAuth 2.0 is enabled.
+     * @zh
+     * 
+     */
     static exchangeAuthCode(authCode:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
         let body = {
             client_id: Xsolla.settings.clientId,
@@ -87,6 +105,12 @@ export class XsollaLogin {
         request.send(XsollaHttpUtil.encodeFormData(body));
     }
 
+    /**
+     * @en
+     * Starts authentication by the user phone number and sends a confirmation code to their phone number.
+     * @zh
+     * 
+     */
     static startAuthByPhoneNumber(phoneNumber:string, payload?:string, state?:string, onComplete?:(operationId:string) => void, onError?:(error:LoginError) => void) {
         if(Xsolla.settings.authType == XsollaAuthenticationType.Oauth2) {
             this.startAuthByPhoneNumberOauth(phoneNumber, state, onComplete, onError);
@@ -135,6 +159,12 @@ export class XsollaLogin {
         request.send(JSON.stringify(body));
     }
 
+    /**
+     * @en
+     * Completes authentication by the user phone number and a confirmation code.
+     * @zh
+     * 
+     */
     static completeAuthByPhoneNumber(confirmationCode:string, operationId:string, phoneNumber:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
         if(Xsolla.settings.authType == XsollaAuthenticationType.Oauth2) {
             this.completeAuthByPhoneNumberOauth(confirmationCode, operationId, phoneNumber, onComplete, onError);
@@ -174,6 +204,12 @@ export class XsollaLogin {
         request.send(JSON.stringify(body));
     }
 
+    /**
+     * @en
+     * Starts authentication by the user email address and sends a confirmation code to their email address.
+     * @zh
+     * 
+     */
     static startAuthByEmail(emailAddress:string, payload?:string, state?:string, onComplete?:(operationId:string) => void, onError?:(error:LoginError) => void) {
         if(Xsolla.settings.authType == XsollaAuthenticationType.Oauth2) {
             this.startAuthByEmailOauth(emailAddress, state, onComplete, onError);
@@ -222,6 +258,12 @@ export class XsollaLogin {
         request.send(JSON.stringify(body));
     }
 
+    /**
+     * @en
+     * Completes authentication by the user email address and a confirmation code.
+     * @zh
+     * 
+     */
     static completeAuthByEmail(confirmationCode:string, operationId:string, emailAddress:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
         if(Xsolla.settings.authType == XsollaAuthenticationType.Oauth2) {
             this.completeAuthByEmailOauth(confirmationCode, operationId, emailAddress, onComplete, onError);
@@ -261,6 +303,12 @@ export class XsollaLogin {
         request.send(JSON.stringify(body));
     }
 
+    /**
+     * @en
+     * Authenticates a platform account user via deviceId.
+     * @zh
+     * 
+     */
     static authByDeviceId(deviceName:string, deviceId:string, payload?:string, state?:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
         if(Xsolla.settings.authType == XsollaAuthenticationType.Oauth2) {
             this.authByDeviceIdOauth(deviceName, deviceId, state, onComplete, onError);
