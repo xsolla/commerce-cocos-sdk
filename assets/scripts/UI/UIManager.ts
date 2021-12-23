@@ -145,5 +145,6 @@ export class UIManager extends Component {
             onClosed?.();
             confirmationPopupInstance.destroy();
         });
+        this.node.addChild(confirmationPopupInstance);
     }
 }
