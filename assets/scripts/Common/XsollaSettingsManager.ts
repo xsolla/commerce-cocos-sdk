@@ -1,7 +1,7 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component, Enum} from 'cc';
-import { XsollaAuthenticationType, XsollaSettings, Xsolla } from './Xsolla';
+import { XsollaAuthenticationType, XsollaSettings, Xsolla } from 'db://xsolla-commerce-sdk/scripts/Xsolla';
 const { ccclass, property, disallowMultiple, type  } = _decorator;
  
 @ccclass('XsollaSettingsManager')
