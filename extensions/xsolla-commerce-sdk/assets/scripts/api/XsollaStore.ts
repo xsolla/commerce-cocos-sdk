@@ -432,22 +432,24 @@ export interface VirtualCurrencyPackage {
     sku: string,
     name: string,
     type: string,
+    virtual_item_type: string,
     description: string,
     image_url: string,
+    inventory_options: XsollaItemOptions,
     attributes: Array<XsollaItemAttribute>,
     groups: Array<XsollaItemGroup>,
     bundle_type: string,
     is_free: boolean,
     price: XsollaPrice,
     virtual_prices: Array<XsollaVirtualCurrencyPrice>,
-    content: CurrencyPackageContent,
+    content: Array<CurrencyPackageContent>,
     long_description: string,
     order: number,
     media_list: Array<StoreItemMediaList>
 }
 
 export interface VirtualCurrencyPackagesData {
-    items: VirtualCurrencyPackage
+    items: Array<VirtualCurrencyPackage>
 }
 
 export interface StoreBundle {

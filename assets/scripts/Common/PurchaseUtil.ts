@@ -1,7 +1,7 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
 import { sys } from "cc";
-import { StoreItem, XsollaStore } from "db://xsolla-commerce-sdk/scripts/api/XsollaStore";
+import { StoreItem, VirtualCurrencyPackage, XsollaStore } from "db://xsolla-commerce-sdk/scripts/api/XsollaStore";
 import { XsollaUrlBuilder } from "db://xsolla-commerce-sdk/scripts/core/XsollaUrlBuilder";
 import { Xsolla } from "db://xsolla-commerce-sdk/scripts/Xsolla";
 import { UIManager } from "../UI/UIManager";
@@ -15,7 +15,7 @@ export class PurchaseUtil {
 
     static bIsSuccessPurchase:boolean = false;
 
-    static buyItem(item: StoreItem, onSuccessPurchase?:() => void) {
+    static buyItem(item: StoreItem | VirtualCurrencyPackage, onSuccessPurchase?:() => void) {
         let isVirtual = item.virtual_prices.length > 0;
         if(isVirtual) {
             UIManager.instance.showConfirmationPopup('Are you sure you want to purchase this item?', 'CONFIRM', () => {

@@ -1,7 +1,7 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component, Node, Label, Sprite, assetManager, ImageAsset, SpriteFrame, Texture2D, instantiate, Button } from 'cc';
-import { StoreBundleContent, StoreItem } from 'db://xsolla-commerce-sdk/scripts/api/XsollaStore';
+import { StoreBundleContent, StoreItem, VirtualCurrencyPackage } from 'db://xsolla-commerce-sdk/scripts/api/XsollaStore';
 import { CurrencyFormatter } from '../../Common/CurrencyFormatter';
 import { PurchaseUtil } from '../../Common/PurchaseUtil';
 import { BundleContentItem } from '../Misc/BundleContentItem';
@@ -46,7 +46,7 @@ export class StoreItemInfoManager extends Component {
 
     private _parent: StoreManager;
 
-    private _data: StoreItem;
+    private _data: StoreItem | VirtualCurrencyPackage;
 
     onEnable() {
         this.addListeners();
@@ -66,7 +66,7 @@ export class StoreItemInfoManager extends Component {
         this.closeBtn.node.on(Button.EventType.CLICK, this.closeClicked, this);
     }
 
-    init(item:StoreItem, parent:StoreManager, bundleContent?:Array<StoreBundleContent>) {
+    init(item:StoreItem | VirtualCurrencyPackage, parent:StoreManager, bundleContent?:Array<StoreBundleContent>) {
 
         this._parent = parent;
         this._data = item;
