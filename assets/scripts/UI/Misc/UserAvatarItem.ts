@@ -51,11 +51,9 @@ export class UserAvatarItem extends Component {
     }
 
     onClicked() {
-
         if(this.selectionSprite.node.active == true) {
             return;
         }
-
         this._parent.onSaveAvatar(this._texture, this);
     }
 }
