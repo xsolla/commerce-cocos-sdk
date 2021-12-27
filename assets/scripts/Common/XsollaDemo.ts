@@ -2,7 +2,7 @@
 
 import { _decorator, Component } from 'cc';
 import { XsollaLogin } from 'db://xsolla-commerce-sdk/scripts/api/XsollaLogin';
-import { Xsolla, XsollaAuthenticationType } from 'db://xsolla-commerce-sdk/scripts/Xsolla';
+import { Xsolla, AuthenticationType } from 'db://xsolla-commerce-sdk/scripts/Xsolla';
 import { UIManager, UIScreenType } from '../UI/UIManager';
 import { CurrencyFormatter } from './CurrencyFormatter';
 import { TokenUtils } from './TokenParser';
@@ -26,7 +26,7 @@ export class XsollaDemo extends Component {
             UIManager.instance.openScreen(UIScreenType.MainMenu);
             return;
         }
-        if(Xsolla.settings.authType == XsollaAuthenticationType.Oauth2) {
+        if(Xsolla.settings.authType == AuthenticationType.Oauth2) {
             XsollaLogin.refreshToken(cachedToken.refresh_token, token => {
                 TokenStorage.saveToken(token, true);
                 UIManager.instance.openScreen(UIScreenType.MainMenu);

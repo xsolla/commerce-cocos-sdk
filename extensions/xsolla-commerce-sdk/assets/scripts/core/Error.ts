@@ -1,8 +1,8 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
-import { XsollaHttpError } from "./XsollaHttpUtil";
+import { HttpError } from "./HttpUtil";
 
-export function handleCommerceError(onError:(error:CommerceError) => void): (requestError:XsollaHttpError) => void {
+export function handleCommerceError(onError:(error:CommerceError) => void): (requestError:HttpError) => void {
     return requestError => {
         let commerceError: CommerceError = {
             code: requestError.errorCode,
@@ -13,7 +13,7 @@ export function handleCommerceError(onError:(error:CommerceError) => void): (req
     };
 }
 
-export function handleLoginError(onError:(error:LoginError) => void): (requestError:XsollaHttpError) => void {
+export function handleLoginError(onError:(error:LoginError) => void): (requestError:HttpError) => void {
     return requestError => {
         let loginError: LoginError = {
             code: requestError.code,

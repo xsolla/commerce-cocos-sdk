@@ -1,7 +1,7 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
 import { XsollaStore } from "db://xsolla-commerce-sdk/scripts/api/XsollaStore";
-import { XsollaUrlBuilder } from "db://xsolla-commerce-sdk/scripts/core/XsollaUrlBuilder";
+import { UrlBuilder } from "db://xsolla-commerce-sdk/scripts/core/UrlBuilder";
 import { Xsolla } from "db://xsolla-commerce-sdk/scripts/Xsolla";
 import { UIManager } from "../UI/UIManager";
 import { TokenStorage } from "./TokenStorage";
@@ -27,7 +27,7 @@ export class OrderTracker {
 
     static createOrderCheckObject(orderId:number, onStatusReceived:(orderId:string, orderStatus:XsollaOrderStatus) => void, onError:(errorMessage:string) => void, onTimeout:() => void,
     socketLifeTime:number = 300) {
-        let url = new XsollaUrlBuilder('wss://store-ws.xsolla.com/sub/order/status')
+        let url = new UrlBuilder('wss://store-ws.xsolla.com/sub/order/status')
             .addStringParam('order_id', orderId.toString())
             .addStringParam('project_id', Xsolla.settings.projectId)
             .build();

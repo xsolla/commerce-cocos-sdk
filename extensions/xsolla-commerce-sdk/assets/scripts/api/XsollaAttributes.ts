@@ -1,8 +1,8 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
-import { handleLoginError, LoginError } from "../core/XsollaError";
-import { XsollaHttpUtil, XsollaRequestContentType } from "../core/XsollaHttpUtil";
-import { XsollaUrlBuilder } from "../core/XsollaUrlBuilder";
+import { handleLoginError, LoginError } from "../core/Error";
+import { HttpUtil, RequestContentType } from "../core/HttpUtil";
+import { UrlBuilder } from "../core/UrlBuilder";
 import { Xsolla } from "../Xsolla";
 
 export class XsollaAttributes {
@@ -24,9 +24,9 @@ export class XsollaAttributes {
             body['keys'] = keys;
         }
 
-        let url = new XsollaUrlBuilder('https://login.xsolla.com/api/attributes/users/me/get').build();
+        let url = new UrlBuilder('https://login.xsolla.com/api/attributes/users/me/get').build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, token, result => {
+        let request = HttpUtil.createRequest(url, 'POST', RequestContentType.Json, token, result => {
             let attributes = JSON.parse(result);
             onComplete?.(attributes);
         }, handleLoginError(onError));
@@ -50,9 +50,9 @@ export class XsollaAttributes {
             body['keys'] = keys;
         }
 
-        let url = new XsollaUrlBuilder('https://login.xsolla.com/api/attributes/users/me/get_read_only').build();
+        let url = new UrlBuilder('https://login.xsolla.com/api/attributes/users/me/get_read_only').build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, token, result => {
+        let request = HttpUtil.createRequest(url, 'POST', RequestContentType.Json, token, result => {
             let attributes = JSON.parse(result);
             onComplete?.(attributes);
         }, handleLoginError(onError));
@@ -71,9 +71,9 @@ export class XsollaAttributes {
             publisher_project_id: parseInt(Xsolla.settings.projectId)
         };
 
-        let url = new XsollaUrlBuilder('https://login.xsolla.com/api/attributes/users/me/update').build();
+        let url = new UrlBuilder('https://login.xsolla.com/api/attributes/users/me/update').build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, token, onComplete, handleLoginError(onError));
+        let request = HttpUtil.createRequest(url, 'POST', RequestContentType.Json, token, onComplete, handleLoginError(onError));
         request.send(JSON.stringify(body));
     }
 
@@ -89,9 +89,9 @@ export class XsollaAttributes {
             publisher_project_id: parseInt(Xsolla.settings.projectId)
         };
 
-        let url = new XsollaUrlBuilder('https://login.xsolla.com/api/attributes/users/me/update').build();
+        let url = new UrlBuilder('https://login.xsolla.com/api/attributes/users/me/update').build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, token, onComplete, handleLoginError(onError));
+        let request = HttpUtil.createRequest(url, 'POST', RequestContentType.Json, token, onComplete, handleLoginError(onError));
         request.send(JSON.stringify(body));
     }
 }

@@ -1,19 +1,19 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
 import { sys, VERSION } from 'cc';
-import { SDK_VERSION } from '../XsollaConstants';
+import { SDK_VERSION } from './Constants';
 
-export enum XsollaRequestContentType {
+export enum RequestContentType {
     None = 0,
     Json = 1,
     WwwForm = 2,
     MultipartForm = 3
 }
 
-export class XsollaHttpUtil {
+export class HttpUtil {
 
-    static createRequest(url:string, verb:string, contentType:XsollaRequestContentType = XsollaRequestContentType.None, authToken?:string,
-        onComplete?:(result:any) => void, onError?:(error:XsollaHttpError) => void) : XMLHttpRequest {
+    static createRequest(url:string, verb:string, contentType:RequestContentType = RequestContentType.None, authToken?:string,
+        onComplete?:(result:any) => void, onError?:(error:HttpError) => void) : XMLHttpRequest {
 
         let request = new XMLHttpRequest();
 
@@ -28,15 +28,15 @@ export class XsollaHttpUtil {
         }
 
         switch(contentType) {
-            case XsollaRequestContentType.Json: {
+            case RequestContentType.Json: {
                 request.setRequestHeader('Content-Type', 'application/json');
                 break;
             } 
-            case XsollaRequestContentType.WwwForm: {
+            case RequestContentType.WwwForm: {
                 request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                 break;
             } 
-            case XsollaRequestContentType.MultipartForm: {
+            case RequestContentType.MultipartForm: {
                 let boundary: string = '---------------------------' + Date.now.toString();
                 request.setRequestHeader('Content-Type', (`multipart/form-data; boundary =${boundary}`));
                 break;
@@ -60,7 +60,7 @@ export class XsollaHttpUtil {
 
                     // Try parse Login API error
                     if (response.error) {
-                        let error: XsollaHttpError = {
+                        let error: HttpError = {
                             code: response.error.code,
                             description: response.error.description
                         }
@@ -70,7 +70,7 @@ export class XsollaHttpUtil {
 
                     // Try parse Commerce API error
                     if (response.errorMessage) {
-                        let error: XsollaHttpError = {
+                        let error: HttpError = {
                             statusCode: response.statusCode,
                             errorCode: response.errorCode,
                             errorMessage: response.errorMessage,
@@ -79,7 +79,7 @@ export class XsollaHttpUtil {
                         return;
                     }
 
-                    let error: XsollaHttpError = {
+                    let error: HttpError = {
                         code: 'Unknown error',
                         description: 'Unknown error',
                         errorMessage: 'Unknown error',
@@ -92,7 +92,7 @@ export class XsollaHttpUtil {
         };
 
         request.onerror = function () {
-            let error: XsollaHttpError = {
+            let error: HttpError = {
                 code: 'Network error',
                 description: 'Network error',
                 errorMessage: 'Network error',
@@ -131,7 +131,7 @@ export class XsollaHttpUtil {
     }
 }
 
-export interface XsollaHttpError {
+export interface HttpError {
     code?: string,
     description?: string,
     errorMessage?: string,

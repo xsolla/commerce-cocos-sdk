@@ -1,7 +1,7 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component, Enum} from 'cc';
-import { XsollaAuthenticationType, XsollaSettings, Xsolla } from 'db://xsolla-commerce-sdk/scripts/Xsolla';
+import { AuthenticationType, XsollaSettings, Xsolla } from 'db://xsolla-commerce-sdk/scripts/Xsolla';
 const { ccclass, property, disallowMultiple, type  } = _decorator;
  
 @ccclass('XsollaSettingsManager')
@@ -24,14 +24,14 @@ export class XsollaSettingsManager extends Component {
         displayName: 'Authentication Type',
         tooltip: 'If enabled, OAuth 2.0 protocol will be used in order to authorize the user',
     })
-    @type(Enum(XsollaAuthenticationType))
-    authType: XsollaAuthenticationType = XsollaAuthenticationType.Oauth2;
+    @type(Enum(AuthenticationType))
+    authType: AuthenticationType = AuthenticationType.Oauth2;
 
     @property ({
         displayName: 'Client ID',
         tooltip: 'Client ID from your Publisher Account',
         visible: function(): boolean {
-            return this.authType == XsollaAuthenticationType.Oauth2;
+            return this.authType == AuthenticationType.Oauth2;
         }        
     })
     clientId: number = 57;

@@ -2,7 +2,7 @@
 
 import { _decorator, Component, Node, Button, EditBox, EventHandler, sys, System, Toggle, ScrollView, Prefab, SpriteFrame, instantiate, CCString } from 'cc';
 import { XsollaLogin } from 'db://xsolla-commerce-sdk/scripts/api/XsollaLogin';
-import { Xsolla, XsollaAuthenticationType } from 'db://xsolla-commerce-sdk/scripts/Xsolla';
+import { Xsolla, AuthenticationType } from 'db://xsolla-commerce-sdk/scripts/Xsolla';
 import { Token } from 'db://xsolla-commerce-sdk/scripts/api/XsollaLogin';
 import { UIManager, UIScreenType } from '../UIManager';
 import { SocialNetworkItem } from '../Misc/SocialNetworkItem';
@@ -53,13 +53,13 @@ export class SocialAuthManager extends Component {
         this.populateSocialNetworksList();
 
         if(sys.platform.toLowerCase() == 'android') {
-            if(Xsolla.settings.authType == XsollaAuthenticationType.Oauth2) {
+            if(Xsolla.settings.authType == AuthenticationType.Oauth2) {
                 jsb.reflection.callStaticMethod("com/cocos/game/XsollaNativeAuth", "xLoginInitOauth",
                     "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V",
                     Xsolla.settings.loginId, Xsolla.settings.clientId.toString(), "https://login.xsolla.com/api/blank",
                     this.facebookAppId, this.googleAppId, this.wechatAppId, this.qqAppId);
             }
-            if(Xsolla.settings.authType == XsollaAuthenticationType.Jwt) {
+            if(Xsolla.settings.authType == AuthenticationType.Jwt) {
                 jsb.reflection.callStaticMethod("com/cocos/game/XsollaNativeAuth", "xLoginInitJwt",
                     "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V",
                     Xsolla.settings.loginId, "https://login.xsolla.com/api/blank",

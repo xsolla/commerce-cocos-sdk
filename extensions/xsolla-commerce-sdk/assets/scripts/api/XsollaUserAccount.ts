@@ -1,8 +1,8 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
-import { handleLoginError, LoginError } from "../core/XsollaError";
-import { XsollaHttpUtil, XsollaRequestContentType } from "../core/XsollaHttpUtil";
-import { XsollaUrlBuilder } from "../core/XsollaUrlBuilder";
+import { handleLoginError, LoginError } from "../core/Error";
+import { HttpUtil, RequestContentType } from "../core/HttpUtil";
+import { UrlBuilder } from "../core/UrlBuilder";
 import { Xsolla } from "../Xsolla";
 
 export class XsollaUserAccount {
@@ -14,9 +14,9 @@ export class XsollaUserAccount {
      * 
      */
     static getUserDetails(token:string, onComplete?:(userDetails:UserDetails) => void, onError?:(error:LoginError) => void) {
-        let url = new XsollaUrlBuilder('https://login.xsolla.com/api/users/me').build();
+        let url = new UrlBuilder('https://login.xsolla.com/api/users/me').build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.None, token, result => {
+        let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, token, result => {
             let user: UserDetails = JSON.parse(result);
             onComplete?.(user);
         }, handleLoginError(onError));
@@ -30,9 +30,9 @@ export class XsollaUserAccount {
      * 
      */
     static updateUserDetails(token:string, userDetailsUpdate:UserDetailsUpdate, onComplete?:(userDetails:UserDetails) => void, onError?:(error:LoginError) => void) {
-        let url = new XsollaUrlBuilder('https://login.xsolla.com/api/users/me').build();
+        let url = new UrlBuilder('https://login.xsolla.com/api/users/me').build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'PATCH', XsollaRequestContentType.Json, token, result => {
+        let request = HttpUtil.createRequest(url, 'PATCH', RequestContentType.Json, token, result => {
             let user: UserDetails = JSON.parse(result);
             onComplete?.(user);
         }, handleLoginError(onError));
@@ -46,9 +46,9 @@ export class XsollaUserAccount {
      * 
      */
     static getUserEmail(token:string, onComplete?:(email:string) => void, onError?:(error:LoginError) => void) {
-        let url = new XsollaUrlBuilder('https://login.xsolla.com/api/users/me/email').build();
+        let url = new UrlBuilder('https://login.xsolla.com/api/users/me/email').build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.None, token, result => {
+        let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, token, result => {
             let userEmail: UserEmail = JSON.parse(result);
             onComplete?.(userEmail.current_email);
         }, handleLoginError(onError));
@@ -62,9 +62,9 @@ export class XsollaUserAccount {
      * 
      */
     static getUserPhoneNumber(token:string, onComplete?:(phone:string) => void, onError?:(error:LoginError) => void) {
-        let url = new XsollaUrlBuilder('https://login.xsolla.com/api/users/me/phone').build();
+        let url = new UrlBuilder('https://login.xsolla.com/api/users/me/phone').build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.None, token, result => {
+        let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, token, result => {
             if (result) {
                 let userPhone: UserPhone = JSON.parse(result);
                 onComplete?.(userPhone.phone_number);
@@ -84,11 +84,11 @@ export class XsollaUserAccount {
      * 
      */
     static deleteUserPhoneNumber(token:string, phoneNumber:string, onComplete?:() => void, onError?:(error:LoginError) => void) {
-        let url = new XsollaUrlBuilder('https://login.xsolla.com/api/users/me/phone/{phoneNumber}')
+        let url = new UrlBuilder('https://login.xsolla.com/api/users/me/phone/{phoneNumber}')
             .setPathParam('phoneNumber', phoneNumber)
             .build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'DELETE', XsollaRequestContentType.None, token, onComplete, handleLoginError(onError));
+        let request = HttpUtil.createRequest(url, 'DELETE', RequestContentType.None, token, onComplete, handleLoginError(onError));
         request.send();
     }
 
@@ -103,9 +103,9 @@ export class XsollaUserAccount {
             phone_number: phoneNumber,
         };
 
-        let url = new XsollaUrlBuilder('https://login.xsolla.com/api/users/me/phone').build();
+        let url = new UrlBuilder('https://login.xsolla.com/api/users/me/phone').build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, token, onComplete, handleLoginError(onError));
+        let request = HttpUtil.createRequest(url, 'POST', RequestContentType.Json, token, onComplete, handleLoginError(onError));
         request.send(JSON.stringify(body));
     }
 
@@ -121,9 +121,9 @@ export class XsollaUserAccount {
             project_id: Xsolla.settings.loginId
         };
 
-        let url = new XsollaUrlBuilder('https://login.xsolla.com/api/users/age/check').build();
+        let url = new UrlBuilder('https://login.xsolla.com/api/users/age/check').build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, token, result => {
+        let request = HttpUtil.createRequest(url, 'POST', RequestContentType.Json, token, result => {
             let age: UserAge = JSON.parse(result);
             onComplete?.(age.accepted);
         }, handleLoginError(onError));
@@ -145,9 +145,9 @@ export class XsollaUserAccount {
             promo_email_agreement: receiveNewsteltters ? 1 : 0
         };
 
-        let url = new XsollaUrlBuilder('https://login.xsolla.com/api/users/me/link_email_password').build();
+        let url = new UrlBuilder('https://login.xsolla.com/api/users/me/link_email_password').build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, token, result => {
+        let request = HttpUtil.createRequest(url, 'POST', RequestContentType.Json, token, result => {
             let emailConfirmation: EmailConfirmation = JSON.parse(result);
             onComplete?.(emailConfirmation.email_confirmation_required);
         }, handleLoginError(onError));
@@ -186,8 +186,8 @@ export class XsollaUserAccount {
         offset += buffer.length;
         uploadContent.set(enc.encode(endBoundary), offset);
 
-        let url = new XsollaUrlBuilder('https://login.xsolla.com/api/users/me/picture').build();
-        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.MultipartForm, token, result => {
+        let url = new UrlBuilder('https://login.xsolla.com/api/users/me/picture').build();
+        let request = HttpUtil.createRequest(url, 'POST', RequestContentType.MultipartForm, token, result => {
             onComplete?.();
         }, handleLoginError(onError));
         request.send(uploadContent);
@@ -200,9 +200,9 @@ export class XsollaUserAccount {
      * 
      */
     static removeProfilePicture(token:string, onComplete?:() => void, onError?:(error:LoginError) => void) {
-        let url = new XsollaUrlBuilder('https://login.xsolla.com/api/users/me/picture').build();
+        let url = new UrlBuilder('https://login.xsolla.com/api/users/me/picture').build();
         
-        let request = XsollaHttpUtil.createRequest(url, 'DELETE', XsollaRequestContentType.None, token, result => {
+        let request = HttpUtil.createRequest(url, 'DELETE', RequestContentType.None, token, result => {
             onComplete?.();
         }, handleLoginError(onError));
         request.send();

@@ -1,8 +1,8 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
-import { handleCommerceError, CommerceError } from "../core/XsollaError";
-import { XsollaHttpUtil, XsollaRequestContentType } from "../core/XsollaHttpUtil";
-import { XsollaUrlBuilder } from "../core/XsollaUrlBuilder";
+import { handleCommerceError, CommerceError } from "../core/Error";
+import { HttpUtil, RequestContentType } from "../core/HttpUtil";
+import { UrlBuilder } from "../core/UrlBuilder";
 import { Xsolla } from "../Xsolla";
 import { XsollaItemAttribute, XsollaItemGroup } from "./XsollaStore";
 
@@ -15,14 +15,14 @@ export class XsollaInventory {
      * 
      */
     static getInventory(authToken:string, platform?:XsollaPublishingPlatform, onComplete?:(itemsData:InventoryItemsData) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
-        let url = new XsollaUrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/user/inventory/items')
+        let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/user/inventory/items')
             .setPathParam('projectID', Xsolla.settings.projectId)
             .addNumberParam('limit', limit)
             .addNumberParam('offset', offset)
             .addStringParam('platform', platform ? platform.toString() : null)
             .build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.None, authToken, result => {
+        let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, authToken, result => {
             let intentoryData: InventoryItemsData  = JSON.parse(result);
             onComplete?.(intentoryData);
         }, handleCommerceError(onError));
@@ -36,12 +36,12 @@ export class XsollaInventory {
      * 
      */
     static getVirtualCurrencyBalance(authToken:string, platform?:XsollaPublishingPlatform, onComplete?:(currencyData:VirtualCurrencyBalanceData) => void, onError?:(error:CommerceError) => void): void {
-        let url = new XsollaUrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/user/virtual_currency_balance')
+        let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/user/virtual_currency_balance')
             .setPathParam('projectID', Xsolla.settings.projectId)
             .addStringParam('platform', platform ? platform.toString() : null)
             .build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.None, authToken, result => {
+        let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, authToken, result => {
             let currencyData: VirtualCurrencyBalanceData  = JSON.parse(result);
             onComplete?.(currencyData);
         }, handleCommerceError(onError));
@@ -61,12 +61,12 @@ export class XsollaInventory {
         body['quantity'] = quantity == null || quantity == 0 ? null : quantity;
         body['instance_id'] = instanceID == null || instanceID == '' ? null : instanceID;
 
-        let url = new XsollaUrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/user/inventory/item/consume')
+        let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/user/inventory/item/consume')
             .setPathParam('projectID', Xsolla.settings.projectId)
             .addStringParam('platform', platform ? platform.toString() : null)
             .build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, authToken, result => {
+        let request = HttpUtil.createRequest(url, 'POST', RequestContentType.Json, authToken, result => {
             onComplete?.();
         }, handleCommerceError(onError));
         request.send(JSON.stringify(body));
@@ -79,12 +79,12 @@ export class XsollaInventory {
      * 
      */
     static getSubscriptions(authToken:string, platform?:XsollaPublishingPlatform, onComplete?:(subscriptionData:SubscriptionData) => void, onError?:(error:CommerceError) => void): void {
-        let url = new XsollaUrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/user/subscriptions')
+        let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/user/subscriptions')
             .setPathParam('projectID', Xsolla.settings.projectId)
             .addStringParam('platform', platform ? platform.toString() : null)
             .build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.None, authToken, result => {
+        let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, authToken, result => {
             let subscriptionData: SubscriptionData  = JSON.parse(result);
             onComplete?.(subscriptionData);
         }, handleCommerceError(onError));

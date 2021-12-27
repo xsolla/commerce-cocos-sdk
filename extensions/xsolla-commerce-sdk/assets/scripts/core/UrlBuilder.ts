@@ -1,6 +1,6 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
-export class XsollaUrlBuilder {
+export class UrlBuilder {
     private _url: string;
     private _queryParameters = {};
     private _pathParameters = {};
@@ -25,12 +25,12 @@ export class XsollaUrlBuilder {
         return this._url + queryParamsStr;
     }
 
-    setPathParam(paramName:string, paramValue:string) : XsollaUrlBuilder {
+    setPathParam(paramName:string, paramValue:string) : UrlBuilder {
         this._pathParameters[paramName] = paramValue;
         return this;
     }
 
-    addStringParam(paramName:string, paramValue:string, ignoreEmpty:boolean = true) : XsollaUrlBuilder {
+    addStringParam(paramName:string, paramValue:string, ignoreEmpty:boolean = true) : UrlBuilder {
         if (ignoreEmpty && !paramValue) {
             return this;
         }
@@ -38,7 +38,7 @@ export class XsollaUrlBuilder {
         return this;
     }
 
-    addArrayParam(paramName:string, paramValueArray:Array<string>, ignoreEmpty:boolean = true, asOneParam:boolean = false) : XsollaUrlBuilder {
+    addArrayParam(paramName:string, paramValueArray:Array<string>, ignoreEmpty:boolean = true, asOneParam:boolean = false) : UrlBuilder {
         if (ignoreEmpty && paramValueArray.length == 0) {
             return this;
         }    
@@ -55,12 +55,12 @@ export class XsollaUrlBuilder {
         return this;
     }
 
-    addNumberParam(paramName:string, paramValue:number) : XsollaUrlBuilder {
+    addNumberParam(paramName:string, paramValue:number) : UrlBuilder {
         this._queryParameters[paramName] = paramValue.toString();
         return this;
     }
 
-    addBoolParam(paramName:string, paramValue:boolean, asNumber:boolean = true) : XsollaUrlBuilder {
+    addBoolParam(paramName:string, paramValue:boolean, asNumber:boolean = true) : UrlBuilder {
         if (asNumber) {
             this._queryParameters[paramName] = paramValue ? '1' : '0'
         }

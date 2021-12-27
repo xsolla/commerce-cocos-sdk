@@ -2,7 +2,7 @@
 
 import { sys } from "cc";
 import { StoreItem, VirtualCurrencyPackage, XsollaStore } from "db://xsolla-commerce-sdk/scripts/api/XsollaStore";
-import { XsollaUrlBuilder } from "db://xsolla-commerce-sdk/scripts/core/XsollaUrlBuilder";
+import { UrlBuilder } from "db://xsolla-commerce-sdk/scripts/core/UrlBuilder";
 import { Xsolla } from "db://xsolla-commerce-sdk/scripts/Xsolla";
 import { UIManager } from "../UI/UIManager";
 import { OrderTracker, XsollaOrderStatus } from "./OrderTracker";
@@ -32,11 +32,11 @@ export class PurchaseUtil {
 
         XsollaStore.fetchPaymentToken(TokenStorage.getToken().access_token, item.sku, 1, undefined, undefined, undefined, undefined, result => {
             if(sys.isMobile) {
-                let url: XsollaUrlBuilder;
+                let url: UrlBuilder;
                 if(Xsolla.settings.enableSandbox) {
-                    url = new XsollaUrlBuilder('https://sandbox-secure.xsolla.com/paystation3');
+                    url = new UrlBuilder('https://sandbox-secure.xsolla.com/paystation3');
                 } else {
-                    url = new XsollaUrlBuilder('https://secure.xsolla.com/paystation3');
+                    url = new UrlBuilder('https://secure.xsolla.com/paystation3');
                 }
                 url.addStringParam('access_token', result.token);
 

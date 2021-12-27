@@ -1,6 +1,6 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
-export enum XsollaAuthenticationType {
+export enum AuthenticationType {
     Jwt = 0,
     Oauth2 = 1
 }
@@ -8,7 +8,7 @@ export enum XsollaAuthenticationType {
 export interface XsollaSettings {
     loginId: string;
     projectId: string;
-    authType: XsollaAuthenticationType;
+    authType: AuthenticationType;
     clientId: number;
     enableSandbox: boolean;
 }
