@@ -2,27 +2,25 @@
 
 import { XsollaHttpError } from "./XsollaHttpUtil";
 
-export class XsollaError {
-    static handleCommerceError(onError:(error:CommerceError) => void): (requestError:XsollaHttpError) => void {
-        return requestError => {
-            let commerceError: CommerceError = {
-                code: requestError.errorCode,
-                description: requestError.errorMessage,
-                status: requestError.statusCode
-            };
-            onError?.(commerceError);
+export function handleCommerceError(onError:(error:CommerceError) => void): (requestError:XsollaHttpError) => void {
+    return requestError => {
+        let commerceError: CommerceError = {
+            code: requestError.errorCode,
+            description: requestError.errorMessage,
+            status: requestError.statusCode
         };
-    }
+        onError?.(commerceError);
+    };
+}
 
-    static handleLoginError(onError:(error:LoginError) => void): (requestError:XsollaHttpError) => void {
-        return requestError => {
-            let loginError: LoginError = {
-                code: requestError.code,
-                description: requestError.description
-            };
-            onError?.(loginError);
+export function handleLoginError(onError:(error:LoginError) => void): (requestError:XsollaHttpError) => void {
+    return requestError => {
+        let loginError: LoginError = {
+            code: requestError.code,
+            description: requestError.description
         };
-    }
+        onError?.(loginError);
+    };
 }
 
 export interface CommerceError {

@@ -1,6 +1,6 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
-import { LoginError, XsollaError } from "../core/XsollaError";
+import { handleLoginError, LoginError } from "../core/XsollaError";
 import { XsollaHttpUtil, XsollaRequestContentType } from "../core/XsollaHttpUtil";
 import { XsollaUrlBuilder } from "../core/XsollaUrlBuilder";
 import { Xsolla } from "../Xsolla";
@@ -29,7 +29,7 @@ export class XsollaAttributes {
         let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, token, result => {
             let attributes = JSON.parse(result);
             onComplete?.(attributes);
-        }, XsollaError.handleLoginError(onError));
+        }, handleLoginError(onError));
         request.send(JSON.stringify(body));
     }
 
@@ -55,7 +55,7 @@ export class XsollaAttributes {
         let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, token, result => {
             let attributes = JSON.parse(result);
             onComplete?.(attributes);
-        }, XsollaError.handleLoginError(onError));
+        }, handleLoginError(onError));
         request.send(JSON.stringify(body));
     }
 
@@ -73,7 +73,7 @@ export class XsollaAttributes {
 
         let url = new XsollaUrlBuilder('https://login.xsolla.com/api/attributes/users/me/update').build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, token, onComplete, XsollaError.handleLoginError(onError));
+        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, token, onComplete, handleLoginError(onError));
         request.send(JSON.stringify(body));
     }
 
@@ -91,7 +91,7 @@ export class XsollaAttributes {
 
         let url = new XsollaUrlBuilder('https://login.xsolla.com/api/attributes/users/me/update').build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, token, onComplete, XsollaError.handleLoginError(onError));
+        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, token, onComplete, handleLoginError(onError));
         request.send(JSON.stringify(body));
     }
 }

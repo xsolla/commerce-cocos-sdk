@@ -1,6 +1,6 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
-import { CommerceError, XsollaError } from "../core/XsollaError";
+import { handleCommerceError, CommerceError } from "../core/XsollaError";
 import { XsollaHttpUtil, XsollaRequestContentType } from "../core/XsollaHttpUtil";
 import { XsollaUrlBuilder } from "../core/XsollaUrlBuilder";
 import { Xsolla } from "../Xsolla";
@@ -25,7 +25,7 @@ export class XsollaInventory {
         let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.None, authToken, result => {
             let intentoryData: InventoryItemsData  = JSON.parse(result);
             onComplete?.(intentoryData);
-        }, XsollaError.handleCommerceError(onError));
+        }, handleCommerceError(onError));
         request.send();
     }
 
@@ -44,7 +44,7 @@ export class XsollaInventory {
         let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.None, authToken, result => {
             let currencyData: VirtualCurrencyBalanceData  = JSON.parse(result);
             onComplete?.(currencyData);
-        }, XsollaError.handleCommerceError(onError));
+        }, handleCommerceError(onError));
         request.send();
     }
 
@@ -68,7 +68,7 @@ export class XsollaInventory {
 
         let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, authToken, result => {
             onComplete?.();
-        }, XsollaError.handleCommerceError(onError));
+        }, handleCommerceError(onError));
         request.send(JSON.stringify(body));
     }
 
@@ -87,7 +87,7 @@ export class XsollaInventory {
         let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.None, authToken, result => {
             let subscriptionData: SubscriptionData  = JSON.parse(result);
             onComplete?.(subscriptionData);
-        }, XsollaError.handleCommerceError(onError));
+        }, handleCommerceError(onError));
         request.send();
     }
 }

@@ -1,6 +1,6 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
-import { CommerceError, XsollaError } from "../core/XsollaError";
+import { handleCommerceError, CommerceError } from "../core/XsollaError";
 import { XsollaHttpUtil, XsollaRequestContentType } from "../core/XsollaHttpUtil";
 import { XsollaUrlBuilder } from "../core/XsollaUrlBuilder";
 import { Xsolla } from "../Xsolla";
@@ -32,7 +32,7 @@ export class XsollaStore {
                 }
             }
             onComplete?.(itemsData);
-        }, XsollaError.handleCommerceError(onError));
+        }, handleCommerceError(onError));
         request.send();
     }
 
@@ -55,7 +55,7 @@ export class XsollaStore {
         let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.None, null, result => {
             let bundlesList: StoreListOfBundles = JSON.parse(result);
             onComplete?.(bundlesList);
-        }, XsollaError.handleCommerceError(onError));
+        }, handleCommerceError(onError));
         request.send();
     }
 
@@ -74,7 +74,7 @@ export class XsollaStore {
         let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.None, null, result => {
             let bundle: StoreBundle = JSON.parse(result);
             onComplete?.(bundle);
-        }, XsollaError.handleCommerceError(onError));
+        }, handleCommerceError(onError));
         request.send();
     }
 
@@ -93,7 +93,7 @@ export class XsollaStore {
         let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.None, null, result => {
             let itemsList: StoreItemsList = JSON.parse(result);
             onComplete?.(itemsList);
-        }, XsollaError.handleCommerceError(onError));
+        }, handleCommerceError(onError));
         request.send();
     }
 
@@ -116,7 +116,7 @@ export class XsollaStore {
         let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.None, null, result => {
             let virtualCurrencyData: VirtualCurrencyData = JSON.parse(result);
             onComplete?.(virtualCurrencyData);
-        }, XsollaError.handleCommerceError(onError));
+        }, handleCommerceError(onError));
         request.send();
     }
 
@@ -139,7 +139,7 @@ export class XsollaStore {
         let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.None, null, result => {
             let virtualCurrencyPackages: VirtualCurrencyPackagesData = JSON.parse(result);
             onComplete?.(virtualCurrencyPackages);
-        }, XsollaError.handleCommerceError(onError));
+        }, handleCommerceError(onError));
         request.send();
     }
 
@@ -163,7 +163,7 @@ export class XsollaStore {
         let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.None, null, result => {
             let itemsList: StoreItemsList = JSON.parse(result);
             onComplete?.(itemsList);
-        }, XsollaError.handleCommerceError(onError));
+        }, handleCommerceError(onError));
         request.send();
     }
 
@@ -184,7 +184,7 @@ export class XsollaStore {
         let request = XsollaHttpUtil.createRequest(url, 'GET', XsollaRequestContentType.None, null, result => {
             let groups: Array<XsollaItemGroup> = JSON.parse(result).groups;
             onComplete?.(groups);
-        }, XsollaError.handleCommerceError(onError));
+        }, handleCommerceError(onError));
         request.send();
     }
 
@@ -216,7 +216,7 @@ export class XsollaStore {
                 orderId: jsonResult.order_id
             };
             onComplete?.(tokenResult);
-        }, XsollaError.handleCommerceError(onError));
+        }, handleCommerceError(onError));
         request.send(JSON.stringify(body));
     }
 
@@ -240,7 +240,7 @@ export class XsollaStore {
                 content: jsonResult.content
             };
             onComplete?.(checkOrderResult);
-        }, XsollaError.handleCommerceError(onError));
+        }, handleCommerceError(onError));
         request.send();
     }
 
@@ -260,7 +260,7 @@ export class XsollaStore {
         let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.None, authToken, result => {
             let orderId: number  = JSON.parse(result).order_id;
             onComplete?.(orderId);
-        }, XsollaError.handleCommerceError(onError));
+        }, handleCommerceError(onError));
         request.send();
     }
 }

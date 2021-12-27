@@ -1,10 +1,12 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
 import { sys } from "cc";
-import { LoginError, XsollaError } from "../core/XsollaError";
+import { handleLoginError, LoginError } from "../core/XsollaError";
 import { XsollaHttpUtil, XsollaRequestContentType } from "../core/XsollaHttpUtil";
 import { XsollaUrlBuilder } from "../core/XsollaUrlBuilder";
-import { Xsolla, XsollaAuthenticationType } from "../Xsolla";
+import { Xsolla, AuthenticationType } from "../Xsolla";
+
+//declare var handleLoginError;
 
 export class XsollaLogin {
 
@@ -15,7 +17,7 @@ export class XsollaLogin {
      * 
      */
     static authByUsernameAndPassword(username:string, password:string, rememberMe:boolean, payload?:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
-        if(Xsolla.settings.authType == XsollaAuthenticationType.Oauth2) {
+        if(Xsolla.settings.authType == AuthenticationType.Oauth2) {
             this.authByUsernameAndPasswordOauth(username, password, onComplete, onError);
         }
         else {
@@ -37,7 +39,7 @@ export class XsollaLogin {
         let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, result => {
             let token: Token = JSON.parse(result);
             onComplete?.(token);
-        }, XsollaError.handleLoginError(onError));
+        }, handleLoginError(onError));
         request.send(JSON.stringify(body));
     }
 
@@ -55,7 +57,7 @@ export class XsollaLogin {
             .addStringParam('payload', payload)
             .build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, this.handleUrlWithToken(onComplete), XsollaError.handleLoginError(onError));
+        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, this.handleUrlWithToken(onComplete), handleLoginError(onError));
         request.send(JSON.stringify(body));
     }
 
@@ -78,7 +80,7 @@ export class XsollaLogin {
         let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.WwwForm, null, result => {
             let token: Token = JSON.parse(result);
             onComplete?.(token);
-        }, XsollaError.handleLoginError(onError));
+        }, handleLoginError(onError));
         request.send(XsollaHttpUtil.encodeFormData(body));
     }
 
@@ -101,7 +103,7 @@ export class XsollaLogin {
         let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.WwwForm, null, result => {
             let token: Token = JSON.parse(result);
             onComplete?.(token);
-        }, XsollaError.handleLoginError(onError));
+        }, handleLoginError(onError));
         request.send(XsollaHttpUtil.encodeFormData(body));
     }
 
@@ -112,7 +114,7 @@ export class XsollaLogin {
      * 
      */
     static startAuthByPhoneNumber(phoneNumber:string, payload?:string, state?:string, onComplete?:(operationId:string) => void, onError?:(error:LoginError) => void) {
-        if(Xsolla.settings.authType == XsollaAuthenticationType.Oauth2) {
+        if(Xsolla.settings.authType == AuthenticationType.Oauth2) {
             this.startAuthByPhoneNumberOauth(phoneNumber, state, onComplete, onError);
         }
         else {
@@ -136,7 +138,7 @@ export class XsollaLogin {
         let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, result => {
             let authOperationId: AuthOperationId = JSON.parse(result);
             onComplete?.(authOperationId.operation_id);
-        }, XsollaError.handleLoginError(onError));
+        }, handleLoginError(onError));
         request.send(JSON.stringify(body));
     }
 
@@ -155,7 +157,7 @@ export class XsollaLogin {
         let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, result => {
             let authOperationId: AuthOperationId = JSON.parse(result);
             onComplete?.(authOperationId.operation_id);
-        }, XsollaError.handleLoginError(onError));
+        }, handleLoginError(onError));
         request.send(JSON.stringify(body));
     }
 
@@ -166,7 +168,7 @@ export class XsollaLogin {
      * 
      */
     static completeAuthByPhoneNumber(confirmationCode:string, operationId:string, phoneNumber:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
-        if(Xsolla.settings.authType == XsollaAuthenticationType.Oauth2) {
+        if(Xsolla.settings.authType == AuthenticationType.Oauth2) {
             this.completeAuthByPhoneNumberOauth(confirmationCode, operationId, phoneNumber, onComplete, onError);
         }
         else {
@@ -185,7 +187,7 @@ export class XsollaLogin {
             .addNumberParam('client_id', Xsolla.settings.clientId)
             .build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, this.handleUrlWithCode(onComplete, onError), XsollaError.handleLoginError(onError));
+        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, this.handleUrlWithCode(onComplete, onError), handleLoginError(onError));
         request.send(JSON.stringify(body));
     }
 
@@ -200,7 +202,7 @@ export class XsollaLogin {
             .addStringParam('projectId', Xsolla.settings.loginId)
             .build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, this.handleUrlWithToken(onComplete), XsollaError.handleLoginError(onError));
+        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, this.handleUrlWithToken(onComplete), handleLoginError(onError));
         request.send(JSON.stringify(body));
     }
 
@@ -211,7 +213,7 @@ export class XsollaLogin {
      * 
      */
     static startAuthByEmail(emailAddress:string, payload?:string, state?:string, onComplete?:(operationId:string) => void, onError?:(error:LoginError) => void) {
-        if(Xsolla.settings.authType == XsollaAuthenticationType.Oauth2) {
+        if(Xsolla.settings.authType == AuthenticationType.Oauth2) {
             this.startAuthByEmailOauth(emailAddress, state, onComplete, onError);
         }
         else {
@@ -235,7 +237,7 @@ export class XsollaLogin {
         let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, result => {
             let authOperationId: AuthOperationId = JSON.parse(result);
             onComplete?.(authOperationId.operation_id);
-        }, XsollaError.handleLoginError(onError));
+        }, handleLoginError(onError));
         request.send(JSON.stringify(body));
     }
 
@@ -254,7 +256,7 @@ export class XsollaLogin {
         let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, result => {
             let authOperationId: AuthOperationId = JSON.parse(result);
             onComplete?.(authOperationId.operation_id);
-        }, XsollaError.handleLoginError(onError));
+        }, handleLoginError(onError));
         request.send(JSON.stringify(body));
     }
 
@@ -265,7 +267,7 @@ export class XsollaLogin {
      * 
      */
     static completeAuthByEmail(confirmationCode:string, operationId:string, emailAddress:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
-        if(Xsolla.settings.authType == XsollaAuthenticationType.Oauth2) {
+        if(Xsolla.settings.authType == AuthenticationType.Oauth2) {
             this.completeAuthByEmailOauth(confirmationCode, operationId, emailAddress, onComplete, onError);
         }
         else {
@@ -284,7 +286,7 @@ export class XsollaLogin {
             .addNumberParam('client_id', Xsolla.settings.clientId)
             .build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, this.handleUrlWithCode(onComplete, onError), XsollaError.handleLoginError(onError));
+        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, this.handleUrlWithCode(onComplete, onError), handleLoginError(onError));
         request.send(JSON.stringify(body));
     }
 
@@ -299,7 +301,7 @@ export class XsollaLogin {
             .addStringParam('projectId', Xsolla.settings.loginId)
             .build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, this.handleUrlWithToken(onComplete), XsollaError.handleLoginError(onError));
+        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, this.handleUrlWithToken(onComplete), handleLoginError(onError));
         request.send(JSON.stringify(body));
     }
 
@@ -310,7 +312,7 @@ export class XsollaLogin {
      * 
      */
     static authByDeviceId(deviceName:string, deviceId:string, payload?:string, state?:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
-        if(Xsolla.settings.authType == XsollaAuthenticationType.Oauth2) {
+        if(Xsolla.settings.authType == AuthenticationType.Oauth2) {
             this.authByDeviceIdOauth(deviceName, deviceId, state, onComplete, onError);
         }
         else {
@@ -333,7 +335,7 @@ export class XsollaLogin {
             .addStringParam('scope', 'offline')
             .build();
 
-        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, this.handleUrlWithCode(onComplete, onError), XsollaError.handleLoginError(onError));
+        let request = XsollaHttpUtil.createRequest(url, 'POST', XsollaRequestContentType.Json, null, this.handleUrlWithCode(onComplete, onError), handleLoginError(onError));
         request.send(JSON.stringify(body));
     }
 
@@ -357,7 +359,7 @@ export class XsollaLogin {
                 token_type: 'bearer'
             };
             onComplete?.(token);
-        }, XsollaError.handleLoginError(onError));
+        }, handleLoginError(onError));
         request.send(JSON.stringify(body));
     }
 
