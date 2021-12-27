@@ -3,10 +3,10 @@
 import { _decorator, Component } from 'cc';
 import { XsollaLogin } from 'db://xsolla-commerce-sdk/scripts/api/XsollaLogin';
 import { Xsolla, AuthenticationType } from 'db://xsolla-commerce-sdk/scripts/Xsolla';
-import { UIManager, UIScreenType } from '../UI/UIManager';
-import { CurrencyFormatter } from './CurrencyFormatter';
-import { TokenUtils } from './TokenParser';
-import { TokenStorage } from './TokenStorage';
+import { UIManager, UIScreenType } from './UI/UIManager';
+import { CurrencyFormatter } from './Common/CurrencyFormatter';
+import { TokenUtils } from './Common/TokenParser';
+import { TokenStorage } from './Common/TokenStorage';
 const { ccclass } = _decorator;
  
 @ccclass('XsollaDemo')
