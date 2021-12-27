@@ -165,6 +165,7 @@ export class XsollaUserAccount {
             onError?.({ code:'-1', description:'Picture is invalid.'});
             return;
         }
+
         let boundary = '---------------------------' + Date.now.toString();
         let beginBoundary = '\r\n--' + boundary + '\r\n';
         let endBoundary = '\r\n--' + boundary + '--\r\n';
@@ -187,9 +188,8 @@ export class XsollaUserAccount {
         uploadContent.set(enc.encode(endBoundary), offset);
 
         let url = new UrlBuilder('https://login.xsolla.com/api/users/me/picture').build();
-        let request = HttpUtil.createRequest(url, 'POST', RequestContentType.MultipartForm, token, result => {
-            onComplete?.();
-        }, handleLoginError(onError));
+        let request = HttpUtil.createRequest(url, 'POST', RequestContentType.None, token, onComplete, handleLoginError(onError));
+        request.setRequestHeader('Content-Type', (`multipart/form-data; boundary =${boundary}`));
         request.send(uploadContent);
     }
 

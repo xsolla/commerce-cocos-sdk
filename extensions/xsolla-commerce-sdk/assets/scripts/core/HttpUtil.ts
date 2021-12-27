@@ -6,8 +6,7 @@ import { SDK_VERSION } from './Constants';
 export enum RequestContentType {
     None = 0,
     Json = 1,
-    WwwForm = 2,
-    MultipartForm = 3
+    WwwForm = 2
 }
 
 export class HttpUtil {
@@ -34,11 +33,6 @@ export class HttpUtil {
             } 
             case RequestContentType.WwwForm: {
                 request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                break;
-            } 
-            case RequestContentType.MultipartForm: {
-                let boundary: string = '---------------------------' + Date.now.toString();
-                request.setRequestHeader('Content-Type', (`multipart/form-data; boundary =${boundary}`));
                 break;
             } 
             default: {

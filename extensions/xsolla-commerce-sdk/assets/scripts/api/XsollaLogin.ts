@@ -6,8 +6,6 @@ import { HttpUtil, RequestContentType } from "../core/HttpUtil";
 import { UrlBuilder } from "../core/UrlBuilder";
 import { Xsolla, AuthenticationType } from "../Xsolla";
 
-//declare var handleLoginError;
-
 export class XsollaLogin {
 
     /**
