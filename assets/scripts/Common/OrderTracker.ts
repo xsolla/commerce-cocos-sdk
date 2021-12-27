@@ -5,7 +5,7 @@ import { UrlBuilder } from "db://xsolla-commerce-sdk/scripts/core/UrlBuilder";
 import { Xsolla } from "db://xsolla-commerce-sdk/scripts/Xsolla";
 import { UIManager } from "../UI/UIManager";
 import { TokenStorage } from "./TokenStorage";
-import { XsollaOrderCheckObject } from "./XsollaOrderCheckObject";
+import { OrderCheckObject } from "./OrderCheckObject";
 
 export class OrderTracker {
     static shortPollingCheckOrder(orderId: number, onSuccessPurchase:() => void) {
@@ -32,7 +32,7 @@ export class OrderTracker {
             .addStringParam('project_id', Xsolla.settings.projectId)
             .build();
 
-        let orderCheckObject = new XsollaOrderCheckObject();
+        let orderCheckObject = new OrderCheckObject();
         orderCheckObject.init(url, onStatusReceived, onError, onTimeout, socketLifeTime);
         return orderCheckObject;
     }

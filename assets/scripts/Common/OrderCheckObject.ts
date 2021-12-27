@@ -2,7 +2,7 @@
 
 import { XsollaOrderStatus } from "./OrderTracker";
 
-export class XsollaOrderCheckObject {
+export class OrderCheckObject {
 
     private _websocket: WebSocket;
     private _timerInverval: number;

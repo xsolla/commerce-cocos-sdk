@@ -7,11 +7,11 @@ import { Xsolla } from "db://xsolla-commerce-sdk/scripts/Xsolla";
 import { UIManager } from "../UI/UIManager";
 import { OrderTracker, XsollaOrderStatus } from "./OrderTracker";
 import { TokenStorage } from "./TokenStorage";
-import { XsollaOrderCheckObject } from "./XsollaOrderCheckObject";
+import { OrderCheckObject } from "./OrderCheckObject";
 
 export class PurchaseUtil {
 
-    private static _cachedOrderCheckObjects: Array<XsollaOrderCheckObject> = [];
+    private static _cachedOrderCheckObjects: Array<OrderCheckObject> = [];
 
     static bIsSuccessPurchase:boolean = false;
 
