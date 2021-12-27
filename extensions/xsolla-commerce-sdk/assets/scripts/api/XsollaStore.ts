@@ -173,7 +173,7 @@ export class XsollaStore {
      * @zh
      * 
      */
-    static getItemGroups(locale:string, onComplete?:(groups:Array<XsollaItemGroup>) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
+    static getItemGroups(locale:string, onComplete?:(groups:Array<ItemGroup>) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/items/groups')
             .setPathParam('projectID', Xsolla.settings.projectId)
             .addStringParam('locale', locale)
@@ -182,7 +182,7 @@ export class XsollaStore {
             .build();
 
         let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, null, result => {
-            let groups: Array<XsollaItemGroup> = JSON.parse(result).groups;
+            let groups: Array<ItemGroup> = JSON.parse(result).groups;
             onComplete?.(groups);
         }, handleCommerceError(onError));
         request.send();
@@ -268,7 +268,7 @@ export class XsollaStore {
 export interface CheckOrderResult {
     orderId: number,
     status: string,
-    content: XsollaOrderContent
+    content: OrderContent
 }
 
 export interface PaymentTokenResult {
@@ -276,12 +276,12 @@ export interface PaymentTokenResult {
     orderId: number
 }
 
-export interface XsollaVirtualCurrencyCalculatedPrice {
+export interface VirtualCurrencyCalculatedPrice {
     amount: string,
     amount_without_discount: string
 }
 
-export interface XsollaVirtualCurrencyPrice {
+export interface VirtualCurrencyPrice {
     sku: string,
     is_default: boolean,
     amount: number,
@@ -290,27 +290,27 @@ export interface XsollaVirtualCurrencyPrice {
     name: string,
     description: string,
     type: string,
-    calculated_price: XsollaVirtualCurrencyCalculatedPrice
+    calculated_price: VirtualCurrencyCalculatedPrice
 }
 
-export interface XsollaPrice {
+export interface Price {
     amount: string,
     amount_without_discount: string,
     currency: string
 }
 
-export interface XsollaOrderItem {
+export interface OrderItem {
     sku: string,
     quantity: number,
     is_free: string,
-    price: XsollaPrice
+    price: Price
 }
 
-export interface XsollaOrderContent {
-    price: XsollaPrice,
-    virtual_price: XsollaVirtualCurrencyPrice,
+export interface OrderContent {
+    price: Price,
+    virtual_price: VirtualCurrencyPrice,
     is_free: string,
-    items: Array<XsollaOrderItem>
+    items: Array<OrderItem>
 }
 
 export interface StoreItemMediaList {
@@ -318,15 +318,15 @@ export interface StoreItemMediaList {
     url: string
 }
 
-export interface XsollaItemAttributeValue {
+export interface ItemAttributeValue {
     external_id: string,
     value: string
 }
 
-export interface XsollaItemAttribute {
+export interface ItemAttribute {
     external_id: string,
     name: string,
-    values: Array<XsollaItemAttributeValue>
+    values: Array<ItemAttributeValue>
 }
 
 export interface StoreBundleContent {
@@ -336,25 +336,25 @@ export interface StoreBundleContent {
     description: string,
     image_url: string,
     quantity: number,
-    price: XsollaPrice,
-    virtual_prices: Array<XsollaVirtualCurrencyPrice>
+    price: Price,
+    virtual_prices: Array<VirtualCurrencyPrice>
 }
 
-export interface XsollaExpirationPeriod {
+export interface ExpirationPeriod {
     value: number,
     type: string
 }
 
-export interface XsollaConsumable {
+export interface Consumable {
     usages_count: number
 }
 
-export interface XsollaItemOptions {
-    consumable: XsollaConsumable,
-    expiration_period: XsollaExpirationPeriod
+export interface ItemOptions {
+    consumable: Consumable,
+    expiration_period: ExpirationPeriod
 }
 
-export interface XsollaItemGroup {
+export interface ItemGroup {
     //id: number,
     external_id: string
     name: string,
@@ -372,16 +372,16 @@ export interface StoreItem {
     description: string,
     type: string,
     virtual_item_type: string,
-    groups: Array<XsollaItemGroup>,
+    groups: Array<ItemGroup>,
     is_free: boolean,
-    price: XsollaPrice,
-    virtual_prices: Array<XsollaVirtualCurrencyPrice>,
+    price: Price,
+    virtual_prices: Array<VirtualCurrencyPrice>,
     image_url: string,
-    inventory_options: XsollaItemOptions,
+    inventory_options: ItemOptions,
     bundle_type: string,
-    total_content_price: XsollaPrice,
+    total_content_price: Price,
     content: Array<StoreBundleContent>,
-    attributes: Array<XsollaItemAttribute>,
+    attributes: Array<ItemAttribute>,
     long_description: string,
     order: number,
     media_list: Array<StoreItemMediaList>
@@ -390,7 +390,7 @@ export interface StoreItem {
 export interface StoreItemsData {
     items: Array<StoreItem>,
     groupIds: Set<string>,
-    groups: Array<XsollaItemGroup>
+    groups: Array<ItemGroup>
 }
 
 export interface StoreItemsList {
@@ -401,14 +401,14 @@ export interface VirtualCurrency {
     sku: string,
     name: string,
     groups: Array<string>,
-    attributes: Array<XsollaItemAttribute>,
+    attributes: Array<ItemAttribute>,
     type: string,
     description: string,
     image_url: string,
     is_free: boolean,
-    price: XsollaPrice,
-    virtual_prices: Array<XsollaVirtualCurrencyPrice>,
-    inventory_options: XsollaItemOptions,
+    price: Price,
+    virtual_prices: Array<VirtualCurrencyPrice>,
+    inventory_options: ItemOptions,
     long_description: string,
     order: number,
     media_list: Array<StoreItemMediaList>
@@ -425,7 +425,7 @@ export interface CurrencyPackageContent {
     description: string,
     image_url: string,
     quantity: number,
-    inventory_options: XsollaItemOptions
+    inventory_options: ItemOptions
 }
 
 export interface VirtualCurrencyPackage {
@@ -435,13 +435,13 @@ export interface VirtualCurrencyPackage {
     virtual_item_type: string,
     description: string,
     image_url: string,
-    inventory_options: XsollaItemOptions,
-    attributes: Array<XsollaItemAttribute>,
-    groups: Array<XsollaItemGroup>,
+    inventory_options: ItemOptions,
+    attributes: Array<ItemAttribute>,
+    groups: Array<ItemGroup>,
     bundle_type: string,
     is_free: boolean,
-    price: XsollaPrice,
-    virtual_prices: Array<XsollaVirtualCurrencyPrice>,
+    price: Price,
+    virtual_prices: Array<VirtualCurrencyPrice>,
     content: Array<CurrencyPackageContent>,
     long_description: string,
     order: number,
@@ -455,16 +455,16 @@ export interface VirtualCurrencyPackagesData {
 export interface StoreBundle {
     sku: string,
     name: string,
-    groups: Array<XsollaItemGroup>,
-    attributes: Array<XsollaItemAttribute>,
+    groups: Array<ItemGroup>,
+    attributes: Array<ItemAttribute>,
     type: string,
     bundle_type: string,
     description: string,
     image_url: string,
     is_free: string,
-    price: XsollaPrice,
-    total_content_price: XsollaPrice,
-    virtual_prices: Array< XsollaVirtualCurrencyPrice>,
+    price: Price,
+    total_content_price: Price,
+    virtual_prices: Array< VirtualCurrencyPrice>,
     content: Array<StoreBundleContent>
 }
 

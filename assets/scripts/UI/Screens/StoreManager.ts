@@ -1,7 +1,7 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component, Node, ScrollView, instantiate, Prefab, Button } from 'cc';
-import { StoreItem as XsollaStoreItem, VirtualCurrencyPackage, XsollaItemGroup, XsollaStore} from 'db://xsolla-commerce-sdk/scripts/api/XsollaStore';
+import { StoreItem as XsollaStoreItem, VirtualCurrencyPackage, ItemGroup, XsollaStore} from 'db://xsolla-commerce-sdk/scripts/api/XsollaStore';
 import { InventoryItem, VirtualCurrencyBalance, XsollaInventory } from 'db://xsolla-commerce-sdk/scripts/api/XsollaInventory';
 import { StoreItemInfoManager } from './StoreItemInfoManager';
 import { TokenStorage } from '../../Common/TokenStorage';
@@ -78,7 +78,7 @@ export class StoreManager extends Component {
                     if(currencyPackage.content.length == 0) {
                         continue;
                     }
-                    let group: XsollaItemGroup = {
+                    let group: ItemGroup = {
                         external_id: currencyPackage.content[0].sku,
                         name: currencyPackage.content[0].name,
                         description: '',

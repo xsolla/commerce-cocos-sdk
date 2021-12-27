@@ -4,7 +4,7 @@ import { handleCommerceError, CommerceError } from "../core/Error";
 import { HttpUtil, RequestContentType } from "../core/HttpUtil";
 import { UrlBuilder } from "../core/UrlBuilder";
 import { Xsolla } from "../Xsolla";
-import { XsollaItemAttribute, XsollaItemGroup } from "./XsollaStore";
+import { ItemAttribute, ItemGroup } from "./XsollaStore";
 
 export class XsollaInventory {
 
@@ -14,7 +14,7 @@ export class XsollaInventory {
      * @zh
      * 
      */
-    static getInventory(authToken:string, platform?:XsollaPublishingPlatform, onComplete?:(itemsData:InventoryItemsData) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
+    static getInventory(authToken:string, platform?:PublishingPlatform, onComplete?:(itemsData:InventoryItemsData) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/user/inventory/items')
             .setPathParam('projectID', Xsolla.settings.projectId)
             .addNumberParam('limit', limit)
@@ -35,7 +35,7 @@ export class XsollaInventory {
      * @zh
      * 
      */
-    static getVirtualCurrencyBalance(authToken:string, platform?:XsollaPublishingPlatform, onComplete?:(currencyData:VirtualCurrencyBalanceData) => void, onError?:(error:CommerceError) => void): void {
+    static getVirtualCurrencyBalance(authToken:string, platform?:PublishingPlatform, onComplete?:(currencyData:VirtualCurrencyBalanceData) => void, onError?:(error:CommerceError) => void): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/user/virtual_currency_balance')
             .setPathParam('projectID', Xsolla.settings.projectId)
             .addStringParam('platform', platform ? platform.toString() : null)
@@ -54,7 +54,7 @@ export class XsollaInventory {
      * @zh
      * 
      */
-    static consumeInventoryItem(authToken:string, sku:string, quantity?:number, instanceID?:string, platform?:XsollaPublishingPlatform, onComplete?:() => void, onError?:(error:CommerceError) => void): void {
+    static consumeInventoryItem(authToken:string, sku:string, quantity?:number, instanceID?:string, platform?:PublishingPlatform, onComplete?:() => void, onError?:(error:CommerceError) => void): void {
         let body = {
             sku: sku
         };
@@ -78,7 +78,7 @@ export class XsollaInventory {
      * @zh
      * 
      */
-    static getSubscriptions(authToken:string, platform?:XsollaPublishingPlatform, onComplete?:(subscriptionData:SubscriptionData) => void, onError?:(error:CommerceError) => void): void {
+    static getSubscriptions(authToken:string, platform?:PublishingPlatform, onComplete?:(subscriptionData:SubscriptionData) => void, onError?:(error:CommerceError) => void): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/user/subscriptions')
             .setPathParam('projectID', Xsolla.settings.projectId)
             .addStringParam('platform', platform ? platform.toString() : null)
@@ -99,8 +99,8 @@ export interface InventoryItem {
     virtual_item_type: string,
     description: string,
     image_url: string,
-    attributes: Array<XsollaItemAttribute>,
-    groups: Array<XsollaItemGroup>,
+    attributes: Array<ItemAttribute>,
+    groups: Array<ItemGroup>,
     instance_id: string,
     quantity: number,
     remaining_uses: number
@@ -138,7 +138,7 @@ export interface SubscriptionData {
     items: Array<SubscriptionItem>
 }
 
-export enum XsollaPublishingPlatform {
+export enum PublishingPlatform {
     playstation_network = 0,
 	xbox_live = 1,
 	xsolla = 2,
