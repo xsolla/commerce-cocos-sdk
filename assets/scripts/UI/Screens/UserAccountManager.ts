@@ -110,6 +110,10 @@ export class UserAccountManager extends Component {
         this.firstNameItem.setValue(userDetails.first_name);
         this.lastNameItem.setValue(userDetails.last_name);
         this.phoneNumberItem.setValue(userDetails.phone);
+        this.refreshUserAvatar(userDetails);
+    }
+
+    refreshUserAvatar(userDetails: UserDetails) {
         let isPictureExist = userDetails.picture != null && userDetails.picture.length > 0;
         this.avatarRemoveButton.node.active = isPictureExist;
         if(isPictureExist) {
@@ -163,11 +167,6 @@ export class UserAccountManager extends Component {
         });
     }
 
-    setAvatarEditMode(isPickerVisible: boolean) {
-        this.avatarPicker.active = isPickerVisible;
-        this.avatarEditRemoveContainer.active = !isPickerVisible;
-    }
-
     onAvatarEdited() {
         this.setAvatarEditMode(true);
     }
@@ -201,6 +200,11 @@ export class UserAccountManager extends Component {
         }, errorMessage => {
             UIManager.instance.showErrorPopup(errorMessage);
         });
+    }
+
+    setAvatarEditMode(isPickerVisible: boolean) {
+        this.avatarPicker.active = isPickerVisible;
+        this.avatarEditRemoveContainer.active = !isPickerVisible;
     }
 
     addListeners () {
