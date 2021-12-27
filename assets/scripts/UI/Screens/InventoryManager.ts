@@ -178,7 +178,7 @@ export class InventoryManager extends Component {
         this.populateItemsList();
     }
 
-    showItemInfo(item: InventoryItem, expires_at: number) {
+    showItemInfo(item: XsollaInventoryItem, expires_at: number) {
         this.itemInfoManager.init(item, this.storeItems.find(x => x.sku == item.sku), expires_at, this);
         this.openItemInfoScreen();
     }
