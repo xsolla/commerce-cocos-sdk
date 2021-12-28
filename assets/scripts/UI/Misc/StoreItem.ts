@@ -108,7 +108,7 @@ export class StoreItem extends Component {
                 texture.image = imageAsset;
                 spriteFrame.texture = texture;
                 this.currencyIcon.spriteFrame = spriteFrame;
-                this.currencyIcon.getComponent(UITransform).setContentSize(40, 40); 
+                this.currencyIcon.getComponent(UITransform).setContentSize(20, 20); 
             });
         }
     }
