@@ -67,10 +67,6 @@ export class SocialAuthManager extends Component {
         }
     }
 
-    onDestroy() {
-        this.removeListeners();
-    }
-
     onEnable() {
         this.socialNetworkFilterEditBox.string = '';
         this.refreshSocialNetworksList();

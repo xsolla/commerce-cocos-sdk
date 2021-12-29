@@ -49,7 +49,7 @@
 				}
 				
 				NSString* errorString = error.localizedDescription;
-				NSString *errorScript = [NSString stringWithFormat: @"cc.find(\"Canvas/Widget_SocialAuth\").getComponent(\"SocialAuthManager\").handleErrorSocialAuth(\"%@\")", errorString];
+				NSString *errorScript = [NSString stringWithFormat: @"cc.find(\"Canvas/pref_SocialAuthScreen\").getComponent(\"SocialAuthManager\").handleErrorSocialAuth(\"%@\")", errorString];
 				const char* errorScriptStr = [XsollaUtils createCStringFrom:errorScript];
 				cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
 					se::ScriptEngine::getInstance()->evalString(errorScriptStr);
@@ -59,7 +59,7 @@
 			}
 
 			NSString* tokenInfoString = [XsollaUtils serializeTokenInfo:accesTokenInfo];
-			NSString *successScript = [NSString stringWithFormat: @"cc.find(\"Canvas/Widget_SocialAuth\").getComponent(\"SocialAuthManager\").handleSuccessfulSocialAuth(%@)", tokenInfoString];
+			NSString *successScript = [NSString stringWithFormat: @"cc.find(\"Canvas/pref_SocialAuthScreen\").getComponent(\"SocialAuthManager\").handleSuccessfulSocialAuth(%@)", tokenInfoString];
 			const char* successScriptStr = [XsollaUtils createCStringFrom:successScript];
 			cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
 				se::ScriptEngine::getInstance()->evalString(successScriptStr);

@@ -75,7 +75,7 @@ public class XsollaNativeAuthActivity extends Activity {
                 CocosHelper.runOnGameThread(new Runnable() {
                     @Override
                     public void run() {
-                        CocosJavascriptJavaBridge.evalString("cc.find(\"Canvas/Widget_SocialAuth\").getComponent(\"SocialAuthManager\").handleSuccessfulSocialAuth(" + tokenJson.toString() + ")");
+                        CocosJavascriptJavaBridge.evalString("cc.find(\"Canvas/pref_SocialAuthScreen\").getComponent(\"SocialAuthManager\").handleSuccessfulSocialAuth(" + tokenJson.toString() + ")");
                     }
                 });
                 finish();
@@ -94,7 +94,7 @@ public class XsollaNativeAuthActivity extends Activity {
                 CocosHelper.runOnGameThread(new Runnable() {
                     @Override
                     public void run() {
-                        CocosJavascriptJavaBridge.evalString("cc.find(\"Canvas/Widget_SocialAuth\").getComponent(\"SocialAuthManager\").handleErrorSocialAuth(\"" + errorMessage + "\")");
+                        CocosJavascriptJavaBridge.evalString("cc.find(\"Canvas/pref_SocialAuthScreen\").getComponent(\"SocialAuthManager\").handleErrorSocialAuth(\"" + errorMessage + "\")");
                     }
                 });
                 finish();
