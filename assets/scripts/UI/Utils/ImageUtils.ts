@@ -1,6 +1,7 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
-import { Texture2D } from "cc";
+import { assetManager, ImageAsset, Sprite, SpriteFrame, Texture2D } from "cc";
+import { UIManager } from "../UIManager";
 
 export class ImageUtils {
     
@@ -25,5 +26,31 @@ export class ImageUtils {
         } else {
             onError?.('texture must be HTMLImageDocument');
         }
+    }
+
+    static loadImage(url: string, onComplete:(spriteFrame: SpriteFrame) => void) {
+        assetManager.loadRemote<ImageAsset>(url, (err, imageAsset) => {
+            if(err != null || imageAsset == null) {
+                assetManager.loadRemote<ImageAsset>(url, (secondLoadErr, secondLoadImageAsset) => {
+                    if(secondLoadErr != null || secondLoadImageAsset == null) {
+                        if(secondLoadImageAsset == null) {
+                            UIManager.instance.showErrorPopup(secondLoadErr.message);
+                        }
+                        return;
+                    }
+                    const spriteFrame = new SpriteFrame();
+                    const texture = new Texture2D();
+                    texture.image = secondLoadImageAsset;
+                    spriteFrame.texture = texture;
+                    onComplete(spriteFrame);
+                });
+                return;
+            }
+            const spriteFrame = new SpriteFrame();
+            const texture = new Texture2D();
+            texture.image = imageAsset;
+            spriteFrame.texture = texture;
+            onComplete(spriteFrame);
+        });
     }
 }
