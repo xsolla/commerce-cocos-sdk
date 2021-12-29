@@ -1,10 +1,11 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
-import { _decorator, Component, Node, Label, Sprite, assetManager, ImageAsset, SpriteFrame, Texture2D, instantiate, Button } from 'cc';
+import { _decorator, Component, Node, Label, Sprite, instantiate, Button } from 'cc';
 import { StoreBundleContent, StoreItem, VirtualCurrencyPackage } from 'db://xsolla-commerce-sdk/scripts/api/XsollaStore';
 import { CurrencyFormatter } from '../../Common/CurrencyFormatter';
 import { PurchaseUtil } from '../../Common/PurchaseUtil';
 import { BundleContentItem } from '../Misc/BundleContentItem';
+import { ImageUtils } from '../Utils/ImageUtils';
 import { StoreManager } from './StoreManager';
 const { ccclass, property } = _decorator;
 
@@ -71,12 +72,10 @@ export class StoreItemInfoManager extends Component {
         this._parent = parent;
         this._data = item;
 
-        assetManager.loadRemote<ImageAsset>(item.image_url, (err, imageAsset) => {
-            const spriteFrame = new SpriteFrame();
-            const texture = new Texture2D();
-            texture.image = imageAsset;
-            spriteFrame.texture = texture;
-            this.icon.spriteFrame = spriteFrame;
+        ImageUtils.loadImage(item.image_url, spriteFrame => {
+            if(this.icon != null) {
+                this.icon.spriteFrame = spriteFrame;
+            }
         });
 
         this.itemName.string = item.name;
@@ -100,12 +99,10 @@ export class StoreItemInfoManager extends Component {
         this.bundleContainer.active = bundleContent != null;
 
         if(isVirtualCurrency) {
-            assetManager.loadRemote<ImageAsset>(item.virtual_prices[0].image_url, (err, imageAsset) => {
-                const spriteFrame = new SpriteFrame();
-                const texture = new Texture2D();
-                texture.image = imageAsset;
-                spriteFrame.texture = texture;
-                this.currency.spriteFrame = spriteFrame;
+            ImageUtils.loadImage(item.virtual_prices[0].image_url, spriteFrame => {
+                if(this.currency != null) {
+                    this.currency.spriteFrame = spriteFrame;
+                }
             });
         }
 

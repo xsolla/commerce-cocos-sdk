@@ -1,8 +1,9 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
-import { _decorator, Component, Node, Sprite, Label, Button, ImageAsset, SpriteFrame, Texture2D, assetManager, Color } from 'cc';
+import { _decorator, Component, Node, Sprite, Label, Button, Color } from 'cc';
 import { InventoryItem as XsollaInventoryItem } from 'db://xsolla-commerce-sdk/scripts/api/XsollaInventory';
 import { InventoryManager } from '../Screens/InventoryManager';
+import { ImageUtils } from '../Utils/ImageUtils';
 const { ccclass, property } = _decorator;
 
 @ccclass('InventoryItem')
@@ -76,12 +77,8 @@ export class InventoryItem extends Component {
             this.timerLabel.color = isExpired ? this._redColor : this._whiteColor;
             this.timerLabel.string = InventoryItem.expireText(expires_at);
         }
-        assetManager.loadRemote<ImageAsset>(data.image_url, (err, imageAsset) => {
-            if(imageAsset != null) {
-                const spriteFrame = new SpriteFrame();
-                const texture = new Texture2D();
-                texture.image = imageAsset;
-                spriteFrame.texture = texture;
+        ImageUtils.loadImage(data.image_url, spriteFrame => {
+            if(this.icon != null) {
                 this.icon.spriteFrame = spriteFrame;
             }
         });

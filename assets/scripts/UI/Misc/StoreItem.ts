@@ -1,10 +1,11 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
-import { _decorator, Component, Node, Sprite, Label, assetManager, ImageAsset, SpriteFrame, Texture2D, Button, UITransform } from 'cc';
+import { _decorator, Component, Node, Sprite, Label, Button, UITransform } from 'cc';
 import { StoreItem as XsollaStoreItem, VirtualCurrencyPackage } from 'db://xsolla-commerce-sdk/scripts/api/XsollaStore';
 import { CurrencyFormatter } from '../../Common/CurrencyFormatter';
 import { PurchaseUtil } from '../../Common/PurchaseUtil';
 import { StoreManager } from '../Screens/StoreManager';
+import { ImageUtils } from '../Utils/ImageUtils';
 const { ccclass, property } = _decorator;
  
 @ccclass('StoreItem')
@@ -93,22 +94,18 @@ export class StoreItem extends Component {
         this.priceWithoutDiscount.string = priceWithoutDiscount;
         this.priceWithoutDiscount.node.getParent().active = price != priceWithoutDiscount;
 
-        assetManager.loadRemote<ImageAsset>(data.image_url, (err, imageAsset) => {
-            const spriteFrame = new SpriteFrame();
-            const texture = new Texture2D();
-            texture.image = imageAsset;
-            spriteFrame.texture = texture;
-            this.icon.spriteFrame = spriteFrame;
+        ImageUtils.loadImage(data.image_url, spriteFrame => {
+            if(this.icon != null) {
+                this.icon.spriteFrame = spriteFrame;
+            }
         });
 
         if(this._isVirtualCurrency) {
-            assetManager.loadRemote<ImageAsset>(data.virtual_prices[0].image_url, (err, imageAsset) => {
-                const spriteFrame = new SpriteFrame();
-                const texture = new Texture2D();
-                texture.image = imageAsset;
-                spriteFrame.texture = texture;
-                this.currencyIcon.spriteFrame = spriteFrame;
-                this.currencyIcon.getComponent(UITransform).setContentSize(20, 20); 
+            ImageUtils.loadImage(data.virtual_prices[0].image_url, spriteFrame => {
+                if(this.currencyIcon != null) {
+                    this.currencyIcon.spriteFrame = spriteFrame;
+                    this.currencyIcon.getComponent(UITransform).setContentSize(20, 20); 
+                }
             });
         }
     }

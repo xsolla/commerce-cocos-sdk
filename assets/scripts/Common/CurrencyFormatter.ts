@@ -1,6 +1,6 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
-import { Asset, assetManager, JsonAsset, resources, Sprite, SpriteFrame } from "cc";
+import { JsonAsset, resources} from "cc";
 
 export class CurrencyFormatter {
 

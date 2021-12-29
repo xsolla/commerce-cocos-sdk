@@ -1,7 +1,8 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
-import { _decorator, Component, Node, Sprite, Label, assetManager, ImageAsset, SpriteFrame, Texture2D } from 'cc';
+import { _decorator, Component, Sprite, Label} from 'cc';
 import { StoreBundleContent } from 'db://xsolla-commerce-sdk/scripts/api/XsollaStore';
+import { ImageUtils } from '../Utils/ImageUtils';
 const { ccclass, property } = _decorator;
  
 @ccclass('BundleContentItem')
@@ -20,12 +21,10 @@ export class BundleContentItem extends Component {
     counter: Label;
 
     init(bundle: StoreBundleContent) {
-        assetManager.loadRemote<ImageAsset>(bundle.image_url, (err, imageAsset) => {
-            const spriteFrame = new SpriteFrame();
-            const texture = new Texture2D();
-            texture.image = imageAsset;
-            spriteFrame.texture = texture;
-            this.icon.spriteFrame = spriteFrame;
+        ImageUtils.loadImage(bundle.image_url, spriteFrame => {
+            if(this.icon != null) {
+                this.icon.spriteFrame = spriteFrame;
+            }
         });
         this.bundleName.string = bundle.name;
         this.description.string = bundle.description;

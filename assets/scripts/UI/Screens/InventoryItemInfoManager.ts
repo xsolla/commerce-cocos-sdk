@@ -1,5 +1,5 @@
 
-import { _decorator, Component, Node, Sprite, Label, Button, Color, ImageAsset, assetManager, SpriteFrame, Texture2D } from 'cc';
+import { _decorator, Component, Node, Sprite, Label, Button, Color} from 'cc';
 import { InventoryItem as XsollaInventoryItem, XsollaInventory } from 'db://xsolla-commerce-sdk/scripts/api/XsollaInventory';
 import { StoreItem } from 'db://xsolla-commerce-sdk/scripts/api/XsollaStore';
 import { CurrencyFormatter } from '../../Common/CurrencyFormatter';
@@ -7,6 +7,7 @@ import { PurchaseUtil } from '../../Common/PurchaseUtil';
 import { TokenStorage } from '../../Common/TokenStorage';
 import { InventoryItem } from '../Misc/InventoryItem';
 import { UIManager } from '../UIManager';
+import { ImageUtils } from '../Utils/ImageUtils';
 import { InventoryManager } from './InventoryManager';
 const { ccclass, property } = _decorator;
  
@@ -117,12 +118,10 @@ export class InventoryItemInfoManager extends Component {
         this._storeItem = storeItem;
         this.updateCounter(1);
 
-        assetManager.loadRemote<ImageAsset>(data.image_url, (err, imageAsset) => {
-            const spriteFrame = new SpriteFrame();
-            const texture = new Texture2D();
-            texture.image = imageAsset;
-            spriteFrame.texture = texture;
-            this.icon.spriteFrame = spriteFrame;
+        ImageUtils.loadImage(data.image_url, spriteFrame => {
+            if(this.icon != null) {
+                this.icon.spriteFrame = spriteFrame;
+            }
         });
 
         this.itemName.string = data.name;

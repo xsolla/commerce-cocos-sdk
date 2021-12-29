@@ -1,6 +1,6 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
-import { _decorator, Component, Node, Button, Label, Texture2D, instantiate, Prefab, sys, Sprite, assetManager, ImageAsset, SpriteFrame, UITransform } from 'cc';
+import { _decorator, Component, Node, Button, Label, Texture2D, instantiate, Prefab, sys, Sprite, SpriteFrame, UITransform } from 'cc';
 import { UserDetails, UserDetailsUpdate, XsollaUserAccount } from 'db://xsolla-commerce-sdk/scripts/api/XsollaUserAccount';
 import { TokenStorage } from '../../Common/TokenStorage';
 import { UserAccountItem } from '../Misc/UserAccountItem';
@@ -117,17 +117,12 @@ export class UserAccountManager extends Component {
         let isPictureExist = userDetails.picture != null && userDetails.picture.length > 0;
         this.avatarRemoveButton.node.active = isPictureExist;
         if(isPictureExist) {
-            assetManager.loadRemote<ImageAsset>(userDetails.picture, (err, imageAsset) => {
-                if(imageAsset != null) {
-                    const spriteFrame = new SpriteFrame();
-                    const texture = new Texture2D();
-                    texture.image = imageAsset;
-                    spriteFrame.texture = texture;
+            ImageUtils.loadImage(userDetails.picture, spriteFrame => {
+                if(this.avatar != null) {
                     this.avatar.spriteFrame = spriteFrame;
-                } else {
-                    UIManager.instance.showErrorPopup(err.message);
                 }
             });
+    
         } else {
             const spriteFrame = new SpriteFrame();
             spriteFrame.texture = this.noAvatar;
