@@ -40,6 +40,9 @@ export class InventoryManager extends Component {
     @property(Prefab)
     groupItemPrefab: Prefab;
 
+    @property(Prefab)
+    cellContainerPrefab: Prefab;
+
     storeItems: Array<StoreItem>;
 
     inventoryItems: Array<XsollaInventoryItem>;
@@ -125,16 +128,33 @@ export class InventoryManager extends Component {
 
     populateItemsList() {
         this.itemsList.content.destroyAllChildren();
+        let index = 0;
+        let Container:Node;
+        let cellsPerRow = 2;
         for (let i = 0; i < this.inventoryItems.length; ++i) {
             let isAll = this.selectedGroup == 'all_items';
             let isUngrouped =  this.selectedGroup == 'ungrouped' && this.inventoryItems[i].groups.length == 0;
             let found = this.inventoryItems[i].groups.find(x => x.external_id == this.selectedGroup);
             if(isAll || isUngrouped || found) {
+                if(index % cellsPerRow == 0) {
+                    Container = instantiate(this.cellContainerPrefab);
+                    this.itemsList.content.addChild(Container);
+                }
                 let inventoryItem = instantiate(this.inventoryItemPrefab);
-                this.itemsList.content.addChild(inventoryItem);
+                Container.addChild(inventoryItem);
                 let itemData = this.inventoryItems[i];
                 inventoryItem.getComponent(InventoryItem).init(itemData, this, this.getSubscriptionExpirationTime(this.inventoryItems[i].sku));
+                index++;
             }
+        }
+        let cellsToAdd = 0;
+        if(index  % cellsPerRow > 0) {
+            cellsToAdd = cellsPerRow - index % cellsPerRow;
+        }
+        for( let i = 0; i < cellsToAdd; i++) {
+            let inventoryItem = instantiate(this.inventoryItemPrefab);
+            Container.addChild(inventoryItem);
+            inventoryItem.getComponent(InventoryItem).init(null, this);
         }
         this.itemsList.scrollToTop();
     }

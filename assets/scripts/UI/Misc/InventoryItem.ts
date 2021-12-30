@@ -12,6 +12,9 @@ export class InventoryItem extends Component {
     @property(Sprite)
     icon: Sprite;
 
+    @property(Sprite)
+    background: Sprite;
+
     @property(Node)
     timerContainer: Node;
 
@@ -58,7 +61,15 @@ export class InventoryItem extends Component {
         this.btn.node.off(Button.EventType.CLICK, this.onClicked, this);
     }
 
-    init(data: XsollaInventoryItem, parent:InventoryManager, expires_at: number) {
+    init(data: XsollaInventoryItem, parent:InventoryManager, expires_at: number = 0) {
+        if(data == null) {
+            this.background.color = new Color(0, 0, 0, 0);
+            this.icon.node.active = false;
+            this.itemName.node.active = false;
+            this.timerContainer.active = false;
+            this.counterContainer.active = false;
+            return;
+        }
         this._data = data;
         this._parent = parent;
         this._expires_at = expires_at;

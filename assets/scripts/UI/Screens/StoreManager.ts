@@ -1,6 +1,6 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
-import { _decorator, Component, Node, ScrollView, instantiate, Prefab, Button } from 'cc';
+import { _decorator, Component, Node, ScrollView, instantiate, Prefab, Button, Layout } from 'cc';
 import { StoreItem as XsollaStoreItem, VirtualCurrencyPackage, ItemGroup, XsollaStore} from 'db://xsolla-commerce-sdk/scripts/api/XsollaStore';
 import { InventoryItem, VirtualCurrencyBalance, XsollaInventory } from 'db://xsolla-commerce-sdk/scripts/api/XsollaInventory';
 import { StoreItemInfoManager } from './StoreItemInfoManager';
@@ -49,6 +49,9 @@ export class StoreManager extends Component {
 
     @property(Prefab)
     vcBalanceItemPrefab: Prefab;
+
+    @property(Prefab)
+    cellContainerPrefab: Prefab;
 
     storeItems: Array<XsollaStoreItem>;
 
@@ -218,17 +221,34 @@ export class StoreManager extends Component {
     populateItemsList() {
         this.itemsList.content.destroyAllChildren();
         let items = this._isCurrenciesOpen ? this.vcPackageitems : this.storeItems;
+        let index = 0;
+        let Container:Node;
+        let cellsPerRow = 2;
         for (let i = 0; i < items.length; ++i) {
             let isAll = this.selectedGroup == 'all_items';
             let isUngrouped =  this.selectedGroup == 'ungrouped' && items[i].groups.length == 0;
             let found = items[i].groups.find(x => x.external_id == this.selectedGroup);
             if(isAll || isUngrouped || found) {
+                if(index % cellsPerRow == 0) {
+                    Container = instantiate(this.cellContainerPrefab);
+                    this.itemsList.content.addChild(Container);
+                }
                 let storeItem = instantiate(this.storeItemPrefab);
-                this.itemsList.content.addChild(storeItem);
+                Container.addChild(storeItem);
                 let itemData = items[i];
                 let isItemInInventory = this.inventoryItems.find(x => x.sku == this.storeItems[i].sku) != null;
                 storeItem.getComponent(StoreItem).init(itemData, this, isItemInInventory);
+                index++;
             }
+        }
+        let cellsToAdd = 0;
+        if(index  % cellsPerRow > 0) {
+            cellsToAdd = cellsPerRow - index % cellsPerRow;
+        }
+        for( let i = 0; i < cellsToAdd; i++) {
+            let storeItem = instantiate(this.storeItemPrefab);
+            Container.addChild(storeItem);
+            storeItem.getComponent(StoreItem).init(null, this);
         }
     }
 
