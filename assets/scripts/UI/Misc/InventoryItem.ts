@@ -96,7 +96,9 @@ export class InventoryItem extends Component {
     }
 
     onClicked() {
-        this._parent.showItemInfo(this._data, this._expires_at);
+        if(this._data != null) {
+            this._parent.showItemInfo(this._data, this._expires_at);
+        }
     }
 
     static expireText(expires_at: number) {
