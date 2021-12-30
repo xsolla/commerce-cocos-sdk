@@ -1,7 +1,8 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
-import { _decorator, Component, Node, Button, Label, Texture2D, instantiate, Prefab, sys, Sprite, SpriteFrame, UITransform } from 'cc';
+import { _decorator, Component, Node, Button, Texture2D, instantiate, Prefab, sys, Sprite, SpriteFrame, UITransform } from 'cc';
 import { UserDetails, UserDetailsUpdate, XsollaUserAccount } from 'db://xsolla-commerce-sdk/scripts/api/XsollaUserAccount';
+import { AuthenticationType, Xsolla } from '../../../../extensions/xsolla-commerce-sdk/assets/scripts/Xsolla';
 import { TokenStorage } from '../../Common/TokenStorage';
 import { UserAccountItem } from '../Misc/UserAccountItem';
 import { UserAvatarItem } from '../Misc/UserAvatarItem';
@@ -67,7 +68,6 @@ export class UserAccountManager extends Component {
             this.avatarPicker.addChild(avatarItem);
             avatarItem.getComponent(UserAvatarItem).init(avatarTexture, this);
         }
-        this.avatarModifier.active = !sys.isMobile;
     }
 
     onEnable() {
@@ -167,38 +167,38 @@ export class UserAccountManager extends Component {
     }
 
     onAvatarRemoved() {
-        XsollaUserAccount.removeProfilePicture(TokenStorage.getToken().access_token, () => {
-            this.avatarRemoveButton.node.active = false;
-            this.refreshUserAccountScreen();
-            this.setAvatarEditMode(false);
-        }, error => {
-            UIManager.instance.showErrorPopup(error.description);
-            this.setAvatarEditMode(false);
-        });
+        XsollaUserAccount.removeProfilePicture(TokenStorage.getToken().access_token,
+            () => this.handleSuccessfulAvatarUpdate(), error => this.handleErrorAvatarUpdate(error.description));
     }
 
     onSaveAvatar(texture: Texture2D, item: UserAvatarItem) {
-        item.selectionSprite.node.active = true;
-        ImageUtils.getBase64Image(texture, base64image => {
-            let base64imageWithoutHeader:string = base64image.substring(base64image.indexOf(',') + 1);
-            let buffer = Uint8Array.from(atob(base64imageWithoutHeader), c => c.charCodeAt(0))
-            XsollaUserAccount.modifyUserProfilePicture(TokenStorage.getToken().access_token, buffer, () => {
-                item.selectionSprite.node.active = false;
-                this.avatarRemoveButton.node.active = true;
-                this.refreshUserAccountScreen();
-                this.setAvatarEditMode(false);
-            }, error => {
-                item.selectionSprite.node.active = false;
-                UIManager.instance.showErrorPopup(error.description);
-                this.setAvatarEditMode(false);
-            });
-        }, errorMessage => {
-            UIManager.instance.showErrorPopup(errorMessage);
-        });
+        if(sys.isBrowser) {
+            ImageUtils.getBase64Image(texture, base64image => {
+                let base64imageWithoutHeader:string = base64image.substring(base64image.indexOf(',') + 1);
+                let buffer = Uint8Array.from(atob(base64imageWithoutHeader), c => c.charCodeAt(0))
+                XsollaUserAccount.modifyUserProfilePicture(TokenStorage.getToken().access_token, buffer,
+                    () => this.handleSuccessfulAvatarUpdate(), error => this.handleErrorAvatarUpdate(error.description));
+            }, error => this.handleErrorAvatarUpdate(error));
+        }
+        if(sys.platform.toLowerCase() == 'android') {
+            jsb.reflection.callStaticMethod("com/cocos/game/XsollaNativeUtils", "modifyUserProfilePicture", "(Ljava/lang/String;Ljava/lang/String;Z)V",
+                texture.image.nativeUrl, TokenStorage.token.access_token, Xsolla.settings.authType == AuthenticationType.Oauth2);
+        }
+    }
+
+    handleSuccessfulAvatarUpdate() {     
+        this.refreshUserAccountScreen();
+        this.setAvatarEditMode(false);
+    }
+
+    handleErrorAvatarUpdate(error:string) {
+        UIManager.instance.showErrorPopup(error);
+        this.setAvatarEditMode(false);
     }
 
     setAvatarEditMode(isPickerVisible: boolean) {
         this.avatarPicker.active = isPickerVisible;
+        this.avatarPicker.getComponentsInChildren(UserAvatarItem).forEach(item => item.showSelection(false));
         this.avatarEditRemoveContainer.active = !isPickerVisible;
     }
 

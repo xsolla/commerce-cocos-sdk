@@ -22,7 +22,7 @@ export class UserAvatarItem extends Component {
     private _texture: Texture2D;
 
     start() {
-        this.selectionSprite.node.active = false;
+        this.showSelection(false);
     }
 
     onEnable() {
@@ -51,9 +51,18 @@ export class UserAvatarItem extends Component {
     }
 
     onClicked() {
-        if(this.selectionSprite.node.active == true) {
+        if(this.isSelected()) {
             return;
         }
+        this.showSelection(true);
         this._parent.onSaveAvatar(this._texture, this);
+    }
+
+    showSelection(showSelection: boolean) {
+        this.selectionSprite.node.active = showSelection;
+    }
+
+    isSelected(): boolean {
+        return this.selectionSprite.node.active;
     }
 }
