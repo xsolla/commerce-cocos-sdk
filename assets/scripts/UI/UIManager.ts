@@ -58,10 +58,16 @@ export class UIManager extends Component {
     @property(Prefab)
     confirmationPopup: Prefab;
 
+    @property(Prefab)
+    loaderPopup: Prefab;
+
     static instance: UIManager;
 
     private _currentScreen: Node;
     private _previousScreen: Node;
+
+    private _loaderCounter: number = 0;
+    private _loaderPopupInstance: Node = null;
 
     onLoad() {
         UIManager.instance = this;
@@ -139,5 +145,27 @@ export class UIManager extends Component {
             confirmationPopupInstance.destroy();
         });
         this.node.addChild(confirmationPopupInstance);
+    }
+
+    showLoaderPopup(showLoader: boolean) {
+        if(!showLoader && this._loaderCounter == 0) {
+            console.warn('try to destroy the loader, but it is already destroyed.');
+            return;
+        }
+        this._loaderCounter = showLoader ? this._loaderCounter + 1 : this._loaderCounter - 1;
+        if(this._loaderCounter < 0) {
+            this._loaderCounter = 0;
+        }
+        if(this._loaderCounter > 0 && this._loaderPopupInstance == null) {
+            this._loaderPopupInstance = instantiate(this.loaderPopup);
+            this._loaderPopupInstance.setPosition(0, 0, 10);
+            this.node.addChild(this._loaderPopupInstance);
+            console.log('loader added');
+        }
+        if(this._loaderCounter == 0 && this._loaderPopupInstance != null) {
+            this._loaderPopupInstance.destroy();
+            this._loaderPopupInstance = null;
+            console.log('loader destroyed');
+        }
     }
 }

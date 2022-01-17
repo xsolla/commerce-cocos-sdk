@@ -797,6 +797,10 @@
       "__uuid__": "77bcc0e2-f50e-4c80-85db-8bb47432d255",
       "__expectedType__": "cc.Prefab"
     },
+    "loaderPopup": {
+      "__uuid__": "6c9a208b-fd8f-4bbf-ba68-86138455cbc4",
+      "__expectedType__": "cc.Prefab"
+    },
     "_id": "dc4VMtM7BJ1Zrbo61tPBLG"
   },
   {
