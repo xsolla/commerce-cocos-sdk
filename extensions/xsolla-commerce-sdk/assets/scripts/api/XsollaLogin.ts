@@ -361,6 +361,77 @@ export class XsollaLogin {
         request.send(JSON.stringify(body));
     }
 
+    /**
+     * @en
+     * Creates a new user.
+     * @zh
+     * 
+     */
+    static registerNewUser(username:string, password:string, email:string, payload?:string, state?:string, extras?: RegistrationExtras, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
+        if(Xsolla.settings.authType == AuthenticationType.Oauth2) {
+            this.registerNewUserOauth(username, password, email, state, extras, onComplete, onError);
+        }
+        else {
+            this.registerNewUserJwt(username, password, email, payload, extras, onComplete, onError);
+        }
+    }
+
+    private static registerNewUserOauth(username:string, password:string, email:string, state?:string, extras?: RegistrationExtras, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
+        let body = {
+            password: password,
+            username: username,
+            email: email,
+            accept_consent: extras?.accept_consent,
+            promo_email_agreement: extras?.promo_email_agreement ? 1 : 0,
+            fields: extras?.fields
+        };
+
+        let url = new UrlBuilder('https://login.xsolla.com/api/oauth2/user')
+            .addNumberParam('client_id', Xsolla.settings.clientId)
+            .addStringParam('response_type', 'code')
+            .addStringParam('redirect_uri', 'https://login.xsolla.com/api/blank')
+            .addStringParam('state', state)
+            .addStringParam('scope', 'offline')
+            .build();
+
+        let request = HttpUtil.createRequest(url, 'POST', RequestContentType.Json, null, result => {
+            if (request.status == 200) {
+                this.handleUrlWithCode(onComplete, onError)(result);
+            }
+            else {
+                onComplete?.(null);
+            }
+        }, handleLoginError(onError));
+        request.send(JSON.stringify(body));
+    }
+
+    private static registerNewUserJwt(username:string, password:string, email:string, payload?:string, extras?: RegistrationExtras, onComplete?:(result:Token) => void, onError?:(error:LoginError) => void) {
+        let body = {
+            password: password,
+            username: username,
+            email: email,
+            accept_consent: extras?.accept_consent,
+            promo_email_agreement: extras?.promo_email_agreement ? 1 : 0,
+            fields: extras?.fields
+        };
+
+        let url = new UrlBuilder('https://login.xsolla.com/api/user')
+            .addStringParam('projectId', Xsolla.settings.loginId)
+            .addStringParam('login_url', 'https://login.xsolla.com/api/blank')
+            .addStringParam('payload', payload)
+            .build();
+
+        let request = HttpUtil.createRequest(url, 'POST', RequestContentType.Json, null, result => {
+            if (request.status == 200) {
+                this.handleUrlWithToken(onComplete)(result);
+            }
+            else {
+                onComplete?.(null);
+            }
+        }, handleLoginError(onError));
+        request.send(JSON.stringify(body));
+    }
+
     private static handleUrlWithToken(onComplete: (token: Token) => void): (result: any) => void {
         return result => {
             let authUrl: AuthUrl = JSON.parse(result);
@@ -395,5 +466,11 @@ export interface AuthUrl {
 
 export interface AuthOperationId {
     operation_id: string
+}
+
+export interface RegistrationExtras {
+    accept_consent?: boolean,
+    promo_email_agreement?: boolean,
+    fields?: any
 }
 
