@@ -64,11 +64,14 @@ export class StartingScreenManager extends Component {
             deviceName = jsb.reflection.callStaticMethod("XsollaNativeUtils", "getDeviceName");
         }
 
+        UIManager.instance.showLoaderPopup(true);
         XsollaLogin.authByDeviceId(deviceName, deviceId, 'xsollatest', 'xsollatest', token => {
+            UIManager.instance.showLoaderPopup(false);
             console.log(token);
             TokenStorage.saveToken(token, true);
             UIManager.instance.openScreen(UIScreenType.MainMenu);
         }, err => {
+            UIManager.instance.showLoaderPopup(false);
             console.log(err);
             UIManager.instance.showErrorPopup(err.description);
         })

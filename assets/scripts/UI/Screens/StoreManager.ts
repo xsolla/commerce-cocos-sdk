@@ -74,6 +74,7 @@ export class StoreManager extends Component {
 
     onEnable() {
         this.addListeners();
+        UIManager.instance.showLoaderPopup(true);
         XsollaStore.getVirtualItems('', '', [], storeItemsData => {
             XsollaStore.getVirtualCurrencyPackages('', '', [], currencyPackagesData => {
                 this.vcPackageitems = currencyPackagesData.items;
@@ -95,6 +96,7 @@ export class StoreManager extends Component {
                 }
                 XsollaStore.getBundles('', '', [], bundlesList => {
                     XsollaInventory.getInventory(TokenStorage.getToken().access_token, null, inventoryData => {
+                        UIManager.instance.showLoaderPopup(false);
                         for(let bundle of bundlesList.items) {
                             let castedBundle: any = bundle;
                             storeItemsData.items.push(castedBundle);
@@ -143,18 +145,22 @@ export class StoreManager extends Component {
                         }
                         this.refreshVCBalance();
                     }, error => {
+                        UIManager.instance.showLoaderPopup(false);
                         console.log(error);
                         UIManager.instance.showErrorPopup(error.description);
                     });
                 }, error => {
+                    UIManager.instance.showLoaderPopup(false);
                     console.log(error);
                     UIManager.instance.showErrorPopup(error.description);
                 });
             }, error => {
+                UIManager.instance.showLoaderPopup(false);
                 console.log(error);
                 UIManager.instance.showErrorPopup(error.description);
             });
         }, err => {
+            UIManager.instance.showLoaderPopup(false);
             console.log(err);
             UIManager.instance.showErrorPopup(err.description);
         })
@@ -291,10 +297,13 @@ export class StoreManager extends Component {
     showItemInfo(item: XsollaStoreItem | VirtualCurrencyPackage) {
         let isBundle = item.bundle_type && item.bundle_type.length > 0 && item.bundle_type != 'virtual_currency_package';
         if(isBundle) {
+            UIManager.instance.showLoaderPopup(true);
             XsollaStore.getSpecifiedBundle(item.sku, bundle => {
+                UIManager.instance.showLoaderPopup(false);
                 this.itemInfoManager.init(item, this, bundle.content);
                 this.openItemInfoScreen();
             }, error => {
+                UIManager.instance.showLoaderPopup(false);
                 console.log(error.description);
                 UIManager.instance.showErrorPopup(error.description);
             });

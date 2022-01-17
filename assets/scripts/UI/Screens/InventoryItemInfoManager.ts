@@ -169,11 +169,14 @@ export class InventoryItemInfoManager extends Component {
     }
 
     consumeClicked() {
+        UIManager.instance.showLoaderPopup(true);
         XsollaInventory.consumeInventoryItem(TokenStorage.getToken().access_token, this._data.sku, this._counter, this._data.instance_id, null, () => {
+            UIManager.instance.showLoaderPopup(false);
             this.closeClicked();
             UIManager.instance.showMessagePopup(`You have consumed ${this._data.name} x ${this._counter}!`);
             this._parent.init();
         }, error => {
+            UIManager.instance.showLoaderPopup(false);
             console.log(error);
             UIManager.instance.showErrorPopup(error.description);
         });

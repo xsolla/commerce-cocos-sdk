@@ -19,10 +19,13 @@ export class PurchaseUtil {
         let isVirtual = item.virtual_prices.length > 0;
         if(isVirtual) {
             UIManager.instance.showConfirmationPopup('Are you sure you want to purchase this item?', 'CONFIRM', () => {
+                UIManager.instance.showLoaderPopup(true);
                 XsollaStore.buyItemWithVirtualCurrency(TokenStorage.getToken().access_token, item.sku, item.virtual_prices[0].sku, orderId => {
+                    UIManager.instance.showLoaderPopup(false);
                     UIManager.instance.showMessagePopup('Your order has been successfully processed!');
                     onSuccessPurchase?.();
                 }, error => {
+                    UIManager.instance.showLoaderPopup(false);
                     console.log(error.description);
                     UIManager.instance.showErrorPopup(error.description);
                 })
@@ -30,7 +33,9 @@ export class PurchaseUtil {
             return;
         }
 
+        UIManager.instance.showLoaderPopup(true);
         XsollaStore.fetchPaymentToken(TokenStorage.getToken().access_token, item.sku, 1, undefined, undefined, undefined, undefined, result => {
+            UIManager.instance.showLoaderPopup(false);
             if(sys.isMobile) {
                 let url: UrlBuilder;
                 if(Xsolla.settings.enableSandbox) {
@@ -55,6 +60,7 @@ export class PurchaseUtil {
                 });
             }
         }, error => {
+            UIManager.instance.showLoaderPopup(false);
             console.log(error.description);
             UIManager.instance.showErrorPopup(error.description);
         } );

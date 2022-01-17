@@ -85,18 +85,24 @@ export class UserAccountManager extends Component {
     }
 
     refreshUserAccountScreen() {
+        UIManager.instance.showLoaderPopup(true);
         XsollaUserAccount.getUserDetails(TokenStorage.token.access_token, userDetails => {
+            UIManager.instance.showLoaderPopup(false);
             this.fillUserAccountItems(userDetails);
         }, err => {
+            UIManager.instance.showLoaderPopup(false);
             console.log(err);
             UIManager.instance.showErrorPopup(err.description);
         });
     }
 
     updateUserAccountData(userDetailsUpdate: UserDetailsUpdate) {
+        UIManager.instance.showLoaderPopup(true);
         XsollaUserAccount.updateUserDetails(TokenStorage.token.access_token, userDetailsUpdate, userDetails => {
+            UIManager.instance.showLoaderPopup(false);
             this.fillUserAccountItems(userDetails);
         }, err => {
+            UIManager.instance.showLoaderPopup(false);
             console.log(err);
             UIManager.instance.showErrorPopup(err.description);
             this.refreshUserAccountScreen();
@@ -153,9 +159,12 @@ export class UserAccountManager extends Component {
     }
 
     onPhoneNumberEdited(value: string) {
+        UIManager.instance.showLoaderPopup(true);
         XsollaUserAccount.updateUserPhoneNumber(TokenStorage.token.access_token, value, () => {
+            UIManager.instance.showLoaderPopup(false);
             this.phoneNumberItem.setValue(value);
         }, err => {
+            UIManager.instance.showLoaderPopup(false);
             console.log(err);
             UIManager.instance.showErrorPopup(err.description);
             this.refreshUserAccountScreen();
@@ -167,18 +176,35 @@ export class UserAccountManager extends Component {
     }
 
     onAvatarRemoved() {
+        UIManager.instance.showLoaderPopup(true);
         XsollaUserAccount.removeProfilePicture(TokenStorage.getToken().access_token,
-            () => this.handleSuccessfulAvatarUpdate(), error => this.handleErrorAvatarUpdate(error.description));
+            () => {
+                UIManager.instance.showLoaderPopup(false);
+                this.handleSuccessfulAvatarUpdate();
+            }, error => {
+                UIManager.instance.showLoaderPopup(false);
+                this.handleErrorAvatarUpdate(error.description);
+            });
     }
 
     onSaveAvatar(texture: Texture2D, item: UserAvatarItem) {
         if(sys.isBrowser) {
             ImageUtils.getBase64Image(texture, base64image => {
                 let base64imageWithoutHeader:string = base64image.substring(base64image.indexOf(',') + 1);
-                let buffer = Uint8Array.from(atob(base64imageWithoutHeader), c => c.charCodeAt(0))
+                let buffer = Uint8Array.from(atob(base64imageWithoutHeader), c => c.charCodeAt(0));
+                UIManager.instance.showLoaderPopup(true);
                 XsollaUserAccount.modifyUserProfilePicture(TokenStorage.getToken().access_token, buffer,
-                    () => this.handleSuccessfulAvatarUpdate(), error => this.handleErrorAvatarUpdate(error.description));
-            }, error => this.handleErrorAvatarUpdate(error));
+                    () => {
+                        UIManager.instance.showLoaderPopup(false);
+                        this.handleSuccessfulAvatarUpdate();
+                    }, error => {
+                        UIManager.instance.showLoaderPopup(false);
+                        this.handleErrorAvatarUpdate(error.description);
+                    });
+            }, error => {
+                UIManager.instance.showLoaderPopup(false);
+                this.handleErrorAvatarUpdate(error);
+            });
         }
         if(sys.platform.toLowerCase() == 'android') {
             jsb.reflection.callStaticMethod("com/cocos/game/XsollaNativeUtils", "modifyUserProfilePicture", "(Ljava/lang/String;Ljava/lang/String;Z)V",

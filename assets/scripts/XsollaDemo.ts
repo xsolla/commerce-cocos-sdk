@@ -27,10 +27,13 @@ export class XsollaDemo extends Component {
             return;
         }
         if(Xsolla.settings.authType == AuthenticationType.Oauth2) {
+            UIManager.instance.showLoaderPopup(true);
             XsollaLogin.refreshToken(cachedToken.refresh_token, token => {
+                UIManager.instance.showLoaderPopup(false);
                 TokenStorage.saveToken(token, true);
                 UIManager.instance.openScreen(UIScreenType.MainMenu);
             }, err => {
+                UIManager.instance.showLoaderPopup(false);
                 console.log(err);
                 TokenStorage.clearToken();
             });

@@ -72,6 +72,7 @@ export class InventoryManager extends Component {
     }
 
     init() {
+        UIManager.instance.showLoaderPopup(true);
         XsollaInventory.getInventory(TokenStorage.getToken().access_token, null, inventoryData => {
             this.inventoryItems = inventoryData.items.filter(x => x.type != 'virtual_currency');
             XsollaInventory.getSubscriptions(TokenStorage.getToken().access_token, null, subscriptionData => {
@@ -87,17 +88,21 @@ export class InventoryManager extends Component {
                     } else {
                         this.openNoItemsScreen();
                     }
+                    UIManager.instance.showLoaderPopup(false);
                 }, error => {
                     console.log(error);
                     UIManager.instance.showErrorPopup(error.description);
+                    UIManager.instance.showLoaderPopup(false);
                 });
             }, error => {
                 console.log(error);
                 UIManager.instance.showErrorPopup(error.description);
+                UIManager.instance.showLoaderPopup(false);
             });
         }, error => {
             console.log(error);
             UIManager.instance.showErrorPopup(error.description);
+            UIManager.instance.showLoaderPopup(false);
         });
     }
 
@@ -174,7 +179,6 @@ export class InventoryManager extends Component {
                 this.itemGroups.set('Ungrouped', 'Ungrouped');
             }
         }
-
         for(let groupData of this.itemGroups) {
             let groupItem = instantiate(this.groupItemPrefab);
             this.groupsList.content.addChild(groupItem);

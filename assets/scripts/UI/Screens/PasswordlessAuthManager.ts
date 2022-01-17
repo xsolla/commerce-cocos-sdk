@@ -90,20 +90,26 @@ export class PasswordlessAuthManager extends Component {
 
     sendCodeClicked() {
         if(this._authOption == AuthOption.Phone) {
+            UIManager.instance.showLoaderPopup(true);
             XsollaLogin.startAuthByPhoneNumber(this.credentialsEditBox.string, 'xsollatest', 'xsollatest', operationId => {
+                UIManager.instance.showLoaderPopup(false);
                 this._operationId = operationId;
                 this.showConfirmationPopup(this.credentialsScreen);
             }, err => {
+                UIManager.instance.showLoaderPopup(false);
                 console.log(err);
                 UIManager.instance.showErrorPopup(err.description);
             });
             return;
         }
         if(this._authOption == AuthOption.Email) {
+            UIManager.instance.showLoaderPopup(true);
             XsollaLogin.startAuthByEmail(this.credentialsEditBox.string, 'xsollatest', 'xsollatest', operationId => {
+                UIManager.instance.showLoaderPopup(false);
                 this._operationId = operationId;
                 this.showConfirmationPopup(this.credentialsScreen);
             }, err => {
+                UIManager.instance.showLoaderPopup(false);
                 console.log(err);
                 UIManager.instance.showErrorPopup(err.description);
             });
@@ -113,22 +119,28 @@ export class PasswordlessAuthManager extends Component {
 
     confirmCodeClicked() {
         if(this._authOption == AuthOption.Phone) {
+            UIManager.instance.showLoaderPopup(true);
             XsollaLogin.completeAuthByPhoneNumber(this.confirmationCodeEditBox.string, this._operationId, this.credentialsEditBox.string, token => {
+                UIManager.instance.showLoaderPopup(false);
                 console.log(token);
                 TokenStorage.saveToken(token, true);
                 UIManager.instance.openScreen(UIScreenType.MainMenu);
             }, err => {
+                UIManager.instance.showLoaderPopup(false);
                 console.log(err);
                 UIManager.instance.showErrorPopup(err.description);
             });
             return;
         }
         if(this._authOption == AuthOption.Email) {
+            UIManager.instance.showLoaderPopup(true);
             XsollaLogin.completeAuthByEmail(this.confirmationCodeEditBox.string, this._operationId, this.credentialsEditBox.string, token => {
+                UIManager.instance.showLoaderPopup(false);
                 console.log(token);
                 TokenStorage.saveToken(token, true);
                 UIManager.instance.openScreen(UIScreenType.MainMenu);
             }, err => {
+                UIManager.instance.showLoaderPopup(false);
                 console.log(err);
                 UIManager.instance.showErrorPopup(err.description);
             });

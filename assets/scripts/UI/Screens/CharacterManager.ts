@@ -75,11 +75,13 @@ export class CharacterManager extends Component {
 
     openAllAttributesScreen(currentScreen:Node) {
         this.clearAttributesList();
-
+        UIManager.instance.showLoaderPopup(true);
         XsollaAttributes.getUserAttributes(TokenStorage.token.access_token, null, null, attributes => {
+            UIManager.instance.showLoaderPopup(false);
             this.populateAttributesList(attributes);
             this.attributesList.scrollToTop();
         }, err => {
+            UIManager.instance.showLoaderPopup(false);
             console.log(err);
             UIManager.instance.showErrorPopup(err.description);
         });
@@ -114,20 +116,26 @@ export class CharacterManager extends Component {
             value: value
         };
 
+        UIManager.instance.showLoaderPopup(true);
         XsollaAttributes.updateUserAttributes(TokenStorage.token.access_token, [newAttrinbute], () => {
             this.openAllAttributesScreen(this.addAttributeScreen);
+            UIManager.instance.showLoaderPopup(false);
         }, err => {
             console.log(err);
             UIManager.instance.showErrorPopup(err.description);
+            UIManager.instance.showLoaderPopup(false);
         });
     }
 
     removeAttribute(key:string, attributeItem:Node) {
+        UIManager.instance.showLoaderPopup(true);
         XsollaAttributes.removeUserAttributes(TokenStorage.token.access_token, [key], () => {
             this.attributesList.content.removeChild(attributeItem);
+            UIManager.instance.showLoaderPopup(false);
         }, err => {
             console.log(err);
             UIManager.instance.showErrorPopup(err.description);
+            UIManager.instance.showLoaderPopup(false);
         });
     }
 
