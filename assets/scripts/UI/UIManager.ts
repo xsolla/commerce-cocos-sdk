@@ -16,7 +16,8 @@ export enum UIScreenType {
     Store = 5,
     Inventory = 6,
     Character = 7,
-    UserAccount = 8
+    UserAccount = 8,
+    SignUp = 9
 }
  
 @ccclass('UIManager')
@@ -27,6 +28,9 @@ export class UIManager extends Component {
 
     @property(Prefab)
     basicAuth: Prefab;
+
+    @property(Prefab)
+    signUpScreen: Prefab;
 
     @property(Prefab)
     mainMenu: Prefab;
@@ -82,6 +86,10 @@ export class UIManager extends Component {
             }
             case UIScreenType.BasicAuth: {
                 this._currentScreen = instantiate(this.basicAuth);
+                break;
+            }
+            case UIScreenType.SignUp: {
+                this._currentScreen = instantiate(this.signUpScreen);
                 break;
             } 
             case UIScreenType.PasswordlessAuth: {

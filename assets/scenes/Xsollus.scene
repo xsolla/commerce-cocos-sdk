@@ -757,6 +757,10 @@
       "__uuid__": "53c77b48-4552-44b1-a744-a48543ef0b90",
       "__expectedType__": "cc.Prefab"
     },
+    "signUpScreen": {
+      "__uuid__": "14b6537f-5d23-41b9-87ac-3b165ee8f93d",
+      "__expectedType__": "cc.Prefab"
+    },
     "mainMenu": {
       "__uuid__": "7daf20b9-142a-47a6-874b-7db2c023926a",
       "__expectedType__": "cc.Prefab"
