@@ -200,11 +200,44 @@ export class XsollaUserAccount {
      * 
      */
     static removeProfilePicture(token:string, onComplete?:() => void, onError?:(error:LoginError) => void) {
-        let url = new UrlBuilder('https://login.xsolla.com/api/users/me/picture').build();
-        
+        let url = new UrlBuilder('https://login.xsolla.com/api/users/me/picture').build();    
         let request = HttpUtil.createRequest(url, 'DELETE', RequestContentType.None, token, result => {
             onComplete?.();
         }, handleLoginError(onError));
+        request.send();
+    }
+
+    static getUserDevices(token:string, onComplete?:(userDevices:Array<UserDevice>) => void, onError?:(error:LoginError) => void) {
+        let url = new UrlBuilder('https://login.xsolla.com/api/users/me/devices').build();
+        
+        let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, token, result => {
+            let userDevices = JSON.parse(result);
+            onComplete?.(userDevices);
+        }, handleLoginError(onError));
+        request.send();
+    }
+
+    static linkDeviceToAccount(token:string, platformName:string, deviceName:string, deviceId:string, onComplete?:() => void, onError?:(error:LoginError) => void) {
+        let body = {
+            device: deviceName,
+            device_id: deviceId,
+        };
+        
+        let url = new UrlBuilder('https://login.xsolla.com/api/users/me/devices/{platformName}')
+            .setPathParam('platformName', platformName)
+            .build();
+        
+        let request = HttpUtil.createRequest(url, 'POST', RequestContentType.Json, token, onComplete, handleLoginError(onError));
+        request.send(JSON.stringify(body));
+    }
+
+    static unlinkDeviceFromAccount(token:string, deviceId:number, onComplete?:() => void, onError?:(error:LoginError) => void) {
+       
+        let url = new UrlBuilder('https://login.xsolla.com/api/users/me/devices/{deviceId}')
+            .setPathParam('deviceId', deviceId.toString())
+            .build();
+        
+        let request = HttpUtil.createRequest(url, 'DELETE', RequestContentType.None, token, onComplete, handleLoginError(onError));
         request.send();
     }
 }
@@ -268,4 +301,11 @@ export interface UserPhone {
 
 export interface EmailConfirmation {
     email_confirmation_required: boolean
+}
+
+export interface UserDevice {
+    device: string,
+    id: number,
+    last_used_at: string,
+    type: string
 }
