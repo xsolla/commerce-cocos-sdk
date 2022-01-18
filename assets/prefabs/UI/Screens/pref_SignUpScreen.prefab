@@ -3095,6 +3095,183 @@
     "asset": {
       "__id__": 0
     },
-    "fileId": "6fXnu3jdVLzq8r1hMPWKO6"
+    "fileId": "6fXnu3jdVLzq8r1hMPWKO6",
+    "targetOverrides": [
+      {
+        "__id__": 250
+      },
+      {
+        "__id__": 252
+      },
+      {
+        "__id__": 254
+      },
+      {
+        "__id__": 256
+      },
+      {
+        "__id__": 258
+      },
+      {
+        "__id__": 260
+      },
+      {
+        "__id__": 262
+      }
+    ]
+  },
+  {
+    "__type__": "cc.TargetOverrideInfo",
+    "source": {
+      "__id__": 247
+    },
+    "sourceInfo": null,
+    "propertyPath": [
+      "backButton"
+    ],
+    "target": {
+      "__id__": 10
+    },
+    "targetInfo": {
+      "__id__": 251
+    }
+  },
+  {
+    "__type__": "cc.TargetInfo",
+    "localID": [
+      "feN8GMKK9O34PvYAyZf3D0"
+    ]
+  },
+  {
+    "__type__": "cc.TargetOverrideInfo",
+    "source": {
+      "__id__": 247
+    },
+    "sourceInfo": null,
+    "propertyPath": [
+      "usernameEditBox"
+    ],
+    "target": {
+      "__id__": 29
+    },
+    "targetInfo": {
+      "__id__": 253
+    }
+  },
+  {
+    "__type__": "cc.TargetInfo",
+    "localID": [
+      "00nviv9XtB6IMuPqKyTBRi"
+    ]
+  },
+  {
+    "__type__": "cc.TargetOverrideInfo",
+    "source": {
+      "__id__": 247
+    },
+    "sourceInfo": null,
+    "propertyPath": [
+      "emailEditBox"
+    ],
+    "target": {
+      "__id__": 66
+    },
+    "targetInfo": {
+      "__id__": 255
+    }
+  },
+  {
+    "__type__": "cc.TargetInfo",
+    "localID": [
+      "00nviv9XtB6IMuPqKyTBRi"
+    ]
+  },
+  {
+    "__type__": "cc.TargetOverrideInfo",
+    "source": {
+      "__id__": 247
+    },
+    "sourceInfo": null,
+    "propertyPath": [
+      "passwordEditBox"
+    ],
+    "target": {
+      "__id__": 103
+    },
+    "targetInfo": {
+      "__id__": 257
+    }
+  },
+  {
+    "__type__": "cc.TargetInfo",
+    "localID": [
+      "00nviv9XtB6IMuPqKyTBRi"
+    ]
+  },
+  {
+    "__type__": "cc.TargetOverrideInfo",
+    "source": {
+      "__id__": 247
+    },
+    "sourceInfo": null,
+    "propertyPath": [
+      "signUpButton"
+    ],
+    "target": {
+      "__id__": 150
+    },
+    "targetInfo": {
+      "__id__": 259
+    }
+  },
+  {
+    "__type__": "cc.TargetInfo",
+    "localID": [
+      "1aOJcrOMZIwp3tuCM+8Vx4"
+    ]
+  },
+  {
+    "__type__": "cc.TargetOverrideInfo",
+    "source": {
+      "__id__": 247
+    },
+    "sourceInfo": null,
+    "propertyPath": [
+      "logInButton"
+    ],
+    "target": {
+      "__id__": 177
+    },
+    "targetInfo": {
+      "__id__": 261
+    }
+  },
+  {
+    "__type__": "cc.TargetInfo",
+    "localID": [
+      "1aOJcrOMZIwp3tuCM+8Vx4"
+    ]
+  },
+  {
+    "__type__": "cc.TargetOverrideInfo",
+    "source": {
+      "__id__": 247
+    },
+    "sourceInfo": null,
+    "propertyPath": [
+      "privacyPolicyButton"
+    ],
+    "target": {
+      "__id__": 216
+    },
+    "targetInfo": {
+      "__id__": 263
+    }
+  },
+  {
+    "__type__": "cc.TargetInfo",
+    "localID": [
+      "feN8GMKK9O34PvYAyZf3D0"
+    ]
   }
 ]
