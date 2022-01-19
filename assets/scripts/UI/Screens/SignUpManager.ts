@@ -69,7 +69,7 @@ export class SignUpManager extends Component {
     }
 
     onCredentialsChanged() {
-        this.signUpButton.interactable = this.usernameEditBox.string.length > 0 && this.emailEditBox.string.length > 0 && this.passwordEditBox.string.length > 0;
+        this.signUpButton.interactable = this.usernameEditBox.string.length > 0 && this.emailEditBox.string.length > 0 && this.passwordEditBox.string.length > 6;
     }
 
     onSignUpClicked() {
