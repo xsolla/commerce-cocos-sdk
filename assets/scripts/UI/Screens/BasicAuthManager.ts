@@ -21,6 +21,9 @@ export class BasicAuthManager extends Component {
     @property(Button)
     logInButton: Button;
 
+    @property(Button)
+    resetPasswordButton: Button;
+
     @property(Toggle)
     remeberMeToggle: Toggle;
 
@@ -82,11 +85,16 @@ export class BasicAuthManager extends Component {
         UIManager.instance.openScreen(UIScreenType.SignUp);
     }
 
+    oResetPasswordClicked() {
+        UIManager.instance.openScreen(UIScreenType.ResetPassword);
+    }
+
     addListeners () {
         this.backButton.node.on(Button.EventType.CLICK, this.onBackClicked, this);
         this.logInButton.node.on(Button.EventType.CLICK, this.onLoginClicked, this);
         this.demoUserButton.node.on(Button.EventType.CLICK, this.onDemoUserClicked, this);
         this.signUpButton.node.on(Button.EventType.CLICK, this.onSignUpClicked, this);
+        this.resetPasswordButton.node.on(Button.EventType.CLICK, this.oResetPasswordClicked, this);
         this.usernameEditBox.node.on(EditBox.EventType.TEXT_CHANGED, this.onCredentialsChanged, this);
         this.passwordEditBox.node.on(EditBox.EventType.TEXT_CHANGED, this.onCredentialsChanged, this);
     }
@@ -96,6 +104,7 @@ export class BasicAuthManager extends Component {
         this.logInButton.node.off(Button.EventType.CLICK, this.onLoginClicked, this);
         this.demoUserButton.node.off(Button.EventType.CLICK, this.onDemoUserClicked, this);
         this.signUpButton.node.off(Button.EventType.CLICK, this.onSignUpClicked, this);
+        this.resetPasswordButton.node.off(Button.EventType.CLICK, this.oResetPasswordClicked, this);
         this.usernameEditBox.node.off(EditBox.EventType.TEXT_CHANGED, this.onCredentialsChanged, this);
         this.passwordEditBox.node.off(EditBox.EventType.TEXT_CHANGED, this.onCredentialsChanged, this);
     }

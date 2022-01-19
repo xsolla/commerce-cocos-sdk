@@ -761,6 +761,10 @@
       "__uuid__": "14b6537f-5d23-41b9-87ac-3b165ee8f93d",
       "__expectedType__": "cc.Prefab"
     },
+    "resetPasswordScreen": {
+      "__uuid__": "cd237702-b36a-4db6-8d09-6e178ca6d1bd",
+      "__expectedType__": "cc.Prefab"
+    },
     "mainMenu": {
       "__uuid__": "7daf20b9-142a-47a6-874b-7db2c023926a",
       "__expectedType__": "cc.Prefab"
