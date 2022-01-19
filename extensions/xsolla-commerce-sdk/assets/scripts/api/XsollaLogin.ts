@@ -487,7 +487,7 @@ export class XsollaLogin {
      * @zh
      * 
      */
-    resetPassword(username:string, onComplete?:() => void, onError?:(error:LoginError) => void) {
+    static resetPassword(username:string, onComplete?:() => void, onError?:(error:LoginError) => void) {
         let body = {
             username: username
         };
