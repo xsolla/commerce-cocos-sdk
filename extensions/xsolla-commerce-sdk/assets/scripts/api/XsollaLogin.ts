@@ -481,6 +481,28 @@ export class XsollaLogin {
         request.send(JSON.stringify(body));
     }
 
+    /**
+     * @en
+     * Resets the user password with user confirmation. If the user data is kept in the Xsolla data storage or on your side, users receive a password change confirmation email.
+     * @zh
+     * 
+     */
+    resetPassword(username:string, onComplete?:() => void, onError?:(error:LoginError) => void) {
+        let body = {
+            username: username
+        };
+
+        let url = new UrlBuilder('https://login.xsolla.com/api/password/reset/request')
+            .addStringParam('projectId', Xsolla.settings.loginId)
+            .addStringParam('login_url', 'https://login.xsolla.com/api/blank')
+            .build();
+
+        let request = HttpUtil.createRequest(url, 'POST', RequestContentType.Json, null, result => {
+            onComplete?.();
+        }, handleLoginError(onError));
+        request.send(JSON.stringify(body));
+    }
+
     private static handleUrlWithToken(onComplete: (token: Token) => void): (result: any) => void {
         return result => {
             let authUrl: AuthUrl = JSON.parse(result);
