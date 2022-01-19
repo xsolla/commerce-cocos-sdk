@@ -432,6 +432,55 @@ export class XsollaLogin {
         request.send(JSON.stringify(body));
     }
 
+    /**
+     * @en
+     * Resends an account confirmation email to a user. To complete account confirmation, the user should follow the link in the email.
+     * @zh
+     * 
+     */
+    static resendAccountConfirmationEmail(username:string, payload?:string, state?:string, onComplete?:() => void, onError?:(error:LoginError) => void) {
+        if(Xsolla.settings.authType == AuthenticationType.Oauth2) {
+            this.resendAccountConfirmationEmailOauth(username, state, onComplete, onError);
+        }
+        else {
+            this.resendAccountConfirmationEmailJwt(username, payload, onComplete, onError);
+        }
+    }
+
+    private static resendAccountConfirmationEmailOauth(username:string, state?:string, onComplete?:() => void, onError?:(error:LoginError) => void) {
+        let body = {
+            username: username
+        };
+
+        let url = new UrlBuilder('https://login.xsolla.com/api/oauth2/user/resend_confirmation_link')
+            .addNumberParam('client_id', Xsolla.settings.clientId)
+            .addStringParam('redirect_uri', 'https://login.xsolla.com/api/blank')
+            .addStringParam('state', state)
+            .build();
+
+        let request = HttpUtil.createRequest(url, 'POST', RequestContentType.Json, null, result => {
+            onComplete?.();
+        }, handleLoginError(onError));
+        request.send(JSON.stringify(body));
+    }
+
+    private static resendAccountConfirmationEmailJwt(username:string, payload?:string, onComplete?:() => void, onError?:(error:LoginError) => void) {
+        let body = {
+            username: username
+        };
+
+        let url = new UrlBuilder('https://login.xsolla.com/api/user/resend_confirmation_link')
+            .addStringParam('projectId', Xsolla.settings.loginId)
+            .addStringParam('login_url', 'https://login.xsolla.com/api/blank')
+            .addStringParam('payload', payload)
+            .build();
+
+        let request = HttpUtil.createRequest(url, 'POST', RequestContentType.Json, null, result => {
+            onComplete?.();
+        }, handleLoginError(onError));
+        request.send(JSON.stringify(body));
+    }
+
     private static handleUrlWithToken(onComplete: (token: Token) => void): (result: any) => void {
         return result => {
             let authUrl: AuthUrl = JSON.parse(result);
