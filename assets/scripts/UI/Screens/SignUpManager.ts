@@ -1,6 +1,6 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
-import { _decorator, Component, Button, EditBox, Toggle, sys } from 'cc';
+import { _decorator, Component, Button, EditBox, Node, Toggle, sys, Label } from 'cc';
 import { XsollaLogin } from 'db://xsolla-commerce-sdk/scripts/api/XsollaLogin';
 import { TokenStorage } from '../../Common/TokenStorage';
 import { UIManager, UIScreenType } from '../UIManager';
@@ -9,8 +9,26 @@ const { ccclass, property } = _decorator;
 @ccclass('SignUpManager')
 export class SignUpManager extends Component {
 
+    @property(Node)
+    registrationScreen: Node;
+
+    @property(Node)
+    successScreen: Node;
+
     @property(Button)
     backButton: Button;
+
+    @property(Button)
+    signUpButton: Button;
+
+    @property(Button)
+    logInButton: Button;
+
+    @property(Button)
+    privacyPolicyButton: Button;
+
+    @property(Button)
+    resendEmailButton: Button;
 
     @property(EditBox)
     usernameEditBox: EditBox;
@@ -21,14 +39,8 @@ export class SignUpManager extends Component {
     @property(EditBox)
     passwordEditBox: EditBox;
 
-    @property(Button)
-    signUpButton: Button;
-
-    @property(Button)
-    logInButton: Button;
-
-    @property(Button)
-    privacyPolicyButton: Button;
+    @property(Label)
+    confirmationEmailMessage: Label;
 
     start() {
         
@@ -68,18 +80,27 @@ export class SignUpManager extends Component {
                 UIManager.instance.openScreen(UIScreenType.MainMenu);
             }
             else {
-                UIManager.instance.showMessagePopup('Resistration completed successfully!', () => {
-                    UIManager.instance.openScreen(UIScreenType.BasicAuth);
-                });                
+                this.registrationScreen.active = false;
+                this.successScreen.active = true;      
+                this.confirmationEmailMessage.string = this.confirmationEmailMessage.string.replace('{email}', this.emailEditBox.string);    
             }
         }, err => {
             console.log(err);
             UIManager.instance.showErrorPopup(err.description);
-        } )
+        });
     }
 
     onPrivacyPolicyClicked() {
         sys.openURL('https://xsolla.com/privacypolicy');
+    }
+
+    onResendEmailClicked() {
+        XsollaLogin.resendAccountConfirmationEmail(this.usernameEditBox.string, 'xsollatest', 'xsollatest', () => {
+            console.log('Email resent successfully.')
+        }, err => {
+            console.log(err);
+            UIManager.instance.showErrorPopup(err.description);
+        });
     }
 
     addListeners () {
@@ -87,6 +108,7 @@ export class SignUpManager extends Component {
         this.logInButton.node.on(Button.EventType.CLICK, this.onLoginClicked, this);
         this.signUpButton.node.on(Button.EventType.CLICK, this.onSignUpClicked, this);
         this.privacyPolicyButton.node.on(Button.EventType.CLICK, this.onPrivacyPolicyClicked, this);
+        this.resendEmailButton.node.on(Button.EventType.CLICK, this.onResendEmailClicked, this);
         this.usernameEditBox.node.on(EditBox.EventType.TEXT_CHANGED, this.onCredentialsChanged, this);
         this.emailEditBox.node.on(EditBox.EventType.TEXT_CHANGED, this.onCredentialsChanged, this);
         this.passwordEditBox.node.on(EditBox.EventType.TEXT_CHANGED, this.onCredentialsChanged, this);
@@ -97,6 +119,7 @@ export class SignUpManager extends Component {
         this.logInButton.node.off(Button.EventType.CLICK, this.onLoginClicked, this);
         this.signUpButton.node.off(Button.EventType.CLICK, this.onSignUpClicked, this);
         this.privacyPolicyButton.node.off(Button.EventType.CLICK, this.onPrivacyPolicyClicked, this);
+        this.resendEmailButton.node.off(Button.EventType.CLICK, this.onResendEmailClicked, this);
         this.usernameEditBox.node.off(EditBox.EventType.TEXT_CHANGED, this.onCredentialsChanged, this);
         this.emailEditBox.node.off(EditBox.EventType.TEXT_CHANGED, this.onCredentialsChanged, this);
         this.passwordEditBox.node.off(EditBox.EventType.TEXT_CHANGED, this.onCredentialsChanged, this);
