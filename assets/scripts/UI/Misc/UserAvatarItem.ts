@@ -45,7 +45,7 @@ export class UserAvatarItem extends Component {
         const spriteFrame = new SpriteFrame();
         spriteFrame.texture = texture;
         this.avatarSprite.spriteFrame = spriteFrame;
-        this.avatarSprite.getComponent(UITransform).setContentSize(40, 40); 
+        this.avatarSprite.getComponent(UITransform).setContentSize(80, 80); 
         this._parent = parent;
         this._texture = texture;
     }

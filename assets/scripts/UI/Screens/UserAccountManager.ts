@@ -37,6 +37,9 @@ export class UserAccountManager extends Component {
     @property(Sprite)
     avatar: Sprite;
 
+    @property(Sprite)
+    bigAvatar: Sprite;
+
     @property(Prefab)
     avatarItemPrefab: Prefab;
 
@@ -47,25 +50,25 @@ export class UserAccountManager extends Component {
     avatarPicker: Node;
 
     @property(Node)
-    avatarModifier: Node;
-
-    @property(Node)
-    avatarEditRemoveContainer: Node;
+    avatarsList: Node;
 
     @property(Button)
-    avatarEditButton: Button;
+    removeAvatarButton: Button;
 
     @property(Button)
-    avatarRemoveButton: Button;
+    avatarButton: Button;
+
+    @property(Button)
+    closeAvatarPickerButton: Button;
 
     @property(Texture2D)
     defaultAvatars: Texture2D[] = [];
 
     start() {
-        this.avatarPicker.destroyAllChildren();
+        this.avatarsList.destroyAllChildren();
         for(let avatarTexture of this.defaultAvatars) {
             let avatarItem = instantiate(this.avatarItemPrefab);
-            this.avatarPicker.addChild(avatarItem);
+            this.avatarsList.addChild(avatarItem);
             avatarItem.getComponent(UserAvatarItem).init(avatarTexture, this);
         }
     }
@@ -94,6 +97,7 @@ export class UserAccountManager extends Component {
             console.log(err);
             UIManager.instance.showErrorPopup(err.description);
         });
+        this.avatarsList.getComponentsInChildren(UserAvatarItem).forEach(item => item.showSelection(false));
     }
 
     updateUserAccountData(userDetailsUpdate: UserDetailsUpdate) {
@@ -121,11 +125,12 @@ export class UserAccountManager extends Component {
 
     refreshUserAvatar(userDetails: UserDetails) {
         let isPictureExist = userDetails.picture != null && userDetails.picture.length > 0;
-        this.avatarRemoveButton.node.active = isPictureExist;
+        this.removeAvatarButton.enabled = isPictureExist;
         if(isPictureExist) {
             ImageUtils.loadImage(userDetails.picture, spriteFrame => {
                 if(this.avatar != null) {
                     this.avatar.spriteFrame = spriteFrame;
+                    this.bigAvatar.spriteFrame = spriteFrame;
                 }
             });
     
@@ -133,8 +138,10 @@ export class UserAccountManager extends Component {
             const spriteFrame = new SpriteFrame();
             spriteFrame.texture = this.noAvatar;
             this.avatar.spriteFrame = spriteFrame;
+            this.bigAvatar.spriteFrame = spriteFrame;
         }
-        this.avatar.getComponent(UITransform).setContentSize(100, 100); 
+        this.avatar.getComponent(UITransform).setContentSize(100, 100);
+        this.bigAvatar.getComponent(UITransform).setContentSize(256, 256);
     }
 
     onNicknameEdited(value: string) {
@@ -187,6 +194,10 @@ export class UserAccountManager extends Component {
             });
     }
 
+    onAvatarPickerClosed() {
+        this.setAvatarEditMode(false);
+    }
+
     onSaveAvatar(texture: Texture2D, item: UserAvatarItem) {
         if(sys.isBrowser) {
             ImageUtils.getBase64Image(texture, base64image => {
@@ -214,7 +225,6 @@ export class UserAccountManager extends Component {
 
     handleSuccessfulAvatarUpdate() {     
         this.refreshUserAccountScreen();
-        this.setAvatarEditMode(false);
     }
 
     handleErrorAvatarUpdate(error:string) {
@@ -224,8 +234,7 @@ export class UserAccountManager extends Component {
 
     setAvatarEditMode(isPickerVisible: boolean) {
         this.avatarPicker.active = isPickerVisible;
-        this.avatarPicker.getComponentsInChildren(UserAvatarItem).forEach(item => item.showSelection(false));
-        this.avatarEditRemoveContainer.active = !isPickerVisible;
+        this.avatarsList.getComponentsInChildren(UserAvatarItem).forEach(item => item.showSelection(false));
     }
 
     addListeners () {
@@ -234,8 +243,9 @@ export class UserAccountManager extends Component {
         this.firstNameItem.node.on(UserAccountItem.ITEM_EDIT, this.onFirstNameEdited, this);
         this.lastNameItem.node.on(UserAccountItem.ITEM_EDIT, this.onLastNameEdited, this);
         this.phoneNumberItem.node.on(UserAccountItem.ITEM_EDIT, this.onPhoneNumberEdited, this);
-        this.avatarEditButton.node.on(Button.EventType.CLICK, this.onAvatarEdited, this);
-        this.avatarRemoveButton.node.on(Button.EventType.CLICK, this.onAvatarRemoved, this);
+        this.removeAvatarButton.node.on(Button.EventType.CLICK, this.onAvatarRemoved, this);
+        this.avatarButton.node.on(Button.EventType.CLICK, this.onAvatarEdited, this);
+        this.closeAvatarPickerButton.node.on(Button.EventType.CLICK, this.onAvatarPickerClosed, this);
     }
 
     removeListeners () {
@@ -244,7 +254,8 @@ export class UserAccountManager extends Component {
         this.firstNameItem.node.off(UserAccountItem.ITEM_EDIT, this.onFirstNameEdited, this);
         this.lastNameItem.node.off(UserAccountItem.ITEM_EDIT, this.onLastNameEdited, this);
         this.phoneNumberItem.node.off(UserAccountItem.ITEM_EDIT, this.onPhoneNumberEdited, this);
-        this.avatarEditButton.node.off(Button.EventType.CLICK, this.onAvatarEdited, this);
-        this.avatarRemoveButton.node.off(Button.EventType.CLICK, this.onAvatarRemoved, this);
+        this.removeAvatarButton.node.off(Button.EventType.CLICK, this.onAvatarRemoved, this);
+        this.avatarButton.node.off(Button.EventType.CLICK, this.onAvatarEdited, this);
+        this.closeAvatarPickerButton.node.off(Button.EventType.CLICK, this.onAvatarPickerClosed, this);
     }
 }
