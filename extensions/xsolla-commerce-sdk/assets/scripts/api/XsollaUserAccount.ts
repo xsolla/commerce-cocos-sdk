@@ -166,30 +166,29 @@ export class XsollaUserAccount {
             return;
         }
 
-        let boundary = '---------------------------' + Date.now.toString();
-        let beginBoundary = '\r\n--' + boundary + '\r\n';
-        let endBoundary = '\r\n--' + boundary + '--\r\n';
-
+        let boundaryStr = '---------------------------' + Date.now.toString();
+        let beginBoundary = Uint8Array.from('\r\n--' + boundaryStr + '\r\n', x => x.charCodeAt(0));
+        let endBoundary = Uint8Array.from('\r\n--' + boundaryStr + '--\r\n', x => x.charCodeAt(0));
         let pictureHeaderStr = 'Content-Disposition: form-data;';
         pictureHeaderStr = pictureHeaderStr.concat('name=\"picture\";');
         pictureHeaderStr = pictureHeaderStr.concat('filename=\"avatar.png\"');
         pictureHeaderStr = pictureHeaderStr.concat('\r\nContent-Type: \r\n\r\n');
+        let pictureHeader = Uint8Array.from(pictureHeaderStr, x => x.charCodeAt(0));
 
-        let length = beginBoundary.length + pictureHeaderStr.length + buffer.length + endBoundary.length;
+        let length = beginBoundary.length + pictureHeader.length + buffer.length + endBoundary.length;
         let uploadContent:Uint8Array = new Uint8Array(length);
         let offset = 0;
-        let enc = new TextEncoder(); 
-        uploadContent.set(enc.encode(beginBoundary));
+        uploadContent.set(beginBoundary, offset);
         offset += beginBoundary.length;
-        uploadContent.set(enc.encode(pictureHeaderStr), offset);
-        offset += pictureHeaderStr.length;
+        uploadContent.set(pictureHeader);
+        offset += pictureHeader.length;
         uploadContent.set(buffer, offset);
         offset += buffer.length;
-        uploadContent.set(enc.encode(endBoundary), offset);
+        uploadContent.set(endBoundary, offset);
 
         let url = new UrlBuilder('https://login.xsolla.com/api/users/me/picture').build();
         let request = HttpUtil.createRequest(url, 'POST', RequestContentType.None, token, onComplete, handleLoginError(onError));
-        request.setRequestHeader('Content-Type', (`multipart/form-data; boundary =${boundary}`));
+        request.setRequestHeader('Content-Type', (`multipart/form-data; boundary =${boundaryStr}`));
         request.send(uploadContent);
     }
 
@@ -207,6 +206,12 @@ export class XsollaUserAccount {
         request.send();
     }
 
+    /**
+     * @en
+     * Gets user devices.
+     * @zh
+     * 
+     */
     static getUserDevices(token:string, onComplete?:(userDevices:Array<UserDevice>) => void, onError?:(error:LoginError) => void) {
         let url = new UrlBuilder('https://login.xsolla.com/api/users/me/devices').build();
         
@@ -217,6 +222,12 @@ export class XsollaUserAccount {
         request.send();
     }
 
+    /**
+     * @en
+     * Links the specified device to the user account.
+     * @zh
+     * 
+     */
     static linkDeviceToAccount(token:string, platformName:string, deviceName:string, deviceId:string, onComplete?:() => void, onError?:(error:LoginError) => void) {
         let body = {
             device: deviceName,
@@ -231,6 +242,12 @@ export class XsollaUserAccount {
         request.send(JSON.stringify(body));
     }
 
+    /**
+     * @en
+     * Unlinks the specified device from the user account.
+     * @zh
+     * 
+     */
     static unlinkDeviceFromAccount(token:string, deviceId:number, onComplete?:() => void, onError?:(error:LoginError) => void) {
        
         let url = new UrlBuilder('https://login.xsolla.com/api/users/me/devices/{deviceId}')
