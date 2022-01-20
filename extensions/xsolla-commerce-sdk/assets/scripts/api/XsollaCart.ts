@@ -35,7 +35,7 @@ export class XsollaCart {
      * @zh
      * 
      */
-     static getCart(locale:string, currency:string, onComplete?:(cartData:CartItemsData) => void, onError?:(error:CommerceError) => void): void {
+    static getCart(locale:string, currency:string, onComplete?:(cartData:CartItemsData) => void, onError?:(error:CommerceError) => void): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{project_id}/cart')
             .setPathParam('projectID', Xsolla.settings.projectId)
             .addStringParam('locale', locale)
