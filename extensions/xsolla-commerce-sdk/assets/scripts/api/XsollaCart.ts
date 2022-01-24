@@ -16,7 +16,7 @@ export class XsollaCart {
      */
     static getCartById(cartId:string, locale:string, currency:string, onComplete?:(cartData:CartItemsData) => void, onError?:(error:CommerceError) => void): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{project_id}/cart/{cart_id}')
-            .setPathParam('projectID', Xsolla.settings.projectId)
+            .setPathParam('project_id', Xsolla.settings.projectId)
             .setPathParam('cart_id', cartId)
             .addStringParam('locale', locale)
             .addStringParam('currency', currency)
@@ -37,7 +37,7 @@ export class XsollaCart {
      */
     static getCart(locale:string, currency:string, onComplete?:(cartData:CartItemsData) => void, onError?:(error:CommerceError) => void): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{project_id}/cart')
-            .setPathParam('projectID', Xsolla.settings.projectId)
+            .setPathParam('project_id', Xsolla.settings.projectId)
             .addStringParam('locale', locale)
             .addStringParam('currency', currency)
             .build();
@@ -57,7 +57,7 @@ export class XsollaCart {
      */
     static clearCartById(cartId:string, onComplete?:() => void, onError?:(error:CommerceError) => void): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{project_id}/cart/{cart_id}/clear')
-            .setPathParam('projectID', Xsolla.settings.projectId)
+            .setPathParam('project_id', Xsolla.settings.projectId)
             .setPathParam('cart_id', cartId)
             .build();
 
@@ -75,7 +75,7 @@ export class XsollaCart {
      */
     static clearCart(onComplete?:() => void, onError?:(error:CommerceError) => void): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{project_id}/cart/clear')
-            .setPathParam('projectID', Xsolla.settings.projectId)
+            .setPathParam('project_id', Xsolla.settings.projectId)
             .build();
 
         let request = HttpUtil.createRequest(url, 'PUT', RequestContentType.None, null, result => {
@@ -103,7 +103,7 @@ export class XsollaCart {
         };
 
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{project_id}/cart/{cart_id}/fill')
-            .setPathParam('projectID', Xsolla.settings.projectId)
+            .setPathParam('project_id', Xsolla.settings.projectId)
             .setPathParam('cart_id', cartId)
             .build();
 
@@ -132,7 +132,7 @@ export class XsollaCart {
         };
 
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{project_id}/cart/fill')
-            .setPathParam('projectID', Xsolla.settings.projectId)
+            .setPathParam('project_id', Xsolla.settings.projectId)
             .build();
 
         let request = HttpUtil.createRequest(url, 'PUT', RequestContentType.None, null, result => {
@@ -153,7 +153,7 @@ export class XsollaCart {
         };
 
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{project_id}/cart/{cart_id}/item/{item_sku}')
-            .setPathParam('projectID', Xsolla.settings.projectId)
+            .setPathParam('project_id', Xsolla.settings.projectId)
             .setPathParam('cart_id', cartId)
             .setPathParam('item_sku', itemSku)
             .build();
@@ -176,7 +176,7 @@ export class XsollaCart {
         };
 
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{project_id}/cart/item/{item_sku}')
-            .setPathParam('projectID', Xsolla.settings.projectId)
+            .setPathParam('project_id', Xsolla.settings.projectId)
             .setPathParam('item_sku', itemSku)
             .build();
 
@@ -194,7 +194,7 @@ export class XsollaCart {
      */
     static removeItemFromCartById(cartId:string, itemSku:string, onComplete?:() => void, onError?:(error:CommerceError) => void): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{project_id}/cart/{cart_id}/item/{item_sku}')
-            .setPathParam('projectID', Xsolla.settings.projectId)
+            .setPathParam('project_id', Xsolla.settings.projectId)
             .setPathParam('cart_id', cartId)
             .setPathParam('item_sku', itemSku)
             .build();
@@ -213,7 +213,7 @@ export class XsollaCart {
      */
     static removeItemFromCart(itemSku:string, onComplete?:() => void, onError?:(error:CommerceError) => void): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{project_id}/cart/item/{item_sku}')
-            .setPathParam('projectID', Xsolla.settings.projectId)
+            .setPathParam('project_id', Xsolla.settings.projectId)
             .setPathParam('item_sku', itemSku)
             .build();
 
@@ -221,6 +221,74 @@ export class XsollaCart {
             onComplete?.();
         }, handleCommerceError(onError));
         request.send();
+    }
+
+    /**
+     * @en
+     * Redeems a promo code. After redeeming a promo code, the user will get free items and/or the price of cart will be decreased.
+     * @zh
+     * 
+     */
+    static redeemPromocode(authToken:string, promocodeCode:string, cartId:string, onComplete?:(cartData:CartItemsData) => void, onError?:(error:CommerceError) => void): void {
+        let body = {
+            coupon_code: promocodeCode,
+            cart: {
+                id: cartId
+            }
+        };
+
+        let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{project_id}/promocode/redeem')
+            .setPathParam('project_id', Xsolla.settings.projectId)
+            .build();
+
+        let request = HttpUtil.createRequest(url, 'POST', RequestContentType.Json, authToken, result => {
+            let itemsData:CartItemsData = JSON.parse(result);
+            onComplete?.(itemsData);
+        }, handleCommerceError(onError));
+        request.send(JSON.stringify(body));
+    }
+
+    /**
+     * @en
+     * Gets promo code rewards by its code. Can be used to let users choose one of many items as a bonus.
+     * @zh
+     * 
+     */
+    static getPromocodeReward(authToken:string, promocodeCode:string, onComplete?:(rewardData: PromocodeRewardData) => void, onError?:(error:CommerceError) => void): void {
+        let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{project_id}/promocode/code/{promocode_code}/rewards')
+            .setPathParam('project_id', Xsolla.settings.projectId)
+            .setPathParam('promocode_code', promocodeCode)
+            .build();
+
+        let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, authToken, result => {
+            let rewardData:PromocodeRewardData = JSON.parse(result);
+            onComplete?.(rewardData);
+        }, handleCommerceError(onError));
+        request.send();
+    }
+
+    /**
+     * @en
+     * Removes a promo code from a cart. After the promo code is removed, the total price of all items in the cart will be recalculated without bonuses and discounts provided by a promo code.
+     * @zh
+     * 
+     */
+    static removePromocode(authToken:string, cartId:string, onComplete?:(cartData:CartItemsData) => void, onError?:(error:CommerceError) => void): void {
+        let body = {
+            cart: {
+                id: cartId
+            }
+        };
+        
+        let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{project_id}/promocode/remove')
+            .setPathParam('project_id', Xsolla.settings.projectId)
+            .build();
+
+        let request = HttpUtil.createRequest(url, 'PUT', RequestContentType.Json, authToken, result => {
+            let itemsData:CartItemsData = JSON.parse(result);
+            onComplete?.(itemsData);
+        }, handleCommerceError(onError));
+        request.send(JSON.stringify(body));
     }
 }
 
@@ -244,4 +312,37 @@ export interface CartItem {
     image_url: string,
     attributes: Array<ItemAttribute>,
     quantity: number
+}
+
+export interface UnitItem {
+    sku: string,
+    name: string,
+    type: string,
+    drm_name: string,
+    drm_sku: string
+}
+
+export interface RewardItem {
+    sku: string,
+    name: string,
+    type: string,
+    virtual_item_type: string,
+    description: string,
+    image_url: string,
+    unit_items: Array<UnitItem>
+}
+
+export interface BonusItem {
+    item: RewardItem,
+    quantity: number
+}
+
+export interface Discount {
+    percent: string
+}
+
+export interface PromocodeRewardData {
+    bonus: Array<BonusItem>,
+    discount: Discount,
+    is_selectable: boolean
 }
