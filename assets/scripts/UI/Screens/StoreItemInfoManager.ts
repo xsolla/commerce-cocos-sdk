@@ -64,7 +64,7 @@ export class StoreItemInfoManager extends Component {
 
     removeListeners () {
         this.buyBtn.node.off(Button.EventType.CLICK, this.buyItemClicked, this);
-        this.closeBtn.node.on(Button.EventType.CLICK, this.closeClicked, this);
+        this.closeBtn.node.off(Button.EventType.CLICK, this.closeClicked, this);
     }
 
     init(item:StoreItem | VirtualCurrencyPackage, parent:StoreManager, bundleContent?:Array<StoreBundleContent>) {
