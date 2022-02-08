@@ -9,6 +9,7 @@ import { UIManager, UIScreenType } from '../UIManager';
 import { StoreItem } from '../Misc/StoreItem';
 import { GroupsItem } from '../Misc/GroupsItem';
 import { VCBalanceItem } from '../Misc/VCBalanceItem';
+import { StoreRedeemCouponManager } from './StoreRedeemCouponManager';
 const { ccclass, property } = _decorator;
  
 @ccclass('StoreManager')
@@ -16,6 +17,9 @@ export class StoreManager extends Component {
 
     @property(Button)
     backBtn: Button;
+
+    @property(Button)
+    redeemCouponBtn: Button;
 
     @property(Node)
     allItemsScreen: Node;
@@ -25,6 +29,9 @@ export class StoreManager extends Component {
 
     @property(Node)
     itemInfoScreen: Node;
+
+    @property(Node)
+    redeemCouponScreen: Node;
 
     @property(ScrollView)
     itemsList: ScrollView;
@@ -37,6 +44,9 @@ export class StoreManager extends Component {
 
     @property(StoreItemInfoManager)
     itemInfoManager: StoreItemInfoManager;
+
+    @property(StoreRedeemCouponManager)
+    redeemCouponManager: StoreRedeemCouponManager;
 
     @property(Prefab)
     storeItemPrefab: Prefab;
@@ -74,6 +84,7 @@ export class StoreManager extends Component {
 
     onEnable() {
         this.addListeners();
+        this.redeemCouponManager.init(this);
         UIManager.instance.showLoaderPopup(true);
         XsollaStore.getVirtualItems('', '', [], storeItemsData => {
             XsollaStore.getVirtualCurrencyPackages('', '', [], currencyPackagesData => {
@@ -173,10 +184,12 @@ export class StoreManager extends Component {
 
     addListeners () {
         this.backBtn.node.on(Button.EventType.CLICK, this.onBackClicked, this);
+        this.redeemCouponBtn.node.on(Button.EventType.CLICK, this.onRedeemCouponClicked, this);
     }
 
     removeListeners () {
         this.backBtn.node.off(Button.EventType.CLICK, this.onBackClicked, this);
+        this.redeemCouponBtn.node.off(Button.EventType.CLICK, this.onRedeemCouponClicked, this);
     }
 
     onBackClicked() {
@@ -185,6 +198,10 @@ export class StoreManager extends Component {
         } else {
             UIManager.instance.openScreen(UIScreenType.MainMenu);
         }
+    }
+
+    onRedeemCouponClicked() {
+        this.openRedeemCouponScreen();
     }
 
     openAllItemsScreen() {
@@ -202,10 +219,16 @@ export class StoreManager extends Component {
         this.itemInfoScreen.active = true;
     }
 
+    openRedeemCouponScreen() {
+        this.hideAllScreens();
+        this.redeemCouponScreen.active = true;
+    }
+
     hideAllScreens() {
         this.allItemsScreen.active = false;
         this.noItemsScreen.active = false;
         this.itemInfoScreen.active = false;
+        this.redeemCouponScreen.active = false;
     }
 
     changeState(isCurrenciesOpen: boolean) {
