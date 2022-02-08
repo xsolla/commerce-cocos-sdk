@@ -4,6 +4,7 @@ import { handleCommerceError, CommerceError } from "../core/Error";
 import { HttpUtil, RequestContentType } from "../core/HttpUtil";
 import { UrlBuilder } from "../core/UrlBuilder";
 import { Xsolla } from "../Xsolla";
+import { BonusItem } from "./XsollaCart";
 
 export class XsollaStore {
 
@@ -263,6 +264,48 @@ export class XsollaStore {
         }, handleCommerceError(onError));
         request.send();
     }
+
+    /**
+     * @en
+     * Redeems a coupon code. The user gets a bonus after a coupon is redeemed.
+     * @zh
+     * 
+     */
+     static redeemCoupon(authToken:string, couponCode:string, onComplete?:(items: Array<RedeemedCouponItem>) => void, onError?:(error:CommerceError) => void): void {
+        let body = {
+            coupon_code: couponCode
+        };
+        
+        let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/coupon/redeem')
+            .setPathParam('projectID', Xsolla.settings.projectId)
+            .build();
+
+        let request = HttpUtil.createRequest(url, 'POST', RequestContentType.Json, authToken, result => {
+            let items: Array<RedeemedCouponItem>  = JSON.parse(result).items;
+            onComplete?.(items);
+        }, handleCommerceError(onError));
+        request.send(JSON.stringify(body));
+    }
+
+    /**
+     * @en
+     * Gets coupon rewards by its code. Can be used to let users choose one of many items as a bonus.
+     * The usual case is choosing a DRM if the coupon contains a game as a bonus.
+     * @zh
+     * 
+     */
+     static getCouponRewards(authToken:string, couponCode:string, onComplete?:(data: CouponRewardData) => void, onError?:(error:CommerceError) => void): void {
+        let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/coupon/code/{couponCode}/rewards')
+            .setPathParam('projectID', Xsolla.settings.projectId)
+            .setPathParam('couponCode', couponCode)
+            .build();
+
+        let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, authToken, result => {
+            let data: CouponRewardData  = JSON.parse(result);
+            onComplete?.(data);
+        }, handleCommerceError(onError));
+        request.send();
+    }
 }
 
 export interface CheckOrderResult {
@@ -470,4 +513,25 @@ export interface StoreBundle {
 
 export interface StoreListOfBundles {
     items: Array<StoreBundle>
+}
+
+export interface RedeemedCouponItem {
+    sku: string,
+    name: string,
+    description: string,
+    type: string,
+    virtual_item_type: string,
+    groups: Array<ItemGroup>,
+    attributes: Array<ItemAttribute>,
+    is_free: boolean,
+    price: Price,
+    virtual_prices: Array<VirtualCurrencyPrice>,
+    image_url: string,
+    inventory_options: ItemOptions,
+    quantity: number
+}
+
+export interface CouponRewardData {
+    bonus: Array<BonusItem>,
+    is_selectable: boolean
 }
