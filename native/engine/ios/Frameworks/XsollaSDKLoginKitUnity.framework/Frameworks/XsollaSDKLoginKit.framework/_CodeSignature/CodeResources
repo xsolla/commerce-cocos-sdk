@@ -14,23 +14,19 @@
 		</data>
 		<key>Frameworks/XsollaSDKUtilities.framework/Info.plist</key>
 		<data>
-		nqZzCNvR/qzFkqXhB4BfmQLIFNc=
+		3fBdbx2U/Pox15OaPlsg0mONC4k=
 		</data>
 		<key>Frameworks/XsollaSDKUtilities.framework/XsollaSDKUtilities</key>
 		<data>
-		nHlLZQPQyzLcSoWxIk6OWCuzzJA=
+		H52VY3JEsW5YG1ewlCDXWbn+JK4=
 		</data>
 		<key>Frameworks/XsollaSDKUtilities.framework/_CodeSignature/CodeResources</key>
 		<data>
-		tY9HzZ+fb2REXiU4ZJwkHzYIMow=
-		</data>
-		<key>Frameworks/XsollaSDKUtilities.framework/mime-types.txt</key>
-		<data>
-		Br/YAfNYMuQpZtme1lgIM/aRsn4=
+		zdh0W0JZEcjVKJLNj3Rj/5RIu7I=
 		</data>
 		<key>Info.plist</key>
 		<data>
-		JRUpfy80fdBjNEGoaD0ecmjiXG0=
+		ll6i4FnHSkU3cfliTYjo1jBkKv4=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -53,28 +49,21 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			h7eWd0hsTUdOCmBxpq3cyuubYMs+jG4qKPk2gLYlWUI=
+			057iiYqxafO+hB/ASOFSBjElrJMhVpUlfeQrd5N+PoI=
 			</data>
 		</dict>
 		<key>Frameworks/XsollaSDKUtilities.framework/XsollaSDKUtilities</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			d+tboxKl3FYqMBoaF0743SKOqwsUxOQqyOOj860J4Xk=
+			btGpaPNpuXV3/TE8/mxjkuW2aqX0JKe96dlP5vRcmUk=
 			</data>
 		</dict>
 		<key>Frameworks/XsollaSDKUtilities.framework/_CodeSignature/CodeResources</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			f2yIXMa7/ZiuU34erVTe448d6ttD4Xwi3zz6fYKf1v4=
-			</data>
-		</dict>
-		<key>Frameworks/XsollaSDKUtilities.framework/mime-types.txt</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			tczyu8MmjRiVknqFY6lzYzkePTl8KOhcJ5mJeUzu17w=
+			890IqzoPhwy+Z6xK+DN6AY5vio5n2GxKW0k6DFzp6Iw=
 			</data>
 		</dict>
 	</dict>

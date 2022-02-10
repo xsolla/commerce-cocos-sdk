@@ -4,10 +4,6 @@
 <dict>
 	<key>files</key>
 	<dict>
-		<key>.DS_Store</key>
-		<data>
-		v3APtQH809AnyqqYFIILF5H/Fes=
-		</data>
 		<key>.swiftlint.yml</key>
 		<data>
 		4+dUhykytExmluBzLzqo6JttnIc=
@@ -18,43 +14,47 @@
 		</data>
 		<key>Headers/XsollaSDKUtilities-Swift.h</key>
 		<data>
-		YsQofysxL+gIkcAuCOVGQbbCANw=
+		0kS6NmxRbULhzGZYOHftHLvL2rw=
 		</data>
 		<key>Info.plist</key>
 		<data>
-		nqZzCNvR/qzFkqXhB4BfmQLIFNc=
+		3fBdbx2U/Pox15OaPlsg0mONC4k=
 		</data>
 		<key>Modules/XsollaSDKUtilities.swiftmodule/Project/arm64-apple-ios.swiftsourceinfo</key>
 		<data>
-		7ARCUtx14K1E9/sesnI4f//8IUs=
+		cSwAE/nASyXL5ZZJuF2FdBSIsxQ=
 		</data>
 		<key>Modules/XsollaSDKUtilities.swiftmodule/Project/arm64.swiftsourceinfo</key>
 		<data>
-		7ARCUtx14K1E9/sesnI4f//8IUs=
+		cSwAE/nASyXL5ZZJuF2FdBSIsxQ=
 		</data>
 		<key>Modules/XsollaSDKUtilities.swiftmodule/arm64-apple-ios.swiftdoc</key>
 		<data>
-		W+f9Fm2oXGhhmnh59kDu1lzTyRU=
+		O2wAZjEwZ9EqvqN6D/3H0QZVglQ=
+		</data>
+		<key>Modules/XsollaSDKUtilities.swiftmodule/arm64-apple-ios.swiftinterface</key>
+		<data>
+		+/wgqNeb96bn+3K5SBRBEwscanE=
 		</data>
 		<key>Modules/XsollaSDKUtilities.swiftmodule/arm64-apple-ios.swiftmodule</key>
 		<data>
-		Oxnnuj1ElZ4w0JQNg5sXJyPMqgw=
+		C+/OWcPStSAyry+ED9hffUCwx1A=
 		</data>
 		<key>Modules/XsollaSDKUtilities.swiftmodule/arm64.swiftdoc</key>
 		<data>
-		W+f9Fm2oXGhhmnh59kDu1lzTyRU=
+		O2wAZjEwZ9EqvqN6D/3H0QZVglQ=
+		</data>
+		<key>Modules/XsollaSDKUtilities.swiftmodule/arm64.swiftinterface</key>
+		<data>
+		+/wgqNeb96bn+3K5SBRBEwscanE=
 		</data>
 		<key>Modules/XsollaSDKUtilities.swiftmodule/arm64.swiftmodule</key>
 		<data>
-		Oxnnuj1ElZ4w0JQNg5sXJyPMqgw=
+		C+/OWcPStSAyry+ED9hffUCwx1A=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
 		ZFDM6fyOMJGsm21GkZ9RPLNwuHQ=
-		</data>
-		<key>mime-types.txt</key>
-		<data>
-		Br/YAfNYMuQpZtme1lgIM/aRsn4=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -77,49 +77,63 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			czwTqhM7CiD+k+0hhXtVeyyrsgJeL/6ZMq8eVxmJH/E=
+			GlAjg5WPErdYrslKAWCuUxxFMw/VLf7Jrgg26qR2oEA=
 			</data>
 		</dict>
 		<key>Modules/XsollaSDKUtilities.swiftmodule/Project/arm64-apple-ios.swiftsourceinfo</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			N5lIEbpMVzoGITjuWCGe3PPqRcWJWMpBKeBgq582zuI=
+			ohle98nSUixNdEaPe6/7qMF0tKW5FRBF32D/B6oK8Zc=
 			</data>
 		</dict>
 		<key>Modules/XsollaSDKUtilities.swiftmodule/Project/arm64.swiftsourceinfo</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			N5lIEbpMVzoGITjuWCGe3PPqRcWJWMpBKeBgq582zuI=
+			ohle98nSUixNdEaPe6/7qMF0tKW5FRBF32D/B6oK8Zc=
 			</data>
 		</dict>
 		<key>Modules/XsollaSDKUtilities.swiftmodule/arm64-apple-ios.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			OQ73KSyUPLuI4CmuPN6KPri6Ieaz6+l8s7hU2TeJw/I=
+			THTb+WXXUNNwEGTK3WtIPDeW0GreIzfarvsKukCoVpo=
+			</data>
+		</dict>
+		<key>Modules/XsollaSDKUtilities.swiftmodule/arm64-apple-ios.swiftinterface</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			Gjpn70n6jZHevR8EQ8RhorHRIMBtDgh852V2fk1cZuU=
 			</data>
 		</dict>
 		<key>Modules/XsollaSDKUtilities.swiftmodule/arm64-apple-ios.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			g0JYHd53U4DNGQfDb+ZYRGcGYevyyXtKyu2PkIoyiM8=
+			2bVQI/dBlcuSpaR6CzCCG8x4n3O5keUyFUZfELTQM2g=
 			</data>
 		</dict>
 		<key>Modules/XsollaSDKUtilities.swiftmodule/arm64.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			OQ73KSyUPLuI4CmuPN6KPri6Ieaz6+l8s7hU2TeJw/I=
+			THTb+WXXUNNwEGTK3WtIPDeW0GreIzfarvsKukCoVpo=
+			</data>
+		</dict>
+		<key>Modules/XsollaSDKUtilities.swiftmodule/arm64.swiftinterface</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			Gjpn70n6jZHevR8EQ8RhorHRIMBtDgh852V2fk1cZuU=
 			</data>
 		</dict>
 		<key>Modules/XsollaSDKUtilities.swiftmodule/arm64.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			g0JYHd53U4DNGQfDb+ZYRGcGYevyyXtKyu2PkIoyiM8=
+			2bVQI/dBlcuSpaR6CzCCG8x4n3O5keUyFUZfELTQM2g=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
@@ -127,13 +141,6 @@
 			<key>hash2</key>
 			<data>
 			kl3WiEi8Lldo4awSpJ6jj+P1yHu61Dhv+O/u8O6AeRg=
-			</data>
-		</dict>
-		<key>mime-types.txt</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			tczyu8MmjRiVknqFY6lzYzkePTl8KOhcJ5mJeUzu17w=
 			</data>
 		</dict>
 	</dict>
