@@ -19,7 +19,7 @@ export class XsollaInventory {
             .setPathParam('projectID', Xsolla.settings.projectId)
             .addNumberParam('limit', limit)
             .addNumberParam('offset', offset)
-            .addStringParam('platform', platform ? platform.toString() : null)
+            .addStringParam('platform', platform ? PublishingPlatform[platform] : null)
             .build();
 
         let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, authToken, result => {
@@ -38,7 +38,7 @@ export class XsollaInventory {
     static getVirtualCurrencyBalance(authToken:string, platform?:PublishingPlatform, onComplete?:(currencyData:VirtualCurrencyBalanceData) => void, onError?:(error:CommerceError) => void): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/user/virtual_currency_balance')
             .setPathParam('projectID', Xsolla.settings.projectId)
-            .addStringParam('platform', platform ? platform.toString() : null)
+            .addStringParam('platform', platform ? PublishingPlatform[platform] : null)
             .build();
 
         let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, authToken, result => {
@@ -63,7 +63,7 @@ export class XsollaInventory {
 
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/user/inventory/item/consume')
             .setPathParam('projectID', Xsolla.settings.projectId)
-            .addStringParam('platform', platform ? platform.toString() : null)
+            .addStringParam('platform', platform ? PublishingPlatform[platform] : null)
             .build();
 
         let request = HttpUtil.createRequest(url, 'POST', RequestContentType.Json, authToken, result => {
@@ -81,7 +81,7 @@ export class XsollaInventory {
     static getSubscriptions(authToken:string, platform?:PublishingPlatform, onComplete?:(subscriptionData:SubscriptionData) => void, onError?:(error:CommerceError) => void): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/user/subscriptions')
             .setPathParam('projectID', Xsolla.settings.projectId)
-            .addStringParam('platform', platform ? platform.toString() : null)
+            .addStringParam('platform', platform ? PublishingPlatform[platform] : null)
             .build();
 
         let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, authToken, result => {
