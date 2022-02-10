@@ -257,6 +257,122 @@ export class XsollaUserAccount {
         let request = HttpUtil.createRequest(url, 'DELETE', RequestContentType.None, token, onComplete, handleLoginError(onError));
         request.send();
     }
+
+    /**
+     * @en
+     * Gets friends.
+     * @zh
+     * 
+     */
+     static getFriends(token:string, type:FriendsType, sortBy:UsersSortCriteria, sortOrder:UsersSortOrder,
+        onComplete?:(data: FriendsData) => void, onError?:(error:LoginError) => void, after:string = '', limit: number = 20) {   
+        let url = new UrlBuilder('https://login.xsolla.com/api/users/me/relationships')
+            .addStringParam('type', FriendsType[type])
+            .addStringParam('sort_by', UsersSortCriteria[sortBy])
+            .addStringParam('sort_order', UsersSortOrder[sortOrder])
+            .addStringParam('after', after)
+            .addNumberParam('limit', limit)
+            .build();
+        
+        let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, token, result => {
+            let friendsData: FriendsData = JSON.parse(result);
+            onComplete?.(friendsData);
+        }, handleLoginError(onError));
+        request.send();
+    }
+
+    /**
+     * @en
+     * Updates relationships with the specified user.
+     * @zh
+     * 
+     */
+     static updateFriends(token:string, action:FriendAction, userID:string, onComplete?:() => void, onError?:(error:LoginError) => void) {
+        let body = {
+            user: userID,
+            action: FriendAction[action],
+        };
+
+        let url = new UrlBuilder('https://login.xsolla.com/api/users/me/relationships').build();
+        let request = HttpUtil.createRequest(url, 'POST', RequestContentType.Json, token, onComplete, handleLoginError(onError));
+        request.send(JSON.stringify(body));
+    }
+
+    /**
+     * @en
+     * Gets social friends.
+     * @zh
+     * 
+     */
+     static getSocialFriends(token:string, platform:string, onComplete?:(data:SocialFriendsData) => void, onError?:(error:LoginError) => void,
+        offset:number = 0, limit: number = 500, fromThisGame: boolean = false) {
+        let url = new UrlBuilder('https://login.xsolla.com/api/users/me/social_friends')
+            .addNumberParam('limit', limit)
+            .addNumberParam('offset', offset)
+            .addBoolParam('with_xl_uid', fromThisGame, false)
+            .addStringParam('platform', platform)
+            .build();
+
+        let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, token, result => {
+            let socialFriendsData: SocialFriendsData = JSON.parse(result);
+            onComplete?.(socialFriendsData);
+        }, handleLoginError(onError));
+        request.send();
+    }
+
+    /**
+     * @en
+     * Updates social friends on the server.
+     * @zh
+     * 
+     */
+     static updateSocialFriends(token:string, platform:string, onComplete?:() => void, onError?:(error:LoginError) => void) {
+        let url = new UrlBuilder('https://login.xsolla.com/api/users/me/social_friends/update')
+            .addStringParam('platform', platform)
+            .build();
+
+        let request = HttpUtil.createRequest(url, 'POST', RequestContentType.None, token, onComplete, handleLoginError(onError));
+        request.send();
+    }
+
+    /**
+     * @en
+     * Searches for users with the specified nickname.
+     * @zh
+     * 
+     */
+     static searchFriendByNickname(token:string, nickname:string, onComplete?:(resultData: UserSearchResult) => void, onError?:(error:LoginError) => void,
+        offset:number = 0, limit:number = 100) {
+        let url = new UrlBuilder('https://login.xsolla.com/api/users/search/by_nickname')
+            .addStringParam('nickname', nickname)
+            .addNumberParam('limit', limit)
+            .addNumberParam('offset', offset)
+            .build();
+
+        let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, token, result => {
+            let resultData: UserSearchResult = JSON.parse(result);
+            onComplete?.(resultData);
+        }, handleLoginError(onError));
+        request.send();
+    }
+
+    /**
+     * @en
+     * Gets specified friend public profile information.
+     * @zh
+     * 
+     */
+     static getFriendProfile(token:string, userID:string, onComplete?:(receivedUserProfile: PublicProfile) => void, onError?:(error:LoginError) => void) {
+        let url = new UrlBuilder('https://login.xsolla.com/api/users/{userID}/public')
+            .setPathParam('userID', userID)
+            .build();
+
+        let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, token, result => {
+            let receivedProfile: PublicProfile = JSON.parse(result);
+            onComplete?.(receivedProfile);
+        }, handleLoginError(onError));
+        request.send();
+    }
 }
 
 export interface UserBan {
@@ -325,4 +441,78 @@ export interface UserDevice {
     id: number,
     last_used_at: string,
     type: string
+}
+
+export enum FriendsType {
+    friends,
+    friend_requested,
+    friend_requested_by,
+    blocked,
+    blocked_by
+}
+
+export enum UsersSortCriteria {
+    by_nickname,
+    by_update
+}
+
+export enum UsersSortOrder {
+    asc,
+    desc
+}
+
+export enum FriendAction {
+    friend_request_add,
+    friend_request_cancel,
+    friend_request_approve,
+    friend_request_deny,
+    friend_remove,
+    block,
+    unblock
+}
+
+export interface FriendDetails {
+    status_incoming: string,
+    status_outgoing: string,
+    updated: number,
+    user: UserDetails
+}
+
+export interface FriendsData {
+    next_after: string,
+    next_url: string,
+    relationships: Array<FriendDetails>
+}
+
+export interface SocialFriend {
+    avatar: string,
+    name: string,
+    platform: string,
+    tag: string,
+    user_id: string,
+    xl_uid: string
+}
+
+export interface SocialFriendsData {
+    data: Array<SocialFriend>,
+    limit: number,
+    offset: number,
+    platform: string,
+    total_count: number
+}
+
+export interface PublicProfile {
+    avatar: string,
+    is_me: boolean,
+    last_login: string,
+    nickname: string,
+    tag: string,
+    registered: string,
+    user_id: string
+}
+
+export interface UserSearchResult {
+    offset: number,
+    total_count: number,
+    users: Array<PublicProfile>
 }
