@@ -8,6 +8,7 @@ import { UIManager } from "../UI/UIManager";
 import { OrderTracker, XsollaOrderStatus } from "./OrderTracker";
 import { TokenStorage } from "./TokenStorage";
 import { OrderCheckObject } from "./OrderCheckObject";
+import { XsollaOrderCheckout } from "db://xsolla-commerce-sdk/scripts/api/XsollaOrderCheckout";
 
 export class PurchaseUtil {
 
@@ -34,7 +35,7 @@ export class PurchaseUtil {
         }
 
         UIManager.instance.showLoaderPopup(true);
-        XsollaCatalog.fetchPaymentToken(TokenStorage.getToken().access_token, item.sku, 1, undefined, undefined, undefined, undefined, result => {
+        XsollaOrderCheckout.fetchPaymentToken(TokenStorage.getToken().access_token, item.sku, 1, undefined, undefined, undefined, undefined, result => {
             UIManager.instance.showLoaderPopup(false);
             if(sys.isMobile) {
                 let url: UrlBuilder;

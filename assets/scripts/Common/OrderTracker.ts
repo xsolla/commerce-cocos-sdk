@@ -1,15 +1,15 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
-import { XsollaCatalog } from "db://xsolla-commerce-sdk/scripts/api/XsollaCatalog";
 import { UrlBuilder } from "db://xsolla-commerce-sdk/scripts/core/UrlBuilder";
 import { Xsolla } from "db://xsolla-commerce-sdk/scripts/Xsolla";
 import { UIManager } from "../UI/UIManager";
 import { TokenStorage } from "./TokenStorage";
 import { OrderCheckObject } from "./OrderCheckObject";
+import { XsollaOrderCheckout } from "db://xsolla-commerce-sdk/scripts/api/XsollaOrderCheckout";
 
 export class OrderTracker {
     static shortPollingCheckOrder(orderId: number, onSuccessPurchase:() => void) {
-        XsollaCatalog.checkOrder(TokenStorage.getToken().access_token, orderId, result => {
+        XsollaOrderCheckout.checkOrder(TokenStorage.getToken().access_token, orderId, result => {
             console.log('shortPollingCheckOrder ' + result.status);
             if(result.status == 'done') {
                 UIManager.instance.showMessagePopup('success purchase!');
