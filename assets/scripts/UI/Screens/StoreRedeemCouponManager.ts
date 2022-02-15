@@ -1,7 +1,7 @@
 // Copyright 2022 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component, Node, Button, EditBox, instantiate, Prefab, Label } from 'cc';
-import { RedeemedCouponItem as XsollaRedeemedCouponItem, XsollaStore } from 'db://xsolla-commerce-sdk/scripts/api/XsollaStore';
+import { RedeemedCouponItem as XsollaRedeemedCouponItem, XsollaCatalog } from 'db://xsolla-commerce-sdk/scripts/api/XsollaCatalog';
 import { TokenStorage } from '../../Common/TokenStorage';
 import { RedeemedCouponItem } from '../Misc/RedeemedCouponItem';
 import { UIManager } from '../UIManager';
@@ -72,7 +72,7 @@ export class StoreRedeemCouponManager extends Component {
         this.itemsList.destroyAllChildren();
         this.receivedItemsDescription.node.active = false;
         UIManager.instance.showLoaderPopup(true);
-        XsollaStore.redeemCoupon(TokenStorage.token.access_token, this.couponEditBox.string, (items: Array<XsollaRedeemedCouponItem>) => {
+        XsollaCatalog.redeemCoupon(TokenStorage.token.access_token, this.couponEditBox.string, (items: Array<XsollaRedeemedCouponItem>) => {
             UIManager.instance.showLoaderPopup(false);
             this.populateItemsList(items);
             this.couponEditBox.string = '';

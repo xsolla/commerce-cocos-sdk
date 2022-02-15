@@ -1,7 +1,7 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component, Node, Label, Sprite, instantiate, Button } from 'cc';
-import { StoreBundleContent, StoreItem, VirtualCurrencyPackage } from 'db://xsolla-commerce-sdk/scripts/api/XsollaStore';
+import { StoreBundleContent, StoreItem, VirtualCurrencyPackage } from 'db://xsolla-commerce-sdk/scripts/api/XsollaCatalog';
 import { CurrencyFormatter } from '../../Common/CurrencyFormatter';
 import { PurchaseUtil } from '../../Common/PurchaseUtil';
 import { BundleContentItem } from '../Misc/BundleContentItem';

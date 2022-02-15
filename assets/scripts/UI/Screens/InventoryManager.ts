@@ -2,7 +2,7 @@
 
 import { _decorator, Component, Node, ScrollView, Prefab, instantiate, Button } from 'cc';
 import { InventoryItem as XsollaInventoryItem, SubscriptionItem, XsollaInventory} from 'db://xsolla-commerce-sdk/scripts/api/XsollaInventory';
-import { StoreItem, XsollaStore } from 'db://xsolla-commerce-sdk/scripts/api/XsollaStore';
+import { StoreItem, XsollaCatalog } from 'db://xsolla-commerce-sdk/scripts/api/XsollaCatalog';
 import { TokenStorage } from '../../Common/TokenStorage';
 import { GroupsItem } from '../Misc/GroupsItem';
 import { InventoryItem } from '../Misc/InventoryItem';
@@ -77,7 +77,7 @@ export class InventoryManager extends Component {
             this.inventoryItems = inventoryData.items.filter(x => x.type != 'virtual_currency');
             XsollaInventory.getSubscriptions(TokenStorage.getToken().access_token, null, subscriptionData => {
                 this.subscriptionItems = subscriptionData.items;
-                XsollaStore.getVirtualItems('', '', [], storeItemsData => {
+                XsollaCatalog.getVirtualItems('', '', [], storeItemsData => {
                     this.storeItems = storeItemsData.items;
                     if(this.inventoryItems.length > 0) {
                         this.populateGroupsList();

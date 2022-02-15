@@ -6,7 +6,7 @@ import { UrlBuilder } from "../core/UrlBuilder";
 import { Xsolla } from "../Xsolla";
 import { BonusItem } from "./XsollaCart";
 
-export class XsollaStore {
+export class XsollaCatalog {
 
     /**
      * @en

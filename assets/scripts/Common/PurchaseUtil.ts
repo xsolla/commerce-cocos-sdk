@@ -1,7 +1,7 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
 import { sys } from "cc";
-import { StoreItem, VirtualCurrencyPackage, XsollaStore } from "db://xsolla-commerce-sdk/scripts/api/XsollaStore";
+import { StoreItem, VirtualCurrencyPackage, XsollaCatalog } from "db://xsolla-commerce-sdk/scripts/api/XsollaCatalog";
 import { UrlBuilder } from "db://xsolla-commerce-sdk/scripts/core/UrlBuilder";
 import { Xsolla } from "db://xsolla-commerce-sdk/scripts/Xsolla";
 import { UIManager } from "../UI/UIManager";
@@ -20,7 +20,7 @@ export class PurchaseUtil {
         if(isVirtual) {
             UIManager.instance.showConfirmationPopup('Are you sure you want to purchase this item?', 'CONFIRM', () => {
                 UIManager.instance.showLoaderPopup(true);
-                XsollaStore.buyItemWithVirtualCurrency(TokenStorage.getToken().access_token, item.sku, item.virtual_prices[0].sku, orderId => {
+                XsollaCatalog.buyItemWithVirtualCurrency(TokenStorage.getToken().access_token, item.sku, item.virtual_prices[0].sku, orderId => {
                     UIManager.instance.showLoaderPopup(false);
                     UIManager.instance.showMessagePopup('Your order has been successfully processed!');
                     onSuccessPurchase?.();
@@ -34,7 +34,7 @@ export class PurchaseUtil {
         }
 
         UIManager.instance.showLoaderPopup(true);
-        XsollaStore.fetchPaymentToken(TokenStorage.getToken().access_token, item.sku, 1, undefined, undefined, undefined, undefined, result => {
+        XsollaCatalog.fetchPaymentToken(TokenStorage.getToken().access_token, item.sku, 1, undefined, undefined, undefined, undefined, result => {
             UIManager.instance.showLoaderPopup(false);
             if(sys.isMobile) {
                 let url: UrlBuilder;

@@ -1,7 +1,7 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component, Sprite, Label} from 'cc';
-import { StoreBundleContent } from 'db://xsolla-commerce-sdk/scripts/api/XsollaStore';
+import { StoreBundleContent } from 'db://xsolla-commerce-sdk/scripts/api/XsollaCatalog';
 import { ImageUtils } from '../Utils/ImageUtils';
 const { ccclass, property } = _decorator;
  

@@ -1,7 +1,7 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component, Node, Label, Event, Button } from 'cc';
-import { UserAttribute } from 'db://xsolla-commerce-sdk/scripts/api/XsollaAttributes';
+import { UserAttribute } from 'db://xsolla-commerce-sdk/scripts/api/XsollaUserAccount';
 import { CharacterManager } from '../Screens/CharacterManager';
 const { ccclass, property } = _decorator;
  

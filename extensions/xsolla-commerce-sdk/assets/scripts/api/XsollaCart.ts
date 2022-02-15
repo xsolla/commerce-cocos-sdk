@@ -4,7 +4,7 @@ import { handleCommerceError, CommerceError } from "../core/Error";
 import { HttpUtil, RequestContentType } from "../core/HttpUtil";
 import { UrlBuilder } from "../core/UrlBuilder";
 import { Xsolla } from "../Xsolla";
-import { Price, ItemAttribute, ItemGroup } from "./XsollaStore";
+import { Price, ItemAttribute, ItemGroup } from "./XsollaCatalog";
 
 export class XsollaCart {
 
