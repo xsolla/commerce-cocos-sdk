@@ -1,7 +1,7 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component, Node, Button, Prefab, ScrollView, instantiate, EditBox } from 'cc';
-import { UserAttribute, XsollaAttributes } from 'db://xsolla-commerce-sdk/scripts/api/XsollaAttributes';
+import { UserAttribute, XsollaUserAccount } from 'db://xsolla-commerce-sdk/scripts/api/XsollaUserAccount';
 import { TokenStorage } from '../../Common/TokenStorage';
 import { AttributeItem } from '../Misc/AttributeItem';
 import { UIManager, UIScreenType } from '../UIManager';
@@ -76,7 +76,7 @@ export class CharacterManager extends Component {
     openAllAttributesScreen(currentScreen:Node) {
         this.clearAttributesList();
         UIManager.instance.showLoaderPopup(true);
-        XsollaAttributes.getUserAttributes(TokenStorage.token.access_token, null, null, attributes => {
+        XsollaUserAccount.getUserAttributes(TokenStorage.token.access_token, null, null, attributes => {
             UIManager.instance.showLoaderPopup(false);
             this.populateAttributesList(attributes);
             this.attributesList.scrollToTop();
@@ -117,7 +117,7 @@ export class CharacterManager extends Component {
         };
 
         UIManager.instance.showLoaderPopup(true);
-        XsollaAttributes.updateUserAttributes(TokenStorage.token.access_token, [newAttrinbute], () => {
+        XsollaUserAccount.updateUserAttributes(TokenStorage.token.access_token, [newAttrinbute], () => {
             this.openAllAttributesScreen(this.addAttributeScreen);
             UIManager.instance.showLoaderPopup(false);
         }, err => {
@@ -129,7 +129,7 @@ export class CharacterManager extends Component {
 
     removeAttribute(key:string, attributeItem:Node) {
         UIManager.instance.showLoaderPopup(true);
-        XsollaAttributes.removeUserAttributes(TokenStorage.token.access_token, [key], () => {
+        XsollaUserAccount.removeUserAttributes(TokenStorage.token.access_token, [key], () => {
             this.attributesList.content.removeChild(attributeItem);
             UIManager.instance.showLoaderPopup(false);
         }, err => {
