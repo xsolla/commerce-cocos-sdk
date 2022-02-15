@@ -2,7 +2,7 @@
 
 import { _decorator, Component, Button, EditBox, sys, ScrollView, Prefab, SpriteFrame, instantiate, CCString } from 'cc';
 import { Xsolla } from 'db://xsolla-commerce-sdk/scripts/Xsolla';
-import { Token } from 'db://xsolla-commerce-sdk/scripts/api/XsollaLogin';
+import { Token } from 'db://xsolla-commerce-sdk/scripts/api/XsollaAuth';
 import { UIManager, UIScreenType } from '../UIManager';
 import { SocialNetworkItem } from '../Misc/SocialNetworkItem';
 import { TokenStorage } from '../../Common/TokenStorage';

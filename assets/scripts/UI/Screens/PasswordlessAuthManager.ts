@@ -1,7 +1,7 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component, Node, Button, EditBox } from 'cc';
-import { XsollaLogin } from 'db://xsolla-commerce-sdk/scripts/api/XsollaLogin';
+import { XsollaAuth } from 'db://xsolla-commerce-sdk/scripts/api/XsollaAuth';
 import { TokenStorage } from '../../Common/TokenStorage';
 import { UIManager, UIScreenType } from '../UIManager';
 const { ccclass, property } = _decorator;
@@ -91,7 +91,7 @@ export class PasswordlessAuthManager extends Component {
     sendCodeClicked() {
         if(this._authOption == AuthOption.Phone) {
             UIManager.instance.showLoaderPopup(true);
-            XsollaLogin.startAuthByPhoneNumber(this.credentialsEditBox.string, 'xsollatest', 'xsollatest', operationId => {
+            XsollaAuth.startAuthByPhoneNumber(this.credentialsEditBox.string, 'xsollatest', 'xsollatest', operationId => {
                 UIManager.instance.showLoaderPopup(false);
                 this._operationId = operationId;
                 this.showConfirmationPopup(this.credentialsScreen);
@@ -104,7 +104,7 @@ export class PasswordlessAuthManager extends Component {
         }
         if(this._authOption == AuthOption.Email) {
             UIManager.instance.showLoaderPopup(true);
-            XsollaLogin.startAuthByEmail(this.credentialsEditBox.string, 'xsollatest', 'xsollatest', operationId => {
+            XsollaAuth.startAuthByEmail(this.credentialsEditBox.string, 'xsollatest', 'xsollatest', operationId => {
                 UIManager.instance.showLoaderPopup(false);
                 this._operationId = operationId;
                 this.showConfirmationPopup(this.credentialsScreen);
@@ -120,7 +120,7 @@ export class PasswordlessAuthManager extends Component {
     confirmCodeClicked() {
         if(this._authOption == AuthOption.Phone) {
             UIManager.instance.showLoaderPopup(true);
-            XsollaLogin.completeAuthByPhoneNumber(this.confirmationCodeEditBox.string, this._operationId, this.credentialsEditBox.string, token => {
+            XsollaAuth.completeAuthByPhoneNumber(this.confirmationCodeEditBox.string, this._operationId, this.credentialsEditBox.string, token => {
                 UIManager.instance.showLoaderPopup(false);
                 console.log(token);
                 TokenStorage.saveToken(token, true);
@@ -134,7 +134,7 @@ export class PasswordlessAuthManager extends Component {
         }
         if(this._authOption == AuthOption.Email) {
             UIManager.instance.showLoaderPopup(true);
-            XsollaLogin.completeAuthByEmail(this.confirmationCodeEditBox.string, this._operationId, this.credentialsEditBox.string, token => {
+            XsollaAuth.completeAuthByEmail(this.confirmationCodeEditBox.string, this._operationId, this.credentialsEditBox.string, token => {
                 UIManager.instance.showLoaderPopup(false);
                 console.log(token);
                 TokenStorage.saveToken(token, true);

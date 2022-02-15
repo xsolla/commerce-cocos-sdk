@@ -1,7 +1,7 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component, Button, EditBox, Toggle } from 'cc';
-import { XsollaLogin } from 'db://xsolla-commerce-sdk/scripts/api/XsollaLogin';
+import { XsollaAuth } from 'db://xsolla-commerce-sdk/scripts/api/XsollaAuth';
 import { TokenStorage } from '../../Common/TokenStorage';
 import { UIManager, UIScreenType } from '../UIManager';
 const { ccclass, property } = _decorator;
@@ -58,7 +58,7 @@ export class BasicAuthManager extends Component {
 
     onLoginClicked() {
         UIManager.instance.showLoaderPopup(true);
-        XsollaLogin.authByUsernameAndPassword(this.usernameEditBox.string, this.passwordEditBox.string, this.remeberMeToggle.isChecked, 'xsollatest', token => {
+        XsollaAuth.authByUsernameAndPassword(this.usernameEditBox.string, this.passwordEditBox.string, this.remeberMeToggle.isChecked, 'xsollatest', token => {
             UIManager.instance.showLoaderPopup(false);
             console.log(token);
             TokenStorage.saveToken(token, this.remeberMeToggle.isChecked);

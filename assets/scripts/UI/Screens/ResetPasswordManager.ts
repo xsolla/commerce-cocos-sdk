@@ -1,7 +1,7 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component, Button, EditBox, Node, Toggle, sys, Label } from 'cc';
-import { XsollaLogin } from 'db://xsolla-commerce-sdk/scripts/api/XsollaLogin';
+import { XsollaAuth } from 'db://xsolla-commerce-sdk/scripts/api/XsollaAuth';
 import { UIManager, UIScreenType } from '../UIManager';
 const { ccclass, property } = _decorator;
  
@@ -51,7 +51,7 @@ export class ResetPasswordManager extends Component {
 
     onResetClicked() {
         UIManager.instance.showLoaderPopup(true);
-        XsollaLogin.resetPassword(this.emailEditBox.string, () => {
+        XsollaAuth.resetPassword(this.emailEditBox.string, () => {
             UIManager.instance.showLoaderPopup(false);
             this.resetScreen.active = false;
             this.successScreen.active = true;      

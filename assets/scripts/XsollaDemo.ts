@@ -1,7 +1,7 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component } from 'cc';
-import { XsollaLogin } from 'db://xsolla-commerce-sdk/scripts/api/XsollaLogin';
+import { XsollaAuth } from 'db://xsolla-commerce-sdk/scripts/api/XsollaAuth';
 import { Xsolla, AuthenticationType } from 'db://xsolla-commerce-sdk/scripts/Xsolla';
 import { UIManager, UIScreenType } from './UI/UIManager';
 import { CurrencyFormatter } from './Common/CurrencyFormatter';
@@ -28,7 +28,7 @@ export class XsollaDemo extends Component {
         }
         if(Xsolla.settings.authType == AuthenticationType.Oauth2) {
             UIManager.instance.showLoaderPopup(true);
-            XsollaLogin.refreshToken(cachedToken.refresh_token, token => {
+            XsollaAuth.refreshToken(cachedToken.refresh_token, token => {
                 UIManager.instance.showLoaderPopup(false);
                 TokenStorage.saveToken(token, true);
                 UIManager.instance.openScreen(UIScreenType.MainMenu);

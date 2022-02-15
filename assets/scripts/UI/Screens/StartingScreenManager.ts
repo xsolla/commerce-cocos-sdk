@@ -1,7 +1,7 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component, Node, Button, sys } from 'cc';
-import { XsollaLogin } from 'db://xsolla-commerce-sdk/scripts/api/XsollaLogin';
+import { XsollaAuth } from 'db://xsolla-commerce-sdk/scripts/api/XsollaAuth';
 import { TokenStorage } from '../../Common/TokenStorage';
 import { UIManager, UIScreenType } from '../UIManager';
 const { ccclass, property } = _decorator;
@@ -65,7 +65,7 @@ export class StartingScreenManager extends Component {
         }
 
         UIManager.instance.showLoaderPopup(true);
-        XsollaLogin.authByDeviceId(deviceName, deviceId, 'xsollatest', 'xsollatest', token => {
+        XsollaAuth.authByDeviceId(deviceName, deviceId, 'xsollatest', 'xsollatest', token => {
             UIManager.instance.showLoaderPopup(false);
             console.log(token);
             TokenStorage.saveToken(token, true);

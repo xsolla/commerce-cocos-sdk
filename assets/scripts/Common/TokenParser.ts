@@ -1,6 +1,6 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
-import { Token } from 'db://xsolla-commerce-sdk/scripts/api/XsollaLogin';
+import { Token } from 'db://xsolla-commerce-sdk/scripts/api/XsollaAuth';
  
 export class TokenUtils {
     static getTokenParameter(token: Token, parameterName: string): any {

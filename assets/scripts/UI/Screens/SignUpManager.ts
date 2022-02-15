@@ -1,7 +1,7 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component, Button, EditBox, Node, Toggle, sys, Label } from 'cc';
-import { XsollaLogin } from 'db://xsolla-commerce-sdk/scripts/api/XsollaLogin';
+import { XsollaAuth } from 'db://xsolla-commerce-sdk/scripts/api/XsollaAuth';
 import { TokenStorage } from '../../Common/TokenStorage';
 import { UIManager, UIScreenType } from '../UIManager';
 const { ccclass, property } = _decorator;
@@ -74,7 +74,7 @@ export class SignUpManager extends Component {
 
     onSignUpClicked() {
         UIManager.instance.showLoaderPopup(true);
-        XsollaLogin.registerNewUser(this.usernameEditBox.string, this.passwordEditBox.string, this.emailEditBox.string, 'xsollatest', 'xsollatest', null, token => {
+        XsollaAuth.registerNewUser(this.usernameEditBox.string, this.passwordEditBox.string, this.emailEditBox.string, 'xsollatest', 'xsollatest', null, token => {
             UIManager.instance.showLoaderPopup(false);
             if(token != null) {
                 console.log(token);                
@@ -99,7 +99,7 @@ export class SignUpManager extends Component {
 
     onResendEmailClicked() {
         UIManager.instance.showLoaderPopup(true);
-        XsollaLogin.resendAccountConfirmationEmail(this.usernameEditBox.string, 'xsollatest', 'xsollatest', () => {
+        XsollaAuth.resendAccountConfirmationEmail(this.usernameEditBox.string, 'xsollatest', 'xsollatest', () => {
             UIManager.instance.showLoaderPopup(false);
             console.log('Email resent successfully.')
         }, err => {

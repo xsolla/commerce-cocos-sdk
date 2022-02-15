@@ -6,7 +6,7 @@ import { HttpUtil, RequestContentType } from "../core/HttpUtil";
 import { UrlBuilder } from "../core/UrlBuilder";
 import { Xsolla, AuthenticationType } from "../Xsolla";
 
-export class XsollaLogin {
+export class XsollaAuth {
 
     /**
      * @en

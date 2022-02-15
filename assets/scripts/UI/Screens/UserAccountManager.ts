@@ -2,7 +2,7 @@
 
 import { _decorator, Component, Node, Button, Texture2D, instantiate, Prefab, sys, Sprite, SpriteFrame, UITransform } from 'cc';
 import { UserDetails, UserDetailsUpdate, XsollaUserAccount } from 'db://xsolla-commerce-sdk/scripts/api/XsollaUserAccount';
-import { AuthenticationType, Xsolla } from '../../../../extensions/xsolla-commerce-sdk/assets/scripts/Xsolla';
+import { AuthenticationType, Xsolla } from 'db://xsolla-commerce-sdk/scripts/Xsolla';
 import { TokenStorage } from '../../Common/TokenStorage';
 import { UserAccountItem } from '../Misc/UserAccountItem';
 import { UserAvatarItem } from '../Misc/UserAvatarItem';
