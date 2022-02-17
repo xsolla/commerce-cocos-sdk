@@ -23,6 +23,35 @@
 	return [UIDevice currentDevice].name;
 }
 
++(void) modifyUserProfilePicture:(NSString*)picture authToken:(NSString*)token {
+	NSBundle *main = [NSBundle mainBundle];
+	NSString *resourcePath = [main pathForResource:picture ofType:nil];
+	NSURL *resUrl = [NSURL URLWithString:[NSString stringWithFormat: @"file:/%@", resourcePath]];
+
+	[[LoginKitUnity shared] uploadUserPictureWithAccessToken:token imageURL:resUrl completion:^(NSString * _Nullable url, NSError * _Nullable error) {
+		if(error != nil) {
+			NSLog(@"Error code: %ld", error.code);
+
+			NSString* errorString = error.localizedDescription;
+			NSString *errorScript = [NSString stringWithFormat: @"cc.find(\"Canvas/pref_UserAccountScreen\").getComponent(\"UserAccountManager\").handleErrorAvatarUpdate(\"%@\")", errorString];
+			const char* errorScriptStr = [XsollaUtils createCStringFrom:errorScript];
+			cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
+				se::ScriptEngine::getInstance()->evalString(errorScriptStr);
+			});
+
+			return;
+		}
+
+		NSString *successScript = [NSString stringWithFormat: @"cc.find(\"Canvas/pref_UserAccountScreen\").getComponent(\"UserAccountManager\").handleSuccessfulAvatarUpdate()"];
+		const char* successScriptStr = [XsollaUtils createCStringFrom:successScript];
+		cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
+			se::ScriptEngine::getInstance()->evalString(successScriptStr);
+		});
+	}];
+	
+	NSLog(@"Picture name: %@", resourcePath);
+}
+
 +(void) authViaSocialNetwork:(NSString*)platform client:(NSNumber*)clientId state:(NSString*)stateStr redirect:(NSString*)redirectUriStr {
 	OAuth2Params *oauthParams = [[OAuth2Params alloc] initWithClientId:[clientId integerValue]
 																 state:stateStr

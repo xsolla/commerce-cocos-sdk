@@ -206,6 +206,10 @@ export class UserAccountManager extends Component {
             jsb.reflection.callStaticMethod("com/cocos/game/XsollaNativeUtils", "modifyUserProfilePicture", "(Ljava/lang/String;Ljava/lang/String;Z)V",
                 texture.image.nativeUrl, TokenStorage.token.access_token, Xsolla.settings.authType == AuthenticationType.Oauth2);
         }
+        if(sys.platform.toLowerCase() == 'ios') {
+            jsb.reflection.callStaticMethod("XsollaNativeUtils", "modifyUserProfilePicture:authToken:",
+                texture.image.nativeUrl, TokenStorage.token.access_token);
+        }
     }
 
     handleSuccessfulAvatarUpdate() {
