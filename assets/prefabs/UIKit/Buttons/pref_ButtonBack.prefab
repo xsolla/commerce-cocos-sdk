@@ -171,12 +171,15 @@
     "_verticalAlign": 1,
     "_actualFontSize": 16,
     "_fontSize": 16,
-    "_fontFamily": "Arial",
+    "_fontFamily": "",
     "_lineHeight": 28,
     "_overflow": 1,
     "_enableWrapText": false,
-    "_font": null,
-    "_isSystemFontUsed": true,
+    "_font": {
+      "__uuid__": "0a86da19-1b87-4b76-a2c9-75ed29755827",
+      "__expectedType__": "cc.TTFFont"
+    },
+    "_isSystemFontUsed": false,
     "_isItalic": false,
     "_isBold": false,
     "_isUnderline": false,

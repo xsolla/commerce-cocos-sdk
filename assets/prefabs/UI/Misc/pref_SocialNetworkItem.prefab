@@ -343,14 +343,17 @@
     "_string": "Social network name",
     "_horizontalAlign": 0,
     "_verticalAlign": 1,
-    "_actualFontSize": 20,
-    "_fontSize": 20,
-    "_fontFamily": "Arial",
+    "_actualFontSize": 16,
+    "_fontSize": 16,
+    "_fontFamily": "",
     "_lineHeight": 20,
     "_overflow": 1,
     "_enableWrapText": false,
-    "_font": null,
-    "_isSystemFontUsed": true,
+    "_font": {
+      "__uuid__": "0a86da19-1b87-4b76-a2c9-75ed29755827",
+      "__expectedType__": "cc.TTFFont"
+    },
+    "_isSystemFontUsed": false,
     "_isItalic": false,
     "_isBold": false,
     "_isUnderline": false,
@@ -601,20 +604,21 @@
     "socialNetworkButton": {
       "__id__": 22
     },
-    "NormalColor": {
+    "normalColor": {
       "__type__": "cc.Color",
       "r": 255,
       "g": 255,
       "b": 255,
-      "a": 200
+      "a": 255
     },
-    "HoverColor": {
+    "hoverColor": {
       "__type__": "cc.Color",
       "r": 255,
       "g": 0,
       "b": 91,
       "a": 255
     },
+    "data": null,
     "_id": ""
   },
   {

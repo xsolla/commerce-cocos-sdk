@@ -260,7 +260,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 41.25,
+      "width": 42.42,
       "height": 21.42
     },
     "_anchorPoint": {
@@ -301,12 +301,15 @@
     "_verticalAlign": 1,
     "_actualFontSize": 14,
     "_fontSize": 14,
-    "_fontFamily": "Arial",
+    "_fontFamily": "",
     "_lineHeight": 17,
     "_overflow": 0,
     "_enableWrapText": true,
-    "_font": null,
-    "_isSystemFontUsed": true,
+    "_font": {
+      "__uuid__": "0a86da19-1b87-4b76-a2c9-75ed29755827",
+      "__expectedType__": "cc.TTFFont"
+    },
+    "_isSystemFontUsed": false,
     "_isItalic": false,
     "_isBold": false,
     "_isUnderline": false,

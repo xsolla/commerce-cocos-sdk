@@ -97,8 +97,8 @@
     },
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": 0,
-      "y": 0,
+      "x": -130,
+      "y": 25,
       "z": 0
     },
     "_lrot": {
@@ -136,13 +136,13 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 840,
+      "width": 260,
       "height": 50
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
-      "x": 0.5,
-      "y": 0.5
+      "x": 0,
+      "y": 1
     },
     "_id": ""
   },
@@ -211,13 +211,16 @@
     "_horizontalAlign": 0,
     "_verticalAlign": 1,
     "_actualFontSize": 20,
-    "_fontSize": 20,
-    "_fontFamily": "Arial",
+    "_fontSize": 16,
+    "_fontFamily": "",
     "_lineHeight": 50,
     "_overflow": 1,
     "_enableWrapText": false,
-    "_font": null,
-    "_isSystemFontUsed": true,
+    "_font": {
+      "__uuid__": "0a86da19-1b87-4b76-a2c9-75ed29755827",
+      "__expectedType__": "cc.TTFFont"
+    },
+    "_isSystemFontUsed": false,
     "_isItalic": false,
     "_isBold": false,
     "_isUnderline": false,
@@ -264,8 +267,8 @@
     },
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": 0,
-      "y": 0,
+      "x": -120,
+      "y": 25,
       "z": 0
     },
     "_lrot": {
@@ -303,13 +306,13 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 840,
+      "width": 240,
       "height": 50
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
-      "x": 0.5,
-      "y": 0.5
+      "x": 0,
+      "y": 1
     },
     "_id": ""
   },
@@ -377,14 +380,17 @@
     "_string": "Enter text here...",
     "_horizontalAlign": 0,
     "_verticalAlign": 1,
-    "_actualFontSize": 20,
-    "_fontSize": 20,
-    "_fontFamily": "Arial",
+    "_actualFontSize": 16,
+    "_fontSize": 16,
+    "_fontFamily": "",
     "_lineHeight": 50,
     "_overflow": 1,
     "_enableWrapText": false,
-    "_font": null,
-    "_isSystemFontUsed": true,
+    "_font": {
+      "__uuid__": "0a86da19-1b87-4b76-a2c9-75ed29755827",
+      "__expectedType__": "cc.TTFFont"
+    },
+    "_isSystemFontUsed": false,
     "_isItalic": false,
     "_isBold": false,
     "_isUnderline": false,
@@ -419,7 +425,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 860,
+      "width": 260,
       "height": 50
     },
     "_anchorPoint": {
