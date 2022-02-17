@@ -26,7 +26,7 @@
 +(void) modifyUserProfilePicture:(NSString*)picture authToken:(NSString*)token {
 	NSBundle *main = [NSBundle mainBundle];
 	NSString *resourcePath = [main pathForResource:picture ofType:nil];
-	NSURL *resUrl = [NSURL URLWithString:[NSString stringWithFormat: @"file:/%@", resourcePath]];
+	NSURL *resUrl = [NSURL URLWithString:[NSString stringWithFormat: @"file://%@", resourcePath]];
 
 	[[LoginKitUnity shared] uploadUserPictureWithAccessToken:token imageURL:resUrl completion:^(NSString * _Nullable url, NSError * _Nullable error) {
 		if(error != nil) {
