@@ -166,7 +166,7 @@ export class XsollaUserAccount {
             return;
         }
 
-        let boundaryStr = '---------------------------' + Date.now.toString();
+        let boundaryStr = '---------------------------' + Date.now().toString();
         let beginBoundary = Uint8Array.from('\r\n--' + boundaryStr + '\r\n', x => x.charCodeAt(0));
         let endBoundary = Uint8Array.from('\r\n--' + boundaryStr + '--\r\n', x => x.charCodeAt(0));
         let pictureHeaderStr = 'Content-Disposition: form-data;';
@@ -180,7 +180,7 @@ export class XsollaUserAccount {
         let offset = 0;
         uploadContent.set(beginBoundary, offset);
         offset += beginBoundary.length;
-        uploadContent.set(pictureHeader);
+        uploadContent.set(pictureHeader, offset);
         offset += pictureHeader.length;
         uploadContent.set(buffer, offset);
         offset += buffer.length;
