@@ -9,7 +9,7 @@ import { UserAvatarItem } from '../Misc/UserAvatarItem';
 import { UIManager, UIScreenType } from '../UIManager';
 import { ImageUtils } from '../Utils/ImageUtils';
 const { ccclass, property } = _decorator;
- 
+
 @ccclass('UserAccountManager')
 export class UserAccountManager extends Component {
 
@@ -53,28 +53,23 @@ export class UserAccountManager extends Component {
     avatarsList: Node;
 
     @property(Button)
-    removeAvatarButton: Button;
-
-    @property(Button)
-    avatarButton: Button;
+    openAvatarPickerButton: Button;
 
     @property(Button)
     closeAvatarPickerButton: Button;
+
+    @property(Button)
+    removeAvatarButton: Button;
 
     @property(Texture2D)
     defaultAvatars: Texture2D[] = [];
 
     start() {
-        this.avatarsList.destroyAllChildren();
-        for(let avatarTexture of this.defaultAvatars) {
-            let avatarItem = instantiate(this.avatarItemPrefab);
-            this.avatarsList.addChild(avatarItem);
-            avatarItem.getComponent(UserAvatarItem).init(avatarTexture, this);
-        }
+        this.initializeAvatarPicker();
     }
 
     onEnable() {
-        this.refreshUserAccountScreen();
+        this.refreshUserAccountData();
         this.setAvatarEditMode(false);
         this.addListeners();
     }
@@ -87,53 +82,108 @@ export class UserAccountManager extends Component {
         UIManager.instance.openScreen(UIScreenType.MainMenu);
     }
 
-    refreshUserAccountScreen() {
+    initializeAvatarPicker() {
+        for (let avatarTexture of this.defaultAvatars) {
+            let avatarItem = instantiate(this.avatarItemPrefab);
+            this.avatarsList.addChild(avatarItem);
+            avatarItem.getComponent(UserAvatarItem).init(avatarTexture);
+            avatarItem.on(UserAvatarItem.AVATAR_PICK, this.onAvatarEdited, this);
+        }
+    }
+
+    refreshUserAccountData() {
         UIManager.instance.showLoaderPopup(true);
         XsollaUserAccount.getUserDetails(TokenStorage.token.access_token, userDetails => {
             UIManager.instance.showLoaderPopup(false);
-            this.fillUserAccountItems(userDetails);
+            this.refreshUserAccountItems(userDetails);
+            this.refreshUserAvatar(userDetails);
         }, err => {
-            UIManager.instance.showLoaderPopup(false);
             console.log(err);
+            UIManager.instance.showLoaderPopup(false);
             UIManager.instance.showErrorPopup(err.description);
         });
         this.avatarsList.getComponentsInChildren(UserAvatarItem).forEach(item => item.showSelection(false));
     }
 
-    updateUserAccountData(userDetailsUpdate: UserDetailsUpdate) {
+    modifyUserAccountData(userDetailsUpdate: UserDetailsUpdate) {
         UIManager.instance.showLoaderPopup(true);
         XsollaUserAccount.updateUserDetails(TokenStorage.token.access_token, userDetailsUpdate, userDetails => {
             UIManager.instance.showLoaderPopup(false);
-            this.fillUserAccountItems(userDetails);
+            this.refreshUserAccountItems(userDetails);
+            this.refreshUserAvatar(userDetails);
         }, err => {
-            UIManager.instance.showLoaderPopup(false);
             console.log(err);
+            UIManager.instance.showLoaderPopup(false);
             UIManager.instance.showErrorPopup(err.description);
-            this.refreshUserAccountScreen();
+            this.refreshUserAccountData();
         });
     }
 
-    fillUserAccountItems(userDetails: UserDetails) {
+    modifyUserPhoneNumber(phoneNumberUpdate: string) {
+        UIManager.instance.showLoaderPopup(true);
+        XsollaUserAccount.updateUserPhoneNumber(TokenStorage.token.access_token, phoneNumberUpdate, () => {
+            UIManager.instance.showLoaderPopup(false);
+            this.phoneNumberItem.setValue(phoneNumberUpdate);
+        }, err => {
+            console.log(err);
+            UIManager.instance.showLoaderPopup(false);
+            UIManager.instance.showErrorPopup(err.description);
+            this.refreshUserAccountData();
+        });
+    }
+
+    modifyUserAvatarBrowser(avatarUpdate: Texture2D) {
+        UIManager.instance.showLoaderPopup(true);
+        ImageUtils.getBase64Image(avatarUpdate, base64image => {
+            let base64imageWithoutHeader: string = base64image.substring(base64image.indexOf(',') + 1);
+            let buffer = Uint8Array.from(atob(base64imageWithoutHeader), c => c.charCodeAt(0));
+            XsollaUserAccount.modifyUserProfilePicture(TokenStorage.getToken().access_token, buffer,
+                () => this.handleSuccessfulAvatarUpdate(), error => this.handleErrorAvatarUpdate(error.description));
+        }, error => this.handleErrorAvatarUpdate(error));
+    }
+
+    modifyUserAvatarAndroid(avatarUpdate: Texture2D) {
+        UIManager.instance.showLoaderPopup(true);
+        jsb.reflection.callStaticMethod("com/cocos/game/XsollaNativeUtils", "modifyUserProfilePicture", "(Ljava/lang/String;Ljava/lang/String;Z)V",
+            avatarUpdate.image.nativeUrl, TokenStorage.token.access_token, Xsolla.settings.authType == AuthenticationType.Oauth2);
+    }
+
+    modifyUserAvatarIos(avatarUpdate: Texture2D) {
+        UIManager.instance.showLoaderPopup(true);
+        jsb.reflection.callStaticMethod("XsollaNativeUtils", "modifyUserProfilePicture:authToken:",
+            avatarUpdate.image.nativeUrl, TokenStorage.token.access_token);
+    }
+
+    handleSuccessfulAvatarUpdate() {
+        UIManager.instance.showLoaderPopup(false);
+        this.refreshUserAccountData();
+    }
+
+    handleErrorAvatarUpdate(error: string) {
+        UIManager.instance.showLoaderPopup(false);
+        UIManager.instance.showErrorPopup(error);
+        this.setAvatarEditMode(false);
+    }
+
+    refreshUserAccountItems(userDetails: UserDetails) {
         this.emailItem.setValue(userDetails.email);
         this.usernameItem.setValue(userDetails.username);
         this.nicknameItem.setValue(userDetails.nickname);
         this.firstNameItem.setValue(userDetails.first_name);
         this.lastNameItem.setValue(userDetails.last_name);
         this.phoneNumberItem.setValue(userDetails.phone);
-        this.refreshUserAvatar(userDetails);
     }
 
     refreshUserAvatar(userDetails: UserDetails) {
         let isPictureExist = userDetails.picture != null && userDetails.picture.length > 0;
         this.removeAvatarButton.enabled = isPictureExist;
-        if(isPictureExist) {
+        if (isPictureExist) {
             ImageUtils.loadImage(userDetails.picture, spriteFrame => {
-                if(this.avatar != null) {
+                if (this.avatar != null) {
                     this.avatar.spriteFrame = spriteFrame;
                     this.bigAvatar.spriteFrame = spriteFrame;
                 }
             });
-    
         } else {
             const spriteFrame = new SpriteFrame();
             spriteFrame.texture = this.noAvatar;
@@ -148,38 +198,37 @@ export class UserAccountManager extends Component {
         let userDetailsUpdate: UserDetailsUpdate = {
             nickname: value
         }
-        this.updateUserAccountData(userDetailsUpdate);
+        this.modifyUserAccountData(userDetailsUpdate);
     }
 
     onFirstNameEdited(value: string) {
         let userDetailsUpdate: UserDetailsUpdate = {
             first_name: value
         }
-        this.updateUserAccountData(userDetailsUpdate);
+        this.modifyUserAccountData(userDetailsUpdate);
     }
 
     onLastNameEdited(value: string) {
         let userDetailsUpdate: UserDetailsUpdate = {
             last_name: value
         }
-        this.updateUserAccountData(userDetailsUpdate);
+        this.modifyUserAccountData(userDetailsUpdate);
     }
 
     onPhoneNumberEdited(value: string) {
-        UIManager.instance.showLoaderPopup(true);
-        XsollaUserAccount.updateUserPhoneNumber(TokenStorage.token.access_token, value, () => {
-            UIManager.instance.showLoaderPopup(false);
-            this.phoneNumberItem.setValue(value);
-        }, err => {
-            UIManager.instance.showLoaderPopup(false);
-            console.log(err);
-            UIManager.instance.showErrorPopup(err.description);
-            this.refreshUserAccountScreen();
-        });
+        this.modifyUserPhoneNumber(value);
     }
 
-    onAvatarEdited() {
-        this.setAvatarEditMode(true);
+    onAvatarEdited(texture: Texture2D) {        
+        if (sys.isBrowser) {
+            this.modifyUserAvatarBrowser(texture);
+        }
+        if (sys.platform.toLowerCase() == 'android') {
+            this.modifyUserAvatarAndroid(texture);
+        }
+        if (sys.platform.toLowerCase() == 'ios') {
+            this.modifyUserAvatarIos(texture);
+        }
     }
 
     onAvatarRemoved() {
@@ -188,38 +237,11 @@ export class UserAccountManager extends Component {
             () => this.handleSuccessfulAvatarUpdate(), error => this.handleErrorAvatarUpdate(error.description));
     }
 
+    onAvatarPickerOpened() {
+        this.setAvatarEditMode(true);
+    }
+
     onAvatarPickerClosed() {
-        this.setAvatarEditMode(false);
-    }
-
-    onSaveAvatar(texture: Texture2D, item: UserAvatarItem) {
-        UIManager.instance.showLoaderPopup(true);
-        if(sys.isBrowser) {
-            ImageUtils.getBase64Image(texture, base64image => {
-                let base64imageWithoutHeader:string = base64image.substring(base64image.indexOf(',') + 1);
-                let buffer = Uint8Array.from(atob(base64imageWithoutHeader), c => c.charCodeAt(0));
-                XsollaUserAccount.modifyUserProfilePicture(TokenStorage.getToken().access_token, buffer,
-                    () => this.handleSuccessfulAvatarUpdate(), error => this.handleErrorAvatarUpdate(error.description));
-            }, error => this.handleErrorAvatarUpdate(error));
-        }
-        if(sys.platform.toLowerCase() == 'android') {
-            jsb.reflection.callStaticMethod("com/cocos/game/XsollaNativeUtils", "modifyUserProfilePicture", "(Ljava/lang/String;Ljava/lang/String;Z)V",
-                texture.image.nativeUrl, TokenStorage.token.access_token, Xsolla.settings.authType == AuthenticationType.Oauth2);
-        }
-        if(sys.platform.toLowerCase() == 'ios') {
-            jsb.reflection.callStaticMethod("XsollaNativeUtils", "modifyUserProfilePicture:authToken:",
-                texture.image.nativeUrl, TokenStorage.token.access_token);
-        }
-    }
-
-    handleSuccessfulAvatarUpdate() {
-        UIManager.instance.showLoaderPopup(false);
-        this.refreshUserAccountScreen();
-    }
-
-    handleErrorAvatarUpdate(error:string) {
-        UIManager.instance.showLoaderPopup(false);
-        UIManager.instance.showErrorPopup(error);
         this.setAvatarEditMode(false);
     }
 
@@ -228,25 +250,25 @@ export class UserAccountManager extends Component {
         this.avatarsList.getComponentsInChildren(UserAvatarItem).forEach(item => item.showSelection(false));
     }
 
-    addListeners () {
+    addListeners() {
         this.backButton.node.on(Button.EventType.CLICK, this.onBackClicked, this);
         this.nicknameItem.node.on(UserAccountItem.ITEM_EDIT, this.onNicknameEdited, this);
         this.firstNameItem.node.on(UserAccountItem.ITEM_EDIT, this.onFirstNameEdited, this);
         this.lastNameItem.node.on(UserAccountItem.ITEM_EDIT, this.onLastNameEdited, this);
         this.phoneNumberItem.node.on(UserAccountItem.ITEM_EDIT, this.onPhoneNumberEdited, this);
-        this.removeAvatarButton.node.on(Button.EventType.CLICK, this.onAvatarRemoved, this);
-        this.avatarButton.node.on(Button.EventType.CLICK, this.onAvatarEdited, this);
+        this.openAvatarPickerButton.node.on(Button.EventType.CLICK, this.onAvatarPickerOpened, this);
         this.closeAvatarPickerButton.node.on(Button.EventType.CLICK, this.onAvatarPickerClosed, this);
+        this.removeAvatarButton.node.on(Button.EventType.CLICK, this.onAvatarRemoved, this);
     }
 
-    removeListeners () {
+    removeListeners() {
         this.backButton.node.off(Button.EventType.CLICK, this.onBackClicked, this);
         this.nicknameItem.node.off(UserAccountItem.ITEM_EDIT, this.onNicknameEdited, this);
         this.firstNameItem.node.off(UserAccountItem.ITEM_EDIT, this.onFirstNameEdited, this);
         this.lastNameItem.node.off(UserAccountItem.ITEM_EDIT, this.onLastNameEdited, this);
         this.phoneNumberItem.node.off(UserAccountItem.ITEM_EDIT, this.onPhoneNumberEdited, this);
-        this.removeAvatarButton.node.off(Button.EventType.CLICK, this.onAvatarRemoved, this);
-        this.avatarButton.node.off(Button.EventType.CLICK, this.onAvatarEdited, this);
+        this.openAvatarPickerButton.node.off(Button.EventType.CLICK, this.onAvatarPickerOpened, this);
         this.closeAvatarPickerButton.node.off(Button.EventType.CLICK, this.onAvatarPickerClosed, this);
+        this.removeAvatarButton.node.off(Button.EventType.CLICK, this.onAvatarRemoved, this);
     }
 }

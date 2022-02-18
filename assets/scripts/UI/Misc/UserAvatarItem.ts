@@ -17,7 +17,7 @@ export class UserAvatarItem extends Component {
     @property(Button)
     btn: Button;
 
-    private _parent: UserAccountManager;
+    static AVATAR_PICK: string = 'avatarPick';
 
     private _texture: Texture2D;
 
@@ -41,12 +41,11 @@ export class UserAvatarItem extends Component {
         this.btn.node.off(Button.EventType.CLICK, this.onClicked, this);
     }
 
-    init(texture: Texture2D, parent:UserAccountManager) {
+    init(texture: Texture2D) {
         const spriteFrame = new SpriteFrame();
         spriteFrame.texture = texture;
         this.avatarSprite.spriteFrame = spriteFrame;
         this.avatarSprite.getComponent(UITransform).setContentSize(80, 80); 
-        this._parent = parent;
         this._texture = texture;
     }
 
@@ -55,7 +54,7 @@ export class UserAvatarItem extends Component {
             return;
         }
         this.showSelection(true);
-        this._parent.onSaveAvatar(this._texture, this);
+        this.node.emit(UserAvatarItem.AVATAR_PICK, this._texture);
     }
 
     showSelection(showSelection: boolean) {

@@ -53,7 +53,7 @@ export class UserAccountItem extends Component {
 
     setValue(value: string) {
         this.valueLabel.string = value;
-        if (this.valueEditBox != null) {
+        if (this.valueEditBox != null && value != null) {
             this.valueEditBox.string = value;
         }
     }
