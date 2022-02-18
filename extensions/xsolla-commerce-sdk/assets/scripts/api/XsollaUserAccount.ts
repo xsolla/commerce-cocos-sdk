@@ -461,6 +461,56 @@ export class XsollaUserAccount {
         let request = HttpUtil.createRequest(url, 'POST', RequestContentType.Json, token, onComplete, handleLoginError(onError));
         request.send(JSON.stringify(body));
     }
+
+    /**
+     * @en
+     * Gets the URL to link social network to the user’s account. The social network should be used for authentication.
+     * @zh
+     * 
+     */
+    static getUrlToLinkSocialAccount(token:string, platform:string, onComplete?:(authUrl:string) => void, onError?:(error:LoginError) => void) {
+        let url = new UrlBuilder('https://login.xsolla.com/api/users/me/social_providers/{providerName}/login_url')
+            .setPathParam('providerName', platform)
+            .addStringParam('login_url', 'https://login.xsolla.com/api/blank')
+            .build();
+
+        let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, token, result => {
+            let authUrl = JSON.parse(result);
+            onComplete?.(authUrl.url);
+        }, handleLoginError(onError));
+        request.send();
+    }
+
+    /**
+     * @en
+     * Unlinks the social network, which is used by the player for authentication, from the user account.
+     * @zh
+     * 
+     */
+    static unlinkSocialAccount(token:string, platform:string, onComplete?:() => void, onError?:(error:LoginError) => void) {
+        let url = new UrlBuilder('https://login.xsolla.com/api/users/me/social_providers/{providerName}')
+            .setPathParam('providerName', platform)
+            .build();
+
+        let request = HttpUtil.createRequest(url, 'DELETE', RequestContentType.None, token, onComplete, handleLoginError(onError));
+        request.send();
+    }
+
+    /**
+     * @en
+     * Gets the list of linked social networks used by the player for authentication.
+     * @zh
+     * 
+     */
+    static getLinkedSocialAccounts(token:string, onComplete?:(linkedAccounts:Array<LinkedSocialNetwork>) => void, onError?:(error:LoginError) => void) {
+        let url = new UrlBuilder('https://login.xsolla.com/api/users/me/social_providers').build();
+
+        let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, token, result => {
+            let linkedAccountsArray = JSON.parse(result);
+            onComplete?.(linkedAccountsArray);
+        }, handleLoginError(onError));
+        request.send();
+    }
 }
 
 export interface UserBan {
@@ -609,4 +659,12 @@ export interface UserAttribute {
     key: string,
     permission: string;
     value: string
+}
+
+export interface LinkedSocialNetwork {
+    provider: string,
+    full_name?: string;
+    social_id: string,
+    picture?: string,
+    nickname?: string
 }
