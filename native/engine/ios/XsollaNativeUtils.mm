@@ -116,7 +116,7 @@
 			return;
 		}
 
-		NSString *successScript = [NSString stringWithFormat: @"cc.find(\"Canvas/pref_UserAccountScreen\").getComponent(\"UserAccountManager\").handleSuccessfulSocialNetworkLinking(%@)", networkName];
+		NSString *successScript = [NSString stringWithFormat: @"cc.find(\"Canvas/pref_UserAccountScreen\").getComponent(\"UserAccountManager\").handleSuccessfulSocialNetworkLinking(\"%@\")", networkName];
 		const char* successScriptStr = [XsollaUtils createCStringFrom:successScript];
 		cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
 			se::ScriptEngine::getInstance()->evalString(successScriptStr);

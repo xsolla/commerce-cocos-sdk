@@ -231,6 +231,7 @@ export class UserAccountManager extends Component {
         if(linkedItem) {
             linkedItem.setIsLinked(isNetworkLinked);
             linkedItem.node.setSiblingIndex(0);
+            this.socialNetworkLinksList.scrollToLeft();
         }   
     }
 
