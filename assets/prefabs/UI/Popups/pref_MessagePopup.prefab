@@ -32,9 +32,6 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 56
-      },
-      {
         "__id__": 58
       },
       {
@@ -42,10 +39,13 @@
       },
       {
         "__id__": 62
+      },
+      {
+        "__id__": 64
       }
     ],
     "_prefab": {
-      "__id__": 64
+      "__id__": 66
     },
     "_lpos": {
       "__type__": "cc.Vec3",
@@ -679,6 +679,9 @@
       },
       {
         "__id__": 55
+      },
+      {
+        "__id__": 56
       }
     ],
     "removedComponents": []
@@ -963,6 +966,28 @@
     "value": false
   },
   {
+    "__type__": "CCPropertyOverrideInfo",
+    "targetInfo": {
+      "__id__": 57
+    },
+    "propertyPath": [
+      "_color"
+    ],
+    "value": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    }
+  },
+  {
+    "__type__": "cc.TargetInfo",
+    "localID": [
+      "9ep1pYIehIn6p/TbfyeFqY"
+    ]
+  },
+  {
     "__type__": "cc.UITransform",
     "_name": "",
     "_objFlags": 0,
@@ -971,7 +996,7 @@
     },
     "_enabled": true,
     "__prefab": {
-      "__id__": 57
+      "__id__": 59
     },
     "_contentSize": {
       "__type__": "cc.Size",
@@ -998,7 +1023,7 @@
     },
     "_enabled": true,
     "__prefab": {
-      "__id__": 59
+      "__id__": 61
     },
     "_alignFlags": 45,
     "_target": null,
@@ -1033,7 +1058,7 @@
     },
     "_enabled": true,
     "__prefab": {
-      "__id__": 61
+      "__id__": 63
     },
     "_visFlags": 0,
     "_customMaterial": null,
@@ -1078,7 +1103,7 @@
     },
     "_enabled": true,
     "__prefab": {
-      "__id__": 63
+      "__id__": 65
     },
     "messageLabel": {
       "__id__": 21
@@ -1101,14 +1126,14 @@
     "fileId": "fdpdLt5BJMSbAB2vAeB/Mw",
     "targetOverrides": [
       {
-        "__id__": 65
+        "__id__": 67
       }
     ]
   },
   {
     "__type__": "cc.TargetOverrideInfo",
     "source": {
-      "__id__": 62
+      "__id__": 64
     },
     "sourceInfo": null,
     "propertyPath": [
@@ -1118,7 +1143,7 @@
       "__id__": 26
     },
     "targetInfo": {
-      "__id__": 66
+      "__id__": 68
     }
   },
   {

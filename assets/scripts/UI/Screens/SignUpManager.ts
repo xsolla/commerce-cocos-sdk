@@ -22,9 +22,6 @@ export class SignUpManager extends Component {
     signUpButton: Button;
 
     @property(Button)
-    logInButton: Button;
-
-    @property(Button)
     privacyPolicyButton: Button;
 
     @property(Button)
@@ -63,11 +60,7 @@ export class SignUpManager extends Component {
     onBackClicked() {
         UIManager.instance.openScreen(UIScreenType.Starting);
     }
-
-    onLoginClicked() {
-        UIManager.instance.openScreen(UIScreenType.BasicAuth);
-    }
-
+    
     onCredentialsChanged() {
         this.signUpButton.interactable = this.usernameEditBox.string.length > 0 && this.emailEditBox.string.length > 0 && this.passwordEditBox.string.length >= 6;
     }
@@ -111,7 +104,6 @@ export class SignUpManager extends Component {
 
     addListeners () {
         this.backButton.node.on(Button.EventType.CLICK, this.onBackClicked, this);
-        this.logInButton.node.on(Button.EventType.CLICK, this.onLoginClicked, this);
         this.signUpButton.node.on(Button.EventType.CLICK, this.onSignUpClicked, this);
         this.privacyPolicyButton.node.on(Button.EventType.CLICK, this.onPrivacyPolicyClicked, this);
         this.resendEmailButton.node.on(Button.EventType.CLICK, this.onResendEmailClicked, this);
@@ -122,7 +114,6 @@ export class SignUpManager extends Component {
 
     removeListeners () {
         this.backButton.node.off(Button.EventType.CLICK, this.onBackClicked, this);
-        this.logInButton.node.off(Button.EventType.CLICK, this.onLoginClicked, this);
         this.signUpButton.node.off(Button.EventType.CLICK, this.onSignUpClicked, this);
         this.privacyPolicyButton.node.off(Button.EventType.CLICK, this.onPrivacyPolicyClicked, this);
         this.resendEmailButton.node.off(Button.EventType.CLICK, this.onResendEmailClicked, this);

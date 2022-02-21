@@ -22,6 +22,9 @@ export class CharacterManager extends Component {
     @property(Button)
     cancelButton: Button;
 
+    @property(Button)
+    closeAddAttributeButton: Button;
+
     @property(EditBox)
     keyEditBox: EditBox;
 
@@ -148,6 +151,7 @@ export class CharacterManager extends Component {
         this.addAttributeButton.node.on(Button.EventType.CLICK, this.onAddAttributeClicked, this);
         this.saveButton.node.on(Button.EventType.CLICK, this.onSaveClicked, this);
         this.cancelButton.node.on(Button.EventType.CLICK, this.onCancelClicked, this);
+        this.closeAddAttributeButton.node.on(Button.EventType.CLICK, this.onCancelClicked, this);
 
         this.keyEditBox.node.on(EditBox.EventType.TEXT_CHANGED, this.onAttributeDataChanged, this);
         this.valueEditBox.node.on(EditBox.EventType.TEXT_CHANGED, this.onAttributeDataChanged, this);
@@ -158,6 +162,7 @@ export class CharacterManager extends Component {
         this.addAttributeButton.node.off(Button.EventType.CLICK, this.onAddAttributeClicked, this);
         this.saveButton.node.off(Button.EventType.CLICK, this.onSaveClicked, this);
         this.cancelButton.node.off(Button.EventType.CLICK, this.onCancelClicked, this);
+        this.closeAddAttributeButton.node.off(Button.EventType.CLICK, this.onCancelClicked, this);
 
         this.keyEditBox.node.off(EditBox.EventType.TEXT_CHANGED, this.onAttributeDataChanged, this);
         this.valueEditBox.node.off(EditBox.EventType.TEXT_CHANGED, this.onAttributeDataChanged, this);

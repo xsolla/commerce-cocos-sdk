@@ -769,8 +769,12 @@
       "__uuid__": "7daf20b9-142a-47a6-874b-7db2c023926a",
       "__expectedType__": "cc.Prefab"
     },
-    "passwordlessAuth": {
-      "__uuid__": "dc516f1d-6c27-44b0-b6db-cd4dc7a7362b",
+    "authByPhoneScreen": {
+      "__uuid__": "2dea33c4-13a7-4aaa-83a5-ddcdeb57131f",
+      "__expectedType__": "cc.Prefab"
+    },
+    "authByEmailScreen": {
+      "__uuid__": "c4ad05f7-656d-462d-a7da-9da7161e7974",
       "__expectedType__": "cc.Prefab"
     },
     "socialAuth": {
@@ -781,7 +785,7 @@
       "__uuid__": "51546de7-7fec-48e1-bf24-f2b2cab24700",
       "__expectedType__": "cc.Prefab"
     },
-    "characterScreen": {
+    "userAttributesScreen": {
       "__uuid__": "d119edc5-b048-48d8-8e1f-41e592b17d8a",
       "__expectedType__": "cc.Prefab"
     },
