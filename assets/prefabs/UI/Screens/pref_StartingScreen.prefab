@@ -26,17 +26,17 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 50
+        "__id__": 58
       },
       {
-        "__id__": 52
+        "__id__": 60
       },
       {
-        "__id__": 54
+        "__id__": 62
       }
     ],
     "_prefab": {
-      "__id__": 56
+      "__id__": 64
     },
     "_lpos": {
       "__type__": "cc.Vec3",
@@ -132,7 +132,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 82.21,
-      "height": 50.4
+      "height": 25.2
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -174,7 +174,7 @@
     "_actualFontSize": 16,
     "_fontSize": 16,
     "_fontFamily": "",
-    "_lineHeight": 40,
+    "_lineHeight": 20,
     "_overflow": 0,
     "_enableWrapText": true,
     "_font": {
@@ -209,7 +209,7 @@
     "_left": 0,
     "_right": 0,
     "_top": 0,
-    "_bottom": 136,
+    "_bottom": 148.6,
     "_horizontalCenter": 0,
     "_verticalCenter": 0,
     "_isAbsLeft": true,
@@ -257,22 +257,25 @@
       },
       {
         "__id__": 35
+      },
+      {
+        "__id__": 43
       }
     ],
     "_active": true,
     "_components": [
       {
-        "__id__": 43
+        "__id__": 51
       },
       {
-        "__id__": 45
+        "__id__": 53
       },
       {
-        "__id__": 47
+        "__id__": 55
       }
     ],
     "_prefab": {
-      "__id__": 49
+      "__id__": 57
     },
     "_lpos": {
       "__type__": "cc.Vec3",
@@ -327,7 +330,7 @@
     },
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": -90,
+      "x": -120,
       "y": 0,
       "z": 0
     },
@@ -529,7 +532,7 @@
     },
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": -30,
+      "x": -60,
       "y": 0,
       "z": 0
     },
@@ -607,7 +610,7 @@
       "a": 255
     },
     "_spriteFrame": {
-      "__uuid__": "259ed2ac-b138-44f4-b7b3-e63b4df40f19@f9941",
+      "__uuid__": "e09f94c4-99da-4f10-a6c1-58ad60cf4d8b@f9941",
       "__expectedType__": "cc.SpriteFrame"
     },
     "_type": 1,
@@ -673,15 +676,15 @@
       "a": 255
     },
     "_normalSprite": {
-      "__uuid__": "259ed2ac-b138-44f4-b7b3-e63b4df40f19@f9941",
+      "__uuid__": "e09f94c4-99da-4f10-a6c1-58ad60cf4d8b@f9941",
       "__expectedType__": "cc.SpriteFrame"
     },
     "_hoverSprite": {
-      "__uuid__": "028aebe5-0fb3-4db1-8a2f-e0ff3834dec6@f9941",
+      "__uuid__": "7842d353-4cec-44e9-836f-5ebd686189cb@f9941",
       "__expectedType__": "cc.SpriteFrame"
     },
     "_pressedSprite": {
-      "__uuid__": "1813ca87-9197-4e91-bdc6-93c113684964@f9941",
+      "__uuid__": "2ca2b69f-a26b-40bc-ab6f-67b638ccdc6c@f9941",
       "__expectedType__": "cc.SpriteFrame"
     },
     "_disabledSprite": null,
@@ -708,7 +711,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Button_PasswordlessAuth",
+    "_name": "Button_AuthByEmail",
     "_objFlags": 0,
     "_parent": {
       "__id__": 10
@@ -731,7 +734,7 @@
     },
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": 30,
+      "x": 0,
       "y": 0,
       "z": 0
     },
@@ -809,7 +812,7 @@
       "a": 255
     },
     "_spriteFrame": {
-      "__uuid__": "03d1049a-9b9c-4629-a983-6f45d28022b1@f9941",
+      "__uuid__": "0bb0816e-1d2e-470f-b8fb-eea3774251fc@f9941",
       "__expectedType__": "cc.SpriteFrame"
     },
     "_type": 1,
@@ -875,15 +878,15 @@
       "a": 255
     },
     "_normalSprite": {
-      "__uuid__": "03d1049a-9b9c-4629-a983-6f45d28022b1@f9941",
+      "__uuid__": "0bb0816e-1d2e-470f-b8fb-eea3774251fc@f9941",
       "__expectedType__": "cc.SpriteFrame"
     },
     "_hoverSprite": {
-      "__uuid__": "430d47ed-e850-4937-bf1a-eaa165e806b5@f9941",
+      "__uuid__": "e868ba34-2774-4c31-ae10-c067cc9e9346@f9941",
       "__expectedType__": "cc.SpriteFrame"
     },
     "_pressedSprite": {
-      "__uuid__": "421179fb-4921-48c7-af42-9ee1359ef26b@f9941",
+      "__uuid__": "e659846d-67d3-487e-8caa-1770ad41db76@f9941",
       "__expectedType__": "cc.SpriteFrame"
     },
     "_disabledSprite": null,
@@ -910,7 +913,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Button_OtherAuth",
+    "_name": "Button_AuthByPhone",
     "_objFlags": 0,
     "_parent": {
       "__id__": 10
@@ -933,7 +936,7 @@
     },
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": 90,
+      "x": 60,
       "y": 0,
       "z": 0
     },
@@ -985,7 +988,7 @@
   },
   {
     "__type__": "cc.CompPrefabInfo",
-    "fileId": "0aq7D1ivFD5rFP5S2eR4bX"
+    "fileId": "8c/2fyRvdGlZ3XKBqPQwNG"
   },
   {
     "__type__": "cc.Sprite",
@@ -998,6 +1001,208 @@
     "_enabled": true,
     "__prefab": {
       "__id__": 39
+    },
+    "_visFlags": 0,
+    "_customMaterial": null,
+    "_srcBlendFactor": 2,
+    "_dstBlendFactor": 4,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_spriteFrame": {
+      "__uuid__": "3ab33db1-33fd-43f5-bb60-d54bf119ebff@f9941",
+      "__expectedType__": "cc.SpriteFrame"
+    },
+    "_type": 1,
+    "_fillType": 0,
+    "_sizeMode": 0,
+    "_fillCenter": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "_fillStart": 0,
+    "_fillRange": 0,
+    "_isTrimmedMode": true,
+    "_useGrayscale": false,
+    "_atlas": null,
+    "_id": ""
+  },
+  {
+    "__type__": "cc.CompPrefabInfo",
+    "fileId": "5bk28dIu9OybhttiylmCAL"
+  },
+  {
+    "__type__": "cc.Button",
+    "_name": "",
+    "_objFlags": 0,
+    "__editorExtras__": {},
+    "node": {
+      "__id__": 35
+    },
+    "_enabled": true,
+    "__prefab": {
+      "__id__": 41
+    },
+    "clickEvents": [],
+    "_interactable": true,
+    "_transition": 2,
+    "_normalColor": {
+      "__type__": "cc.Color",
+      "r": 214,
+      "g": 214,
+      "b": 214,
+      "a": 255
+    },
+    "_hoverColor": {
+      "__type__": "cc.Color",
+      "r": 211,
+      "g": 211,
+      "b": 211,
+      "a": 255
+    },
+    "_pressedColor": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_disabledColor": {
+      "__type__": "cc.Color",
+      "r": 124,
+      "g": 124,
+      "b": 124,
+      "a": 255
+    },
+    "_normalSprite": {
+      "__uuid__": "3ab33db1-33fd-43f5-bb60-d54bf119ebff@f9941",
+      "__expectedType__": "cc.SpriteFrame"
+    },
+    "_hoverSprite": {
+      "__uuid__": "13ca27c3-1bc8-466d-80e2-83e2d7e4cc3c@f9941",
+      "__expectedType__": "cc.SpriteFrame"
+    },
+    "_pressedSprite": {
+      "__uuid__": "d2eccf40-be11-46c9-b201-b8f7a2118dae@f9941",
+      "__expectedType__": "cc.SpriteFrame"
+    },
+    "_disabledSprite": null,
+    "_duration": 0.1,
+    "_zoomScale": 1.2,
+    "_target": {
+      "__id__": 35
+    },
+    "_id": ""
+  },
+  {
+    "__type__": "cc.CompPrefabInfo",
+    "fileId": "45sctnFClCWYEPpKHUqhH0"
+  },
+  {
+    "__type__": "cc.PrefabInfo",
+    "root": {
+      "__id__": 1
+    },
+    "asset": {
+      "__id__": 0
+    },
+    "fileId": "922bquH7FEbprL3i6Z+fR+"
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "Button_OtherAuth",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 10
+    },
+    "_children": [],
+    "_active": true,
+    "_components": [
+      {
+        "__id__": 44
+      },
+      {
+        "__id__": 46
+      },
+      {
+        "__id__": 48
+      }
+    ],
+    "_prefab": {
+      "__id__": 50
+    },
+    "_lpos": {
+      "__type__": "cc.Vec3",
+      "x": 120,
+      "y": 0,
+      "z": 0
+    },
+    "_lrot": {
+      "__type__": "cc.Quat",
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "w": 1
+    },
+    "_lscale": {
+      "__type__": "cc.Vec3",
+      "x": 1,
+      "y": 1,
+      "z": 1
+    },
+    "_layer": 33554432,
+    "_euler": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_id": ""
+  },
+  {
+    "__type__": "cc.UITransform",
+    "_name": "",
+    "_objFlags": 0,
+    "__editorExtras__": {},
+    "node": {
+      "__id__": 43
+    },
+    "_enabled": true,
+    "__prefab": {
+      "__id__": 45
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 50,
+      "height": 50
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_id": ""
+  },
+  {
+    "__type__": "cc.CompPrefabInfo",
+    "fileId": "0aq7D1ivFD5rFP5S2eR4bX"
+  },
+  {
+    "__type__": "cc.Sprite",
+    "_name": "",
+    "_objFlags": 0,
+    "__editorExtras__": {},
+    "node": {
+      "__id__": 43
+    },
+    "_enabled": true,
+    "__prefab": {
+      "__id__": 47
     },
     "_visFlags": 0,
     "_customMaterial": null,
@@ -1039,11 +1244,11 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 35
+      "__id__": 43
     },
     "_enabled": true,
     "__prefab": {
-      "__id__": 41
+      "__id__": 49
     },
     "clickEvents": [],
     "_interactable": true,
@@ -1092,7 +1297,7 @@
     "_duration": 0.1,
     "_zoomScale": 1.2,
     "_target": {
-      "__id__": 35
+      "__id__": 43
     },
     "_id": ""
   },
@@ -1120,11 +1325,11 @@
     },
     "_enabled": true,
     "__prefab": {
-      "__id__": 44
+      "__id__": 52
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 230,
+      "width": 290,
       "height": 50
     },
     "_anchorPoint": {
@@ -1148,7 +1353,7 @@
     },
     "_enabled": true,
     "__prefab": {
-      "__id__": 46
+      "__id__": 54
     },
     "_alignFlags": 20,
     "_target": null,
@@ -1183,7 +1388,7 @@
     },
     "_enabled": true,
     "__prefab": {
-      "__id__": 48
+      "__id__": 56
     },
     "_resizeMode": 1,
     "_layoutType": 1,
@@ -1230,7 +1435,7 @@
     },
     "_enabled": true,
     "__prefab": {
-      "__id__": 51
+      "__id__": 59
     },
     "_contentSize": {
       "__type__": "cc.Size",
@@ -1257,7 +1462,7 @@
     },
     "_enabled": true,
     "__prefab": {
-      "__id__": 53
+      "__id__": 61
     },
     "_alignFlags": 45,
     "_target": null,
@@ -1292,7 +1497,7 @@
     },
     "_enabled": true,
     "__prefab": {
-      "__id__": 55
+      "__id__": 63
     },
     "basicAuthButton": {
       "__id__": 16
@@ -1300,11 +1505,14 @@
     "deviceIdAuthButton": {
       "__id__": 24
     },
-    "passwordlessAuthButton": {
+    "authByEmailButton": {
       "__id__": 32
     },
-    "otherAuthButton": {
+    "authByPhoneButton": {
       "__id__": 40
+    },
+    "otherAuthButton": {
+      "__id__": 48
     },
     "_id": ""
   },

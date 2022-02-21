@@ -10,15 +10,16 @@ const { ccclass, property } = _decorator;
 export enum UIScreenType {
     Starting = 0,
     BasicAuth = 1,
-    PasswordlessAuth = 2,
-    SocialAuth = 3,
-    MainMenu = 4,
-    Store = 5,
-    Inventory = 6,
-    Character = 7,
-    UserAccount = 8,
-    SignUp = 9,
-    ResetPassword = 10,
+    AuthByPhone = 2,
+    AuthByEmail = 3,
+    SocialAuth = 4,
+    MainMenu = 5,
+    Store = 6,
+    Inventory = 7,
+    UserAttributes = 8,
+    UserAccount = 9,
+    SignUp = 10,
+    ResetPassword = 11,
 }
  
 @ccclass('UIManager')
@@ -40,7 +41,10 @@ export class UIManager extends Component {
     mainMenu: Prefab;
 
     @property(Prefab)
-    passwordlessAuth: Prefab;
+    authByPhoneScreen: Prefab;
+
+    @property(Prefab)
+    authByEmailScreen: Prefab;
 
     @property(Prefab)
     socialAuth: Prefab;
@@ -49,7 +53,7 @@ export class UIManager extends Component {
     userAccountScreen: Prefab;
 
     @property(Prefab)
-    characterScreen: Prefab;
+    userAttributesScreen: Prefab;
 
     @property(Prefab)
     storeScreen: Prefab;
@@ -100,8 +104,12 @@ export class UIManager extends Component {
                 this._currentScreen = instantiate(this.resetPasswordScreen);
                 break;
             } 
-            case UIScreenType.PasswordlessAuth: {
-                this._currentScreen = instantiate(this.passwordlessAuth);
+            case UIScreenType.AuthByPhone: {
+                this._currentScreen = instantiate(this.authByPhoneScreen);
+                break;
+            }
+            case UIScreenType.AuthByEmail: {
+                this._currentScreen = instantiate(this.authByEmailScreen);
                 break;
             }
             case UIScreenType.SocialAuth: {
@@ -120,8 +128,8 @@ export class UIManager extends Component {
                 this._currentScreen = instantiate(this.inventoryScreen);
                 break;
             } 
-            case UIScreenType.Character: {
-                this._currentScreen = instantiate(this.characterScreen);
+            case UIScreenType.UserAttributes: {
+                this._currentScreen = instantiate(this.userAttributesScreen);
                 break;
             } 
             case UIScreenType.UserAccount: {

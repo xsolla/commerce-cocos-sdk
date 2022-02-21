@@ -16,7 +16,10 @@ export class StartingScreenManager extends Component {
     deviceIdAuthButton: Button;
 
     @property(Button)
-    passwordlessAuthButton: Button;
+    authByEmailButton: Button;
+
+    @property(Button)
+    authByPhoneButton: Button;
 
     @property(Button)
     otherAuthButton: Button;
@@ -37,14 +40,16 @@ export class StartingScreenManager extends Component {
     addListeners() {
         this.basicAuthButton.node.on(Button.EventType.CLICK, this.onBasicAuthClicked, this);
         this.deviceIdAuthButton.node.on(Button.EventType.CLICK, this.onDeviceIdAuthClicked, this);
-        this.passwordlessAuthButton.node.on(Button.EventType.CLICK, this.onPasswordlessAuthClicked, this);
+        this.authByEmailButton.node.on(Button.EventType.CLICK, this.onAuthByEmailClicked, this);
+        this.authByPhoneButton.node.on(Button.EventType.CLICK, this.onAuthByPhoneClicked, this);
         this.otherAuthButton.node.on(Button.EventType.CLICK, this.onSocialAuthClicked, this);
     }
 
     removeListeners() {
         this.basicAuthButton.node.off(Button.EventType.CLICK, this.onBasicAuthClicked, this);
         this.deviceIdAuthButton.node.off(Button.EventType.CLICK, this.onDeviceIdAuthClicked, this);
-        this.passwordlessAuthButton.node.off(Button.EventType.CLICK, this.onPasswordlessAuthClicked, this);
+        this.authByEmailButton.node.off(Button.EventType.CLICK, this.onAuthByEmailClicked, this);
+        this.authByPhoneButton.node.off(Button.EventType.CLICK, this.onAuthByPhoneClicked, this);
         this.otherAuthButton.node.off(Button.EventType.CLICK, this.onSocialAuthClicked, this);
     }
 
@@ -77,8 +82,12 @@ export class StartingScreenManager extends Component {
         })
     }
 
-    onPasswordlessAuthClicked() {
-        UIManager.instance.openScreen(UIScreenType.PasswordlessAuth);
+    onAuthByEmailClicked() {
+        UIManager.instance.openScreen(UIScreenType.AuthByEmail);
+    }
+
+    onAuthByPhoneClicked() {
+        UIManager.instance.openScreen(UIScreenType.AuthByPhone);
     }
 
     onSocialAuthClicked() {
