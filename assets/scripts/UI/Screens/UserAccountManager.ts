@@ -1,14 +1,25 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
-import { _decorator, Component, Node, Button, Texture2D, instantiate, Prefab, sys, Sprite, SpriteFrame, UITransform } from 'cc';
+import { _decorator, Component, Node, Button, Texture2D, instantiate, Prefab, sys, Sprite, SpriteFrame, UITransform, CCString, CCBoolean, ScrollView } from 'cc';
 import { UserDetails, UserDetailsUpdate, XsollaUserAccount } from 'db://xsolla-commerce-sdk/scripts/api/XsollaUserAccount';
 import { AuthenticationType, Xsolla } from 'db://xsolla-commerce-sdk/scripts/Xsolla';
 import { TokenStorage } from '../../Common/TokenStorage';
+import { SocialNetworkLinkItem } from '../Misc/SocialNetworkLinkItem';
 import { UserAccountItem } from '../Misc/UserAccountItem';
 import { UserAvatarItem } from '../Misc/UserAvatarItem';
 import { UIManager, UIScreenType } from '../UIManager';
 import { ImageUtils } from '../Utils/ImageUtils';
 const { ccclass, property } = _decorator;
+
+@ccclass('SocialNetworkLinkItemData')
+export class SocialNetworkLinkItemData {
+
+    @property(CCString)
+    name: String = '';
+
+    @property(SpriteFrame)
+    logo: SpriteFrame = null;
+}
 
 @ccclass('UserAccountManager')
 export class UserAccountManager extends Component {
@@ -61,15 +72,26 @@ export class UserAccountManager extends Component {
     @property(Button)
     removeAvatarButton: Button;
 
+    @property(ScrollView)
+    socialNetworkLinksList: ScrollView;
+
     @property(Texture2D)
     defaultAvatars: Texture2D[] = [];
 
+    @property(Prefab)
+    socialNetworkLinkItemPrefab: Prefab;
+
+    @property([SocialNetworkLinkItemData])
+    socialNetworkLinksData: SocialNetworkLinkItemData[] = [];
+
     start() {
         this.initializeAvatarPicker();
+        this.populateSocialNetworksList();
     }
 
     onEnable() {
         this.refreshUserAccountData();
+        this.refreskLinkedSocialNetworks();
         this.setAvatarEditMode(false);
         this.addListeners();
     }
@@ -91,6 +113,16 @@ export class UserAccountManager extends Component {
         }
     }
 
+    populateSocialNetworksList() {
+        for (let i = 0; i < this.socialNetworkLinksData.length; ++i) {
+            let socialNetworkLinkItem = instantiate(this.socialNetworkLinkItemPrefab);            
+            this.socialNetworkLinksList.content.addChild(socialNetworkLinkItem);
+            let itemLinkData = this.socialNetworkLinksData[i];
+            socialNetworkLinkItem.getComponent(SocialNetworkLinkItem).init(itemLinkData);
+            socialNetworkLinkItem.on(SocialNetworkLinkItem.LINK_NETWORK, this.onNetworkLinkClicked, this);
+        }
+    }
+
     refreshUserAccountData() {
         UIManager.instance.showLoaderPopup(true);
         XsollaUserAccount.getUserDetails(TokenStorage.token.access_token, userDetails => {
@@ -103,6 +135,25 @@ export class UserAccountManager extends Component {
             UIManager.instance.showErrorPopup(err.description);
         });
         this.avatarsList.getComponentsInChildren(UserAvatarItem).forEach(item => item.showSelection(false));
+    }
+
+    refreskLinkedSocialNetworks() {
+        UIManager.instance.showLoaderPopup(true);
+        XsollaUserAccount.getLinkedSocialAccounts(TokenStorage.token.access_token, linkedAccounts => {
+            UIManager.instance.showLoaderPopup(false);
+            let socialNetworkLinkItems = this.socialNetworkLinksList.content.getComponentsInChildren(SocialNetworkLinkItem);
+            linkedAccounts.forEach(account => {
+                let linkedItem = socialNetworkLinkItems.find(item => item.data.name === account.provider);
+                if(linkedItem) {
+                    linkedItem.setIsLinked(true);
+                    linkedItem.node.setSiblingIndex(0);
+                }              
+            });
+        }, err => {
+            console.log(err);
+            UIManager.instance.showLoaderPopup(false);
+            UIManager.instance.showErrorPopup(err.description);
+        })
     }
 
     modifyUserAccountData(userDetailsUpdate: UserDetailsUpdate) {
@@ -248,6 +299,10 @@ export class UserAccountManager extends Component {
     setAvatarEditMode(isPickerVisible: boolean) {
         this.avatarPicker.active = isPickerVisible;
         this.avatarsList.getComponentsInChildren(UserAvatarItem).forEach(item => item.showSelection(false));
+    }
+
+    onNetworkLinkClicked(networkName: string, isNetworkLinked: boolean) {
+        console.log(networkName)
     }
 
     addListeners() {
