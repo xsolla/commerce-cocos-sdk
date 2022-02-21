@@ -99,4 +99,29 @@
 	}
 }
 
++(void) linkSocialNetwork:(NSString*)networkName authToken:(NSString*)token {
+	UIViewController* mainVC = [[[UIApplication sharedApplication] keyWindow] rootViewController];
+	
+	[[LoginKitUnity shared] linkSocialNetwork:networkName accessToken:token redirectUrl:@"https://login.xsolla.com/api/blank" userAgent:nil presenter:mainVC completion:^(NSError * _Nullable error) {
+		if(error != nil) {
+			NSLog(@"Error code: %ld", error.code);
+
+			NSString* errorString = error.localizedDescription;
+			NSString *errorScript = [NSString stringWithFormat: @"cc.find(\"Canvas/pref_UserAccountScreen\").getComponent(\"UserAccountManager\").handleErrorSocialNetworkLinking(\"%@\")", errorString];
+			const char* errorScriptStr = [XsollaUtils createCStringFrom:errorScript];
+			cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
+				se::ScriptEngine::getInstance()->evalString(errorScriptStr);
+			});
+
+			return;
+		}
+
+		NSString *successScript = [NSString stringWithFormat: @"cc.find(\"Canvas/pref_UserAccountScreen\").getComponent(\"UserAccountManager\").handleSuccessfulSocialNetworkLinking(%@)", networkName];
+		const char* successScriptStr = [XsollaUtils createCStringFrom:successScript];
+		cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
+			se::ScriptEngine::getInstance()->evalString(successScriptStr);
+		});
+	}];
+}
+
 @end
