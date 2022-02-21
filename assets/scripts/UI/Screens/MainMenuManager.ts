@@ -9,19 +9,19 @@ const { ccclass, property } = _decorator;
 export class MainMenuManager extends Component {
 
     @property(Button)
-    logOutButton: Button;
-
-    @property(Button)
     userAccountButton: Button;
 
     @property(Button)
-    characterButton: Button;
+    userAttributesButton: Button;
 
     @property(Button)
     storeButton: Button;
 
     @property(Button)
     inventoryButton: Button;
+
+    @property(Button)
+    logOutButton: Button;
 
     onEnable() {
         this.addListeners();
@@ -32,32 +32,27 @@ export class MainMenuManager extends Component {
     }
 
     addListeners() {
-        this.logOutButton.node.on(Button.EventType.CLICK, this.onLogoutClicked, this);
         this.userAccountButton.node.on(Button.EventType.CLICK, this.onUserAccountClicked, this);
-        this.characterButton.node.on(Button.EventType.CLICK, this.onCharacterClicked, this);
+        this.userAttributesButton.node.on(Button.EventType.CLICK, this.onUserAttributesClicked, this);
         this.storeButton.node.on(Button.EventType.CLICK, this.onStoreClicked, this);
         this.inventoryButton.node.on(Button.EventType.CLICK, this.onInventoryClicked, this);
+        this.logOutButton.node.on(Button.EventType.CLICK, this.onLogoutClicked, this);
     }
 
     removeListeners() {
-        this.logOutButton.node.off(Button.EventType.CLICK, this.onLogoutClicked, this);
         this.userAccountButton.node.off(Button.EventType.CLICK, this.onUserAccountClicked, this);
-        this.characterButton.node.off(Button.EventType.CLICK, this.onCharacterClicked, this);
+        this.userAttributesButton.node.off(Button.EventType.CLICK, this.onUserAttributesClicked, this);
         this.storeButton.node.off(Button.EventType.CLICK, this.onStoreClicked, this);
         this.inventoryButton.node.off(Button.EventType.CLICK, this.onInventoryClicked, this);
-    }
-
-    onLogoutClicked() {
-        UIManager.instance.openScreen(UIScreenType.Starting);
-        TokenStorage.clearToken();
+        this.logOutButton.node.off(Button.EventType.CLICK, this.onLogoutClicked, this);
     }
 
     onUserAccountClicked() {
         UIManager.instance.openScreen(UIScreenType.UserAccount);
     }
 
-    onCharacterClicked() {
-        UIManager.instance.openScreen(UIScreenType.Character);
+    onUserAttributesClicked() {
+        UIManager.instance.openScreen(UIScreenType.UserAttributes);
     }
 
     onStoreClicked() {
@@ -66,5 +61,10 @@ export class MainMenuManager extends Component {
 
     onInventoryClicked() {
         UIManager.instance.openScreen(UIScreenType.Inventory);
+    }
+
+    onLogoutClicked() {
+        UIManager.instance.openScreen(UIScreenType.Starting);
+        TokenStorage.clearToken();
     }
 }
