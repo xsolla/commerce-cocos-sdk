@@ -7,8 +7,8 @@ import { AttributeItem } from '../Misc/AttributeItem';
 import { UIManager, UIScreenType } from '../UIManager';
 const { ccclass, property } = _decorator;
  
-@ccclass('CharacterManager')
-export class CharacterManager extends Component {
+@ccclass('UserAttributesManager')
+export class UserAttributesManager extends Component {
 
     @property(Button)
     backButton: Button;
