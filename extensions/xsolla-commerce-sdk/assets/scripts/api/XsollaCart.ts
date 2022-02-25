@@ -5,6 +5,7 @@ import { HttpUtil, RequestContentType } from "../core/HttpUtil";
 import { UrlBuilder } from "../core/UrlBuilder";
 import { Xsolla } from "../Xsolla";
 import { Price, ItemAttribute, ItemGroup } from "./XsollaCatalog";
+import { PaymentTokenResult } from "./XsollaOrderCheckout";
 
 export class XsollaCart {
 
@@ -287,6 +288,39 @@ export class XsollaCart {
         let request = HttpUtil.createRequest(url, 'PUT', RequestContentType.Json, authToken, result => {
             let itemsData:CartItemsData = JSON.parse(result);
             onComplete?.(itemsData);
+        }, handleCommerceError(onError));
+        request.send(JSON.stringify(body));
+    }
+
+    /**
+     * @en
+     * Initiates a cart purchase session and fetches a token for payment console.
+     * @zh
+     * 
+     */
+     static fetchCartPaymentToken(authToken:string, cartId:string, currency?:string, country?:string, locale?:string, customParameters?:object, onComplete?:(tokenResult: PaymentTokenResult) => void, onError?:(error:CommerceError) => void): void {
+        let body = {
+            currency: currency,
+            country: country,
+            locale: locale,
+            sandbox: Xsolla.settings.enableSandbox,
+            customParameters: customParameters
+        };
+
+        let endpoint = cartId == undefined ? 'https://store.xsolla.com/api/v2/project/{project_id}/payment/cart':'https://store.xsolla.com/api/v2/project/{project_id}/payment/cart/{cartId}';
+
+        let url = new UrlBuilder(endpoint)
+            .setPathParam('project_id', Xsolla.settings.projectId)
+            .setPathParam('cartId', cartId)
+            .build();
+
+        let request = HttpUtil.createRequest(url, 'POST', RequestContentType.Json, authToken, result => {
+            let jsonResult = JSON.parse(result);
+            let tokenResult: PaymentTokenResult = {
+                token: jsonResult.token,
+                orderId: jsonResult.order_id
+            };
+            onComplete?.(tokenResult);
         }, handleCommerceError(onError));
         request.send(JSON.stringify(body));
     }
