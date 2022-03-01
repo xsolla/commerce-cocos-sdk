@@ -5,6 +5,7 @@ import { HttpUtil, RequestContentType } from "../core/HttpUtil";
 import { UrlBuilder } from "../core/UrlBuilder";
 import { Xsolla } from "../Xsolla";
 import { BonusItem } from "./XsollaCart";
+import { PaymentTokenResult } from "./XsollaOrders";
 
 export class XsollaCatalog {
 
@@ -249,6 +250,38 @@ export class XsollaCatalog {
             onComplete?.(data);
         }, handleCommerceError(onError));
         request.send();
+    }
+
+    /**
+     * @en
+     * Initiates an item purchase session and fetches token for payment console.
+     * @zh
+     * 
+     */
+     static fetchPaymentToken(authToken:string, itemSKU:string, quantity:number, currency?:string, country?:string, locale?:string, customParameters?:object, onComplete?:(tokenResult: PaymentTokenResult) => void, onError?:(error:CommerceError) => void): void {
+        let body = {
+            currency: currency,
+            country: country,
+            locale: locale,
+            sandbox: Xsolla.settings.enableSandbox,
+            customParameters: customParameters,
+            quantity: quantity
+        };
+
+        let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/payment/item/{itemSKU}')
+            .setPathParam('projectID', Xsolla.settings.projectId)
+            .setPathParam('itemSKU', itemSKU)
+            .build();
+
+        let request = HttpUtil.createRequest(url, 'POST', RequestContentType.Json, authToken, result => {
+            let jsonResult = JSON.parse(result);
+            let tokenResult: PaymentTokenResult = {
+                token: jsonResult.token,
+                orderId: jsonResult.order_id
+            };
+            onComplete?.(tokenResult);
+        }, handleCommerceError(onError));
+        request.send(JSON.stringify(body));
     }
 }
 

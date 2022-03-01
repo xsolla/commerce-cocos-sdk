@@ -5,11 +5,11 @@ import { Xsolla } from "db://xsolla-commerce-sdk/scripts/Xsolla";
 import { UIManager } from "../UI/UIManager";
 import { TokenStorage } from "./TokenStorage";
 import { OrderCheckObject } from "./OrderCheckObject";
-import { XsollaOrderCheckout } from "db://xsolla-commerce-sdk/scripts/api/XsollaOrderCheckout";
+import { XsollaOrders } from "db://xsolla-commerce-sdk/scripts/api/XsollaOrders";
 
 export class OrderTracker {
     static shortPollingCheckOrder(orderId: number, onSuccessPurchase:() => void) {
-        XsollaOrderCheckout.checkOrder(TokenStorage.getToken().access_token, orderId, result => {
+        XsollaOrders.checkOrder(TokenStorage.getToken().access_token, orderId, result => {
             console.log('shortPollingCheckOrder ' + result.status);
             if(result.status == 'done') {
                 UIManager.instance.showMessagePopup('success purchase!');
