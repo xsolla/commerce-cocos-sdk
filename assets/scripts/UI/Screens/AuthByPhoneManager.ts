@@ -24,6 +24,9 @@ export class AuthByPhoneManager extends Component {
     @property(Button)
     confirmCodeButton: Button;
 
+    @property(Button)
+    resendCodeButton: Button;
+
     @property(EditBox)
     credentialsEditBox: EditBox;
 
@@ -32,6 +35,19 @@ export class AuthByPhoneManager extends Component {
 
     @property(Label)
     stepCountLabel: Label;
+
+    @property(Node)
+    codeExpiresInContainer: Node;
+
+    @property(Label)
+    codeExpiresInLabel: Label;
+
+    @property(Label)
+    codeExpiredLabel: Label;
+
+    private _expiresInInverval: number;
+
+    private _expiresInCurrentTime: number;
 
     private _operationId: string;
 
@@ -47,6 +63,7 @@ export class AuthByPhoneManager extends Component {
 
     onDisable() {
         this.removeListeners();
+        clearTimeout( this._expiresInInverval);
     }
 
     changeStep(step: number) {
@@ -57,6 +74,35 @@ export class AuthByPhoneManager extends Component {
         this.credentialsScreen.active = this._step == 1;
         this.confirmationScreen.active = this._step == 2;
         this.stepCountLabel.string = `${this._step}/2`;
+
+        clearTimeout( this._expiresInInverval);
+        if(step == 2) {
+            this._expiresInCurrentTime = 180;
+            this.confirmCodeButton.node.active = true;
+            this.resendCodeButton.node.active = false;
+            this.codeExpiresInContainer.active = true;
+            this.codeExpiredLabel.node.active = false;
+            this.updateExpiresInTime();
+        }
+    }
+
+    updateExpiresInTime() {
+        this._expiresInCurrentTime--;
+        let minutes: number = (this._expiresInCurrentTime - this._expiresInCurrentTime % 60) / 60;
+        let seconds: number = this._expiresInCurrentTime % 60;
+        let minutesStr: string = minutes > 9 ? minutes.toString() : '0' + minutes.toString();
+        let secondsStr: string = seconds > 9 ? seconds.toString() : '0' + seconds.toString();
+        this.codeExpiresInLabel.string = `${minutesStr}:${secondsStr}`;
+        if(this._expiresInCurrentTime > 0) {
+            this._expiresInInverval = setTimeout(() => {
+                this.updateExpiresInTime();
+            }, 1000);
+        } else {
+            this.confirmCodeButton.node.active = false;
+            this.resendCodeButton.node.active = true;
+            this.codeExpiresInContainer.active = false;
+            this.codeExpiredLabel.node.active = true;
+        }
     }
 
     onBackClicked() {
@@ -98,10 +144,15 @@ export class AuthByPhoneManager extends Component {
         this.confirmCodeButton.interactable = this.confirmationCodeEditBox.string.length > 0;
     }
 
+    resendCodeClicked() {
+        this.sendCodeClicked();
+    }
+
     addListeners () {
         this.backButton.node.on(Button.EventType.CLICK, this.onBackClicked, this);
         this.sendCodeButton.node.on(Button.EventType.CLICK, this.sendCodeClicked, this);
         this.confirmCodeButton.node.on(Button.EventType.CLICK, this.confirmCodeClicked, this);
+        this.resendCodeButton.node.on(Button.EventType.CLICK, this.resendCodeClicked, this);
 
         this.credentialsEditBox.node.on(EditBox.EventType.TEXT_CHANGED, this.onCredentialsChanged, this);
         this.confirmationCodeEditBox.node.on(EditBox.EventType.TEXT_CHANGED, this.onConfirmCodeChanged, this);
@@ -111,6 +162,7 @@ export class AuthByPhoneManager extends Component {
         this.backButton.node.off(Button.EventType.CLICK, this.onBackClicked, this);
         this.sendCodeButton.node.off(Button.EventType.CLICK, this.sendCodeClicked, this);
         this.confirmCodeButton.node.off(Button.EventType.CLICK, this.confirmCodeClicked, this);
+        this.resendCodeButton.node.off(Button.EventType.CLICK, this.resendCodeClicked, this);
 
         this.credentialsEditBox.node.off(EditBox.EventType.TEXT_CHANGED, this.onCredentialsChanged, this);
         this.confirmationCodeEditBox.node.off(EditBox.EventType.TEXT_CHANGED, this.onConfirmCodeChanged, this);
