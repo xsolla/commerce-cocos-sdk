@@ -34,11 +34,12 @@ export class AttributeItem extends Component {
         this.removeListeners();
     }
 
-    init(data: UserAttribute, parent:UserAttributesManager) {
+    init(data: UserAttribute, parent: UserAttributesManager, isUserEditable: boolean) {
         this.attributeKey.string = data.key;
         this.attributeValue.string = data.value;
         this._parent = parent;
         this.data = data;
+        this.editButton.node.active = isUserEditable;
     }
 
     onEditClicked() {

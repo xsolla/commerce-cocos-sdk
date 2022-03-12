@@ -4,6 +4,7 @@ import { _decorator, Component, Node, Button, Prefab, ScrollView, instantiate, E
 import { UserAttribute, XsollaUserAccount } from 'db://xsolla-commerce-sdk/scripts/api/XsollaUserAccount';
 import { TokenStorage } from '../../Common/TokenStorage';
 import { AttributeItem } from '../Misc/AttributeItem';
+import { GroupsItem } from '../Misc/GroupsItem';
 import { UIManager, UIScreenType } from '../UIManager';
 import { AddUserAttributeManager } from './AddUserAttributeManager';
 import { EditUserAttributeManager } from './EditUserAttributeManager';
@@ -31,10 +32,30 @@ export class UserAttributesManager extends Component {
     attributeItemPrefab: Prefab;
 
     @property(ScrollView)
-    attributesList: ScrollView;
+    userEditableAttributesList: ScrollView;
+
+    @property(ScrollView)
+    readOnlyAttributesList: ScrollView;
+
+    @property(GroupsItem)
+    readOnlyGroupItem: GroupsItem;
+
+    @property(GroupsItem)
+    userEditableGroupItem: GroupsItem;
+
+    @property(Node)
+    readOnlyAttributesScreen: Node;
+
+    @property(Node)
+    userEditableAttributesScreen: Node;
+
+    private _selectedGroup: string;
 
     start() {
         this.addAttributeManager.init(this);
+        this.readOnlyGroupItem.init('readOnly', 'READ-ONLY');
+        this.userEditableGroupItem.init('userEditable', 'USER-EDITABLE');
+        this.groupSelected('readOnly');
     }
 
     onEnable() {
@@ -51,26 +72,37 @@ export class UserAttributesManager extends Component {
     }
 
     onCancelClicked() {
-        this.openAttributeScreen(this.allAttributesScreen);
+        this.openAttributeScreen(this.allAttributesScreen, false);
     }
 
     onAddAttributeClicked() {
         this.openAttributeScreen(this.addAttributeManager.node);
     }
 
-    openAttributeScreen(currentScreen:Node) {
+    openAttributeScreen(currentScreen: Node, needToUpdate: boolean = true) {
         if(currentScreen == this.allAttributesScreen) {
-            this.attributesList.content.destroyAllChildren();
-            UIManager.instance.showLoaderPopup(true);
-            XsollaUserAccount.getUserAttributes(TokenStorage.token.access_token, null, null, attributes => {
-                UIManager.instance.showLoaderPopup(false);
-                this.populateAttributesList(attributes);
-                this.attributesList.scrollToTop();
-            }, err => {
-                UIManager.instance.showLoaderPopup(false);
-                console.log(err);
-                UIManager.instance.showErrorPopup(err.description);
-            });
+            if(needToUpdate) {
+                this.readOnlyAttributesList.content.destroyAllChildren();
+                this.userEditableAttributesList.content.destroyAllChildren();
+                UIManager.instance.showLoaderPopup(true);
+                XsollaUserAccount.getUserAttributes(TokenStorage.token.access_token, null, null, userEditableAttributes => {
+                    XsollaUserAccount.getUserReadOnlyAttributes(TokenStorage.token.access_token, null, null, readOnlyAttributes => {
+                        UIManager.instance.showLoaderPopup(false);
+                        this.populateUserEditableAttributesList(userEditableAttributes);
+                        this.userEditableAttributesList.scrollToTop();
+                        this.populateReadOnlyAttributesList(readOnlyAttributes);
+                        this.readOnlyAttributesList.scrollToTop();
+                    }, err => {
+                        UIManager.instance.showLoaderPopup(false);
+                        console.log(err);
+                        UIManager.instance.showErrorPopup(err.description);
+                    });
+                }, err => {
+                    UIManager.instance.showLoaderPopup(false);
+                    console.log(err);
+                    UIManager.instance.showErrorPopup(err.description);
+                });
+            }
         }
 
         this.allAttributesScreen.active = false;
@@ -84,12 +116,21 @@ export class UserAttributesManager extends Component {
         this.editAttributeManager.init(this, data);
     }
 
-    populateAttributesList(attributes: Array<UserAttribute>) {
+    populateUserEditableAttributesList(attributes: Array<UserAttribute>) {
         for (let i = 0; i < attributes.length; ++i) {
             let attributeItem = instantiate(this.attributeItemPrefab);            
-            this.attributesList.content.addChild(attributeItem);
+            this.userEditableAttributesList.content.addChild(attributeItem);
             let attributesData = attributes[i];
-            attributeItem.getComponent(AttributeItem).init(attributesData, this);
+            attributeItem.getComponent(AttributeItem).init(attributesData, this, true);
+        }
+    }
+
+    populateReadOnlyAttributesList(attributes: Array<UserAttribute>) {
+        for (let i = 0; i < attributes.length; ++i) {
+            let attributeItem = instantiate(this.attributeItemPrefab);            
+            this.readOnlyAttributesList.content.addChild(attributeItem);
+            let attributesData = attributes[i];
+            attributeItem.getComponent(AttributeItem).init(attributesData, this, false);
         }
     }
 
@@ -125,20 +166,31 @@ export class UserAttributesManager extends Component {
 
     editAttribute(data:UserAttribute, newKey: string, newValue: string) {
         let arr: Array<UserAttribute> = new Array<UserAttribute>();
-        for(let attributeNode of this.attributesList.content.children) {
+        for(let attributeNode of this.userEditableAttributesList.content.children) {
             let attributeItem: AttributeItem = attributeNode.getComponent(AttributeItem);
             let userAttribute:UserAttribute = attributeItem.data;
            if(data == attributeItem.data) {
-               userAttribute.key = newKey;
-               userAttribute.value = newValue;
+                continue;
            }
            arr.push(userAttribute);
         }
+        let newAttribute: UserAttribute = {
+            key: newKey,
+            value: newValue,
+            permission: 'public'
+        };
+        arr.push(newAttribute);
 
         UIManager.instance.showLoaderPopup(true);
         XsollaUserAccount.updateUserAttributes(TokenStorage.token.access_token, arr, () => {
-            UIManager.instance.showLoaderPopup(false);
-            this.openAttributeScreen(this.allAttributesScreen);
+            XsollaUserAccount.removeUserAttributes(TokenStorage.token.access_token, [data.key], () => {
+                UIManager.instance.showLoaderPopup(false);
+                this.openAttributeScreen(this.allAttributesScreen);
+            }, err => {
+                console.log(err);
+                UIManager.instance.showErrorPopup(err.description);
+                UIManager.instance.showLoaderPopup(false);
+            });
         }, err => {
             console.log(err);
             UIManager.instance.showErrorPopup(err.description);
@@ -146,13 +198,28 @@ export class UserAttributesManager extends Component {
         });
     }
 
+    groupSelected(groupId: string) {
+        if(this._selectedGroup == groupId) {
+            return;
+        }
+        this.readOnlyGroupItem.select( this.readOnlyGroupItem.groupId == groupId);
+        this.readOnlyAttributesScreen.active = this.readOnlyGroupItem.groupId == groupId;
+        this.userEditableGroupItem.select( this.userEditableGroupItem.groupId == groupId);
+        this.userEditableAttributesScreen.active = this.userEditableGroupItem.groupId == groupId;
+
+    }
+
     addListeners () {
         this.backButton.node.on(Button.EventType.CLICK, this.onBackClicked, this);
         this.addAttributeButton.node.on(Button.EventType.CLICK, this.onAddAttributeClicked, this);
+        this.readOnlyGroupItem.node.on(GroupsItem.GROUP_CLICK, this.groupSelected, this);
+        this.userEditableGroupItem.node.on(GroupsItem.GROUP_CLICK, this.groupSelected, this);
     }
 
     removeListeners () {
         this.backButton.node.off(Button.EventType.CLICK, this.onBackClicked, this);
         this.addAttributeButton.node.off(Button.EventType.CLICK, this.onAddAttributeClicked, this);
+        this.readOnlyGroupItem.node.off(GroupsItem.GROUP_CLICK, this.groupSelected, this);
+        this.userEditableGroupItem.node.off(GroupsItem.GROUP_CLICK, this.groupSelected, this);
     }
 }
