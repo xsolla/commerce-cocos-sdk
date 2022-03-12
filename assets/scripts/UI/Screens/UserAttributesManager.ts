@@ -5,6 +5,8 @@ import { UserAttribute, XsollaUserAccount } from 'db://xsolla-commerce-sdk/scrip
 import { TokenStorage } from '../../Common/TokenStorage';
 import { AttributeItem } from '../Misc/AttributeItem';
 import { UIManager, UIScreenType } from '../UIManager';
+import { AddUserAttributeManager } from './AddUserAttributeManager';
+import { EditUserAttributeManager } from './EditUserAttributeManager';
 const { ccclass, property } = _decorator;
  
 @ccclass('UserAttributesManager')
@@ -16,26 +18,14 @@ export class UserAttributesManager extends Component {
     @property(Button)
     addAttributeButton: Button;
 
-    @property(Button)
-    saveButton: Button;
-
-    @property(Button)
-    cancelButton: Button;
-
-    @property(Button)
-    closeAddAttributeButton: Button;
-
-    @property(EditBox)
-    keyEditBox: EditBox;
-
-    @property(EditBox)
-    valueEditBox: EditBox;
-
     @property(Node)
     allAttributesScreen: Node;
 
-    @property(Node)
-    addAttributeScreen: Node;
+    @property(AddUserAttributeManager)
+    addAttributeManager: AddUserAttributeManager;
+
+    @property(EditUserAttributeManager)
+    editAttributeManager: EditUserAttributeManager;
 
     @property(Prefab)
     attributeItemPrefab: Prefab;
@@ -44,11 +34,11 @@ export class UserAttributesManager extends Component {
     attributesList: ScrollView;
 
     start() {
-        
+        this.addAttributeManager.init(this);
     }
 
     onEnable() {
-        this.openAllAttributesScreen(this.addAttributeScreen);
+        this.openAttributeScreen(this.allAttributesScreen);
         this.addListeners();
     }
 
@@ -60,47 +50,38 @@ export class UserAttributesManager extends Component {
         UIManager.instance.openScreen(UIScreenType.MainMenu);
     }
 
-    onAddAttributeClicked() {
-        this.openAddAttributeScreen(this.allAttributesScreen);
-    }
-
-    onSaveClicked() {
-        this.addAttribute(this.keyEditBox.string, this.valueEditBox.string);
-    }
-
     onCancelClicked() {
-        this.openAllAttributesScreen(this.addAttributeScreen);
+        this.openAttributeScreen(this.allAttributesScreen);
     }
 
-    onAttributeDataChanged() {
-        this.saveButton.interactable = this.keyEditBox.string.length > 0 && this.valueEditBox.string.length > 0;
+    onAddAttributeClicked() {
+        this.openAttributeScreen(this.addAttributeManager.node);
     }
 
-    openAllAttributesScreen(currentScreen:Node) {
-        this.clearAttributesList();
-        UIManager.instance.showLoaderPopup(true);
-        XsollaUserAccount.getUserAttributes(TokenStorage.token.access_token, null, null, attributes => {
-            UIManager.instance.showLoaderPopup(false);
-            this.populateAttributesList(attributes);
-            this.attributesList.scrollToTop();
-        }, err => {
-            UIManager.instance.showLoaderPopup(false);
-            console.log(err);
-            UIManager.instance.showErrorPopup(err.description);
-        });
+    openAttributeScreen(currentScreen:Node) {
+        if(currentScreen == this.allAttributesScreen) {
+            this.attributesList.content.destroyAllChildren();
+            UIManager.instance.showLoaderPopup(true);
+            XsollaUserAccount.getUserAttributes(TokenStorage.token.access_token, null, null, attributes => {
+                UIManager.instance.showLoaderPopup(false);
+                this.populateAttributesList(attributes);
+                this.attributesList.scrollToTop();
+            }, err => {
+                UIManager.instance.showLoaderPopup(false);
+                console.log(err);
+                UIManager.instance.showErrorPopup(err.description);
+            });
+        }
 
-        currentScreen.active = false;
-        this.allAttributesScreen.active = true;
+        this.allAttributesScreen.active = false;
+        this.editAttributeManager.node.active = false;
+        this.addAttributeManager.node.active = false;
+        currentScreen.active = true;
     }
 
-    openAddAttributeScreen(currentScreen:Node) {
-        this.keyEditBox.string = '';
-        this.valueEditBox.string = '';        
-
-        currentScreen.active = false;
-        this.addAttributeScreen.active = true;
-
-        this.saveButton.interactable = false;
+    openEditAttributeScreen(data: UserAttribute) {
+        this.openAttributeScreen(this.editAttributeManager.node);
+        this.editAttributeManager.init(this, data);
     }
 
     populateAttributesList(attributes: Array<UserAttribute>) {
@@ -121,7 +102,7 @@ export class UserAttributesManager extends Component {
 
         UIManager.instance.showLoaderPopup(true);
         XsollaUserAccount.updateUserAttributes(TokenStorage.token.access_token, [newAttrinbute], () => {
-            this.openAllAttributesScreen(this.addAttributeScreen);
+            this.openAttributeScreen(this.allAttributesScreen);
             UIManager.instance.showLoaderPopup(false);
         }, err => {
             console.log(err);
@@ -130,10 +111,10 @@ export class UserAttributesManager extends Component {
         });
     }
 
-    removeAttribute(key:string, attributeItem:Node) {
+    removeAttribute(key:string) {
         UIManager.instance.showLoaderPopup(true);
         XsollaUserAccount.removeUserAttributes(TokenStorage.token.access_token, [key], () => {
-            this.attributesList.content.removeChild(attributeItem);
+            this.openAttributeScreen(this.allAttributesScreen);
             UIManager.instance.showLoaderPopup(false);
         }, err => {
             console.log(err);
@@ -142,29 +123,36 @@ export class UserAttributesManager extends Component {
         });
     }
 
-    clearAttributesList() {
-        this.attributesList.content.destroyAllChildren();
+    editAttribute(data:UserAttribute, newKey: string, newValue: string) {
+        let arr: Array<UserAttribute> = new Array<UserAttribute>();
+        for(let attributeNode of this.attributesList.content.children) {
+            let attributeItem: AttributeItem = attributeNode.getComponent(AttributeItem);
+            let userAttribute:UserAttribute = attributeItem.data;
+           if(data == attributeItem.data) {
+               userAttribute.key = newKey;
+               userAttribute.value = newValue;
+           }
+           arr.push(userAttribute);
+        }
+
+        UIManager.instance.showLoaderPopup(true);
+        XsollaUserAccount.updateUserAttributes(TokenStorage.token.access_token, arr, () => {
+            UIManager.instance.showLoaderPopup(false);
+            this.openAttributeScreen(this.allAttributesScreen);
+        }, err => {
+            console.log(err);
+            UIManager.instance.showErrorPopup(err.description);
+            UIManager.instance.showLoaderPopup(false);
+        });
     }
 
     addListeners () {
         this.backButton.node.on(Button.EventType.CLICK, this.onBackClicked, this);
         this.addAttributeButton.node.on(Button.EventType.CLICK, this.onAddAttributeClicked, this);
-        this.saveButton.node.on(Button.EventType.CLICK, this.onSaveClicked, this);
-        this.cancelButton.node.on(Button.EventType.CLICK, this.onCancelClicked, this);
-        this.closeAddAttributeButton.node.on(Button.EventType.CLICK, this.onCancelClicked, this);
-
-        this.keyEditBox.node.on(EditBox.EventType.TEXT_CHANGED, this.onAttributeDataChanged, this);
-        this.valueEditBox.node.on(EditBox.EventType.TEXT_CHANGED, this.onAttributeDataChanged, this);
     }
 
     removeListeners () {
         this.backButton.node.off(Button.EventType.CLICK, this.onBackClicked, this);
         this.addAttributeButton.node.off(Button.EventType.CLICK, this.onAddAttributeClicked, this);
-        this.saveButton.node.off(Button.EventType.CLICK, this.onSaveClicked, this);
-        this.cancelButton.node.off(Button.EventType.CLICK, this.onCancelClicked, this);
-        this.closeAddAttributeButton.node.off(Button.EventType.CLICK, this.onCancelClicked, this);
-
-        this.keyEditBox.node.off(EditBox.EventType.TEXT_CHANGED, this.onAttributeDataChanged, this);
-        this.valueEditBox.node.off(EditBox.EventType.TEXT_CHANGED, this.onAttributeDataChanged, this);
     }
 }

@@ -763,7 +763,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Button_Remove",
+    "_name": "Button_Edit",
     "_objFlags": 0,
     "_parent": {
       "__id__": 1
@@ -914,7 +914,7 @@
       "a": 255
     },
     "_spriteFrame": {
-      "__uuid__": "9a388559-38a9-4a26-b178-1bf629164147@f9941",
+      "__uuid__": "84c1aefb-df04-4f3c-b143-7dc5c6473e30@f9941",
       "__expectedType__": "cc.SpriteFrame"
     },
     "_type": 0,
@@ -1016,15 +1016,15 @@
       "a": 255
     },
     "_normalSprite": {
-      "__uuid__": "9a388559-38a9-4a26-b178-1bf629164147@f9941",
+      "__uuid__": "84c1aefb-df04-4f3c-b143-7dc5c6473e30@f9941",
       "__expectedType__": "cc.SpriteFrame"
     },
     "_hoverSprite": {
-      "__uuid__": "b341be67-3f02-4a1c-824a-135c92a33337@f9941",
+      "__uuid__": "292e3815-3720-4239-8c1e-737cac084948@f9941",
       "__expectedType__": "cc.SpriteFrame"
     },
     "_pressedSprite": {
-      "__uuid__": "ab41d35e-2150-409f-8fe1-09889fc645a9@f9941",
+      "__uuid__": "d6cebbc1-d55e-45d4-8b62-4f7f4e87e956@f9941",
       "__expectedType__": "cc.SpriteFrame"
     },
     "_disabledSprite": {
@@ -1378,7 +1378,7 @@
     "attributeValue": {
       "__id__": 29
     },
-    "removeButton": {
+    "editButton": {
       "__id__": 43
     },
     "_id": ""

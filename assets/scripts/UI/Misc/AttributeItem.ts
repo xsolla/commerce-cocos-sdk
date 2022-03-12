@@ -2,7 +2,8 @@
 
 import { _decorator, Component, Node, Label, Event, Button } from 'cc';
 import { UserAttribute } from 'db://xsolla-commerce-sdk/scripts/api/XsollaUserAccount';
-import { CharacterManager } from '../Screens/CharacterManager';
+import { UserAttributesManager } from '../Screens/UserAttributesManager';
+
 const { ccclass, property } = _decorator;
  
 @ccclass('AttributeItem')
@@ -15,9 +16,11 @@ export class AttributeItem extends Component {
     attributeValue: Label;
 
     @property(Button)
-    removeButton: Button;
+    editButton: Button;
 
-    private _parent: CharacterManager;
+    data: UserAttribute;
+
+    private _parent: UserAttributesManager;
 
     start() {
         
@@ -31,21 +34,22 @@ export class AttributeItem extends Component {
         this.removeListeners();
     }
 
-    init(data: UserAttribute, parent:CharacterManager) {
+    init(data: UserAttribute, parent:UserAttributesManager) {
         this.attributeKey.string = data.key;
         this.attributeValue.string = data.value;
         this._parent = parent;
+        this.data = data;
     }
 
-    onRemoveClicked() {
-        this._parent.removeAttribute(this.attributeKey.string, this.node);
+    onEditClicked() {
+        this._parent.openEditAttributeScreen(this.data);
     }
 
     addListeners () {
-        this.removeButton.node.on(Button.EventType.CLICK, this.onRemoveClicked, this);
+        this.editButton.node.on(Button.EventType.CLICK, this.onEditClicked, this);
     }
 
     removeListeners () {
-        this.removeButton.node.off(Button.EventType.CLICK, this.onRemoveClicked, this);
+        this.editButton.node.off(Button.EventType.CLICK, this.onEditClicked, this);
     }
 }
