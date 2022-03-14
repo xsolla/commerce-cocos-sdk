@@ -93,6 +93,15 @@
     "authType": 1,
     "clientId": 57,
     "enableSandbox": true,
+    "paymentInterfaceTheme": 4,
+    "paymentInterfaceSize": 1,
+    "paymentInterfaceVersion": 0,
+    "overrideRedirectPolicy": false,
+    "returnUrl": "",
+    "redirectCondition": 0,
+    "redirectDelay": 0,
+    "redirectStatusManual": 0,
+    "redirectButtonCaption": "",
     "_id": "7bnuxAPgFAZ7YO6adCxD57"
   },
   {

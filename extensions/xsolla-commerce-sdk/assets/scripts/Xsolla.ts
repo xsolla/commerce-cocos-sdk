@@ -36,7 +36,7 @@ export enum PaymentRedirectStatusManual {
 	vc = 1,
 	successful = 2,
     successful_or_canceled = 3,
-    any = 3
+    any = 4
 }
 
 export interface XsollaSettings {
