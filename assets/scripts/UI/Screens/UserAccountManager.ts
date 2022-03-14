@@ -152,17 +152,47 @@ export class UserAccountManager extends Component {
     }
 
     modifyUserAccountData(userDetailsUpdate: UserDetailsUpdate) {
+        if (sys.isBrowser) {
+            this.modifyUserAccountDataBrowser(userDetailsUpdate);
+        }
+        if (sys.platform.toLowerCase() == 'android') {
+            this.modifyUserAccountDataAndroid(userDetailsUpdate);
+        }
+        if (sys.platform.toLowerCase() == 'ios') {
+            this.modifyUserAccountDataIos(userDetailsUpdate);
+        }
+    }
+
+    modifyUserAccountDataBrowser(userDetailsUpdate: UserDetailsUpdate) {
         UIManager.instance.showLoaderPopup(true);
         XsollaUserAccount.updateUserDetails(TokenStorage.token.access_token, userDetailsUpdate, userDetails => {
-            UIManager.instance.showLoaderPopup(false);
-            this.refreshUserAccountItems(userDetails);
-            this.refreshUserAvatar(userDetails);
-        }, err => {
-            console.log(err);
-            UIManager.instance.showLoaderPopup(false);
-            UIManager.instance.showErrorPopup(err.description);
-            this.refreshUserAccountData();
-        });
+            this.handleSuccessfulUserAccountDataUpdate();
+        }, err => this.handleErrorUserAccountDataUpdate);
+    }
+
+    modifyUserAccountDataAndroid(userDetailsUpdate: UserDetailsUpdate) {
+        UIManager.instance.showLoaderPopup(true);
+        jsb.reflection.callStaticMethod("com/cocos/game/XsollaNativeUtils", "modifyUserAccountData",
+        "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)V",
+            TokenStorage.token.access_token, userDetailsUpdate.birthday,
+            userDetailsUpdate.first_name, userDetailsUpdate.gender,
+            userDetailsUpdate.last_name, userDetailsUpdate.nickname, Xsolla.settings.authType == AuthenticationType.Oauth2);
+    }
+
+    modifyUserAccountDataIos(userDetailsUpdate: UserDetailsUpdate) {
+        //
+    }
+
+    handleSuccessfulUserAccountDataUpdate() {
+        UIManager.instance.showLoaderPopup(false);
+        this.refreshUserAccountData();
+    }
+
+    handleErrorUserAccountDataUpdate(error: string) {
+        console.log(error);
+        UIManager.instance.showLoaderPopup(false);
+        UIManager.instance.showErrorPopup(error);
+        this.refreshUserAccountData();
     }
 
     modifyUserPhoneNumber(phoneNumberUpdate: string) {

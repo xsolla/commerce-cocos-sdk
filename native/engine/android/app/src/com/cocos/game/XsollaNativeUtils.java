@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import com.cocos.lib.CocosHelper;
 import com.cocos.lib.CocosJavascriptJavaBridge;
 import com.xsolla.android.login.XLogin;
+import com.xsolla.android.login.callback.UpdateCurrentUserDetailsCallback;
 import com.xsolla.android.login.callback.UploadCurrentUserAvatarCallback;
 import com.xsolla.android.login.entity.response.PictureResponse;
 import com.xsolla.android.login.token.TokenUtils;
@@ -83,6 +84,39 @@ public class XsollaNativeUtils {
                     @Override
                     public void run() {
                         CocosJavascriptJavaBridge.evalString("cc.find(\"Canvas/pref_UserAccountScreen\").getComponent(\"UserAccountManager\").handleErrorAvatarUpdate(\"" + s + "\")");
+                    }
+                });
+            }
+        });
+    }
+
+    public static void modifyUserAccountData(String token, String birthday, String firstName, String gender, String lastName, String nickname, boolean isOauth) {
+
+        TokenUtils tokenUtils = new TokenUtils(AppActivity.getAppActivity());
+        if(isOauth) {
+            tokenUtils.setOauthAccessToken(token);
+        }
+        else {
+            tokenUtils.setJwtToken(token);
+        }
+
+        XLogin.updateCurrentUserDetails(birthday,firstName,gender,lastName,nickname, new UpdateCurrentUserDetailsCallback() {
+            @Override
+            public void onSuccess() {
+                CocosHelper.runOnGameThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        CocosJavascriptJavaBridge.evalString("cc.find(\"Canvas/pref_UserAccountScreen\").getComponent(\"UserAccountManager\").handleSuccessfulUserAccountDataUpdate()");
+                    }
+                });
+            }
+
+            @Override
+            public void onError(@Nullable Throwable throwable, @Nullable String s) {
+                CocosHelper.runOnGameThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        CocosJavascriptJavaBridge.evalString("cc.find(\"Canvas/pref_UserAccountScreen\").getComponent(\"UserAccountManager\").handleErrorUserAccountDataUpdate(\"" + s + "\")");
                     }
                 });
             }
