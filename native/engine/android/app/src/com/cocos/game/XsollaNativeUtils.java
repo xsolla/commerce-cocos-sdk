@@ -31,7 +31,7 @@ public class XsollaNativeUtils {
         return Build.MANUFACTURER + Build.MODEL;
     }
 
-    public static void modifyUserProfilePicture(String filePath, String token, boolean isOauth) {
+    public static void updateUserProfilePicture(String filePath, String token, boolean isOauth) {
         AssetManager assetManager = AppActivity.getAppActivity().getAssets();
         InputStream inputStream = null;
 

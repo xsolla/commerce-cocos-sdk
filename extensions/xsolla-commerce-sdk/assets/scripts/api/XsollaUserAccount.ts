@@ -83,7 +83,7 @@ export class XsollaUserAccount {
      * @zh
      * 
      */
-    static deleteUserPhoneNumber(token:string, phoneNumber:string, onComplete?:() => void, onError?:(error:LoginError) => void) {
+    static removeUserPhoneNumber(token:string, phoneNumber:string, onComplete?:() => void, onError?:(error:LoginError) => void) {
         let url = new UrlBuilder('https://login.xsolla.com/api/users/me/phone/{phoneNumber}')
             .setPathParam('phoneNumber', phoneNumber)
             .build();
@@ -137,7 +137,7 @@ export class XsollaUserAccount {
      * @zh
      * 
      */
-    static addUsernameAndEmailToAccount(token:string, email:string, password:string, username:string, receiveNewsteltters: boolean, onComplete?:(confirmationRequired:boolean) => void, onError?:(error:LoginError) => void) {
+    static addUsernameAndEmailAuthToAccount(token:string, email:string, password:string, username:string, receiveNewsteltters: boolean, onComplete?:(confirmationRequired:boolean) => void, onError?:(error:LoginError) => void) {
         let body = {
             email: email,
             password: password,
@@ -160,7 +160,7 @@ export class XsollaUserAccount {
      * @zh
      * 
      */
-    static modifyUserProfilePicture(token:string, buffer?:Uint8Array, onComplete?:() => void, onError?:(error:LoginError) => void) {
+    static updateUserProfilePicture(token:string, buffer?:Uint8Array, onComplete?:() => void, onError?:(error:LoginError) => void) {
         if (buffer == null) {
             onError?.({ code:'-1', description:'Picture is invalid.'});
             return;
@@ -341,7 +341,7 @@ export class XsollaUserAccount {
      * @zh
      * 
      */
-     static searchFriendByNickname(token:string, nickname:string, onComplete?:(resultData: UserSearchResult) => void, onError?:(error:LoginError) => void,
+     static searchUsersByNickname(token:string, nickname:string, onComplete?:(resultData: UserSearchResult) => void, onError?:(error:LoginError) => void,
         offset:number = 0, limit:number = 100) {
         let url = new UrlBuilder('https://login.xsolla.com/api/users/search/by_nickname')
             .addStringParam('nickname', nickname)
@@ -362,7 +362,7 @@ export class XsollaUserAccount {
      * @zh
      * 
      */
-     static getFriendProfile(token:string, userID:string, onComplete?:(receivedUserProfile: PublicProfile) => void, onError?:(error:LoginError) => void) {
+     static getPublicInfo(token:string, userID:string, onComplete?:(receivedUserProfile: PublicProfile) => void, onError?:(error:LoginError) => void) {
         let url = new UrlBuilder('https://login.xsolla.com/api/users/{userID}/public')
             .setPathParam('userID', userID)
             .build();

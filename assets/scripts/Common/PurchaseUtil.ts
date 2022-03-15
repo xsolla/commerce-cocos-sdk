@@ -20,7 +20,7 @@ export class PurchaseUtil {
         if(isVirtual) {
             UIManager.instance.showConfirmationPopup('Are you sure you want to purchase this item?', 'CONFIRM', () => {
                 UIManager.instance.showLoaderPopup(true);
-                XsollaCatalog.buyItemWithVirtualCurrency(TokenStorage.getToken().access_token, item.sku, item.virtual_prices[0].sku, orderId => {
+                XsollaCatalog.purchaseItemForVirtualCurrency(TokenStorage.getToken().access_token, item.sku, item.virtual_prices[0].sku, orderId => {
                     UIManager.instance.showLoaderPopup(false);
                     UIManager.instance.showMessagePopup('Your order has been successfully processed!');
                     onSuccessPurchase?.();
@@ -53,7 +53,6 @@ export class PurchaseUtil {
                 this.openPaystationWidget(result.orderId, result.token, Xsolla.settings.enableSandbox, () => {
                     this.checkPendingOrder(result.orderId, () => {
                         onSuccessPurchase?.();
-                        this.сlosePaystationWidget();
                     });
                 }, () => {
                     this.сlosePaystationWidget();

@@ -86,7 +86,7 @@ export class StoreManager extends Component {
         this.addListeners();
         this.redeemCouponManager.init(this);
         UIManager.instance.showLoaderPopup(true);
-        XsollaCatalog.getVirtualItems('', '', [], storeItemsData => {
+        XsollaCatalog.getCatalog('', '', [], storeItemsData => {
             XsollaCatalog.getVirtualCurrencyPackages('', '', [], currencyPackagesData => {
                 this.vcPackageitems = currencyPackagesData.items;
                 for(let currencyPackage of this.vcPackageitems) {
@@ -105,7 +105,7 @@ export class StoreManager extends Component {
                     };
                     currencyPackage.groups.push(group);
                 }
-                XsollaCatalog.getBundles('', '', [], bundlesList => {
+                XsollaCatalog.getBundleList('', '', [], bundlesList => {
                     XsollaInventory.getInventory(TokenStorage.getToken().access_token, null, inventoryData => {
                         UIManager.instance.showLoaderPopup(false);
                         for(let bundle of bundlesList.items) {

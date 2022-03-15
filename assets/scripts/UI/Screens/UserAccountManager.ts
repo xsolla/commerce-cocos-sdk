@@ -208,25 +208,25 @@ export class UserAccountManager extends Component {
         });
     }
 
-    modifyUserAvatarBrowser(avatarUpdate: Texture2D) {
+    updateUserAvatarBrowser(avatarUpdate: Texture2D) {
         UIManager.instance.showLoaderPopup(true);
         ImageUtils.getBase64Image(avatarUpdate, base64image => {
             let base64imageWithoutHeader: string = base64image.substring(base64image.indexOf(',') + 1);
             let buffer = Uint8Array.from(atob(base64imageWithoutHeader), c => c.charCodeAt(0));
-            XsollaUserAccount.modifyUserProfilePicture(TokenStorage.getToken().access_token, buffer,
+            XsollaUserAccount.updateUserProfilePicture(TokenStorage.getToken().access_token, buffer,
                 () => this.handleSuccessfulAvatarUpdate(), error => this.handleErrorAvatarUpdate(error.description));
         }, error => this.handleErrorAvatarUpdate(error));
     }
 
-    modifyUserAvatarAndroid(avatarUpdate: Texture2D) {
+    updateUserAvatarAndroid(avatarUpdate: Texture2D) {
         UIManager.instance.showLoaderPopup(true);
-        jsb.reflection.callStaticMethod("com/cocos/game/XsollaNativeUtils", "modifyUserProfilePicture", "(Ljava/lang/String;Ljava/lang/String;Z)V",
+        jsb.reflection.callStaticMethod("com/cocos/game/XsollaNativeUtils", "updateUserProfilePicture", "(Ljava/lang/String;Ljava/lang/String;Z)V",
             avatarUpdate.image.nativeUrl, TokenStorage.token.access_token, Xsolla.settings.authType == AuthenticationType.Oauth2);
     }
 
-    modifyUserAvatarIos(avatarUpdate: Texture2D) {
+    updateUserAvatarIos(avatarUpdate: Texture2D) {
         UIManager.instance.showLoaderPopup(true);
-        jsb.reflection.callStaticMethod("XsollaNativeUtils", "modifyUserProfilePicture:authToken:",
+        jsb.reflection.callStaticMethod("XsollaNativeUtils", "updateUserProfilePicture:authToken:",
             avatarUpdate.image.nativeUrl, TokenStorage.token.access_token);
     }
 
@@ -329,13 +329,13 @@ export class UserAccountManager extends Component {
 
     onAvatarEdited(texture: Texture2D) {        
         if (sys.isBrowser) {
-            this.modifyUserAvatarBrowser(texture);
+            this.updateUserAvatarBrowser(texture);
         }
         if (sys.platform.toLowerCase() == 'android') {
-            this.modifyUserAvatarAndroid(texture);
+            this.updateUserAvatarAndroid(texture);
         }
         if (sys.platform.toLowerCase() == 'ios') {
-            this.modifyUserAvatarIos(texture);
+            this.updateUserAvatarIos(texture);
         }
     }
 

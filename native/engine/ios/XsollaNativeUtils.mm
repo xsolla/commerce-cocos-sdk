@@ -23,7 +23,7 @@
 	return [UIDevice currentDevice].name;
 }
 
-+(void) modifyUserProfilePicture:(NSString*)picture authToken:(NSString*)token {
++(void) updateUserProfilePicture:(NSString*)picture authToken:(NSString*)token {
 	NSBundle *main = [NSBundle mainBundle];
 	NSString *resourcePath = [main pathForResource:picture ofType:nil];
 	NSURL *resUrl = [NSURL URLWithString:[NSString stringWithFormat: @"file://%@", resourcePath]];

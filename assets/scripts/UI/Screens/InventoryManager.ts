@@ -77,7 +77,7 @@ export class InventoryManager extends Component {
             this.inventoryItems = inventoryData.items.filter(x => x.type != 'virtual_currency');
             XsollaInventory.getSubscriptions(TokenStorage.getToken().access_token, null, subscriptionData => {
                 this.subscriptionItems = subscriptionData.items;
-                XsollaCatalog.getVirtualItems('', '', [], storeItemsData => {
+                XsollaCatalog.getCatalog('', '', [], storeItemsData => {
                     this.storeItems = storeItemsData.items;
                     if(this.inventoryItems.length > 0) {
                         this.populateGroupsList();
