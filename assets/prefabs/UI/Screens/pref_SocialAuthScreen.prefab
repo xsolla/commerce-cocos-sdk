@@ -100,7 +100,7 @@
     },
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": -131,
+      "x": -61,
       "y": 245.38,
       "z": 0
     },
@@ -1010,7 +1010,7 @@
     },
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": 235,
+      "x": 165,
       "y": 0,
       "z": 0
     },
@@ -1450,7 +1450,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 470,
+      "width": 330,
       "height": 400
     },
     "_anchorPoint": {
@@ -1555,7 +1555,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 470,
+      "width": 330,
       "height": 40
     },
     "_anchorPoint": {
@@ -1674,7 +1674,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 470,
+      "width": 330,
       "height": 400
     },
     "_anchorPoint": {
@@ -1791,7 +1791,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 500,
+      "width": 360,
       "height": 640
     },
     "_anchorPoint": {
@@ -2189,7 +2189,7 @@
     "__type__": "SocialNetworkItemData",
     "name": "Twitch",
     "logo": {
-      "__uuid__": "70a890b2-4880-477a-97c9-0e6f45acb797@f9941",
+      "__uuid__": "0ab7bfe7-4296-4086-91e0-38996b3b03fa@f9941",
       "__expectedType__": "cc.SpriteFrame"
     }
   },
@@ -2259,7 +2259,7 @@
   },
   {
     "__type__": "SocialNetworkItemData",
-    "name": "YouTUbe",
+    "name": "YouTube",
     "logo": {
       "__uuid__": "938762e7-33a0-4961-bc71-b0a190f0db03@f9941",
       "__expectedType__": "cc.SpriteFrame"
