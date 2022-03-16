@@ -4,22 +4,11 @@ import { _decorator, Component, Node, Button, Texture2D, instantiate, Prefab, sy
 import { UserDetails, UserDetailsUpdate, XsollaUserAccount } from 'db://xsolla-commerce-sdk/scripts/api/XsollaUserAccount';
 import { AuthenticationType, Xsolla } from 'db://xsolla-commerce-sdk/scripts/Xsolla';
 import { TokenStorage } from '../../Common/TokenStorage';
-import { SocialNetworkLinkItem } from '../Misc/SocialNetworkLinkItem';
 import { UserAccountItem } from '../Misc/UserAccountItem';
 import { UserAvatarItem } from '../Misc/UserAvatarItem';
 import { UIManager, UIScreenType } from '../UIManager';
 import { ImageUtils } from '../Utils/ImageUtils';
 const { ccclass, property } = _decorator;
-
-@ccclass('SocialNetworkLinkItemData')
-export class SocialNetworkLinkItemData {
-
-    @property(CCString)
-    name: String = '';
-
-    @property(SpriteFrame)
-    logo: SpriteFrame = null;
-}
 
 @ccclass('UserAccountManager')
 export class UserAccountManager extends Component {
@@ -72,26 +61,15 @@ export class UserAccountManager extends Component {
     @property(Button)
     removeAvatarButton: Button;
 
-    @property(ScrollView)
-    socialNetworkLinksList: ScrollView;
-
     @property(Texture2D)
     defaultAvatars: Texture2D[] = [];
 
-    @property(Prefab)
-    socialNetworkLinkItemPrefab: Prefab;
-
-    @property([SocialNetworkLinkItemData])
-    socialNetworkLinksData: SocialNetworkLinkItemData[] = [];
-
     start() {
         this.populateAvatrsList();
-        this.populateSocialNetworksList();
     }
 
     onEnable() {
         this.refreshUserAccountData();
-        this.refreskLinkedSocialNetworks();
         this.setAvatarEditMode(false);
         this.addListeners();
     }
@@ -113,16 +91,6 @@ export class UserAccountManager extends Component {
         }
     }
 
-    populateSocialNetworksList() {
-        for (let i = 0; i < this.socialNetworkLinksData.length; ++i) {
-            let socialNetworkLinkItem = instantiate(this.socialNetworkLinkItemPrefab);            
-            this.socialNetworkLinksList.content.addChild(socialNetworkLinkItem);
-            let itemLinkData = this.socialNetworkLinksData[i];
-            socialNetworkLinkItem.getComponent(SocialNetworkLinkItem).init(itemLinkData);
-            socialNetworkLinkItem.on(SocialNetworkLinkItem.LINK_NETWORK, this.onNetworkLinkClicked, this);
-        }
-    }
-
     refreshUserAccountData() {
         UIManager.instance.showLoaderPopup(true);
         XsollaUserAccount.getUserDetails(TokenStorage.token.access_token, userDetails => {
@@ -135,20 +103,6 @@ export class UserAccountManager extends Component {
             UIManager.instance.showErrorPopup(err.description);
         });
         this.avatarsList.getComponentsInChildren(UserAvatarItem).forEach(item => item.showSelection(false));
-    }
-
-    refreskLinkedSocialNetworks() {
-        UIManager.instance.showLoaderPopup(true);
-        XsollaUserAccount.getLinkedSocialAccounts(TokenStorage.token.access_token, linkedAccounts => {
-            UIManager.instance.showLoaderPopup(false);
-            linkedAccounts.forEach(account => {
-                this.refreshSocialNetworkLinkStatus(account.provider, true);
-            });
-        }, err => {
-            console.log(err);
-            UIManager.instance.showLoaderPopup(false);
-            UIManager.instance.showErrorPopup(err.description);
-        })
     }
 
     modifyUserAccountData(userDetailsUpdate: UserDetailsUpdate) {
@@ -246,33 +200,6 @@ export class UserAccountManager extends Component {
         this.avatarsList.getComponentsInChildren(UserAvatarItem).forEach(item => item.showSelection(false));
     }
 
-    linkSocialNetworkAndroid(networkName: string) {
-        // TODO
-    }
-
-    linkSocialNetworkIos(networkName: string) {
-        jsb.reflection.callStaticMethod("XsollaNativeUtils", "linkSocialNetwork:authToken:",
-            networkName, TokenStorage.token.access_token);
-    }
-
-    refreshSocialNetworkLinkStatus(networkName: string, isNetworkLinked: boolean) {
-        let socialNetworkLinkItems = this.socialNetworkLinksList.content.getComponentsInChildren(SocialNetworkLinkItem);
-        let linkedItem = socialNetworkLinkItems.find(item => item.data.name === networkName);
-        if(linkedItem) {
-            linkedItem.setIsLinked(isNetworkLinked);
-            linkedItem.node.setSiblingIndex(0);
-            this.socialNetworkLinksList.scrollToLeft();
-        }   
-    }
-
-    handleSuccessfulSocialNetworkLinking(networkName: string) {
-        this.refreshSocialNetworkLinkStatus(networkName, true);
-    }
-
-    handleErrorSocialNetworkLinking(error: string) {
-        UIManager.instance.showErrorPopup(error);
-    }
-
     refreshUserAccountItems(userDetails: UserDetails) {
         this.emailItem.setValue(userDetails.email);
         this.usernameItem.setValue(userDetails.username);
@@ -351,20 +278,6 @@ export class UserAccountManager extends Component {
 
     onAvatarPickerClosed() {
         this.setAvatarEditMode(false);
-    }
-
-    onNetworkLinkClicked(networkName: string, isNetworkLinked: boolean) {
-        if(isNetworkLinked) {
-            console.log(networkName + ' is already linked.')
-            return;
-        }
-
-        if (sys.platform.toLowerCase() == 'android') {
-            this.linkSocialNetworkAndroid(networkName);
-        }
-        if (sys.platform.toLowerCase() == 'ios') {
-            this.linkSocialNetworkIos(networkName);
-        }
     }
 
     addListeners() {
