@@ -896,7 +896,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 52.3,
+      "width": 41.84,
       "height": 25.2
     },
     "_anchorPoint": {
@@ -936,8 +936,8 @@
     "_string": "30 days",
     "_horizontalAlign": 0,
     "_verticalAlign": 1,
-    "_actualFontSize": 15,
-    "_fontSize": 15,
+    "_actualFontSize": 12,
+    "_fontSize": 12,
     "_fontFamily": "",
     "_lineHeight": 20,
     "_overflow": 0,

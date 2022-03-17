@@ -497,7 +497,7 @@
     },
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": 21.634999999999984,
+      "x": 7.902999999999999,
       "y": 0,
       "z": 0
     },
@@ -612,7 +612,7 @@
     },
     "_alignFlags": 10,
     "_target": null,
-    "_left": 68.01999999999998,
+    "_left": 54.288,
     "_right": 0,
     "_top": 0,
     "_bottom": 0,
@@ -2895,7 +2895,7 @@
         "__id__": 265
       }
     ],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 432
@@ -8599,7 +8599,7 @@
         "__id__": 416
       }
     ],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 422
