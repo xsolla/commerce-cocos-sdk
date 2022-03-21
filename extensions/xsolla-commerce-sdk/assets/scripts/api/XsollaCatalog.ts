@@ -260,10 +260,8 @@ export class XsollaCatalog {
      */
      static fetchPaymentToken(authToken:string, itemSKU:string, quantity:number, currency?:string, country?:string, locale?:string, customParameters?:object, onComplete?:(tokenResult: PaymentTokenResult) => void, onError?:(error:CommerceError) => void): void {
         
-        let paymentTheme:string = Xsolla.settings.paymentInterfaceTheme == PaymentUiTheme.default_light ? 'default' : PaymentUiTheme[Xsolla.settings.paymentInterfaceTheme];
-    
         let paymentUISettings = {
-            theme: paymentTheme,
+            theme: this.getPaymentInerfaceTheme(),
             size: PaymentUiSize[Xsolla.settings.paymentInterfaceSize],
             version: PaymentUiVersion[Xsolla.settings.paymentInterfaceVersion]
         };
@@ -309,6 +307,21 @@ export class XsollaCatalog {
             onComplete?.(tokenResult);
         }, handleCommerceError(onError));
         request.send(JSON.stringify(body));
+    }
+
+    private static getPaymentInerfaceTheme() {
+        switch(Xsolla.settings.paymentInterfaceTheme) {
+            case PaymentUiTheme.default_light:
+            return 'default';
+            case PaymentUiTheme.default_dark:
+            return 'default-dark';
+            case PaymentUiTheme.dark:
+            return 'dark';
+            case PaymentUiTheme.ps4_default_light:
+            return 'ps4-default-light';
+            case PaymentUiTheme.ps4_default_dark:
+            return 'ps4-default-dark';
+        }
     }
 }
 
