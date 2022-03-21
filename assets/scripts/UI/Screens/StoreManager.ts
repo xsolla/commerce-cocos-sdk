@@ -67,9 +67,9 @@ export class StoreManager extends Component {
 
     inventoryItems: Array<InventoryItem>;
 
-    vcBalanceItems: Array<VirtualCurrencyBalance>
+    vcBalanceItems: Array<VirtualCurrencyBalance>;
 
-    vcPackageitems: Array<VirtualCurrencyPackage>
+    vcPackageitems: Array<VirtualCurrencyPackage>;
 
     itemGroups: Map<string, string>;
 
@@ -147,7 +147,7 @@ export class StoreManager extends Component {
                                 }
                             }
 
-                            this.changeState(false);
+                            this.changeState(this._isCurrenciesOpen);
                             this.itemsList.scrollToTop();
                             this.groupsList.scrollToTop();
                             this.openAllItemsScreen();
@@ -193,11 +193,7 @@ export class StoreManager extends Component {
     }
 
     onBackClicked() {
-        if(this._isCurrenciesOpen) {
-            this.changeState(false);
-        } else {
-            UIManager.instance.openScreen(UIScreenType.MainMenu);
-        }
+        UIManager.instance.openScreen(UIScreenType.MainMenu);
     }
 
     onRedeemCouponClicked() {
@@ -229,6 +225,10 @@ export class StoreManager extends Component {
         this.noItemsScreen.active = false;
         this.itemInfoScreen.active = false;
         this.redeemCouponScreen.active = false;
+    }
+
+    SetIsCurrenciesOpen(newValue: boolean) {
+        this._isCurrenciesOpen = newValue;
     }
 
     changeState(isCurrenciesOpen: boolean) {
@@ -293,13 +293,18 @@ export class StoreManager extends Component {
     }
 
     populateVCBalanceList() {
-        this.vcBalanceList.destroyAllChildren();
+        this.destroyVCBalanceList();
         for (let i = 0; i < this.vcBalanceItems.length; ++i) {
             let vcBalanceItem = instantiate(this.vcBalanceItemPrefab);
             this.vcBalanceList.addChild(vcBalanceItem);
             let itemData = this.vcBalanceItems[i];
-            vcBalanceItem.getComponent(VCBalanceItem).init(itemData, this);
+            vcBalanceItem.getComponent(VCBalanceItem).init(itemData);
+            vcBalanceItem.on(VCBalanceItem.CURRENCY_CLICK, this.currencyClicked, this);
         }
+    }
+
+    currencyClicked() {
+        this.changeState(true);
     }
 
     destroyGroups() {
@@ -307,6 +312,13 @@ export class StoreManager extends Component {
             groupItem.off(GroupsItem.GROUP_CLICK, this.groupSelected, this);
         }
         this.groupsList.content.destroyAllChildren();
+    }
+
+    destroyVCBalanceList() {
+        for(let item of this.vcBalanceList.children) {
+            item.off(VCBalanceItem.CURRENCY_CLICK, this.currencyClicked, this);
+        }
+        this.vcBalanceList.destroyAllChildren();
     }
 
     groupSelected(groupId: string) {

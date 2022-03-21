@@ -2,7 +2,6 @@
 
 import { _decorator, Component, Sprite, Button, Label, UITransform } from 'cc';
 import { VirtualCurrencyBalance } from 'db://xsolla-commerce-sdk/scripts/api/XsollaInventory';
-import { StoreManager } from '../Screens/StoreManager';
 import { ImageUtils } from '../Utils/ImageUtils';
 const { ccclass, property } = _decorator;
  
@@ -18,9 +17,9 @@ export class VCBalanceItem extends Component {
     @property(Button)
     btn: Button;
 
-    private _parent: StoreManager;
-
     private _data: VirtualCurrencyBalance;
+
+    static CURRENCY_CLICK: string = 'currencyClick';
 
     onEnable() {
         this.addListeners();
@@ -38,9 +37,8 @@ export class VCBalanceItem extends Component {
         this.btn.node.off(Button.EventType.CLICK, this.onClicked, this);
     }
 
-    init(data: VirtualCurrencyBalance, parent:StoreManager) {
+    init(data: VirtualCurrencyBalance) {
         this._data = data;
-        this._parent = parent;
         this.value.string = data.amount.toString();
         ImageUtils.loadImage(data.image_url, spriteFrame => {
             if(this.currencyIcon != null) {
@@ -51,6 +49,6 @@ export class VCBalanceItem extends Component {
     }
 
     onClicked() {
-        this._parent.changeState(true);
+        this.node.emit(VCBalanceItem.CURRENCY_CLICK);
     }
 }

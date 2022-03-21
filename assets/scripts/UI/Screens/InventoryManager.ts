@@ -1,13 +1,15 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component, Node, ScrollView, Prefab, instantiate, Button } from 'cc';
-import { InventoryItem as XsollaInventoryItem, SubscriptionItem, XsollaInventory} from 'db://xsolla-commerce-sdk/scripts/api/XsollaInventory';
+import { InventoryItem as XsollaInventoryItem, SubscriptionItem, VirtualCurrencyBalance, XsollaInventory} from 'db://xsolla-commerce-sdk/scripts/api/XsollaInventory';
 import { StoreItem, XsollaCatalog } from 'db://xsolla-commerce-sdk/scripts/api/XsollaCatalog';
 import { TokenStorage } from '../../Common/TokenStorage';
 import { GroupsItem } from '../Misc/GroupsItem';
 import { InventoryItem } from '../Misc/InventoryItem';
 import { UIManager, UIScreenType } from '../UIManager';
 import { InventoryItemInfoManager } from './InventoryItemInfoManager';
+import { VCBalanceItem } from '../Misc/VCBalanceItem';
+import { StoreManager } from './StoreManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('InventoryManager')
@@ -43,15 +45,23 @@ export class InventoryManager extends Component {
     @property(Prefab)
     cellContainerPrefab: Prefab;
 
+    @property(Prefab)
+    vcBalanceItemPrefab: Prefab;
+
     storeItems: Array<StoreItem>;
 
     inventoryItems: Array<XsollaInventoryItem>;
+
+    vcBalanceItems: Array<VirtualCurrencyBalance>;
 
     subscriptionItems: Array<SubscriptionItem>;
 
     itemGroups: Map<string, string>;
 
     selectedGroup: string;
+
+    @property(Node)
+    vcBalanceList: Node;
 
     onEnable() {
         this.addListeners();
@@ -88,6 +98,7 @@ export class InventoryManager extends Component {
                     } else {
                         this.openNoItemsScreen();
                     }
+                    this.refreshVCBalance();
                     UIManager.instance.showLoaderPopup(false);
                 }, error => {
                     console.log(error);
@@ -214,5 +225,31 @@ export class InventoryManager extends Component {
             }
         }
         return 0;
+    }
+
+    refreshVCBalance() {
+        XsollaInventory.getVirtualCurrencyBalance(TokenStorage.getToken().access_token, null, currencyData => {
+            this.vcBalanceItems = currencyData.items;
+            this.populateVCBalanceList();
+        }, error => {
+            console.log(error);
+            UIManager.instance.showErrorPopup(error.description);
+        });
+    }
+
+    populateVCBalanceList() {
+        this.vcBalanceList.destroyAllChildren();
+        for (let i = 0; i < this.vcBalanceItems.length; ++i) {
+            let vcBalanceItem = instantiate(this.vcBalanceItemPrefab);
+            this.vcBalanceList.addChild(vcBalanceItem);
+            let itemData = this.vcBalanceItems[i];
+            vcBalanceItem.getComponent(VCBalanceItem).init(itemData);
+            vcBalanceItem.on(VCBalanceItem.CURRENCY_CLICK, this.currencyClicked, this);
+        }
+    }
+
+    currencyClicked() {
+        UIManager.instance.openScreen(UIScreenType.Store);
+        UIManager.instance.getScreen().getComponent(StoreManager).SetIsCurrenciesOpen(true);
     }
 }

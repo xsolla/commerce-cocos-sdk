@@ -141,6 +141,10 @@ export class UIManager extends Component {
         this._previousScreen?.destroy();
     }
 
+    getScreen() {
+        return this._currentScreen;
+    }
+
     showErrorPopup(errorMessage: string, onClosed?: () => void) {
         let errorPopupInstance = instantiate(this.errorPopup);
         errorPopupInstance.getComponent(ErrorPopup).showError(errorMessage, () => {
