@@ -71,6 +71,7 @@ export class StoreRedeemCouponManager extends Component {
 
     successCloseClicked() {
         this.successContainer.active = false;
+        this._parent.openAllItemsScreen();
     }
 
     redeemTextChanged() {
