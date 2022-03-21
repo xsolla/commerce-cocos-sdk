@@ -74,6 +74,11 @@
 				NSLog(@"Error code: %ld", error.code);
 
 				if(error.code == NSError.loginKitErrorCodeASCanceledLogin) {
+					NSString *errorScript = [NSString stringWithFormat: @"cc.find(\"Canvas/pref_SocialAuthScreen\").getComponent(\"SocialAuthManager\").handleCancelSocialAuth()"];
+					const char* errorScriptStr = [XsollaUtils createCStringFrom:errorScript];
+					cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
+						se::ScriptEngine::getInstance()->evalString(errorScriptStr);
+					});
 					return;
 				}
 				

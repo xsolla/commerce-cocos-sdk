@@ -77,6 +77,7 @@ export class SocialAuthManager extends Component {
     }
 
     authViaSocialNetwork(socialNetworkName:string) {
+        UIManager.instance.showLoaderPopup(true);
         if(sys.platform.toLowerCase() == 'ios') {
             jsb.reflection.callStaticMethod("XsollaNativeUtils", "authViaSocialNetwork:client:state:redirect:",
                 socialNetworkName, Xsolla.settings.clientId, 'xsollatest', 'app://xsollalogin');
@@ -87,11 +88,17 @@ export class SocialAuthManager extends Component {
     }
 
     handleSuccessfulSocialAuth(token:Token) {
+        UIManager.instance.showLoaderPopup(false);
         TokenStorage.saveToken(token, true);
         UIManager.instance.openScreen(UIScreenType.MainMenu);
     }
 
+    handleCancelSocialAuth() {
+        UIManager.instance.showLoaderPopup(false);
+    }
+
     handleErrorSocialAuth(error:string) {
+        UIManager.instance.showLoaderPopup(false);
         console.log(error);
         UIManager.instance.showErrorPopup(error);
     }

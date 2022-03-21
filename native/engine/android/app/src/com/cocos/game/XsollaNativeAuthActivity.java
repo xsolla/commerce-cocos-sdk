@@ -84,6 +84,12 @@ public class XsollaNativeAuthActivity extends Activity {
             @Override
             public void onAuthCancelled() {
                 Log.d("XsollaAuthActivity", "onAuthCancelled");
+                CocosHelper.runOnGameThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        CocosJavascriptJavaBridge.evalString("cc.find(\"Canvas/pref_SocialAuthScreen\").getComponent(\"SocialAuthManager\").handleCancelSocialAuth()");
+                    }
+                });
                 finish();
             }
 
