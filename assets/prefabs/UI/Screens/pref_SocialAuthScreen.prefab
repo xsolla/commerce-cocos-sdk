@@ -45,7 +45,7 @@
       }
     ],
     "_prefab": {
-      "__id__": 148
+      "__id__": 145
     },
     "_lpos": {
       "__type__": "cc.Vec3",
@@ -1992,15 +1992,6 @@
       },
       {
         "__id__": 144
-      },
-      {
-        "__id__": 145
-      },
-      {
-        "__id__": 146
-      },
-      {
-        "__id__": 147
       }
     ],
     "_id": ""
@@ -2043,14 +2034,6 @@
   },
   {
     "__type__": "SocialNetworkItemData",
-    "name": "ChinaTelecom",
-    "logo": {
-      "__uuid__": "452a1495-f8d3-4aca-a32c-96f3d6450dc8@f9941",
-      "__expectedType__": "cc.SpriteFrame"
-    }
-  },
-  {
-    "__type__": "SocialNetworkItemData",
     "name": "Discord",
     "logo": {
       "__uuid__": "d1215cae-9aeb-49aa-a6f8-4f9c43efed4e@f9941",
@@ -2078,14 +2061,6 @@
     "name": "Google",
     "logo": {
       "__uuid__": "3a30e04b-313b-4b67-bc07-f9e0ba9419bc@f9941",
-      "__expectedType__": "cc.SpriteFrame"
-    }
-  },
-  {
-    "__type__": "SocialNetworkItemData",
-    "name": "Instagram",
-    "logo": {
-      "__uuid__": "b19970f8-257a-4103-a0b2-f10e374736af@f9941",
       "__expectedType__": "cc.SpriteFrame"
     }
   },
@@ -2150,14 +2125,6 @@
     "name": "PayPal",
     "logo": {
       "__uuid__": "a5a8058c-4590-4724-af3b-8a7e26815f2c@f9941",
-      "__expectedType__": "cc.SpriteFrame"
-    }
-  },
-  {
-    "__type__": "SocialNetworkItemData",
-    "name": "Pinterest",
-    "logo": {
-      "__uuid__": "e52473f5-e1db-4e1a-ad79-9c3a54dc8fdd@f9941",
       "__expectedType__": "cc.SpriteFrame"
     }
   },
@@ -2276,16 +2243,16 @@
     "fileId": "3bAK8HP4lMw6m5uX+kcXBs",
     "targetOverrides": [
       {
-        "__id__": 149
+        "__id__": 146
       },
       {
-        "__id__": 151
+        "__id__": 148
+      },
+      {
+        "__id__": 150
       },
       {
         "__id__": 153
-      },
-      {
-        "__id__": 156
       }
     ]
   },
@@ -2302,7 +2269,7 @@
       "__id__": 10
     },
     "targetInfo": {
-      "__id__": 150
+      "__id__": 147
     }
   },
   {
@@ -2324,7 +2291,7 @@
       "__id__": 20
     },
     "targetInfo": {
-      "__id__": 152
+      "__id__": 149
     }
   },
   {
@@ -2339,7 +2306,7 @@
       "__id__": 20
     },
     "sourceInfo": {
-      "__id__": 154
+      "__id__": 151
     },
     "propertyPath": [
       "_textLabel"
@@ -2348,7 +2315,7 @@
       "__id__": 20
     },
     "targetInfo": {
-      "__id__": 155
+      "__id__": 152
     }
   },
   {
@@ -2369,7 +2336,7 @@
       "__id__": 20
     },
     "sourceInfo": {
-      "__id__": 157
+      "__id__": 154
     },
     "propertyPath": [
       "_placeholderLabel"
@@ -2378,7 +2345,7 @@
       "__id__": 20
     },
     "targetInfo": {
-      "__id__": 158
+      "__id__": 155
     }
   },
   {
