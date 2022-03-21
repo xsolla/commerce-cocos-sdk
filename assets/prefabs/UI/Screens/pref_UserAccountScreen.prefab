@@ -1577,7 +1577,7 @@
       "b": 255,
       "a": 255
     },
-    "_string": "Value",
+    "_string": "",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
     "_actualFontSize": 14,
@@ -2266,7 +2266,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 34.74,
+      "width": 8.91,
       "height": 17.64
     },
     "_anchorPoint": {
@@ -2303,7 +2303,7 @@
       "b": 255,
       "a": 255
     },
-    "_string": "Value",
+    "_string": "",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
     "_actualFontSize": 14,
@@ -3035,7 +3035,7 @@
       "b": 255,
       "a": 255
     },
-    "_string": "Value",
+    "_string": "",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
     "_actualFontSize": 14,
@@ -4588,7 +4588,7 @@
       "b": 255,
       "a": 255
     },
-    "_string": "Value",
+    "_string": "",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
     "_actualFontSize": 14,
@@ -6141,7 +6141,7 @@
       "b": 255,
       "a": 255
     },
-    "_string": "Value",
+    "_string": "",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
     "_actualFontSize": 14,
@@ -7694,7 +7694,7 @@
       "b": 255,
       "a": 255
     },
-    "_string": "Value",
+    "_string": "",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
     "_actualFontSize": 14,
