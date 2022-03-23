@@ -57,6 +57,10 @@ export class EditBoxController extends Component {
         this._isActive = true;
         this._editBox.textLabel.color = this.ActiveText;
         this._editBox.backgroundImage = this.ActiveBackground;
+
+        if (this._editBox.inputFlag == EditBox.InputFlag.PASSWORD){
+            this._editBox.string = "";
+        }
     }
 
     onEditingDidEnd() {
