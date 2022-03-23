@@ -124,6 +124,7 @@ export class UserAccountManager extends Component {
         }, err => this.handleErrorUserAccountDataUpdate);
     }
 
+
     modifyUserAccountDataAndroid(userDetailsUpdate: UserDetailsUpdate) {
         UIManager.instance.showLoaderPopup(true);
         jsb.reflection.callStaticMethod("com/cocos/game/XsollaNativeUtils", "modifyUserAccountData",
@@ -134,7 +135,9 @@ export class UserAccountManager extends Component {
     }
 
     modifyUserAccountDataIos(userDetailsUpdate: UserDetailsUpdate) {
-        //
+        UIManager.instance.showLoaderPopup(true);
+        jsb.reflection.callStaticMethod("XsollaNativeUtils", "modifyUserAccountData:authToken:userBirthday:userFirstName:userGender:userLastName:userNickname:",
+        TokenStorage.token.access_token, userDetailsUpdate.birthday, userDetailsUpdate.first_name, userDetailsUpdate.gender, userDetailsUpdate.last_name, userDetailsUpdate.nickname);
     }
 
     handleSuccessfulUserAccountDataUpdate() {

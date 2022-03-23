@@ -129,4 +129,31 @@
 	}];
 }
 
++(void) modifyUserAccountData:(NSString*)authToken userBirthday:(NSString*)birthday userFirstName:(NSString*)firstName userGender:(NSString*)gender userLastName:(NSString*)lastName userNickname:(NSString*)nickname {
+	NSBundle *main = [NSBundle mainBundle];
+
+	DateFormatter dateFormatter = DateFormatter();
+	Foundation.Date date = dateFormatter.string(birthday);
+	[[LoginKitUnity shared] updateCurrentUserDetails:token birthday:date firstName:userFirstName lastName:userLastName nickname:userNickname gender:userGender completion:^(NSString * _Nullable url, NSError * _Nullable error) {
+		if(error != nil) {
+			NSLog(@"Error code: %ld", error.code);
+
+			NSString* errorString = error.localizedDescription;
+			NSString *errorScript = [NSString stringWithFormat: @"cc.find(\"Canvas/pref_UserAccountScreen\").getComponent(\"UserAccountManager\").handleErrorUserAccountDataUpdate(\"%@\")", errorString];
+			const char* errorScriptStr = [XsollaUtils createCStringFrom:errorScript];
+			cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
+				se::ScriptEngine::getInstance()->evalString(errorScriptStr);
+			});
+
+			return;
+		}
+
+		NSString *successScript = [NSString stringWithFormat: @"cc.find(\"Canvas/pref_UserAccountScreen\").getComponent(\"UserAccountManager\").handleSuccessfulUserAccountDataUpdate()"];
+		const char* successScriptStr = [XsollaUtils createCStringFrom:successScript];
+		cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
+			se::ScriptEngine::getInstance()->evalString(successScriptStr);
+		});
+	}];
+}
+
 @end
