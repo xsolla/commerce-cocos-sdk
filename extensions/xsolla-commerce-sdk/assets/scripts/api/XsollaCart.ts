@@ -5,7 +5,7 @@ import { HttpUtil, RequestContentType } from "../core/HttpUtil";
 import { UrlBuilder } from "../core/UrlBuilder";
 import { Xsolla } from "../Xsolla";
 import { Price, ItemAttribute, ItemGroup } from "./XsollaCatalog";
-import { PaymentTokenResult } from "./XsollaOrderCheckout";
+import { PaymentTokenResult } from "./XsollaOrders";
 
 export class XsollaCart {
 

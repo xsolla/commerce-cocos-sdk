@@ -2,7 +2,7 @@
 
 import { _decorator, Component, Node, Button, EditBox, instantiate, Prefab, Label } from 'cc';
 import { RedeemedCouponItem as XsollaRedeemedCouponItem, XsollaCatalog } from 'db://xsolla-commerce-sdk/scripts/api/XsollaCatalog';
-import { TokenStorage } from '../../Common/TokenStorage';
+import { TokenStorage } from "db://xsolla-commerce-sdk/scripts/common/TokenStorage";
 import { RedeemedCouponItem } from '../Misc/RedeemedCouponItem';
 import { UIManager } from '../UIManager';
 import { StoreManager } from './StoreManager';

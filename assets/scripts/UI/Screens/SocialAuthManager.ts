@@ -3,9 +3,9 @@
 import { _decorator, Component, Button, EditBox, sys, ScrollView, Prefab, SpriteFrame, instantiate, CCString } from 'cc';
 import { Xsolla } from 'db://xsolla-commerce-sdk/scripts/Xsolla';
 import { Token } from 'db://xsolla-commerce-sdk/scripts/api/XsollaAuth';
+import { TokenStorage } from "db://xsolla-commerce-sdk/scripts/common/TokenStorage";
 import { UIManager, UIScreenType } from '../UIManager';
 import { SocialNetworkItem } from '../Misc/SocialNetworkItem';
-import { TokenStorage } from '../../Common/TokenStorage';
 const { ccclass, property } = _decorator;
 
 @ccclass('SocialNetworkItemData')

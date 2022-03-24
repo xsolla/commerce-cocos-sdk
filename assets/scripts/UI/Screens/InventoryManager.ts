@@ -3,7 +3,7 @@
 import { _decorator, Component, Node, ScrollView, Prefab, instantiate, Button } from 'cc';
 import { InventoryItem as XsollaInventoryItem, SubscriptionItem, VirtualCurrencyBalance, XsollaInventory} from 'db://xsolla-commerce-sdk/scripts/api/XsollaInventory';
 import { StoreItem, XsollaCatalog } from 'db://xsolla-commerce-sdk/scripts/api/XsollaCatalog';
-import { TokenStorage } from '../../Common/TokenStorage';
+import { TokenStorage } from "db://xsolla-commerce-sdk/scripts/common/TokenStorage";
 import { GroupsItem } from '../Misc/GroupsItem';
 import { InventoryItem } from '../Misc/InventoryItem';
 import { UIManager, UIScreenType } from '../UIManager';

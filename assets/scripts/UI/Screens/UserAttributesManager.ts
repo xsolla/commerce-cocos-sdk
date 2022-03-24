@@ -2,7 +2,7 @@
 
 import { _decorator, Component, Node, Button, Prefab, ScrollView, instantiate, EditBox } from 'cc';
 import { UserAttribute, XsollaUserAccount } from 'db://xsolla-commerce-sdk/scripts/api/XsollaUserAccount';
-import { TokenStorage } from '../../Common/TokenStorage';
+import { TokenStorage } from "db://xsolla-commerce-sdk/scripts/common/TokenStorage";
 import { AttributeItem } from '../Misc/AttributeItem';
 import { GroupsItem } from '../Misc/GroupsItem';
 import { UIManager, UIScreenType } from '../UIManager';

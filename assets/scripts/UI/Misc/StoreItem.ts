@@ -2,7 +2,7 @@
 
 import { _decorator, Component, Node, Sprite, Label, Button, UITransform, Color } from 'cc';
 import { StoreItem as XsollaStoreItem, VirtualCurrencyPackage } from 'db://xsolla-commerce-sdk/scripts/api/XsollaCatalog';
-import { CurrencyFormatter } from '../../Common/CurrencyFormatter';
+import { CurrencyFormatter } from 'db://xsolla-commerce-sdk/scripts/common/CurrencyFormatter';
 import { PurchaseUtil } from '../../Common/PurchaseUtil';
 import { StoreManager } from '../Screens/StoreManager';
 import { ImageUtils } from '../Utils/ImageUtils';
