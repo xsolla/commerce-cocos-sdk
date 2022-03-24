@@ -2,12 +2,12 @@
 
 import { sys } from "cc";
 import { StoreItem, VirtualCurrencyPackage, XsollaCatalog } from "db://xsolla-commerce-sdk/scripts/api/XsollaCatalog";
+import { OrderTracker, XsollaOrderStatus, } from "db://xsolla-commerce-sdk/scripts/common/OrderTracker";
+import { OrderCheckObject } from "db://xsolla-commerce-sdk/scripts/common/OrderCheckObject";
+import { TokenStorage } from "db://xsolla-commerce-sdk/scripts/common/TokenStorage";
 import { UrlBuilder } from "db://xsolla-commerce-sdk/scripts/core/UrlBuilder";
 import { Xsolla } from "db://xsolla-commerce-sdk/scripts/Xsolla";
 import { UIManager } from "../UI/UIManager";
-import { OrderTracker, XsollaOrderStatus } from "./OrderTracker";
-import { TokenStorage } from "./TokenStorage";
-import { OrderCheckObject } from "./OrderCheckObject";
 
 export class PurchaseUtil {
 
@@ -74,11 +74,17 @@ export class PurchaseUtil {
                 orderCheckObject.destroy();
             }
         }, errorMessage => {
-            OrderTracker.shortPollingCheckOrder(orderId, onSuccess);
+            OrderTracker.shortPollingCheckOrder(orderId, () => {
+                UIManager.instance.showMessagePopup('success purchase!');
+                onSuccess();
+            });
             this._cachedOrderCheckObjects = this._cachedOrderCheckObjects.filter(obj => obj !== orderCheckObject);
             orderCheckObject.destroy();
         }, () => {
-            OrderTracker.shortPollingCheckOrder(orderId, onSuccess);
+            OrderTracker.shortPollingCheckOrder(orderId, () => {
+                UIManager.instance.showMessagePopup('success purchase!');
+                onSuccess();
+            });
             this._cachedOrderCheckObjects = this._cachedOrderCheckObjects.filter(obj => obj !== orderCheckObject);
             orderCheckObject.destroy();
         });

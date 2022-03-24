@@ -2,7 +2,7 @@
 
 import { _decorator, Component, Node, Button, sys } from 'cc';
 import { XsollaAuth } from 'db://xsolla-commerce-sdk/scripts/api/XsollaAuth';
-import { TokenStorage } from '../../Common/TokenStorage';
+import { TokenStorage } from "db://xsolla-commerce-sdk/scripts/common/TokenStorage";
 import { UIManager, UIScreenType } from '../UIManager';
 const { ccclass, property } = _decorator;
  
