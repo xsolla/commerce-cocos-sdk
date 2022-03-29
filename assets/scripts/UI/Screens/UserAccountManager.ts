@@ -136,7 +136,7 @@ export class UserAccountManager extends Component {
 
     modifyUserAccountDataIos(userDetailsUpdate: UserDetailsUpdate) {
         UIManager.instance.showLoaderPopup(true);
-        jsb.reflection.callStaticMethod("XsollaNativeUtils", "modifyUserAccountData:authToken:userBirthday:userFirstName:userGender:userLastName:userNickname:",
+        jsb.reflection.callStaticMethod("XsollaNativeUtils", "modifyUserAccountData:userBirthday:userFirstName:userGender:userLastName:userNickname:",
         TokenStorage.token.access_token, userDetailsUpdate.birthday, userDetailsUpdate.first_name, userDetailsUpdate.gender, userDetailsUpdate.last_name, userDetailsUpdate.nickname);
     }
 

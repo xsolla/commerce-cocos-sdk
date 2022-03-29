@@ -1,11 +1,8 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIImage.h>
 #import <AuthenticationServices/AuthenticationServices.h>
-
-#import "XsollaSDKLoginKitUnity/XsollaSDKLoginKitUnity-Swift.h"
-
+#import "XsollaSDKLoginKitObjectiveC/XsollaSDKLoginKitObjectiveC-Swift.h"
 @interface XsollaUtils : NSObject
-
 // Converts C style string to NSString
 + (NSString *)createNSStringFrom:(const char *)cstring;
 

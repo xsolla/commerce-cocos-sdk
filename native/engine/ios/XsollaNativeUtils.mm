@@ -2,7 +2,7 @@
 #import <UIKit/UIKit.h>
 #import <AuthenticationServices/AuthenticationServices.h>
 
-#import "XsollaSDKLoginKitUnity/XsollaSDKLoginKitUnity-Swift.h"
+#import "XsollaSDKLoginKitObjectiveC-Bridging-Header.h"
 
 #import "XsollaUtils.h"
 
@@ -28,7 +28,7 @@
 	NSString *resourcePath = [main pathForResource:picture ofType:nil];
 	NSURL *resUrl = [NSURL URLWithString:[NSString stringWithFormat: @"file://%@", resourcePath]];
 
-	[[LoginKitUnity shared] uploadUserPictureWithAccessToken:token imageURL:resUrl completion:^(NSString * _Nullable url, NSError * _Nullable error) {
+	[[LoginKitObjectiveC shared] uploadUserPictureWithAccessToken:token imageURL:resUrl completion:^(NSString * _Nullable url, NSError * _Nullable error) {
 		if(error != nil) {
 			NSLog(@"Error code: %ld", error.code);
 
@@ -68,7 +68,7 @@
 		UIWindow* window = [[UIApplication sharedApplication] keyWindow];
 		WebAuthenticationPresentationContextProvider* context = [[WebAuthenticationPresentationContextProvider alloc] initWithPresentationAnchor:window];
 
-		[[LoginKitUnity shared] authBySocialNetwork:platform oAuth2Params:oauthParams jwtParams:jwtGenerationParams presentationContextProvider:context completion:^(AccessTokenInfo * _Nullable accesTokenInfo, NSError * _Nullable error){
+		[[LoginKitObjectiveC shared] authBySocialNetwork:platform oAuth2Params:oauthParams jwtParams:jwtGenerationParams presentationContextProvider:context completion:^(AccessTokenInfo * _Nullable accesTokenInfo, NSError * _Nullable error){
 
 			if(error != nil) {
 				NSLog(@"Error code: %ld", error.code);
@@ -107,7 +107,7 @@
 +(void) linkSocialNetwork:(NSString*)networkName authToken:(NSString*)token {
 	UIViewController* mainVC = [[[UIApplication sharedApplication] keyWindow] rootViewController];
 	
-	[[LoginKitUnity shared] linkSocialNetwork:networkName accessToken:token redirectUrl:@"https://login.xsolla.com/api/blank" userAgent:nil presenter:mainVC completion:^(NSError * _Nullable error) {
+	[[LoginKitObjectiveC shared] linkSocialNetwork:networkName accessToken:token redirectUrl:@"https://login.xsolla.com/api/blank" userAgent:nil presenter:mainVC completion:^(NSError * _Nullable error) {
 		if(error != nil) {
 			NSLog(@"Error code: %ld", error.code);
 
@@ -132,9 +132,11 @@
 +(void) modifyUserAccountData:(NSString*)authToken userBirthday:(NSString*)birthday userFirstName:(NSString*)firstName userGender:(NSString*)gender userLastName:(NSString*)lastName userNickname:(NSString*)nickname {
 	NSBundle *main = [NSBundle mainBundle];
 
-	DateFormatter dateFormatter = DateFormatter();
-	Foundation.Date date = dateFormatter.string(birthday);
-	[[LoginKitUnity shared] updateCurrentUserDetails:token birthday:date firstName:userFirstName lastName:userLastName nickname:userNickname gender:userGender completion:^(NSString * _Nullable url, NSError * _Nullable error) {
+	NSDateFormatter* dateFormatter = [NSDateFormatter new];
+    dateFormatter.dateFormat = @"yyyy-mm-dd";
+    NSDate* date = [dateFormatter dateFromString: birthday];
+    
+	[[LoginKitObjectiveC shared] updateCurrentUserDetailsWithAccessToken:authToken birthday:date firstName:firstName lastName:lastName nickname:nickname gender:gender completion:^(NSError * _Nullable error) {
 		if(error != nil) {
 			NSLog(@"Error code: %ld", error.code);
 
