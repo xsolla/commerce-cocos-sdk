@@ -111,19 +111,24 @@ export class XsollaAuth {
      * @zh
      * 
      */
-    static startAuthByPhoneNumber(phoneNumber:string, payload?:string, state?:string, onComplete?:(operationId:string) => void, onError?:(error:LoginError) => void) {
+    static startAuthByPhoneNumber(phoneNumber:string, payload?:string, state?:string, onComplete?:(operationId:string) => void, onError?:(error:LoginError) => void, sendPasswordlessAuthURL:boolean = false, passwordlessAuthURL:string = '') {
         if(Xsolla.settings.authType == AuthenticationType.Oauth2) {
-            this.startAuthByPhoneNumberOauth(phoneNumber, state, onComplete, onError);
+            this.startAuthByPhoneNumberOauth(phoneNumber, state, onComplete, onError, sendPasswordlessAuthURL, passwordlessAuthURL);
         }
         else {
-            this.startAuthByPhoneNumberJwt(phoneNumber, payload, onComplete, onError);
+            this.startAuthByPhoneNumberJwt(phoneNumber, payload, onComplete, onError, sendPasswordlessAuthURL, passwordlessAuthURL);
         }
     }
 
-    private static startAuthByPhoneNumberOauth(phoneNumber:string, state?:string, onComplete?:(operationId:string) => void, onError?:(error:LoginError) => void) {
-        let body = {
-            phone_number: phoneNumber
+    private static startAuthByPhoneNumberOauth(phoneNumber:string, state?:string, onComplete?:(operationId:string) => void, onError?:(error:LoginError) => void, sendPasswordlessAuthURL:boolean = false, passwordlessAuthURL:string = '') {
+        let body:any = {
+            phone_number: phoneNumber,
         };
+
+        if(sendPasswordlessAuthURL) {
+            body.send_link = true;
+            body.link_url = passwordlessAuthURL;
+        }
 
         let url = new UrlBuilder('https://login.xsolla.com/api/oauth2/login/phone/request')
             .addNumberParam('client_id', Xsolla.settings.clientId)
@@ -140,10 +145,15 @@ export class XsollaAuth {
         request.send(JSON.stringify(body));
     }
 
-    private static startAuthByPhoneNumberJwt(phoneNumber:string, payload?:string, onComplete?:(operationId:string) => void, onError?:(error:LoginError) => void) {
-        let body = {
+    private static startAuthByPhoneNumberJwt(phoneNumber:string, payload?:string, onComplete?:(operationId:string) => void, onError?:(error:LoginError) => void, sendPasswordlessAuthURL:boolean = false, passwordlessAuthURL:string = '') {
+        let body:any = {
             phone_number: phoneNumber
         };
+
+        if(sendPasswordlessAuthURL) {
+            body.send_link = true;
+            body.link_url = passwordlessAuthURL;
+        }
 
         let url = new UrlBuilder('https://login.xsolla.com/api/login/phone/request')
             .addStringParam('projectId', Xsolla.settings.loginId)
@@ -210,19 +220,24 @@ export class XsollaAuth {
      * @zh
      * 
      */
-    static startAuthByEmail(emailAddress:string, payload?:string, state?:string, onComplete?:(operationId:string) => void, onError?:(error:LoginError) => void) {
+    static startAuthByEmail(emailAddress:string, payload?:string, state?:string, onComplete?:(operationId:string) => void, onError?:(error:LoginError) => void, sendPasswordlessAuthURL:boolean = false, passwordlessAuthURL:string = '') {
         if(Xsolla.settings.authType == AuthenticationType.Oauth2) {
-            this.startAuthByEmailOauth(emailAddress, state, onComplete, onError);
+            this.startAuthByEmailOauth(emailAddress, state, onComplete, onError, sendPasswordlessAuthURL, passwordlessAuthURL);
         }
         else {
-            this.startAuthByEmailJwt(emailAddress, payload, onComplete, onError);
+            this.startAuthByEmailJwt(emailAddress, payload, onComplete, onError, sendPasswordlessAuthURL, passwordlessAuthURL);
         }
     }
 
-    private static startAuthByEmailOauth(emailAddress:string, state?:string, onComplete?:(operationId:string) => void, onError?:(error:LoginError) => void) {
-        let body = {
+    private static startAuthByEmailOauth(emailAddress:string, state?:string, onComplete?:(operationId:string) => void, onError?:(error:LoginError) => void, sendPasswordlessAuthURL:boolean = false, passwordlessAuthURL:string = '') {
+        let body:any = {
             email: emailAddress
         };
+
+        if(sendPasswordlessAuthURL) {
+            body.send_link = true;
+            body.link_url = passwordlessAuthURL;
+        }
 
         let url = new UrlBuilder('https://login.xsolla.com/api/oauth2/login/email/request')
             .addNumberParam('client_id', Xsolla.settings.clientId)
@@ -239,10 +254,15 @@ export class XsollaAuth {
         request.send(JSON.stringify(body));
     }
 
-    private static startAuthByEmailJwt(emailAddress:string, payload?:string, onComplete?:(operationId:string) => void, onError?:(error:LoginError) => void) {
-        let body = {
+    private static startAuthByEmailJwt(emailAddress:string, payload?:string, onComplete?:(operationId:string) => void, onError?:(error:LoginError) => void, sendPasswordlessAuthURL:boolean = false, passwordlessAuthURL:string = '') {
+        let body:any = {
             email: emailAddress
         };
+
+        if(sendPasswordlessAuthURL) {
+            body.send_link = true;
+            body.link_url = passwordlessAuthURL;
+        }
 
         let url = new UrlBuilder('https://login.xsolla.com/api/login/email/request')
             .addStringParam('projectId', Xsolla.settings.loginId)
