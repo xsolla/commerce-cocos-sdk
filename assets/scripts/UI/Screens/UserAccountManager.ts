@@ -2,7 +2,6 @@
 
 import { _decorator, Component, Node, Button, Texture2D, instantiate, Prefab, sys, Sprite, SpriteFrame, UITransform, CCString, CCBoolean, ScrollView } from 'cc';
 import { UserDetails, UserDetailsUpdate, XsollaUserAccount } from 'db://xsolla-commerce-sdk/scripts/api/XsollaUserAccount';
-import { AuthenticationType, Xsolla } from 'db://xsolla-commerce-sdk/scripts/Xsolla';
 import { TokenStorage } from "db://xsolla-commerce-sdk/scripts/common/TokenStorage";
 import { UserAccountItem } from '../Misc/UserAccountItem';
 import { UserAvatarItem } from '../Misc/UserAvatarItem';
@@ -128,10 +127,10 @@ export class UserAccountManager extends Component {
     modifyUserAccountDataAndroid(userDetailsUpdate: UserDetailsUpdate) {
         UIManager.instance.showLoaderPopup(true);
         jsb.reflection.callStaticMethod("com/cocos/game/XsollaNativeUtils", "modifyUserAccountData",
-        "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)V",
+        "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V",
             TokenStorage.token.access_token, userDetailsUpdate.birthday,
             userDetailsUpdate.first_name, userDetailsUpdate.gender,
-            userDetailsUpdate.last_name, userDetailsUpdate.nickname, Xsolla.settings.authType == AuthenticationType.Oauth2);
+            userDetailsUpdate.last_name, userDetailsUpdate.nickname);
     }
 
     modifyUserAccountDataIos(userDetailsUpdate: UserDetailsUpdate) {
@@ -177,8 +176,8 @@ export class UserAccountManager extends Component {
 
     updateUserAvatarAndroid(avatarUpdate: Texture2D) {
         UIManager.instance.showLoaderPopup(true);
-        jsb.reflection.callStaticMethod("com/cocos/game/XsollaNativeUtils", "updateUserProfilePicture", "(Ljava/lang/String;Ljava/lang/String;Z)V",
-            avatarUpdate.image.nativeUrl, TokenStorage.token.access_token, Xsolla.settings.authType == AuthenticationType.Oauth2);
+        jsb.reflection.callStaticMethod("com/cocos/game/XsollaNativeUtils", "updateUserProfilePicture", "(Ljava/lang/String;Ljava/lang/String;)V",
+            avatarUpdate.image.nativeUrl, TokenStorage.token.access_token);
     }
 
     updateUserAvatarIos(avatarUpdate: Texture2D) {

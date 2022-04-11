@@ -1,7 +1,7 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component, Enum} from 'cc';
-import { AuthenticationType, XsollaSettings, Xsolla, PaymentUiTheme, PaymentUiSize, PaymentUiVersion, PaymentRedirectCondition, PaymentRedirectStatusManual } from 'db://xsolla-commerce-sdk/scripts/Xsolla';
+import { XsollaSettings, Xsolla, PaymentUiTheme, PaymentUiSize, PaymentUiVersion, PaymentRedirectCondition, PaymentRedirectStatusManual } from 'db://xsolla-commerce-sdk/scripts/Xsolla';
 const { ccclass, property, disallowMultiple, type  } = _decorator;
  
 @ccclass('XsollaSettingsManager')
@@ -23,20 +23,9 @@ export class XsollaSettingsManager extends Component {
     projectId: string = '77640';
 
     @property ({
-        displayName: 'Authentication Type',
-        tooltip: 'If enabled, OAuth 2.0 protocol will be used in order to authorize the user',
-        group: 'General'
-    })
-    @type(Enum(AuthenticationType))
-    authType: AuthenticationType = AuthenticationType.Oauth2;
-
-    @property ({
         displayName: 'Client ID',
         tooltip: 'Client ID from your Publisher Account',
         group: 'General',
-        visible: function(): boolean {
-            return this.authType == AuthenticationType.Oauth2;
-        }
     })
     clientId: number = 57;
 
@@ -119,7 +108,6 @@ export class XsollaSettingsManager extends Component {
         var settings: XsollaSettings = {
             loginId: this.loginId,
             projectId: this.projectId,
-            authType: this.authType,
             clientId: this.clientId,
             enableSandbox: this.enableSandbox,
             paymentInterfaceTheme: this.paymentInterfaceTheme,

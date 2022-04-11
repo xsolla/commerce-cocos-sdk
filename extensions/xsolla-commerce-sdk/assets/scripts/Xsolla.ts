@@ -1,10 +1,5 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
-export enum AuthenticationType {
-    Jwt = 0,
-    Oauth2 = 1
-}
-
 export enum PaymentUiTheme {
     default_light = 0,
 	default_dark = 1,
@@ -42,7 +37,6 @@ export enum PaymentRedirectStatusManual {
 export interface XsollaSettings {
     loginId: string;
     projectId: string;
-    authType: AuthenticationType;
     clientId: number;
     enableSandbox: boolean;
     paymentInterfaceTheme: PaymentUiTheme;

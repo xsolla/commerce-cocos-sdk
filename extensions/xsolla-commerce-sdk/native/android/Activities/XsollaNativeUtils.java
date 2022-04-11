@@ -31,7 +31,7 @@ public class XsollaNativeUtils {
         return Build.MANUFACTURER + Build.MODEL;
     }
 
-    public static void updateUserProfilePicture(String filePath, String token, boolean isOauth) {
+    public static void updateUserProfilePicture(String filePath, String token) {
         AssetManager assetManager = AppActivity.getAppActivity().getAssets();
         InputStream inputStream = null;
 
@@ -58,12 +58,7 @@ public class XsollaNativeUtils {
         }
 
         TokenUtils tokenUtils = new TokenUtils(AppActivity.getAppActivity());
-        if(isOauth) {
-            tokenUtils.setOauthAccessToken(token);
-        }
-        else {
-            tokenUtils.setJwtToken(token);
-        }
+        tokenUtils.setOauthAccessToken(token);
 
         XLogin.uploadCurrentUserAvatar(avatarTempFile, new UploadCurrentUserAvatarCallback() {
             @Override
@@ -90,15 +85,10 @@ public class XsollaNativeUtils {
         });
     }
 
-    public static void modifyUserAccountData(String token, String birthday, String firstName, String gender, String lastName, String nickname, boolean isOauth) {
+    public static void modifyUserAccountData(String token, String birthday, String firstName, String gender, String lastName, String nickname) {
 
         TokenUtils tokenUtils = new TokenUtils(AppActivity.getAppActivity());
-        if(isOauth) {
-            tokenUtils.setOauthAccessToken(token);
-        }
-        else {
-            tokenUtils.setJwtToken(token);
-        }
+        tokenUtils.setOauthAccessToken(token);
 
         XLogin.updateCurrentUserDetails(birthday,firstName,gender,lastName,nickname, new UpdateCurrentUserDetailsCallback() {
             @Override

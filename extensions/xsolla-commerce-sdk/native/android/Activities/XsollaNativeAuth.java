@@ -14,18 +14,7 @@ import com.xsolla.android.login.social.SocialNetwork;
 public class XsollaNativeAuth {
 
     @Keep
-    public static void xLoginInitJwt(String loginID, String callbackUrl, String facebookAppId, String googleAppId, String wechatAppId, String qqAppId) {
-        XLogin.SocialConfig socialConfig = new XLogin.SocialConfig(facebookAppId, googleAppId, wechatAppId, qqAppId);
-        LoginConfig loginConfig = new LoginConfig.JwtBuilder().
-                setProjectId(loginID).
-                setCallbackUrl(callbackUrl).
-                setSocialConfig(socialConfig).
-                build();
-        XLogin.init(AppActivity.getAppActivity(), loginConfig);
-    }
-
-    @Keep
-    public static void xLoginInitOauth(String loginID, String clientId, String callbackUrl, String facebookAppId, String googleAppId, String wechatAppId, String qqAppId) {
+    public static void xLoginInit(String loginID, String clientId, String callbackUrl, String facebookAppId, String googleAppId, String wechatAppId, String qqAppId) {
         XLogin.SocialConfig socialConfig = new XLogin.SocialConfig(facebookAppId, googleAppId, wechatAppId, qqAppId);
         LoginConfig loginConfig = new LoginConfig.OauthBuilder().
                 setProjectId(loginID).
