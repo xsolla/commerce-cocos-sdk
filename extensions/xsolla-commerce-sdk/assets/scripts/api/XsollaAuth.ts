@@ -12,7 +12,7 @@ export class XsollaAuth {
      * @en
      * Authenticates the user by the username and password specified via the authentication interface.
      * @zh
-     * 
+     *
      */
     static authByUsernameAndPassword(username:string, password:string, rememberMe:boolean, payload?:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
         let body = {
@@ -36,7 +36,7 @@ export class XsollaAuth {
      * @en
      * Refreshes the token in case it is expired. Works only when OAuth 2.0 is enabled.
      * @zh
-     * 
+     *
      */
     static refreshToken(refreshToken:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
         let body = {
@@ -59,7 +59,7 @@ export class XsollaAuth {
      * @en
      * Exchanges the user authentication code to a valid JWT.
      * @zh
-     * 
+     *
      */
     static exchangeAuthCode(authCode:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
         let body = {
@@ -82,7 +82,7 @@ export class XsollaAuth {
      * @en
      * Starts authentication by the user phone number and sends a confirmation code to their phone number.
      * @zh
-     * 
+     *
      */
     static startAuthByPhoneNumber(phoneNumber:string, payload?:string, state?:string, onComplete?:(operationId:string) => void, onError?:(error:LoginError) => void, sendPasswordlessAuthURL:boolean = false, passwordlessAuthURL:string = '') {
         let body:any = {
@@ -113,7 +113,7 @@ export class XsollaAuth {
      * @en
      * Completes authentication by the user phone number and a confirmation code.
      * @zh
-     * 
+     *
      */
     static completeAuthByPhoneNumber(confirmationCode:string, operationId:string, phoneNumber:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
         let body = {
@@ -134,7 +134,7 @@ export class XsollaAuth {
      * @en
      * Starts authentication by the user email address and sends a confirmation code to their email address.
      * @zh
-     * 
+     *
      */
     static startAuthByEmail(emailAddress:string, payload?:string, state?:string, onComplete?:(operationId:string) => void, onError?:(error:LoginError) => void, sendPasswordlessAuthURL:boolean = false, passwordlessAuthURL:string = '') {
         let body:any = {
@@ -165,7 +165,7 @@ export class XsollaAuth {
      * @en
      * Completes authentication by the user email address and a confirmation code.
      * @zh
-     * 
+     *
      */
     static completeAuthByEmail(confirmationCode:string, operationId:string, emailAddress:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
         let body = {
@@ -184,9 +184,9 @@ export class XsollaAuth {
 
     /**
      * @en
-     * Authenticates a platform account user via deviceId.
+     * Authenticates a platform account user via device ID.
      * @zh
-     * 
+     *
      */
     static authByDeviceId(deviceName:string, deviceId:string, payload?:string, state?:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
         let body = {
@@ -211,7 +211,7 @@ export class XsollaAuth {
      * @en
      * Creates a new user.
      * @zh
-     * 
+     *
      */
     static registerNewUser(username:string, password:string, email:string, payload?:string, state?:string, extras?: RegistrationExtras, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
         let body = {
@@ -246,7 +246,7 @@ export class XsollaAuth {
      * @en
      * Resends an account confirmation email to a user. To complete account confirmation, the user should follow the link in the email.
      * @zh
-     * 
+     *
      */
     static resendAccountConfirmationEmail(username:string, payload?:string, state?:string, onComplete?:() => void, onError?:(error:LoginError) => void) {
         let body = {
@@ -269,7 +269,7 @@ export class XsollaAuth {
      * @en
      * Resets the user password with user confirmation. If the user data is kept in the Xsolla data storage or on your side, users receive a password change confirmation email.
      * @zh
-     * 
+     *
      */
     static resetPassword(username:string, onComplete?:() => void, onError?:(error:LoginError) => void) {
         let body = {
@@ -328,4 +328,3 @@ export interface RegistrationExtras {
     promo_email_agreement?: boolean,
     fields?: any
 }
-

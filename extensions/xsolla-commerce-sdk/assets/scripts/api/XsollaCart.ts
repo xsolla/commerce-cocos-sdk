@@ -13,7 +13,7 @@ export class XsollaCart {
      * @en
      * Returns user’s cart by cart ID.
      * @zh
-     * 
+     *
      */
     static getCartById(cartId:string, locale:string, currency:string, onComplete?:(cartData:CartItemsData) => void, onError?:(error:CommerceError) => void): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{project_id}/cart/{cart_id}')
@@ -34,7 +34,7 @@ export class XsollaCart {
      * @en
      * Returns the current user's cart.
      * @zh
-     * 
+     *
      */
     static getCart(locale:string, currency:string, onComplete?:(cartData:CartItemsData) => void, onError?:(error:CommerceError) => void): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{project_id}/cart')
@@ -52,9 +52,9 @@ export class XsollaCart {
 
     /**
      * @en
-     * Deletes all items in specified cart.
+     * Deletes all items in a specified cart.
      * @zh
-     * 
+     *
      */
     static clearCartById(cartId:string, onComplete?:() => void, onError?:(error:CommerceError) => void): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{project_id}/cart/{cart_id}/clear')
@@ -72,7 +72,7 @@ export class XsollaCart {
      * @en
      * Deletes all items in the current user's cart.
      * @zh
-     * 
+     *
      */
     static clearCart(onComplete?:() => void, onError?:(error:CommerceError) => void): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{project_id}/cart/clear')
@@ -89,7 +89,7 @@ export class XsollaCart {
      * @en
      * Fills the specific cart with items. If the cart already has an item with the same SKU, the existing item position will be replaced by the passed value.
      * @zh
-     * 
+     *
      */
     static fillCartById(cartId:string, items:Array<CartItem>, onComplete?:() => void, onError?:(error:CommerceError) => void): void {
         let fillItems = items.map((item) => {
@@ -118,7 +118,7 @@ export class XsollaCart {
      * @en
      * Fills the cart with items. If the cart already has an item with the same SKU, the existing item will be replaced by the passed value.
      * @zh
-     * 
+     *
      */
     static fillCart(items:Array<CartItem>, onComplete?:() => void, onError?:(error:CommerceError) => void): void {
         let fillItems = items.map((item) => {
@@ -146,7 +146,7 @@ export class XsollaCart {
      * @en
      * Updates an existing cart item or creates the one in the specified cart.
      * @zh
-     * 
+     *
      */
     static updateItemInCartById(cartId:string, itemSku:string, quantity:number, onComplete?:() => void, onError?:(error:CommerceError) => void): void {
         let body = {
@@ -169,7 +169,7 @@ export class XsollaCart {
      * @en
      * Updates an existing cart item or creates the one in the current user's cart.
      * @zh
-     * 
+     *
      */
     static updateItemInCart(itemSku:string, quantity:number, onComplete?:() => void, onError?:(error:CommerceError) => void): void {
         let body = {
@@ -191,7 +191,7 @@ export class XsollaCart {
      * @en
      * Removes an item from the specified cart.
      * @zh
-     * 
+     *
      */
     static removeItemFromCartById(cartId:string, itemSku:string, onComplete?:() => void, onError?:(error:CommerceError) => void): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{project_id}/cart/{cart_id}/item/{item_sku}')
@@ -210,7 +210,7 @@ export class XsollaCart {
      * @en
      * Removes an item from the current user's cart.
      * @zh
-     * 
+     *
      */
     static removeItemFromCart(itemSku:string, onComplete?:() => void, onError?:(error:CommerceError) => void): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{project_id}/cart/item/{item_sku}')
@@ -226,9 +226,9 @@ export class XsollaCart {
 
     /**
      * @en
-     * Redeems a promo code. After redeeming a promo code, the user will get free items and/or the price of cart will be decreased.
+     * Redeems a promo code. After redeeming a promo code, the user will get free items and/or the price of a cart will be decreased.
      * @zh
-     * 
+     *
      */
     static redeemPromocode(authToken:string, promocodeCode:string, cartId:string, onComplete?:(cartData:CartItemsData) => void, onError?:(error:CommerceError) => void): void {
         let body = {
@@ -253,7 +253,7 @@ export class XsollaCart {
      * @en
      * Gets promo code rewards by its code. Can be used to let users choose one of many items as a bonus.
      * @zh
-     * 
+     *
      */
     static getPromocodeReward(authToken:string, promocodeCode:string, onComplete?:(rewardData: PromocodeRewardData) => void, onError?:(error:CommerceError) => void): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{project_id}/promocode/code/{promocode_code}/rewards')
@@ -272,7 +272,7 @@ export class XsollaCart {
      * @en
      * Removes a promo code from a cart. After the promo code is removed, the total price of all items in the cart will be recalculated without bonuses and discounts provided by a promo code.
      * @zh
-     * 
+     *
      */
     static removePromocode(authToken:string, cartId:string, onComplete?:(cartData:CartItemsData) => void, onError?:(error:CommerceError) => void): void {
         let body = {
@@ -280,7 +280,7 @@ export class XsollaCart {
                 id: cartId
             }
         };
-        
+
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{project_id}/promocode/remove')
             .setPathParam('project_id', Xsolla.settings.projectId)
             .build();
@@ -296,7 +296,7 @@ export class XsollaCart {
      * @en
      * Initiates a cart purchase session and fetches a token for payment console.
      * @zh
-     * 
+     *
      */
      static fetchCartPaymentToken(authToken:string, cartId:string, currency?:string, country?:string, locale?:string, customParameters?:object, onComplete?:(tokenResult: PaymentTokenResult) => void, onError?:(error:CommerceError) => void): void {
         let body = {
@@ -329,7 +329,7 @@ export class XsollaCart {
 export interface CartItemsData {
     cart_id: string,
     price: Price,
-    is_free: boolean,    
+    is_free: boolean,
     items: Array<CartItem>
 }
 

@@ -13,7 +13,7 @@ export class XsollaCatalog {
      * @en
      * Gets a list of virtual items available for the configured project.
      * @zh
-     * 
+     *
      */
     static getCatalog(locale:string, country:string, additionalFields:Array<string>, onComplete?:(itemsData:StoreItemsData) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/items/virtual_items')
@@ -29,7 +29,7 @@ export class XsollaCatalog {
             let itemsData:StoreItemsData = JSON.parse(result);
             itemsData.groupIds = new Set<string>();
             for(let item of itemsData.items) {
-                for(let itemGroup of item.groups) {                    
+                for(let itemGroup of item.groups) {
                     itemsData.groupIds.add(itemGroup.external_id);
                 }
             }
@@ -42,7 +42,7 @@ export class XsollaCatalog {
      * @en
      * Gets a list of bundles for building a catalog.
      * @zh
-     * 
+     *
      */
     static getBundleList(locale:string, country:string, additionalFields:Array<string>, onComplete?:(itemsData:StoreListOfBundles) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0) {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/items/bundle')
@@ -65,7 +65,7 @@ export class XsollaCatalog {
      * @en
      * Gets a specified bundle.
      * @zh
-     * 
+     *
      */
     static getSpecifiedBundle(sku:string, onComplete?:(bundle:StoreBundle) => void, onError?:(error:CommerceError) => void) {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/items/bundle/sku/{sku}')
@@ -84,7 +84,7 @@ export class XsollaCatalog {
      * @en
      * Gets a list of all virtual items.
      * @zh
-     * 
+     *
      */
     static getCatalogSimplified(locale:string, onComplete?:(data: StoreItemsList) => void, onError?:(error:CommerceError) => void): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{ProjectID}/items/virtual_items/all')
@@ -103,7 +103,7 @@ export class XsollaCatalog {
      * @en
      * Gets the list of virtual currencies.
      * @zh
-     * 
+     *
      */
     static getVirtualCurrencyList(locale:string, country:string, additionalFields:Array<string>, onComplete?:(data:VirtualCurrencyData) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/items/virtual_currency')
@@ -124,9 +124,9 @@ export class XsollaCatalog {
 
     /**
      * @en
-     * Gets the list of virtual currency packages
+     * Gets the list of virtual currency packages.
      * @zh
-     * 
+     *
      */
     static getVirtualCurrencyPackages(locale:string, country:string, additionalFields:Array<string>, onComplete?:(data:VirtualCurrencyPackagesData) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/items/virtual_currency/package')
@@ -149,7 +149,7 @@ export class XsollaCatalog {
      * @en
      * Gets an item list from the specified group for building a catalog.
      * @zh
-     * 
+     *
      */
     static getItemsBySpecifiedGroup(externalId: string, locale:string, country:string, additionalFields:Array<string>, onComplete?:(itemsList: StoreItemsList) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/items/virtual_items/group/{externalId}')
@@ -173,7 +173,7 @@ export class XsollaCatalog {
      * @en
      * Gets the list of virtual item groups.
      * @zh
-     * 
+     *
      */
     static getItemGroups(locale:string, onComplete?:(groups:Array<ItemGroup>) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/items/groups')
@@ -194,7 +194,7 @@ export class XsollaCatalog {
      * @en
      * Buys an item using virtual currency.
      * @zh
-     * 
+     *
      */
     static purchaseItemForVirtualCurrency(authToken:string, itemSKU:string, currencySKU:string, onComplete?:(orderId: number) => void, onError?:(error:CommerceError) => void): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/payment/item/{itemSKU}/virtual/{currencySKU}')
@@ -214,13 +214,13 @@ export class XsollaCatalog {
      * @en
      * Redeems a coupon code. The user gets a bonus after a coupon is redeemed.
      * @zh
-     * 
+     *
      */
      static redeemCoupon(authToken:string, couponCode:string, onComplete?:(items: Array<RedeemedCouponItem>) => void, onError?:(error:CommerceError) => void): void {
         let body = {
             coupon_code: couponCode
         };
-        
+
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/coupon/redeem')
             .setPathParam('projectID', Xsolla.settings.projectId)
             .build();
@@ -237,7 +237,7 @@ export class XsollaCatalog {
      * Gets coupon rewards by its code. Can be used to let users choose one of many items as a bonus.
      * The usual case is choosing a DRM if the coupon contains a game as a bonus.
      * @zh
-     * 
+     *
      */
      static getCouponRewards(authToken:string, couponCode:string, onComplete?:(data: CouponRewardData) => void, onError?:(error:CommerceError) => void): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/coupon/code/{couponCode}/rewards')
@@ -254,18 +254,18 @@ export class XsollaCatalog {
 
     /**
      * @en
-     * Initiates an item purchase session and fetches token for payment console.
+     * Initiates an item purchase session and fetches token for a payment console.
      * @zh
-     * 
+     *
      */
      static fetchPaymentToken(authToken:string, itemSKU:string, quantity:number, currency?:string, country?:string, locale?:string, customParameters?:object, onComplete?:(tokenResult: PaymentTokenResult) => void, onError?:(error:CommerceError) => void): void {
-        
+
         let paymentUISettings = {
             theme: this.getPaymentInerfaceTheme(),
             size: PaymentUiSize[Xsolla.settings.paymentInterfaceSize],
             version: PaymentUiVersion[Xsolla.settings.paymentInterfaceVersion]
         };
-            
+
         let paymentSettings: any = {
             ui: paymentUISettings
         };

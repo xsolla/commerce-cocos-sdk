@@ -11,7 +11,7 @@ export class XsollaUserAccount {
      * @en
      * Gets user details.
      * @zh
-     * 
+     *
      */
     static getUserDetails(token:string, onComplete?:(userDetails:UserDetails) => void, onError?:(error:LoginError) => void) {
         let url = new UrlBuilder('https://login.xsolla.com/api/users/me').build();
@@ -27,7 +27,7 @@ export class XsollaUserAccount {
      * @en
      * Modifies specified user details.
      * @zh
-     * 
+     *
      */
     static updateUserDetails(token:string, userDetailsUpdate:UserDetailsUpdate, onComplete?:(userDetails:UserDetails) => void, onError?:(error:LoginError) => void) {
         let url = new UrlBuilder('https://login.xsolla.com/api/users/me').build();
@@ -41,9 +41,9 @@ export class XsollaUserAccount {
 
     /**
      * @en
-     * Gets user email.
+     * Gets the user email.
      * @zh
-     * 
+     *
      */
     static getUserEmail(token:string, onComplete?:(email:string) => void, onError?:(error:LoginError) => void) {
         let url = new UrlBuilder('https://login.xsolla.com/api/users/me/email').build();
@@ -57,9 +57,9 @@ export class XsollaUserAccount {
 
     /**
      * @en
-     * Gets user phone number.
+     * Gets the user phone number.
      * @zh
-     * 
+     *
      */
     static getUserPhoneNumber(token:string, onComplete?:(phone:string) => void, onError?:(error:LoginError) => void) {
         let url = new UrlBuilder('https://login.xsolla.com/api/users/me/phone').build();
@@ -72,7 +72,7 @@ export class XsollaUserAccount {
             else {
                 // phone number is not set
                 onComplete?.('');
-            }            
+            }
         }, handleLoginError(onError));
         request.send();
     }
@@ -81,7 +81,7 @@ export class XsollaUserAccount {
      * @en
      * Deletes the user phone number.
      * @zh
-     * 
+     *
      */
     static removeUserPhoneNumber(token:string, phoneNumber:string, onComplete?:() => void, onError?:(error:LoginError) => void) {
         let url = new UrlBuilder('https://login.xsolla.com/api/users/me/phone/{phoneNumber}')
@@ -94,9 +94,9 @@ export class XsollaUserAccount {
 
     /**
      * @en
-     * Gets user phone number.
+     * 	Gets the user phone number.
      * @zh
-     * 
+     *
      */
     static updateUserPhoneNumber(token:string, phoneNumber:string, onComplete?:() => void, onError?:(error:LoginError) => void) {
         let body = {
@@ -111,9 +111,9 @@ export class XsollaUserAccount {
 
     /**
      * @en
-     * Checks user age for a particular region. The age requirements depend on the region. Service determines the user location by the IP address.
+     * Checks the user age for a particular region. The age requirements depend on the region. Service determines the user location by the IP address.
      * @zh
-     * 
+     *
      */
     static checkUserAge(token:string, dateOfBirth:string, onComplete?:(accepted:boolean) => void, onError?:(error:LoginError) => void) {
         let body = {
@@ -132,10 +132,10 @@ export class XsollaUserAccount {
 
     /**
      * @en
-     * Adds the username/email and password authentication to the existing user account. 
+     * Adds the username/email and password authentication to the existing user account.
      * This call is used if the account is created via the device ID or phone number.
      * @zh
-     * 
+     *
      */
     static addUsernameAndEmailAuthToAccount(token:string, email:string, password:string, username:string, receiveNewsteltters: boolean, onComplete?:(confirmationRequired:boolean) => void, onError?:(error:LoginError) => void) {
         let body = {
@@ -156,9 +156,9 @@ export class XsollaUserAccount {
 
     /**
      * @en
-     * Modifies user profile picture.
+     * Modifies the user profile picture.
      * @zh
-     * 
+     *
      */
     static updateUserProfilePicture(token:string, buffer?:Uint8Array, onComplete?:() => void, onError?:(error:LoginError) => void) {
         if (buffer == null) {
@@ -194,12 +194,12 @@ export class XsollaUserAccount {
 
     /**
      * @en
-     * Removes user profile picture.
+     * Removes the user profile picture.
      * @zh
-     * 
+     *
      */
     static removeProfilePicture(token:string, onComplete?:() => void, onError?:(error:LoginError) => void) {
-        let url = new UrlBuilder('https://login.xsolla.com/api/users/me/picture').build();    
+        let url = new UrlBuilder('https://login.xsolla.com/api/users/me/picture').build();
         let request = HttpUtil.createRequest(url, 'DELETE', RequestContentType.None, token, result => {
             onComplete?.();
         }, handleLoginError(onError));
@@ -210,11 +210,11 @@ export class XsollaUserAccount {
      * @en
      * Gets user devices.
      * @zh
-     * 
+     *
      */
     static getUserDevices(token:string, onComplete?:(userDevices:Array<UserDevice>) => void, onError?:(error:LoginError) => void) {
         let url = new UrlBuilder('https://login.xsolla.com/api/users/me/devices').build();
-        
+
         let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, token, result => {
             let userDevices = JSON.parse(result);
             onComplete?.(userDevices);
@@ -226,18 +226,18 @@ export class XsollaUserAccount {
      * @en
      * Links the specified device to the user account.
      * @zh
-     * 
+     *
      */
     static linkDeviceToAccount(token:string, platformName:string, deviceName:string, deviceId:string, onComplete?:() => void, onError?:(error:LoginError) => void) {
         let body = {
             device: deviceName,
             device_id: deviceId,
         };
-        
+
         let url = new UrlBuilder('https://login.xsolla.com/api/users/me/devices/{platformName}')
             .setPathParam('platformName', platformName)
             .build();
-        
+
         let request = HttpUtil.createRequest(url, 'POST', RequestContentType.Json, token, onComplete, handleLoginError(onError));
         request.send(JSON.stringify(body));
     }
@@ -246,14 +246,14 @@ export class XsollaUserAccount {
      * @en
      * Unlinks the specified device from the user account.
      * @zh
-     * 
+     *
      */
     static unlinkDeviceFromAccount(token:string, deviceId:number, onComplete?:() => void, onError?:(error:LoginError) => void) {
-       
+
         let url = new UrlBuilder('https://login.xsolla.com/api/users/me/devices/{deviceId}')
             .setPathParam('deviceId', deviceId.toString())
             .build();
-        
+
         let request = HttpUtil.createRequest(url, 'DELETE', RequestContentType.None, token, onComplete, handleLoginError(onError));
         request.send();
     }
@@ -262,10 +262,10 @@ export class XsollaUserAccount {
      * @en
      * Gets friends.
      * @zh
-     * 
+     *
      */
      static getFriends(token:string, type:FriendsType, sortBy:UsersSortCriteria, sortOrder:UsersSortOrder,
-        onComplete?:(data: FriendsData) => void, onError?:(error:LoginError) => void, after:string = '', limit: number = 20) {   
+        onComplete?:(data: FriendsData) => void, onError?:(error:LoginError) => void, after:string = '', limit: number = 20) {
         let url = new UrlBuilder('https://login.xsolla.com/api/users/me/relationships')
             .addStringParam('type', FriendsType[type])
             .addStringParam('sort_by', UsersSortCriteria[sortBy])
@@ -273,7 +273,7 @@ export class XsollaUserAccount {
             .addStringParam('after', after)
             .addNumberParam('limit', limit)
             .build();
-        
+
         let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, token, result => {
             let friendsData: FriendsData = JSON.parse(result);
             onComplete?.(friendsData);
@@ -285,7 +285,7 @@ export class XsollaUserAccount {
      * @en
      * Updates relationships with the specified user.
      * @zh
-     * 
+     *
      */
      static updateFriends(token:string, action:FriendAction, userID:string, onComplete?:() => void, onError?:(error:LoginError) => void) {
         let body = {
@@ -302,7 +302,7 @@ export class XsollaUserAccount {
      * @en
      * Gets social friends.
      * @zh
-     * 
+     *
      */
      static getSocialFriends(token:string, platform:string, onComplete?:(data:SocialFriendsData) => void, onError?:(error:LoginError) => void,
         offset:number = 0, limit: number = 500, fromThisGame: boolean = false) {
@@ -324,7 +324,7 @@ export class XsollaUserAccount {
      * @en
      * Updates social friends on the server.
      * @zh
-     * 
+     *
      */
      static updateSocialFriends(token:string, platform:string, onComplete?:() => void, onError?:(error:LoginError) => void) {
         let url = new UrlBuilder('https://login.xsolla.com/api/users/me/social_friends/update')
@@ -339,7 +339,7 @@ export class XsollaUserAccount {
      * @en
      * Searches for users with the specified nickname.
      * @zh
-     * 
+     *
      */
      static searchUsersByNickname(token:string, nickname:string, onComplete?:(resultData: UserSearchResult) => void, onError?:(error:LoginError) => void,
         offset:number = 0, limit:number = 100) {
@@ -360,7 +360,7 @@ export class XsollaUserAccount {
      * @en
      * Gets specified friend public profile information.
      * @zh
-     * 
+     *
      */
      static getPublicInfo(token:string, userID:string, onComplete?:(receivedUserProfile: PublicProfile) => void, onError?:(error:LoginError) => void) {
         let url = new UrlBuilder('https://login.xsolla.com/api/users/{userID}/public')
@@ -378,7 +378,7 @@ export class XsollaUserAccount {
      * @en
      * Gets user attributes.
      * @zh
-     * 
+     *
      */
      static getUserAttributes(token:string, userId?:string, keys?:Array<string>, onComplete?:(attributes:Array<UserAttribute>) => void, onError?:(error:LoginError) => void) {
         let body = {
@@ -404,7 +404,7 @@ export class XsollaUserAccount {
      * @en
      * Gets user read-only attributes.
      * @zh
-     * 
+     *
      */
     static getUserReadOnlyAttributes(token:string, userId?:string, keys?:Array<string>, onComplete?:(attributes:Array<UserAttribute>) => void, onError?:(error:LoginError) => void) {
         let body = {
@@ -430,7 +430,7 @@ export class XsollaUserAccount {
      * @en
      * Modifies the list of user attributes by creating/editing its items (changes made on the server side).
      * @zh
-     * 
+     *
      */
     static updateUserAttributes(token:string, attributes:Array<UserAttribute>, onComplete?:() => void, onError?:(error:LoginError) => void) {
         let body = {
@@ -448,7 +448,7 @@ export class XsollaUserAccount {
      * @en
      * Removes user attributes with specified keys (changes made on the server side).
      * @zh
-     * 
+     *
      */
     static removeUserAttributes(token:string, keys:Array<string>, onComplete?:() => void, onError?:(error:LoginError) => void) {
         let body = {
@@ -466,7 +466,7 @@ export class XsollaUserAccount {
      * @en
      * Gets the URL to link social network to the user’s account. The social network should be used for authentication.
      * @zh
-     * 
+     *
      */
     static getUrlToLinkSocialAccount(token:string, platform:string, onComplete?:(authUrl:string) => void, onError?:(error:LoginError) => void) {
         let url = new UrlBuilder('https://login.xsolla.com/api/users/me/social_providers/{providerName}/login_url')
@@ -485,7 +485,7 @@ export class XsollaUserAccount {
      * @en
      * Unlinks the social network, which is used by the player for authentication, from the user account.
      * @zh
-     * 
+     *
      */
     static unlinkSocialAccount(token:string, platform:string, onComplete?:() => void, onError?:(error:LoginError) => void) {
         let url = new UrlBuilder('https://login.xsolla.com/api/users/me/social_providers/{providerName}')
@@ -500,7 +500,7 @@ export class XsollaUserAccount {
      * @en
      * Gets the list of linked social networks used by the player for authentication.
      * @zh
-     * 
+     *
      */
     static getLinkedSocialAccounts(token:string, onComplete?:(linkedAccounts:Array<LinkedSocialNetwork>) => void, onError?:(error:LoginError) => void) {
         let url = new UrlBuilder('https://login.xsolla.com/api/users/me/social_providers').build();
