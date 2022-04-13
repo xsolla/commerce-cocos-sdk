@@ -12,7 +12,7 @@ export class XsollaAuth {
      * @en
      * Authenticates the user by the username and password specified via the authentication interface.
      * @zh
-     *
+     * 通过认证界面上指定的用户名和密码认证用户身份。
      */
     static authByUsernameAndPassword(username:string, password:string, rememberMe:boolean, payload?:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
         let body = {
@@ -36,7 +36,7 @@ export class XsollaAuth {
      * @en
      * Refreshes the token in case it is expired. Works only when OAuth 2.0 is enabled.
      * @zh
-     *
+     * 刷新令牌以应对令牌过期。仅当启用了OAuth 2.0时有用。
      */
     static refreshToken(refreshToken:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
         let body = {
@@ -59,7 +59,7 @@ export class XsollaAuth {
      * @en
      * Exchanges the user authentication code to a valid JWT.
      * @zh
-     *
+     * 用用户认证代码交换一个有效JWT。
      */
     static exchangeAuthCode(authCode:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
         let body = {
@@ -82,7 +82,7 @@ export class XsollaAuth {
      * @en
      * Starts authentication by the user phone number and sends a confirmation code to their phone number.
      * @zh
-     *
+     * 启动通过用户手机号认证并向手机发送一个验证码。
      */
     static startAuthByPhoneNumber(phoneNumber:string, payload?:string, state?:string, onComplete?:(operationId:string) => void, onError?:(error:LoginError) => void, sendPasswordlessAuthURL:boolean = false, passwordlessAuthURL:string = '') {
         let body:any = {
@@ -113,7 +113,7 @@ export class XsollaAuth {
      * @en
      * Completes authentication by the user phone number and a confirmation code.
      * @zh
-     *
+     * 通过用户手机号和验证码完成认证。
      */
     static completeAuthByPhoneNumber(confirmationCode:string, operationId:string, phoneNumber:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
         let body = {
@@ -134,7 +134,7 @@ export class XsollaAuth {
      * @en
      * Starts authentication by the user email address and sends a confirmation code to their email address.
      * @zh
-     *
+     * 启动通过用户邮箱地址认证并向邮箱地址发送一个验证码。
      */
     static startAuthByEmail(emailAddress:string, payload?:string, state?:string, onComplete?:(operationId:string) => void, onError?:(error:LoginError) => void, sendPasswordlessAuthURL:boolean = false, passwordlessAuthURL:string = '') {
         let body:any = {
@@ -165,7 +165,7 @@ export class XsollaAuth {
      * @en
      * Completes authentication by the user email address and a confirmation code.
      * @zh
-     *
+     * 通过用户邮箱地址和验证码完成认证。
      */
     static completeAuthByEmail(confirmationCode:string, operationId:string, emailAddress:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
         let body = {
@@ -186,7 +186,7 @@ export class XsollaAuth {
      * @en
      * Authenticates a platform account user via device ID.
      * @zh
-     *
+     * 通过device ID认证平台帐户用户。
      */
     static authByDeviceId(deviceName:string, deviceId:string, payload?:string, state?:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
         let body = {
@@ -211,7 +211,7 @@ export class XsollaAuth {
      * @en
      * Creates a new user.
      * @zh
-     *
+     * 创建新用户。
      */
     static registerNewUser(username:string, password:string, email:string, payload?:string, state?:string, extras?: RegistrationExtras, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
         let body = {
@@ -246,7 +246,7 @@ export class XsollaAuth {
      * @en
      * Resends an account confirmation email to a user. To complete account confirmation, the user should follow the link in the email.
      * @zh
-     *
+     * 重新向用户发送帐户验证邮件。要完成帐户验证，用户需点击邮件中的链接。
      */
     static resendAccountConfirmationEmail(username:string, payload?:string, state?:string, onComplete?:() => void, onError?:(error:LoginError) => void) {
         let body = {
@@ -269,7 +269,7 @@ export class XsollaAuth {
      * @en
      * Resets the user password with user confirmation. If the user data is kept in the Xsolla data storage or on your side, users receive a password change confirmation email.
      * @zh
-     *
+     * 通过用户确认重置用户密码。如用户数据保存在艾克索拉数据存储或您自己一侧，用户将收到一封密码更改确认邮件。
      */
     static resetPassword(username:string, onComplete?:() => void, onError?:(error:LoginError) => void) {
         let body = {

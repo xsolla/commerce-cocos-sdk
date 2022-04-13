@@ -12,7 +12,7 @@ export class XsollaOrders {
      * @en
      * Checks pending order status by its ID.
      * @zh
-     * 
+     * 根据订单ID查询待处理订单的状态。
      */
     static checkOrder(authToken:string, orderId:number, onComplete?:(checkOrderResult: CheckOrderResult) => void, onError?:(error:CommerceError) => void): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/order/{orderId}')

@@ -12,7 +12,7 @@ export class XsollaInventory {
      * @en
      * Gets the list of purchased virtual items.
      * @zh
-     * 
+     * 获取所购虚拟物品的列表。
      */
     static getInventory(authToken:string, platform?:PublishingPlatform, onComplete?:(itemsData:InventoryItemsData) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/user/inventory/items')
@@ -33,7 +33,7 @@ export class XsollaInventory {
      * @en
      * Gets virtual currency balance.
      * @zh
-     * 
+     * 获取虚拟货币余额。
      */
     static getVirtualCurrencyBalance(authToken:string, platform?:PublishingPlatform, onComplete?:(currencyData:VirtualCurrencyBalanceData) => void, onError?:(error:CommerceError) => void): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/user/virtual_currency_balance')
@@ -52,7 +52,7 @@ export class XsollaInventory {
      * @en
      * Consumes an inventory item.
      * @zh
-     * 
+     * 消耗物品库中的物品。
      */
     static consumeInventoryItem(authToken:string, sku:string, quantity?:number, instanceID?:string, platform?:PublishingPlatform, onComplete?:() => void, onError?:(error:CommerceError) => void): void {
         let body = {
@@ -76,7 +76,7 @@ export class XsollaInventory {
      * @en
      * Gets the list of user subscriptions.
      * @zh
-     * 
+     * 获取用户订阅的列表。
      */
     static getSubscriptions(authToken:string, platform?:PublishingPlatform, onComplete?:(subscriptionData:SubscriptionData) => void, onError?:(error:CommerceError) => void): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/user/subscriptions')

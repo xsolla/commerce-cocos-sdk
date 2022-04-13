@@ -13,7 +13,7 @@ export class XsollaCatalog {
      * @en
      * Gets a list of virtual items available for the configured project.
      * @zh
-     *
+     * 获取所配置项目的可用虚拟物品列表。
      */
     static getCatalog(locale:string, country:string, additionalFields:Array<string>, onComplete?:(itemsData:StoreItemsData) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/items/virtual_items')
@@ -42,7 +42,7 @@ export class XsollaCatalog {
      * @en
      * Gets a list of bundles for building a catalog.
      * @zh
-     *
+     * 获取用于生成目录的捆绑包列表。
      */
     static getBundleList(locale:string, country:string, additionalFields:Array<string>, onComplete?:(itemsData:StoreListOfBundles) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0) {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/items/bundle')
@@ -65,7 +65,7 @@ export class XsollaCatalog {
      * @en
      * Gets a specified bundle.
      * @zh
-     *
+     * 获取指定的捆绑包。
      */
     static getSpecifiedBundle(sku:string, onComplete?:(bundle:StoreBundle) => void, onError?:(error:CommerceError) => void) {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/items/bundle/sku/{sku}')
@@ -84,7 +84,7 @@ export class XsollaCatalog {
      * @en
      * Gets a list of all virtual items.
      * @zh
-     *
+     * 获取全部虚拟物品的列表。
      */
     static getCatalogSimplified(locale:string, onComplete?:(data: StoreItemsList) => void, onError?:(error:CommerceError) => void): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{ProjectID}/items/virtual_items/all')
@@ -103,7 +103,7 @@ export class XsollaCatalog {
      * @en
      * Gets the list of virtual currencies.
      * @zh
-     *
+     * 获取虚拟货币的列表。
      */
     static getVirtualCurrencyList(locale:string, country:string, additionalFields:Array<string>, onComplete?:(data:VirtualCurrencyData) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/items/virtual_currency')
@@ -126,7 +126,7 @@ export class XsollaCatalog {
      * @en
      * Gets the list of virtual currency packages.
      * @zh
-     *
+     * 获取虚拟货币套餐的列表。
      */
     static getVirtualCurrencyPackages(locale:string, country:string, additionalFields:Array<string>, onComplete?:(data:VirtualCurrencyPackagesData) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/items/virtual_currency/package')
@@ -149,7 +149,7 @@ export class XsollaCatalog {
      * @en
      * Gets an item list from the specified group for building a catalog.
      * @zh
-     *
+     * 从指定组中获取商品列表用于生成目录。
      */
     static getItemsBySpecifiedGroup(externalId: string, locale:string, country:string, additionalFields:Array<string>, onComplete?:(itemsList: StoreItemsList) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/items/virtual_items/group/{externalId}')
@@ -173,7 +173,7 @@ export class XsollaCatalog {
      * @en
      * Gets the list of virtual item groups.
      * @zh
-     *
+     * 获取虚拟物品组的列表。
      */
     static getItemGroups(locale:string, onComplete?:(groups:Array<ItemGroup>) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/items/groups')
@@ -194,7 +194,7 @@ export class XsollaCatalog {
      * @en
      * Buys an item using virtual currency.
      * @zh
-     *
+     * 使用虚拟货币购买商品。
      */
     static purchaseItemForVirtualCurrency(authToken:string, itemSKU:string, currencySKU:string, onComplete?:(orderId: number) => void, onError?:(error:CommerceError) => void): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/payment/item/{itemSKU}/virtual/{currencySKU}')
@@ -214,7 +214,7 @@ export class XsollaCatalog {
      * @en
      * Redeems a coupon code. The user gets a bonus after a coupon is redeemed.
      * @zh
-     *
+     * 兑换优惠券码。用户在兑换优惠券后获得奖励。
      */
      static redeemCoupon(authToken:string, couponCode:string, onComplete?:(items: Array<RedeemedCouponItem>) => void, onError?:(error:CommerceError) => void): void {
         let body = {
@@ -237,7 +237,7 @@ export class XsollaCatalog {
      * Gets coupon rewards by its code. Can be used to let users choose one of many items as a bonus.
      * The usual case is choosing a DRM if the coupon contains a game as a bonus.
      * @zh
-     *
+     * 通过优惠券码获得奖励。可用于让用户从多个商品中选择一个作为奖励。如优惠券包含游戏作为奖励，常见情况是选择一个DRM。
      */
      static getCouponRewards(authToken:string, couponCode:string, onComplete?:(data: CouponRewardData) => void, onError?:(error:CommerceError) => void): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/coupon/code/{couponCode}/rewards')
@@ -256,7 +256,7 @@ export class XsollaCatalog {
      * @en
      * Initiates an item purchase session and fetches token for a payment console.
      * @zh
-     *
+     * 发起商品购买会话并获取支付控制台的令牌。
      */
      static fetchPaymentToken(authToken:string, itemSKU:string, quantity:number, currency?:string, country?:string, locale?:string, customParameters?:object, onComplete?:(tokenResult: PaymentTokenResult) => void, onError?:(error:CommerceError) => void): void {
 

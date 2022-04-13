@@ -13,7 +13,7 @@ export class XsollaCart {
      * @en
      * Returns user’s cart by cart ID.
      * @zh
-     *
+     * 按购物车ID返回用户的购物车。
      */
     static getCartById(cartId:string, locale:string, currency:string, onComplete?:(cartData:CartItemsData) => void, onError?:(error:CommerceError) => void): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{project_id}/cart/{cart_id}')
@@ -34,7 +34,7 @@ export class XsollaCart {
      * @en
      * Returns the current user's cart.
      * @zh
-     *
+     * 返回当前用户的购物车。
      */
     static getCart(locale:string, currency:string, onComplete?:(cartData:CartItemsData) => void, onError?:(error:CommerceError) => void): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{project_id}/cart')
@@ -54,7 +54,7 @@ export class XsollaCart {
      * @en
      * Deletes all items in a specified cart.
      * @zh
-     *
+     * 删除指定购物车中的全部商品。
      */
     static clearCartById(cartId:string, onComplete?:() => void, onError?:(error:CommerceError) => void): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{project_id}/cart/{cart_id}/clear')
@@ -72,7 +72,7 @@ export class XsollaCart {
      * @en
      * Deletes all items in the current user's cart.
      * @zh
-     *
+     * 删除当前用户购物车中的全部商品。
      */
     static clearCart(onComplete?:() => void, onError?:(error:CommerceError) => void): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{project_id}/cart/clear')
@@ -89,7 +89,7 @@ export class XsollaCart {
      * @en
      * Fills the specific cart with items. If the cart already has an item with the same SKU, the existing item position will be replaced by the passed value.
      * @zh
-     *
+     * 在指定购物车里添加商品。如果购物车中已有具有相同SKU的商品，则现有商品位置将被传入的值替换。
      */
     static fillCartById(cartId:string, items:Array<CartItem>, onComplete?:() => void, onError?:(error:CommerceError) => void): void {
         let fillItems = items.map((item) => {
@@ -118,7 +118,7 @@ export class XsollaCart {
      * @en
      * Fills the cart with items. If the cart already has an item with the same SKU, the existing item will be replaced by the passed value.
      * @zh
-     *
+     * 在购物车里添加商品。如果购物车中已有具有相同SKU的商品，则现有商品将被传入的值替换。
      */
     static fillCart(items:Array<CartItem>, onComplete?:() => void, onError?:(error:CommerceError) => void): void {
         let fillItems = items.map((item) => {
@@ -146,7 +146,7 @@ export class XsollaCart {
      * @en
      * Updates an existing cart item or creates the one in the specified cart.
      * @zh
-     *
+     * 更新现有的购物车商品或在指定购物车中创建商品。
      */
     static updateItemInCartById(cartId:string, itemSku:string, quantity:number, onComplete?:() => void, onError?:(error:CommerceError) => void): void {
         let body = {
@@ -169,7 +169,7 @@ export class XsollaCart {
      * @en
      * Updates an existing cart item or creates the one in the current user's cart.
      * @zh
-     *
+     * 更新现有的购物车商品或在当前用户的购物车中创建商品。
      */
     static updateItemInCart(itemSku:string, quantity:number, onComplete?:() => void, onError?:(error:CommerceError) => void): void {
         let body = {
@@ -191,7 +191,7 @@ export class XsollaCart {
      * @en
      * Removes an item from the specified cart.
      * @zh
-     *
+     * 从指定购物车中删除一个商品。
      */
     static removeItemFromCartById(cartId:string, itemSku:string, onComplete?:() => void, onError?:(error:CommerceError) => void): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{project_id}/cart/{cart_id}/item/{item_sku}')
@@ -210,7 +210,7 @@ export class XsollaCart {
      * @en
      * Removes an item from the current user's cart.
      * @zh
-     *
+     * 从当前用户的购物车中删除一个商品。
      */
     static removeItemFromCart(itemSku:string, onComplete?:() => void, onError?:(error:CommerceError) => void): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{project_id}/cart/item/{item_sku}')
@@ -228,7 +228,7 @@ export class XsollaCart {
      * @en
      * Redeems a promo code. After redeeming a promo code, the user will get free items and/or the price of a cart will be decreased.
      * @zh
-     *
+     * 兑换促销码。兑换促销码后，用户将得到免费商品和/或购物车价格折扣。
      */
     static redeemPromocode(authToken:string, promocodeCode:string, cartId:string, onComplete?:(cartData:CartItemsData) => void, onError?:(error:CommerceError) => void): void {
         let body = {
@@ -253,7 +253,7 @@ export class XsollaCart {
      * @en
      * Gets promo code rewards by its code. Can be used to let users choose one of many items as a bonus.
      * @zh
-     *
+     * 通过促销码获得奖励。可用于让用户从多个商品中选择一个作为奖励。
      */
     static getPromocodeReward(authToken:string, promocodeCode:string, onComplete?:(rewardData: PromocodeRewardData) => void, onError?:(error:CommerceError) => void): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{project_id}/promocode/code/{promocode_code}/rewards')
@@ -272,7 +272,7 @@ export class XsollaCart {
      * @en
      * Removes a promo code from a cart. After the promo code is removed, the total price of all items in the cart will be recalculated without bonuses and discounts provided by a promo code.
      * @zh
-     *
+     * 从购物车中移除促销码。移除促销码后，将重新计算购物车中所有商品的总价，去掉促销码提供的奖励和折扣。
      */
     static removePromocode(authToken:string, cartId:string, onComplete?:(cartData:CartItemsData) => void, onError?:(error:CommerceError) => void): void {
         let body = {
@@ -296,7 +296,7 @@ export class XsollaCart {
      * @en
      * Initiates a cart purchase session and fetches a token for payment console.
      * @zh
-     *
+     * 发起购物车购买会话并获取支付控制台的令牌。
      */
      static fetchCartPaymentToken(authToken:string, cartId:string, currency?:string, country?:string, locale?:string, customParameters?:object, onComplete?:(tokenResult: PaymentTokenResult) => void, onError?:(error:CommerceError) => void): void {
         let body = {
