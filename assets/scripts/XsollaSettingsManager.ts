@@ -1,7 +1,7 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component, Enum} from 'cc';
-import { XsollaSettings, Xsolla, PaymentUiTheme, PaymentUiSize, PaymentUiVersion, PaymentRedirectCondition, PaymentRedirectStatusManual, RedirectPolicySettings } from 'db://xsolla-commerce-sdk/scripts/Xsolla';
+import { XsollaSettings, Xsolla, PaymentUiTheme, PaymentUiSize, PaymentUiVersion, PaymentRedirectCondition, PaymentRedirectStatusManual, RedirectPolicySettings, PaymentUISettings } from 'db://xsolla-commerce-sdk/scripts/Xsolla';
 const { ccclass, property, disallowMultiple, type  } = _decorator;
  
 @ccclass('XsollaSettingsManager')
@@ -39,26 +39,74 @@ export class XsollaSettingsManager extends Component {
     @property ({
         displayName: 'Payment UI Theme',
         tooltip: 'User interface theme for the payment interface.',
-        group: 'Paystation UI'
+        group: {name: 'Paystation UI WebGL', id: 'Paystation UI'}
     })
     @type(Enum(PaymentUiTheme))
-    paymentInterfaceTheme: PaymentUiTheme = PaymentUiTheme.ps4_default_dark;
+    paymentInterfaceThemeWebGL: PaymentUiTheme = PaymentUiTheme.ps4_default_dark;
 
     @property ({
         displayName: 'Payment UI Size',
         tooltip: 'User interface size for the payment interface.',
-        group: 'Paystation UI'
+        group: {name: 'Paystation UI WebGL', id: 'Paystation UI'}
     })
     @type(Enum(PaymentUiSize))
-    paymentInterfaceSize: PaymentUiSize = PaymentUiSize.medium;
+    paymentInterfaceSizeWebGL: PaymentUiSize = PaymentUiSize.medium;
 
     @property ({
         displayName: 'Payment UI Size',
         tooltip: 'User interface size for the payment interface.',
-        group: 'Paystation UI'
+        group: {name: 'Paystation UI WebGL', id: 'Paystation UI'}
     })
     @type(Enum(PaymentUiVersion))
-    paymentInterfaceVersion: PaymentUiVersion = PaymentUiVersion.desktop;
+    paymentInterfaceVersionWebGL: PaymentUiVersion = PaymentUiVersion.desktop;
+
+    @property ({
+        displayName: 'Payment UI Theme',
+        tooltip: 'User interface theme for the payment interface.',
+        group: {name: 'Paystation UI Android', id: 'Paystation UI'}
+    })
+    @type(Enum(PaymentUiTheme))
+    paymentInterfaceThemeAndroid: PaymentUiTheme = PaymentUiTheme.ps4_default_dark;
+
+    @property ({
+        displayName: 'Payment UI Size',
+        tooltip: 'User interface size for the payment interface.',
+        group: {name: 'Paystation UI Android', id: 'Paystation UI'}
+    })
+    @type(Enum(PaymentUiSize))
+    paymentInterfaceSizeAndroid: PaymentUiSize = PaymentUiSize.medium;
+
+    @property ({
+        displayName: 'Payment UI Size',
+        tooltip: 'User interface size for the payment interface.',
+        group: {name: 'Paystation UI Android', id: 'Paystation UI'}
+    })
+    @type(Enum(PaymentUiVersion))
+    paymentInterfaceVersionAndroid: PaymentUiVersion = PaymentUiVersion.mobile;
+
+    @property ({
+        displayName: 'Payment UI Theme',
+        tooltip: 'User interface theme for the payment interface.',
+        group: {name: 'Paystation UI IOS', id: 'Paystation UI'}
+    })
+    @type(Enum(PaymentUiTheme))
+    paymentInterfaceThemeIOS: PaymentUiTheme = PaymentUiTheme.ps4_default_dark;
+
+    @property ({
+        displayName: 'Payment UI Size',
+        tooltip: 'User interface size for the payment interface.',
+        group: {name: 'Paystation UI IOS', id: 'Paystation UI'}
+    })
+    @type(Enum(PaymentUiSize))
+    paymentInterfaceSizeIOS: PaymentUiSize = PaymentUiSize.medium;
+
+    @property ({
+        displayName: 'Payment UI Size',
+        tooltip: 'User interface size for the payment interface.',
+        group: {name: 'Paystation UI IOS', id: 'Paystation UI'}
+    })
+    @type(Enum(PaymentUiVersion))
+    paymentInterfaceVersionIOS: PaymentUiVersion = PaymentUiVersion.mobile;
 
     @property ({
         displayName: 'Use settings from publisher account',
@@ -221,14 +269,32 @@ export class XsollaSettingsManager extends Component {
             redirectButtonCaption: this.redirectButtonCaptionIOS
         };
 
+        let paymentUISettingsWebGL: PaymentUISettings = {
+            theme: this.paymentInterfaceThemeWebGL,
+            size: this.paymentInterfaceSizeWebGL,
+            version: this.paymentInterfaceVersionWebGL,
+        };
+
+        let paymentUISettingsAndroid: PaymentUISettings = {
+            theme: this.paymentInterfaceThemeAndroid,
+            size: this.paymentInterfaceSizeAndroid,
+            version: this.paymentInterfaceVersionAndroid,
+        };
+
+        let paymentUISettingsIOS: PaymentUISettings = {
+            theme: this.paymentInterfaceThemeIOS,
+            size: this.paymentInterfaceSizeIOS,
+            version: this.paymentInterfaceVersionIOS,
+        };
+
         var settings: XsollaSettings = {
             loginId: this.loginId,
             projectId: this.projectId,
             clientId: this.clientId,
             enableSandbox: this.enableSandbox,
-            paymentInterfaceTheme: this.paymentInterfaceTheme,
-            paymentInterfaceSize: this.paymentInterfaceSize,
-            paymentInterfaceVersion: this.paymentInterfaceVersion,
+            paymentUISettingsWebGL: paymentUISettingsWebGL,
+            paymentUISettingsAndroid: paymentUISettingsAndroid,
+            paymentUISettingsIOS: paymentUISettingsIOS,
             redirectPolicySettingsWebGL: redirectPolicySettingsWebGL,
             redirectPolicySettingsAndroid: redirectPolicySettingsAndroid,
             redirectPolicySettingsIOS: redirectPolicySettingsIOS

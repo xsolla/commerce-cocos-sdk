@@ -4,7 +4,7 @@ import { sys } from "cc";
 import { CommerceError, handleCommerceError } from "../core/Error";
 import { HttpUtil, RequestContentType } from "../core/HttpUtil";
 import { UrlBuilder } from "../core/UrlBuilder";
-import { PaymentRedirectCondition, PaymentRedirectStatusManual, PaymentUiSize, PaymentUiTheme, PaymentUiVersion, RedirectPolicySettings, Xsolla } from "../Xsolla";
+import { PaymentRedirectCondition, PaymentRedirectStatusManual, PaymentUISettings, PaymentUiSize, PaymentUiTheme, PaymentUiVersion, RedirectPolicySettings, Xsolla } from "../Xsolla";
 import { OrderContent } from "./XsollaCatalog";
 
 export class XsollaOrders {
@@ -34,12 +34,26 @@ export class XsollaOrders {
     }
 
     static getPaymentSettings() {
-        let paymentUISettings: any = {
-            theme: this.getPaymentInerfaceTheme()
+        let UISettings: PaymentUISettings = Xsolla.settings.paymentUISettingsWebGL;
+        if(sys.platform.toLowerCase() == 'android') {
+            UISettings = Xsolla.settings.paymentUISettingsAndroid;
+        }
+        if(sys.platform.toLowerCase() == 'ios') {
+            UISettings = Xsolla.settings.paymentUISettingsIOS;
+        }
+        if(UISettings == null) {
+            UISettings = {
+                theme: PaymentUiTheme.ps4_default_dark,
+                size: PaymentUiSize.medium,
+                version: PaymentUiVersion.mobile
+            };
+        }
+        
+        let paymentUISettings = {
+            theme: this.getPaymentInerfaceTheme(UISettings),
+            size: UISettings.size == null ? PaymentUiSize[PaymentUiSize.medium] : PaymentUiSize[UISettings.size],
+            version: UISettings.version == null ? PaymentUiVersion[PaymentUiVersion.desktop] : PaymentUiVersion[UISettings.version]
         };
-            
-        paymentUISettings.size = Xsolla.settings.paymentInterfaceSize == null ? PaymentUiSize[PaymentUiSize.medium] : PaymentUiSize[Xsolla.settings.paymentInterfaceSize];
-        paymentUISettings.version = Xsolla.settings.paymentInterfaceVersion == null ? PaymentUiVersion[PaymentUiVersion.desktop] : PaymentUiVersion[Xsolla.settings.paymentInterfaceVersion]
 
         let paymentSettings: any = {
             ui: paymentUISettings
@@ -69,7 +83,7 @@ export class XsollaOrders {
             }
             let redirectSettings = {
                 redirect_conditions: PaymentRedirectCondition[redirectPolicySettings.redirectCondition],
-                status_for_manual_redirection: PaymentRedirectStatusManual[redirectPolicySettings.redirectStatusManual],
+                status_for_manual_redirection: this.getPaymentRedirectStatusManual(redirectPolicySettings.redirectStatusManual),
                 delay: redirectPolicySettings.redirectDelay,
                 redirect_button_caption: redirectPolicySettings.redirectButtonCaption
             }
@@ -79,11 +93,11 @@ export class XsollaOrders {
         return paymentSettings;
     }
 
-    private static getPaymentInerfaceTheme() {
-        if(Xsolla.settings.paymentInterfaceTheme == null) {
+    private static getPaymentInerfaceTheme(paymentUISettings: PaymentUISettings) {
+        if(paymentUISettings.theme == null) {
             return 'default';
         }
-        switch(Xsolla.settings.paymentInterfaceTheme) {
+        switch(paymentUISettings.theme) {
             case PaymentUiTheme.default_light:
             return 'default';
             case PaymentUiTheme.default_dark:
@@ -95,6 +109,13 @@ export class XsollaOrders {
             case PaymentUiTheme.ps4_default_dark:
             return 'ps4-default-dark';
         }
+    }
+
+    private static getPaymentRedirectStatusManual(redirectStatusManual: PaymentRedirectStatusManual) {
+        if(redirectStatusManual == PaymentRedirectStatusManual.purchase_for_virtual_currency) {
+            return 'vc';
+        }
+        return PaymentRedirectStatusManual[redirectStatusManual];
     }
 }
 

@@ -28,7 +28,7 @@ export enum PaymentRedirectCondition {
 
 export enum PaymentRedirectStatusManual {
     none = 0,
-	vc = 1,
+	purchase_for_virtual_currency = 1,
 	successful = 2,
     successful_or_canceled = 3,
     any = 4
@@ -39,9 +39,9 @@ export interface XsollaSettings {
     projectId: string;
     clientId: number;
     enableSandbox?: boolean;
-    paymentInterfaceTheme?: PaymentUiTheme;
-    paymentInterfaceSize?: PaymentUiSize;
-    paymentInterfaceVersion?: PaymentUiVersion;
+    paymentUISettingsWebGL?:PaymentUISettings;
+    paymentUISettingsAndroid?:PaymentUISettings;
+    paymentUISettingsIOS?:PaymentUISettings;
     redirectPolicySettingsWebGL?: RedirectPolicySettings;
     redirectPolicySettingsAndroid?: RedirectPolicySettings;
     redirectPolicySettingsIOS?: RedirectPolicySettings;
@@ -62,4 +62,10 @@ export interface RedirectPolicySettings {
     redirectDelay: number;
     redirectStatusManual: PaymentRedirectStatusManual;
     redirectButtonCaption: string;
+}
+
+export interface PaymentUISettings {
+    theme?: PaymentUiTheme;
+    size?: PaymentUiSize;
+    version?: PaymentUiVersion;
 }
