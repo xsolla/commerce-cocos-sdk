@@ -38,13 +38,13 @@ export interface XsollaSettings {
     loginId: string;
     projectId: string;
     clientId: number;
-    enableSandbox: boolean;
-    paymentInterfaceTheme: PaymentUiTheme;
-    paymentInterfaceSize: PaymentUiSize;
-    paymentInterfaceVersion: PaymentUiVersion;
-    redirectPolicySettingsWebGL: RedirectPolicySettings;
-    redirectPolicySettingsAndroid: RedirectPolicySettings;
-    redirectPolicySettingsIOS: RedirectPolicySettings;
+    enableSandbox?: boolean;
+    paymentInterfaceTheme?: PaymentUiTheme;
+    paymentInterfaceSize?: PaymentUiSize;
+    paymentInterfaceVersion?: PaymentUiVersion;
+    redirectPolicySettingsWebGL?: RedirectPolicySettings;
+    redirectPolicySettingsAndroid?: RedirectPolicySettings;
+    redirectPolicySettingsIOS?: RedirectPolicySettings;
 }
 
 export class Xsolla {

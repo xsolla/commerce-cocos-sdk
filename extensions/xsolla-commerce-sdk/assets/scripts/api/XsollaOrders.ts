@@ -34,12 +34,13 @@ export class XsollaOrders {
     }
 
     static getPaymentSettings() {
-        let paymentUISettings = {
-            theme: this.getPaymentInerfaceTheme(),
-            size: PaymentUiSize[Xsolla.settings.paymentInterfaceSize],
-            version: PaymentUiVersion[Xsolla.settings.paymentInterfaceVersion]
+        let paymentUISettings: any = {
+            theme: this.getPaymentInerfaceTheme()
         };
             
+        paymentUISettings.size = Xsolla.settings.paymentInterfaceSize == null ? PaymentUiSize[PaymentUiSize.medium] : PaymentUiSize[Xsolla.settings.paymentInterfaceSize];
+        paymentUISettings.version = Xsolla.settings.paymentInterfaceVersion == null ? PaymentUiVersion[PaymentUiVersion.desktop] : PaymentUiVersion[Xsolla.settings.paymentInterfaceVersion]
+
         let paymentSettings: any = {
             ui: paymentUISettings
         };
@@ -50,6 +51,18 @@ export class XsollaOrders {
         if(sys.platform.toLowerCase() == 'ios') {
             redirectPolicySettings = Xsolla.settings.redirectPolicySettingsIOS;
         }
+
+        if(redirectPolicySettings == null) {
+            redirectPolicySettings = {
+                useSettingsFromPublisherAccount: true,
+                returnUrl: '',
+                redirectCondition: PaymentRedirectCondition.none,
+                redirectDelay: 0,
+                redirectStatusManual: PaymentRedirectStatusManual.none,
+                redirectButtonCaption: ''
+            };
+        }
+
         if(!redirectPolicySettings.useSettingsFromPublisherAccount) {
             if(redirectPolicySettings.returnUrl != '') {
                 paymentSettings.return_url = redirectPolicySettings.returnUrl
@@ -67,6 +80,9 @@ export class XsollaOrders {
     }
 
     private static getPaymentInerfaceTheme() {
+        if(Xsolla.settings.paymentInterfaceTheme == null) {
+            return 'default';
+        }
         switch(Xsolla.settings.paymentInterfaceTheme) {
             case PaymentUiTheme.default_light:
             return 'default';
