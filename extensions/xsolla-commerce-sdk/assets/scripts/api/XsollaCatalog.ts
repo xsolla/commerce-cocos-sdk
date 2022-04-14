@@ -3,9 +3,9 @@
 import { handleCommerceError, CommerceError } from "../core/Error";
 import { HttpUtil, RequestContentType } from "../core/HttpUtil";
 import { UrlBuilder } from "../core/UrlBuilder";
-import { PaymentRedirectCondition, PaymentRedirectStatusManual, PaymentUiSize, PaymentUiTheme, PaymentUiVersion, Xsolla } from "../Xsolla";
+import { Xsolla } from "../Xsolla";
 import { BonusItem } from "./XsollaCart";
-import { PaymentTokenResult } from "./XsollaOrders";
+import { PaymentTokenResult, XsollaOrders } from "./XsollaOrders";
 
 export class XsollaCatalog {
 
@@ -260,37 +260,13 @@ export class XsollaCatalog {
      */
      static fetchPaymentToken(authToken:string, itemSKU:string, quantity:number, currency?:string, country?:string, locale?:string, customParameters?:object, onComplete?:(tokenResult: PaymentTokenResult) => void, onError?:(error:CommerceError) => void): void {
 
-        let paymentUISettings = {
-            theme: this.getPaymentInerfaceTheme(),
-            size: PaymentUiSize[Xsolla.settings.paymentInterfaceSize],
-            version: PaymentUiVersion[Xsolla.settings.paymentInterfaceVersion]
-        };
-
-        let paymentSettings: any = {
-            ui: paymentUISettings
-        };
-
-        if(Xsolla.settings.overrideRedirectPolicy) {
-            if(Xsolla.settings.returnUrl != '') {
-                paymentSettings.return_url = Xsolla.settings.returnUrl
-            }
-            let redirectSettings = {
-                redirect_conditions: PaymentRedirectCondition[Xsolla.settings.redirectCondition],
-                status_for_manual_redirection: PaymentRedirectStatusManual[Xsolla.settings.redirectStatusManual],
-                delay: Xsolla.settings.redirectDelay,
-                redirect_button_caption: Xsolla.settings.redirectButtonCaption
-            }
-            paymentSettings.redirect_policy = redirectSettings
-        }
-
         let body = {
             currency: currency,
             country: country,
-            locale: locale,
             sandbox: Xsolla.settings.enableSandbox,
             customParameters: customParameters,
             quantity: quantity,
-            settings: paymentSettings
+            settings: XsollaOrders.getPaymentSettings()
         };
 
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/payment/item/{itemSKU}')
@@ -307,21 +283,6 @@ export class XsollaCatalog {
             onComplete?.(tokenResult);
         }, handleCommerceError(onError));
         request.send(JSON.stringify(body));
-    }
-
-    private static getPaymentInerfaceTheme() {
-        switch(Xsolla.settings.paymentInterfaceTheme) {
-            case PaymentUiTheme.default_light:
-            return 'default';
-            case PaymentUiTheme.default_dark:
-            return 'default-dark';
-            case PaymentUiTheme.dark:
-            return 'dark';
-            case PaymentUiTheme.ps4_default_light:
-            return 'ps4-default-light';
-            case PaymentUiTheme.ps4_default_dark:
-            return 'ps4-default-dark';
-        }
     }
 }
 

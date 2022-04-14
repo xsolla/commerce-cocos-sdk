@@ -5,7 +5,7 @@ import { HttpUtil, RequestContentType } from "../core/HttpUtil";
 import { UrlBuilder } from "../core/UrlBuilder";
 import { Xsolla } from "../Xsolla";
 import { Price, ItemAttribute, ItemGroup } from "./XsollaCatalog";
-import { PaymentTokenResult } from "./XsollaOrders";
+import { PaymentTokenResult, XsollaOrders } from "./XsollaOrders";
 
 export class XsollaCart {
 
@@ -304,7 +304,8 @@ export class XsollaCart {
             country: country,
             locale: locale,
             sandbox: Xsolla.settings.enableSandbox,
-            customParameters: customParameters
+            customParameters: customParameters,
+            settings: XsollaOrders.getPaymentSettings()
         };
 
         let endpoint = cartId == undefined ? 'https://store.xsolla.com/api/v2/project/{project_id}/payment/cart':'https://store.xsolla.com/api/v2/project/{project_id}/payment/cart/{cartId}';

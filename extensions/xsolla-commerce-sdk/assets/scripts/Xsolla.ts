@@ -42,12 +42,9 @@ export interface XsollaSettings {
     paymentInterfaceTheme: PaymentUiTheme;
     paymentInterfaceSize: PaymentUiSize;
     paymentInterfaceVersion: PaymentUiVersion;
-    overrideRedirectPolicy: boolean;
-    returnUrl: string;
-    redirectCondition: PaymentRedirectCondition;
-    redirectDelay: number;
-    redirectStatusManual: PaymentRedirectStatusManual,
-    redirectButtonCaption: string
+    redirectPolicySettingsWebGL: RedirectPolicySettings;
+    redirectPolicySettingsAndroid: RedirectPolicySettings;
+    redirectPolicySettingsIOS: RedirectPolicySettings;
 }
 
 export class Xsolla {
@@ -56,4 +53,13 @@ export class Xsolla {
     static init(settings: XsollaSettings) {
         Xsolla.settings = settings;
     }
+}
+
+export interface RedirectPolicySettings {
+    useSettingsFromPublisherAccount: boolean;
+    returnUrl: string;
+    redirectCondition: PaymentRedirectCondition;
+    redirectDelay: number;
+    redirectStatusManual: PaymentRedirectStatusManual;
+    redirectButtonCaption: string;
 }

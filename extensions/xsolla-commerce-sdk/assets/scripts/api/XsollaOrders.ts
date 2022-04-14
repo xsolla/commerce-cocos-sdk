@@ -1,9 +1,10 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
+import { sys } from "cc";
 import { CommerceError, handleCommerceError } from "../core/Error";
 import { HttpUtil, RequestContentType } from "../core/HttpUtil";
 import { UrlBuilder } from "../core/UrlBuilder";
-import { Xsolla } from "../Xsolla";
+import { PaymentRedirectCondition, PaymentRedirectStatusManual, PaymentUiSize, PaymentUiTheme, PaymentUiVersion, RedirectPolicySettings, Xsolla } from "../Xsolla";
 import { OrderContent } from "./XsollaCatalog";
 
 export class XsollaOrders {
@@ -30,6 +31,54 @@ export class XsollaOrders {
             onComplete?.(checkOrderResult);
         }, handleCommerceError(onError));
         request.send();
+    }
+
+    static getPaymentSettings() {
+        let paymentUISettings = {
+            theme: this.getPaymentInerfaceTheme(),
+            size: PaymentUiSize[Xsolla.settings.paymentInterfaceSize],
+            version: PaymentUiVersion[Xsolla.settings.paymentInterfaceVersion]
+        };
+            
+        let paymentSettings: any = {
+            ui: paymentUISettings
+        };
+        let redirectPolicySettings: RedirectPolicySettings = Xsolla.settings.redirectPolicySettingsWebGL;
+        if(sys.platform.toLowerCase() == 'android') {
+            redirectPolicySettings = Xsolla.settings.redirectPolicySettingsAndroid;
+        }
+        if(sys.platform.toLowerCase() == 'ios') {
+            redirectPolicySettings = Xsolla.settings.redirectPolicySettingsIOS;
+        }
+        if(!redirectPolicySettings.useSettingsFromPublisherAccount) {
+            if(redirectPolicySettings.returnUrl != '') {
+                paymentSettings.return_url = redirectPolicySettings.returnUrl
+            }
+            let redirectSettings = {
+                redirect_conditions: PaymentRedirectCondition[redirectPolicySettings.redirectCondition],
+                status_for_manual_redirection: PaymentRedirectStatusManual[redirectPolicySettings.redirectStatusManual],
+                delay: redirectPolicySettings.redirectDelay,
+                redirect_button_caption: redirectPolicySettings.redirectButtonCaption
+            }
+            paymentSettings.redirect_policy = redirectSettings
+        }
+
+        return paymentSettings;
+    }
+
+    private static getPaymentInerfaceTheme() {
+        switch(Xsolla.settings.paymentInterfaceTheme) {
+            case PaymentUiTheme.default_light:
+            return 'default';
+            case PaymentUiTheme.default_dark:
+            return 'default-dark';
+            case PaymentUiTheme.dark:
+            return 'dark';
+            case PaymentUiTheme.ps4_default_light:
+            return 'ps4-default-light';
+            case PaymentUiTheme.ps4_default_dark:
+            return 'ps4-default-dark';
+        }
     }
 }
 
