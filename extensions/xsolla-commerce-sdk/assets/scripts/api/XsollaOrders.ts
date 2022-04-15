@@ -34,15 +34,15 @@ export class XsollaOrders {
     }
 
     static getPaymentSettings() {
-        let UISettings: PaymentUISettings = Xsolla.settings.paymentUISettingsWebGL;
+        let uiSettings: PaymentUISettings = Xsolla.settings.paymentUISettingsWebGL;
         if(sys.platform.toLowerCase() == 'android') {
-            UISettings = Xsolla.settings.paymentUISettingsAndroid;
+            uiSettings = Xsolla.settings.paymentUISettingsAndroid;
         }
         if(sys.platform.toLowerCase() == 'ios') {
-            UISettings = Xsolla.settings.paymentUISettingsIOS;
+            uiSettings = Xsolla.settings.paymentUISettingsIOS;
         }
-        if(UISettings == null) {
-            UISettings = {
+        if(uiSettings == null) {
+            uiSettings = {
                 theme: PaymentUiTheme.ps4_default_dark,
                 size: PaymentUiSize.medium,
                 version: PaymentUiVersion.mobile
@@ -50,9 +50,9 @@ export class XsollaOrders {
         }
         
         let paymentUISettings = {
-            theme: this.getPaymentInerfaceTheme(UISettings),
-            size: UISettings.size == null ? PaymentUiSize[PaymentUiSize.medium] : PaymentUiSize[UISettings.size],
-            version: UISettings.version == null ? PaymentUiVersion[PaymentUiVersion.desktop] : PaymentUiVersion[UISettings.version]
+            theme: this.getPaymentInerfaceTheme(uiSettings),
+            size: uiSettings.size == null ? PaymentUiSize[PaymentUiSize.medium] : PaymentUiSize[uiSettings.size],
+            version: uiSettings.version == null ? PaymentUiVersion[PaymentUiVersion.desktop] : PaymentUiVersion[uiSettings.version]
         };
 
         let paymentSettings: any = {
