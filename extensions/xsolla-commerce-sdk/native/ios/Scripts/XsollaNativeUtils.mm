@@ -23,6 +23,10 @@
 	return [UIDevice currentDevice].name;
 }
 
++(NSString*) getBundleIdentifier {
+	return [[NSBundle mainBundle] bundleIdentifier];
+}
+
 +(void) updateUserProfilePicture:(NSString*)picture authToken:(NSString*)token {
 	NSBundle *main = [NSBundle mainBundle];
 	NSString *resourcePath = [main pathForResource:picture ofType:nil];

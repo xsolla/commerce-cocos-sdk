@@ -31,6 +31,10 @@ public class XsollaNativeUtils {
         return Build.MANUFACTURER + Build.MODEL;
     }
 
+    public static String getPackageName() { 
+        return AppActivity.getAppActivity().getPackageName(); 
+    }
+
     public static void updateUserProfilePicture(String filePath, String token) {
         AssetManager assetManager = AppActivity.getAppActivity().getAssets();
         InputStream inputStream = null;

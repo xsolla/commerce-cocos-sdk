@@ -34,11 +34,15 @@ export class XsollaOrders {
     }
 
     static getPaymentSettings() {
+        let platfrom = sys.platform.toLowerCase();
+        let isAndroidPlatform = platfrom == 'android';
+        let isIosPlatform = platfrom == 'ios';
+
         let uiSettings: PaymentUISettings = Xsolla.settings.paymentUISettingsWebGL;
-        if(sys.platform.toLowerCase() == 'android') {
+        if(isAndroidPlatform) {
             uiSettings = Xsolla.settings.paymentUISettingsAndroid;
         }
-        if(sys.platform.toLowerCase() == 'ios') {
+        if(isIosPlatform) {
             uiSettings = Xsolla.settings.paymentUISettingsIOS;
         }
         if(uiSettings == null) {
@@ -59,10 +63,10 @@ export class XsollaOrders {
             ui: paymentUISettings
         };
         let redirectPolicySettings: RedirectPolicySettings = Xsolla.settings.redirectPolicySettingsWebGL;
-        if(sys.platform.toLowerCase() == 'android') {
+        if(isAndroidPlatform) {
             redirectPolicySettings = Xsolla.settings.redirectPolicySettingsAndroid;
         }
-        if(sys.platform.toLowerCase() == 'ios') {
+        if(isIosPlatform) {
             redirectPolicySettings = Xsolla.settings.redirectPolicySettingsIOS;
         }
 
@@ -77,7 +81,27 @@ export class XsollaOrders {
             };
         }
 
-        if(!redirectPolicySettings.useSettingsFromPublisherAccount) {
+        if(redirectPolicySettings.useSettingsFromPublisherAccount) {
+            if (sys.isMobile){
+                let appid : String;
+                if (isAndroidPlatform) {
+                    appid = jsb.reflection.callStaticMethod("com/cocos/game/XsollaNativeUtils", "getPackageName", "()Ljava/lang/String;");
+                }
+                if (isIosPlatform) {
+                    appid = jsb.reflection.callStaticMethod("XsollaNativeUtils", "getBundleIdentifier");
+                }
+                paymentSettings.return_url = 'app://xpayment.' + appid;
+
+                paymentSettings.redirect_policy = {
+                    redirect_conditions: PaymentRedirectCondition[PaymentRedirectCondition.any],
+                    status_for_manual_redirection: PaymentRedirectStatusManual[PaymentRedirectStatusManual.none],
+                    delay: 0,
+                    redirect_button_caption: ''
+                }
+            }
+        }
+        else
+        {
             if(redirectPolicySettings.returnUrl != '') {
                 paymentSettings.return_url = redirectPolicySettings.returnUrl
             }

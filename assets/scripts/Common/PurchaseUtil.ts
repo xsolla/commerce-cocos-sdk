@@ -52,10 +52,11 @@ export class PurchaseUtil {
             } else {
                 this.openPaystationWidget(result.orderId, result.token, Xsolla.settings.enableSandbox, () => {
                     this.checkPendingOrder(result.orderId, () => {
+                        this.closePaystationWidget();
                         onSuccessPurchase?.();
                     });
                 }, () => {
-                    this.сlosePaystationWidget();
+                    this.closePaystationWidget();
                 });
             }
         }, error => {
@@ -124,9 +125,9 @@ export class PurchaseUtil {
                 }
             });
     
-                XPayStationWidget.on(XPayStationWidget.eventTypes.CLOSE, function (event, data) {
-                    console.log('openPaystationWidget close event');
-                    onClosed();
+            XPayStationWidget.on(XPayStationWidget.eventTypes.CLOSE, function (event, data) {
+                console.log('openPaystationWidget close event');
+                onClosed();
             });
     
             XPayStationWidget.init(options);
@@ -137,15 +138,15 @@ export class PurchaseUtil {
         head.appendChild(s);
     }
 
-    static сlosePaystationWidget() {
-        console.log('сlosePaystationWidget');
+    static closePaystationWidget() {
+        console.log('closePaystationWidget');
 		if (typeof XPayStationWidget !== undefined) {
 			XPayStationWidget.off();
 		}
 
 		var elements = document.getElementsByClassName('xpaystation-widget-lightbox');
 		for (var i = 0; i < elements.length; i++) {
-			elements[i].style.display = 'none';
+			(elements[i] as HTMLElement).style.display = 'none';
 		}
 	}
 }
