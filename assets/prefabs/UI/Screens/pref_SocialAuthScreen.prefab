@@ -45,7 +45,7 @@
       }
     ],
     "_prefab": {
-      "__id__": 145
+      "__id__": 140
     },
     "_lpos": {
       "__type__": "cc.Vec3",
@@ -1977,21 +1977,6 @@
       },
       {
         "__id__": 139
-      },
-      {
-        "__id__": 140
-      },
-      {
-        "__id__": 141
-      },
-      {
-        "__id__": 142
-      },
-      {
-        "__id__": 143
-      },
-      {
-        "__id__": 144
       }
     ],
     "_id": ""
@@ -2029,22 +2014,6 @@
     "name": "BattleNet",
     "logo": {
       "__uuid__": "eadafcd2-7d6f-4db2-9bc3-c95e69a151ec@f9941",
-      "__expectedType__": "cc.SpriteFrame"
-    }
-  },
-  {
-    "__type__": "SocialNetworkItemData",
-    "name": "Discord",
-    "logo": {
-      "__uuid__": "d1215cae-9aeb-49aa-a6f8-4f9c43efed4e@f9941",
-      "__expectedType__": "cc.SpriteFrame"
-    }
-  },
-  {
-    "__type__": "SocialNetworkItemData",
-    "name": "Facebook",
-    "logo": {
-      "__uuid__": "c69efe84-bce9-45f4-8cad-63c008b83830@f9941",
       "__expectedType__": "cc.SpriteFrame"
     }
   },
@@ -2130,14 +2099,6 @@
   },
   {
     "__type__": "SocialNetworkItemData",
-    "name": "QQ",
-    "logo": {
-      "__uuid__": "94950877-a2c2-4ab5-96c6-b6d3c9d4526a@f9941",
-      "__expectedType__": "cc.SpriteFrame"
-    }
-  },
-  {
-    "__type__": "SocialNetworkItemData",
     "name": "Reddit",
     "logo": {
       "__uuid__": "3ebd4285-4eac-478d-a9c5-66217e8c332f@f9941",
@@ -2186,22 +2147,6 @@
   },
   {
     "__type__": "SocialNetworkItemData",
-    "name": "WeChat",
-    "logo": {
-      "__uuid__": "d023218c-64c0-4f9d-84f6-10adb4366144@f9941",
-      "__expectedType__": "cc.SpriteFrame"
-    }
-  },
-  {
-    "__type__": "SocialNetworkItemData",
-    "name": "Weibo",
-    "logo": {
-      "__uuid__": "fd7131ff-7d4e-4037-9bf4-d89f638d53d6@f9941",
-      "__expectedType__": "cc.SpriteFrame"
-    }
-  },
-  {
-    "__type__": "SocialNetworkItemData",
     "name": "Xbox",
     "logo": {
       "__uuid__": "94a820ca-5520-4cb6-aeca-6cb15c7e0dd8@f9941",
@@ -2243,16 +2188,16 @@
     "fileId": "3bAK8HP4lMw6m5uX+kcXBs",
     "targetOverrides": [
       {
-        "__id__": 146
+        "__id__": 141
+      },
+      {
+        "__id__": 143
+      },
+      {
+        "__id__": 145
       },
       {
         "__id__": 148
-      },
-      {
-        "__id__": 150
-      },
-      {
-        "__id__": 153
       }
     ]
   },
@@ -2269,7 +2214,7 @@
       "__id__": 10
     },
     "targetInfo": {
-      "__id__": 147
+      "__id__": 142
     }
   },
   {
@@ -2291,7 +2236,7 @@
       "__id__": 20
     },
     "targetInfo": {
-      "__id__": 149
+      "__id__": 144
     }
   },
   {
@@ -2306,7 +2251,7 @@
       "__id__": 20
     },
     "sourceInfo": {
-      "__id__": 151
+      "__id__": 146
     },
     "propertyPath": [
       "_textLabel"
@@ -2315,7 +2260,7 @@
       "__id__": 20
     },
     "targetInfo": {
-      "__id__": 152
+      "__id__": 147
     }
   },
   {
@@ -2336,7 +2281,7 @@
       "__id__": 20
     },
     "sourceInfo": {
-      "__id__": 154
+      "__id__": 149
     },
     "propertyPath": [
       "_placeholderLabel"
@@ -2345,7 +2290,7 @@
       "__id__": 20
     },
     "targetInfo": {
-      "__id__": 155
+      "__id__": 150
     }
   },
   {
