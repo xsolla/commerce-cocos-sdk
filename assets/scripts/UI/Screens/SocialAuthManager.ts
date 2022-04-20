@@ -1,11 +1,12 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
-import { _decorator, Component, Button, EditBox, sys, ScrollView, Prefab, SpriteFrame, instantiate, CCString } from 'cc';
+import { _decorator, Component, Button, EditBox, sys, ScrollView, Prefab, SpriteFrame, instantiate, CCString, director } from 'cc';
 import { Xsolla } from 'db://xsolla-commerce-sdk/scripts/Xsolla';
 import { Token } from 'db://xsolla-commerce-sdk/scripts/api/XsollaAuth';
 import { TokenStorage } from "db://xsolla-commerce-sdk/scripts/common/TokenStorage";
 import { UIManager, UIScreenType } from '../UIManager';
 import { SocialNetworkItem } from '../Misc/SocialNetworkItem';
+import { Events } from 'db://xsolla-commerce-sdk/scripts/core/Events';
 const { ccclass, property } = _decorator;
 
 @ccclass('SocialNetworkItemData')
@@ -110,10 +111,16 @@ export class SocialAuthManager extends Component {
     addListeners () {
         this.backButton.node.on(Button.EventType.CLICK, this.onBackClicked, this);
         this.socialNetworkFilterEditBox.node.on(EditBox.EventType.TEXT_CHANGED, this.onSocialNetworkFilterChanged, this);
+        director.getScene().on(Events.SOCIAL_AUTH_SUCCESS, this.handleSuccessfulSocialAuth, this );
+        director.getScene().on(Events.SOCIAL_AUTH_ERROR, this.handleErrorSocialAuth, this );
+        director.getScene().on(Events.SOCIAL_AUTH_CANCELED, this.handleCancelSocialAuth, this );
     }
 
     removeListeners () {
         this.backButton.node.off(Button.EventType.CLICK, this.onBackClicked, this);
         this.socialNetworkFilterEditBox.node.off(EditBox.EventType.TEXT_CHANGED, this.onSocialNetworkFilterChanged, this);
+        director.getScene().off(Events.SOCIAL_AUTH_SUCCESS, this.handleSuccessfulSocialAuth, this );
+        director.getScene().off(Events.SOCIAL_AUTH_ERROR, this.handleErrorSocialAuth, this );
+        director.getScene().off(Events.SOCIAL_AUTH_CANCELED, this.handleCancelSocialAuth, this );
     }
 }
