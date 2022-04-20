@@ -1,23 +1,19 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
-import { sys } from "cc";
 import { StoreItem, VirtualCurrencyPackage, XsollaCatalog } from "db://xsolla-commerce-sdk/scripts/api/XsollaCatalog";
 import { OrderTracker, XsollaOrderStatus, } from "db://xsolla-commerce-sdk/scripts/common/OrderTracker";
 import { OrderCheckObject } from "db://xsolla-commerce-sdk/scripts/common/OrderCheckObject";
 import { TokenStorage } from "db://xsolla-commerce-sdk/scripts/common/TokenStorage";
-import { UrlBuilder } from "db://xsolla-commerce-sdk/scripts/core/UrlBuilder";
-import { Xsolla } from "db://xsolla-commerce-sdk/scripts/Xsolla";
 import { UIManager } from "../UI/UIManager";
+import { BrowserUtil } from "db://xsolla-commerce-sdk/scripts/common/BrowserUtil";
 
 export class PurchaseUtil {
 
     private static _cachedOrderCheckObjects: Array<OrderCheckObject> = [];
 
-    static bIsSuccessPurchase:boolean = false;
-
-    static buyItem(item: StoreItem | VirtualCurrencyPackage, onSuccessPurchase?:() => void) {
+    static buyItem(item: StoreItem | VirtualCurrencyPackage, onSuccessPurchase?: () => void) {
         let isVirtual = item.virtual_prices.length > 0;
-        if(isVirtual) {
+        if (isVirtual) {
             UIManager.instance.showConfirmationPopup('Are you sure you want to purchase this item?', 'CONFIRM', () => {
                 UIManager.instance.showLoaderPopup(true);
                 XsollaCatalog.purchaseItemForVirtualCurrency(TokenStorage.getToken().access_token, item.sku, item.virtual_prices[0].sku, orderId => {
@@ -30,45 +26,26 @@ export class PurchaseUtil {
                     UIManager.instance.showErrorPopup(error.description);
                 })
             });
-            return;
         }
-
-        UIManager.instance.showLoaderPopup(true);
-        XsollaCatalog.fetchPaymentToken(TokenStorage.getToken().access_token, item.sku, 1, undefined, undefined, undefined, undefined, result => {
-            UIManager.instance.showLoaderPopup(false);
-            if(sys.isMobile) {
-                let url: UrlBuilder;
-                if(Xsolla.settings.enableSandbox) {
-                    url = new UrlBuilder('https://sandbox-secure.xsolla.com/paystation3');
-                } else {
-                    url = new UrlBuilder('https://secure.xsolla.com/paystation3');
-                }
-                url.addStringParam('access_token', result.token);
-
+        else {
+            UIManager.instance.showLoaderPopup(true);
+            XsollaCatalog.fetchPaymentToken(TokenStorage.getToken().access_token, item.sku, 1, undefined, undefined, undefined, undefined, result => {
+                UIManager.instance.showLoaderPopup(false);
                 this.checkPendingOrder(result.orderId, () => {
                     onSuccessPurchase?.();
                 });
-                sys.openURL(url.build());
-            } else {
-                this.openPaystationWidget(result.orderId, result.token, Xsolla.settings.enableSandbox, () => {
-                    this.checkPendingOrder(result.orderId, () => {
-                        this.closePaystationWidget();
-                        onSuccessPurchase?.();
-                    });
-                }, () => {
-                    this.closePaystationWidget();
-                });
-            }
-        }, error => {
-            UIManager.instance.showLoaderPopup(false);
-            console.log(error.description);
-            UIManager.instance.showErrorPopup(error.description);
-        } );
+                BrowserUtil.openPurchaseUI(result.token);
+            }, error => {
+                UIManager.instance.showLoaderPopup(false);
+                console.log(error.description);
+                UIManager.instance.showErrorPopup(error.description);
+            });
+        }
     }
 
-    static checkPendingOrder(orderId:number, onSuccess:() => void) {
+    static checkPendingOrder(orderId: number, onSuccess: () => void) {
         let orderCheckObject = OrderTracker.createOrderCheckObject(orderId, (resultOrderId, orderStatus) => {
-            if(orderStatus == XsollaOrderStatus.done) {
+            if (orderStatus == XsollaOrderStatus.done) {
                 UIManager.instance.showMessagePopup('success purchase!');
                 onSuccess();
                 this._cachedOrderCheckObjects = this._cachedOrderCheckObjects.filter(obj => obj !== orderCheckObject);
@@ -92,61 +69,4 @@ export class PurchaseUtil {
 
         this._cachedOrderCheckObjects.push(orderCheckObject);
     }
-
-    static openPaystationWidget(orderId: number, token: string, sandbox: boolean, onComplete?:() => void, onClosed?:() => void) {
-        console.log('openPaystationWidget opened');
-        PurchaseUtil.bIsSuccessPurchase = false;
-        var jsToken = token;
-        var isSandbox = sandbox;
-        var options = {
-            access_token: jsToken,
-            sandbox: isSandbox,
-            lightbox: {
-                width: '740px',
-                height: '760px',
-                spinner: 'round',
-                spinnerColor: '#cccccc',
-            }
-        };
-        
-        var s = document.createElement('script');
-        s.type = "text/javascript";
-        s.async = true;
-        s.src = "https://static.xsolla.com/embed/paystation/1.2.3/widget.min.js";
-    
-        s.addEventListener('load', function (e) {
-            console.log('openPaystationWidget load event');
-            XPayStationWidget.on(XPayStationWidget.eventTypes.STATUS, function (event, data) {
-                console.log('openPaystationWidget status event');
-                if(!PurchaseUtil.bIsSuccessPurchase) {
-                    console.log('onComplete');
-                    PurchaseUtil.bIsSuccessPurchase = true;
-                    onComplete();
-                }
-            });
-    
-            XPayStationWidget.on(XPayStationWidget.eventTypes.CLOSE, function (event, data) {
-                console.log('openPaystationWidget close event');
-                onClosed();
-            });
-    
-            XPayStationWidget.init(options);
-            XPayStationWidget.open();
-        }, false);
-    
-        var head = document.getElementsByTagName('head')[0];
-        head.appendChild(s);
-    }
-
-    static closePaystationWidget() {
-        console.log('closePaystationWidget');
-		if (typeof XPayStationWidget !== undefined) {
-			XPayStationWidget.off();
-		}
-
-		var elements = document.getElementsByClassName('xpaystation-widget-lightbox');
-		for (var i = 0; i < elements.length; i++) {
-			(elements[i] as HTMLElement).style.display = 'none';
-		}
-	}
 }
