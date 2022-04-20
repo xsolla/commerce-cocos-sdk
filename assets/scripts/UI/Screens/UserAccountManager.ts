@@ -1,8 +1,9 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
-import { _decorator, Component, Node, Button, Texture2D, instantiate, Prefab, sys, Sprite, SpriteFrame, UITransform, CCString, CCBoolean, ScrollView } from 'cc';
+import { _decorator, Component, Node, Button, Texture2D, instantiate, Prefab, sys, Sprite, SpriteFrame, UITransform, CCString, CCBoolean, ScrollView, director } from 'cc';
 import { UserDetails, UserDetailsUpdate, XsollaUserAccount } from 'db://xsolla-commerce-sdk/scripts/api/XsollaUserAccount';
 import { TokenStorage } from "db://xsolla-commerce-sdk/scripts/common/TokenStorage";
+import { Events } from 'db://xsolla-commerce-sdk/scripts/core/Events';
 import { UserAccountItem } from '../Misc/UserAccountItem';
 import { UserAvatarItem } from '../Misc/UserAvatarItem';
 import { UIManager, UIScreenType } from '../UIManager';
@@ -291,6 +292,10 @@ export class UserAccountManager extends Component {
         this.openAvatarPickerButton.node.on(Button.EventType.CLICK, this.onAvatarPickerOpened, this);
         this.closeAvatarPickerButton.node.on(Button.EventType.CLICK, this.onAvatarPickerClosed, this);
         this.removeAvatarButton.node.on(Button.EventType.CLICK, this.onAvatarRemoved, this);
+        director.getScene().on(Events.ACCOUNT_DATA_UPDATE_SUCCESS, this.handleSuccessfulUserAccountDataUpdate, this );
+        director.getScene().on(Events.ACCOUNT_DATA_UPDATE_ERROR, this.handleErrorUserAccountDataUpdate, this );
+        director.getScene().on(Events.AVATAR_UPDATE_SUCCESS, this.handleSuccessfulAvatarUpdate, this );
+        director.getScene().on(Events.AVATAR_UPDATE_ERROR, this.handleErrorAvatarUpdate, this );
     }
 
     removeListeners() {
@@ -302,5 +307,9 @@ export class UserAccountManager extends Component {
         this.openAvatarPickerButton.node.off(Button.EventType.CLICK, this.onAvatarPickerOpened, this);
         this.closeAvatarPickerButton.node.off(Button.EventType.CLICK, this.onAvatarPickerClosed, this);
         this.removeAvatarButton.node.off(Button.EventType.CLICK, this.onAvatarRemoved, this);
+        director.getScene().off(Events.ACCOUNT_DATA_UPDATE_SUCCESS, this.handleSuccessfulUserAccountDataUpdate, this );
+        director.getScene().off(Events.ACCOUNT_DATA_UPDATE_ERROR, this.handleErrorUserAccountDataUpdate, this );
+        director.getScene().off(Events.AVATAR_UPDATE_SUCCESS, this.handleSuccessfulAvatarUpdate, this );
+        director.getScene().off(Events.AVATAR_UPDATE_ERROR, this.handleErrorAvatarUpdate, this );
     }
 }

@@ -37,7 +37,7 @@
 			NSLog(@"Error code: %ld", error.code);
 
 			NSString* errorString = error.localizedDescription;
-			NSString *errorScript = [NSString stringWithFormat: @"cc.find(\"Canvas/pref_UserAccountScreen\").getComponent(\"UserAccountManager\").handleErrorAvatarUpdate(\"%@\")", errorString];
+			NSString *errorScript = [NSString stringWithFormat: @"cc.director.getScene().emit(\"avatarUpdateError\", \"%@\")", errorString];
 			const char* errorScriptStr = [XsollaUtils createCStringFrom:errorScript];
 			cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
 				se::ScriptEngine::getInstance()->evalString(errorScriptStr);
@@ -46,7 +46,7 @@
 			return;
 		}
 
-		NSString *successScript = [NSString stringWithFormat: @"cc.find(\"Canvas/pref_UserAccountScreen\").getComponent(\"UserAccountManager\").handleSuccessfulAvatarUpdate()"];
+		NSString *successScript = [NSString stringWithFormat: @"cc.director.getScene().emit(\"avatarUpdateSuccess\")"];
 		const char* successScriptStr = [XsollaUtils createCStringFrom:successScript];
 		cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
 			se::ScriptEngine::getInstance()->evalString(successScriptStr);
@@ -78,7 +78,7 @@
 				NSLog(@"Error code: %ld", error.code);
 
 				if(error.code == NSError.loginKitErrorCodeASCanceledLogin) {
-					NSString *errorScript = [NSString stringWithFormat: @"cc.find(\"Canvas/pref_SocialAuthScreen\").getComponent(\"SocialAuthManager\").handleCancelSocialAuth()"];
+					NSString *errorScript = [NSString stringWithFormat: @"cc.director.getScene().emit(\"socialAuthCanceled\")"];
 					const char* errorScriptStr = [XsollaUtils createCStringFrom:errorScript];
 					cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
 						se::ScriptEngine::getInstance()->evalString(errorScriptStr);
@@ -87,7 +87,7 @@
 				}
 				
 				NSString* errorString = error.localizedDescription;
-				NSString *errorScript = [NSString stringWithFormat: @"cc.find(\"Canvas/pref_SocialAuthScreen\").getComponent(\"SocialAuthManager\").handleErrorSocialAuth(\"%@\")", errorString];
+				NSString *errorScript = [NSString stringWithFormat: @"cc.director.getScene().emit(\"socialAuthError\", (\"%@\")", errorString];
 				const char* errorScriptStr = [XsollaUtils createCStringFrom:errorScript];
 				cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
 					se::ScriptEngine::getInstance()->evalString(errorScriptStr);
@@ -97,7 +97,7 @@
 			}
 
 			NSString* tokenInfoString = [XsollaUtils serializeTokenInfo:accesTokenInfo];
-			NSString *successScript = [NSString stringWithFormat: @"cc.find(\"Canvas/pref_SocialAuthScreen\").getComponent(\"SocialAuthManager\").handleSuccessfulSocialAuth(%@)", tokenInfoString];
+			NSString *successScript = [NSString stringWithFormat: @"cc.director.getScene().emit(\"socialAuthSuccess\", (%@)", tokenInfoString];
 			const char* successScriptStr = [XsollaUtils createCStringFrom:successScript];
 			cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
 				se::ScriptEngine::getInstance()->evalString(successScriptStr);
@@ -106,31 +106,6 @@
 	} else {
 		NSLog(@"Authentication via social networks with Xsolla is not supported for current iOS version.");
 	}
-}
-
-+(void) linkSocialNetwork:(NSString*)networkName authToken:(NSString*)token {
-	UIViewController* mainVC = [[[UIApplication sharedApplication] keyWindow] rootViewController];
-	
-	[[LoginKitObjectiveC shared] linkSocialNetwork:networkName accessToken:token redirectUrl:@"https://login.xsolla.com/api/blank" userAgent:nil presenter:mainVC completion:^(NSError * _Nullable error) {
-		if(error != nil) {
-			NSLog(@"Error code: %ld", error.code);
-
-			NSString* errorString = error.localizedDescription;
-			NSString *errorScript = [NSString stringWithFormat: @"cc.find(\"Canvas/pref_UserAccountScreen\").getComponent(\"UserAccountManager\").handleErrorSocialNetworkLinking(\"%@\")", errorString];
-			const char* errorScriptStr = [XsollaUtils createCStringFrom:errorScript];
-			cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
-				se::ScriptEngine::getInstance()->evalString(errorScriptStr);
-			});
-
-			return;
-		}
-
-		NSString *successScript = [NSString stringWithFormat: @"cc.find(\"Canvas/pref_UserAccountScreen\").getComponent(\"UserAccountManager\").handleSuccessfulSocialNetworkLinking(\"%@\")", networkName];
-		const char* successScriptStr = [XsollaUtils createCStringFrom:successScript];
-		cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
-			se::ScriptEngine::getInstance()->evalString(successScriptStr);
-		});
-	}];
 }
 
 +(void) modifyUserAccountData:(NSString*)authToken userBirthday:(NSString*)birthday userFirstName:(NSString*)firstName userGender:(NSString*)gender userLastName:(NSString*)lastName userNickname:(NSString*)nickname {
@@ -145,7 +120,7 @@
 			NSLog(@"Error code: %ld", error.code);
 
 			NSString* errorString = error.localizedDescription;
-			NSString *errorScript = [NSString stringWithFormat: @"cc.find(\"Canvas/pref_UserAccountScreen\").getComponent(\"UserAccountManager\").handleErrorUserAccountDataUpdate(\"%@\")", errorString];
+			NSString *errorScript = [NSString stringWithFormat: @"cc.director.getScene().emit(\"accountDataUpdateError\", \"%@\")", errorString];
 			const char* errorScriptStr = [XsollaUtils createCStringFrom:errorScript];
 			cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
 				se::ScriptEngine::getInstance()->evalString(errorScriptStr);
@@ -154,7 +129,7 @@
 			return;
 		}
 
-		NSString *successScript = [NSString stringWithFormat: @"cc.find(\"Canvas/pref_UserAccountScreen\").getComponent(\"UserAccountManager\").handleSuccessfulUserAccountDataUpdate()"];
+		NSString *successScript = [NSString stringWithFormat: @"cc.director.getScene().emit(\"accountDataUpdateSuccess\")"];
 		const char* successScriptStr = [XsollaUtils createCStringFrom:successScript];
 		cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
 			se::ScriptEngine::getInstance()->evalString(successScriptStr);
