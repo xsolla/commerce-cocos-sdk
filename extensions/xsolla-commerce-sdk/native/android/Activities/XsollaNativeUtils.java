@@ -71,7 +71,7 @@ public class XsollaNativeUtils {
                 CocosHelper.runOnGameThread(new Runnable() {
                     @Override
                     public void run() {
-                        CocosJavascriptJavaBridge.evalString("cc.find(\"Canvas/pref_UserAccountScreen\").getComponent(\"UserAccountManager\").handleSuccessfulAvatarUpdate()");
+                        CocosJavascriptJavaBridge.evalString("cc.director.getScene().emit(\"avatarUpdateSuccess\")");
                     }
                 });
             }
@@ -82,7 +82,7 @@ public class XsollaNativeUtils {
                 CocosHelper.runOnGameThread(new Runnable() {
                     @Override
                     public void run() {
-                        CocosJavascriptJavaBridge.evalString("cc.find(\"Canvas/pref_UserAccountScreen\").getComponent(\"UserAccountManager\").handleErrorAvatarUpdate(\"" + s + "\")");
+                        CocosJavascriptJavaBridge.evalString("cc.director.getScene().emit(\"avatarUpdateError\"," + s + ")");
                     }
                 });
             }
@@ -100,7 +100,7 @@ public class XsollaNativeUtils {
                 CocosHelper.runOnGameThread(new Runnable() {
                     @Override
                     public void run() {
-                        CocosJavascriptJavaBridge.evalString("cc.find(\"Canvas/pref_UserAccountScreen\").getComponent(\"UserAccountManager\").handleSuccessfulUserAccountDataUpdate()");
+                        CocosJavascriptJavaBridge.evalString("cc.director.getScene().emit(\"accountDataUpdateSuccess\")");
                     }
                 });
             }
@@ -110,7 +110,7 @@ public class XsollaNativeUtils {
                 CocosHelper.runOnGameThread(new Runnable() {
                     @Override
                     public void run() {
-                        CocosJavascriptJavaBridge.evalString("cc.find(\"Canvas/pref_UserAccountScreen\").getComponent(\"UserAccountManager\").handleErrorUserAccountDataUpdate(\"" + s + "\")");
+                        CocosJavascriptJavaBridge.evalString("cc.director.getScene().emit(\"accountDataUpdateError\"," + s + ")");
                     }
                 });
             }

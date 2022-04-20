@@ -75,7 +75,7 @@ public class XsollaNativeAuthActivity extends Activity {
                 CocosHelper.runOnGameThread(new Runnable() {
                     @Override
                     public void run() {
-                        CocosJavascriptJavaBridge.evalString("cc.find(\"Canvas/pref_SocialAuthScreen\").getComponent(\"SocialAuthManager\").handleSuccessfulSocialAuth(" + tokenJson.toString() + ")");
+                        CocosJavascriptJavaBridge.evalString("cc.director.getScene().emit(\"socialAuthSuccess\"," + tokenJson.toString() + ")");
                     }
                 });
                 finish();
@@ -83,11 +83,11 @@ public class XsollaNativeAuthActivity extends Activity {
 
             @Override
             public void onAuthCancelled() {
-                Log.d("XsollaAuthActivity", "onAuthCancelled");
+                Log.d("XsollaAuthActivity", "onAuthCanceled");
                 CocosHelper.runOnGameThread(new Runnable() {
                     @Override
                     public void run() {
-                        CocosJavascriptJavaBridge.evalString("cc.find(\"Canvas/pref_SocialAuthScreen\").getComponent(\"SocialAuthManager\").handleCancelSocialAuth()");
+                        CocosJavascriptJavaBridge.evalString("cc.director.getScene().emit(\"socialAuthCanceled\")");
                     }
                 });
                 finish();
@@ -100,7 +100,7 @@ public class XsollaNativeAuthActivity extends Activity {
                 CocosHelper.runOnGameThread(new Runnable() {
                     @Override
                     public void run() {
-                        CocosJavascriptJavaBridge.evalString("cc.find(\"Canvas/pref_SocialAuthScreen\").getComponent(\"SocialAuthManager\").handleErrorSocialAuth(\"" + errorMessage + "\")");
+                        CocosJavascriptJavaBridge.evalString("cc.director.getScene().emit(\"socialAuthError\"," + errorMessage + ")");
                     }
                 });
                 finish();
