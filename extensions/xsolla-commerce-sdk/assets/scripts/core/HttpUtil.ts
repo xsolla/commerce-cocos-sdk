@@ -1,4 +1,4 @@
-// Copyright 2021 Xsolla Inc. All Rights Reserved.
+// Copyright 2022 Xsolla Inc. All Rights Reserved.
 
 import { sys, VERSION } from 'cc';
 import { SDK_VERSION } from './Constants';

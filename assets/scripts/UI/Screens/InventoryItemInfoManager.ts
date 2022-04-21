@@ -1,3 +1,4 @@
+// Copyright 2022 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component, Node, Sprite, Label, Button, Color} from 'cc';
 import { InventoryItem as XsollaInventoryItem, XsollaInventory } from 'db://xsolla-commerce-sdk/scripts/api/XsollaInventory';

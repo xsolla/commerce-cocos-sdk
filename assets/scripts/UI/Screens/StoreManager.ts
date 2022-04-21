@@ -1,4 +1,4 @@
-// Copyright 2021 Xsolla Inc. All Rights Reserved.
+// Copyright 2022 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component, Node, ScrollView, instantiate, Prefab, Button, Layout } from 'cc';
 import { StoreItem as XsollaStoreItem, VirtualCurrencyPackage, ItemGroup, XsollaCatalog} from 'db://xsolla-commerce-sdk/scripts/api/XsollaCatalog';

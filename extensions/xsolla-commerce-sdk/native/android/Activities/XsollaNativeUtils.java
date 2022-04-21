@@ -1,3 +1,5 @@
+// Copyright 2022 Xsolla Inc. All Rights Reserved.
+
 package com.cocos.game;
 
 import android.content.res.AssetManager;

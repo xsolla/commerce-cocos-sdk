@@ -1,4 +1,4 @@
-// Copyright 2021 Xsolla Inc. All Rights Reserved.
+// Copyright 2022 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component, Node, ScrollView, Prefab, instantiate, Button } from 'cc';
 import { InventoryItem as XsollaInventoryItem, SubscriptionItem, VirtualCurrencyBalance, XsollaInventory} from 'db://xsolla-commerce-sdk/scripts/api/XsollaInventory';

@@ -1,4 +1,4 @@
-// Copyright 2021 Xsolla Inc. All Rights Reserved.
+// Copyright 2022 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component, Node, CCString, sys } from 'cc';
 import { Xsolla } from 'db://xsolla-commerce-sdk/scripts/Xsolla';

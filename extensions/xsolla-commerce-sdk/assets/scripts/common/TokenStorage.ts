@@ -1,4 +1,4 @@
-// Copyright 2021 Xsolla Inc. All Rights Reserved.
+// Copyright 2022 Xsolla Inc. All Rights Reserved.
 
 import { sys } from 'cc';
 import { Token } from 'db://xsolla-commerce-sdk/scripts/api/XsollaAuth';

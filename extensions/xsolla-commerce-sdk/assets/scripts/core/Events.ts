@@ -1,4 +1,5 @@
-// Copyright 2021 Xsolla Inc. All Rights Reserved.
+// Copyright 2022 Xsolla Inc. All Rights Reserved.
+
 export class Events {
     static SOCIAL_AUTH_SUCCESS: string = 'socialAuthSuccess';
     static SOCIAL_AUTH_ERROR: string = 'socialAuthError';
