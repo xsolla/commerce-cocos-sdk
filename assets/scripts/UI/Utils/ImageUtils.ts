@@ -1,6 +1,6 @@
 // Copyright 2022 Xsolla Inc. All Rights Reserved.
 
-import { assetManager, ImageAsset, Sprite, SpriteFrame, Texture2D } from "cc";
+import { assetManager, ImageAsset, SpriteFrame, Texture2D } from "cc";
 import { UIManager } from "../UIManager";
 
 export class ImageUtils {

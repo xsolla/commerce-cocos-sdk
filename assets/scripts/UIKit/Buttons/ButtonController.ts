@@ -1,6 +1,6 @@
 // Copyright 2022 Xsolla Inc. All Rights Reserved.
 
-import { _decorator, Component, Node, Label, Button, Color, color, Sprite } from 'cc';
+import { _decorator, Component, Node, Label, Color, Sprite } from 'cc';
 const { ccclass, property, executeInEditMode } = _decorator;
 
 @ccclass('ButtonController')

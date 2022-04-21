@@ -1,6 +1,6 @@
 // Copyright 2022 Xsolla Inc. All Rights Reserved.
 
-import { _decorator, Component, Node, Button, EditBox, instantiate, Prefab, Label } from 'cc';
+import { _decorator, Component, Node, Button, EditBox, instantiate, Prefab } from 'cc';
 import { RedeemedCouponItem as XsollaRedeemedCouponItem, XsollaCatalog } from 'db://xsolla-commerce-sdk/scripts/api/XsollaCatalog';
 import { TokenStorage } from "db://xsolla-commerce-sdk/scripts/common/TokenStorage";
 import { RedeemedCouponItem } from '../Misc/RedeemedCouponItem';

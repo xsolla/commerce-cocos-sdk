@@ -1,6 +1,6 @@
 // Copyright 2022 Xsolla Inc. All Rights Reserved.
 
-import { _decorator, Component, Node, ScrollView, instantiate, Prefab, Button, Layout } from 'cc';
+import { _decorator, Component, Node, ScrollView, instantiate, Prefab, Button } from 'cc';
 import { StoreItem as XsollaStoreItem, VirtualCurrencyPackage, ItemGroup, XsollaCatalog} from 'db://xsolla-commerce-sdk/scripts/api/XsollaCatalog';
 import { InventoryItem, VirtualCurrencyBalance, XsollaInventory } from 'db://xsolla-commerce-sdk/scripts/api/XsollaInventory';
 import { TokenStorage } from "db://xsolla-commerce-sdk/scripts/common/TokenStorage";

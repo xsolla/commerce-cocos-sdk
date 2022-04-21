@@ -1,6 +1,6 @@
 // Copyright 2022 Xsolla Inc. All Rights Reserved.
 
-import { _decorator, Component, Node, Button, EditBox, Label } from 'cc';
+import { _decorator, Component, Button, EditBox, Label } from 'cc';
 const { ccclass, property } = _decorator;
  
 @ccclass('UserAccountItem')

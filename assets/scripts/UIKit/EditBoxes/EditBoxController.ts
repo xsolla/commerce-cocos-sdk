@@ -1,6 +1,6 @@
 // Copyright 2022 Xsolla Inc. All Rights Reserved.
 
-import { _decorator, Component, Node, Label, Button, Color, color, EditBox, SpriteFrame } from 'cc';
+import { _decorator, Component, Node, Color, EditBox, SpriteFrame } from 'cc';
 const { ccclass, property } = _decorator;
  
 @ccclass('EditBoxController')

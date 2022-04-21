@@ -1,6 +1,6 @@
 // Copyright 2022 Xsolla Inc. All Rights Reserved.
 
-import { _decorator, Component, Node, Button, Texture2D, instantiate, Prefab, sys, Sprite, SpriteFrame, UITransform, CCString, CCBoolean, ScrollView, director } from 'cc';
+import { _decorator, Component, Node, Button, Texture2D, instantiate, Prefab, sys, Sprite, SpriteFrame, UITransform, director } from 'cc';
 import { UserDetails, UserDetailsUpdate, XsollaUserAccount } from 'db://xsolla-commerce-sdk/scripts/api/XsollaUserAccount';
 import { TokenStorage } from "db://xsolla-commerce-sdk/scripts/common/TokenStorage";
 import { Events } from 'db://xsolla-commerce-sdk/scripts/core/Events';

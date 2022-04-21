@@ -1,6 +1,6 @@
 // Copyright 2022 Xsolla Inc. All Rights Reserved.
 
-import { _decorator, Component, Node, CCString, sys } from 'cc';
+import { _decorator, Component, CCString, sys } from 'cc';
 import { Xsolla } from 'db://xsolla-commerce-sdk/scripts/Xsolla';
 const { ccclass, property } = _decorator;
  

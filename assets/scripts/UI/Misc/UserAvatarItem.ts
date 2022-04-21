@@ -1,7 +1,6 @@
 // Copyright 2022 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component, Button, Texture2D, Sprite, SpriteFrame, UITransform } from 'cc';
-import { UserAccountManager } from '../Screens/UserAccountManager';
 const { ccclass, property, executeInEditMode} = _decorator;
  
 @ccclass('UserAvatarItem')

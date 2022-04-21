@@ -1,6 +1,6 @@
 // Copyright 2022 Xsolla Inc. All Rights Reserved.
 
-import { _decorator, Component, Button, EditBox, Node, Toggle, sys, Label } from 'cc';
+import { _decorator, Component, Button, EditBox, Node, Label } from 'cc';
 import { XsollaAuth } from 'db://xsolla-commerce-sdk/scripts/api/XsollaAuth';
 import { UIManager, UIScreenType } from '../UIManager';
 const { ccclass, property } = _decorator;

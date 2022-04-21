@@ -1,6 +1,6 @@
 // Copyright 2022 Xsolla Inc. All Rights Reserved.
 
-import { _decorator, Component, Node, Button, Prefab, ScrollView, instantiate, EditBox } from 'cc';
+import { _decorator, Component, Node, Button, Prefab, ScrollView, instantiate } from 'cc';
 import { UserAttribute, XsollaUserAccount } from 'db://xsolla-commerce-sdk/scripts/api/XsollaUserAccount';
 import { TokenStorage } from "db://xsolla-commerce-sdk/scripts/common/TokenStorage";
 import { AttributeItem } from '../Misc/AttributeItem';
