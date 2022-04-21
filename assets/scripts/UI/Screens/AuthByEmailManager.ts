@@ -65,7 +65,7 @@ export class AuthByEmailManager extends Component {
 
     sendCodeClicked() {
         UIManager.instance.showLoaderPopup(true);
-        XsollaAuth.startAuthByEmail(this.credentialsEditBox.string, 'xsollatest', 'xsollatest', operationId => {
+        XsollaAuth.startAuthByEmail(this.credentialsEditBox.string, 'xsollatest', operationId => {
             UIManager.instance.showLoaderPopup(false);
             this._operationId = operationId;
             this.changeStep(2);

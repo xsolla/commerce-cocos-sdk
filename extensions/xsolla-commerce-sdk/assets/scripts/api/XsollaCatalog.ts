@@ -263,6 +263,7 @@ export class XsollaCatalog {
         let body = {
             currency: currency,
             country: country,
+            locale: locale,
             sandbox: Xsolla.settings.enableSandbox,
             customParameters: customParameters,
             quantity: quantity,

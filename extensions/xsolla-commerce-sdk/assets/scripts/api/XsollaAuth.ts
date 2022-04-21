@@ -14,7 +14,7 @@ export class XsollaAuth {
      * @zh
      * 通过认证界面上指定的用户名和密码认证用户身份。
      */
-    static authByUsernameAndPassword(username:string, password:string, rememberMe:boolean, payload?:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
+    static authByUsernameAndPassword(username:string, password:string, rememberMe:boolean, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
         let body = {
             password: password,
             username: username
@@ -84,7 +84,7 @@ export class XsollaAuth {
      * @zh
      * 启动通过用户手机号认证并向手机发送一个验证码。
      */
-    static startAuthByPhoneNumber(phoneNumber:string, payload?:string, state?:string, onComplete?:(operationId:string) => void, onError?:(error:LoginError) => void, sendPasswordlessAuthURL:boolean = false, passwordlessAuthURL:string = '') {
+    static startAuthByPhoneNumber(phoneNumber:string, state?:string, onComplete?:(operationId:string) => void, onError?:(error:LoginError) => void, sendPasswordlessAuthURL:boolean = false, passwordlessAuthURL:string = '') {
         let body:any = {
             phone_number: phoneNumber,
         };
@@ -136,7 +136,7 @@ export class XsollaAuth {
      * @zh
      * 启动通过用户邮箱地址认证并向邮箱地址发送一个验证码。
      */
-    static startAuthByEmail(emailAddress:string, payload?:string, state?:string, onComplete?:(operationId:string) => void, onError?:(error:LoginError) => void, sendPasswordlessAuthURL:boolean = false, passwordlessAuthURL:string = '') {
+    static startAuthByEmail(emailAddress:string, state?:string, onComplete?:(operationId:string) => void, onError?:(error:LoginError) => void, sendPasswordlessAuthURL:boolean = false, passwordlessAuthURL:string = '') {
         let body:any = {
             email: emailAddress
         };
@@ -188,7 +188,7 @@ export class XsollaAuth {
      * @zh
      * 通过device ID认证平台帐户用户。
      */
-    static authByDeviceId(deviceName:string, deviceId:string, payload?:string, state?:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
+    static authByDeviceId(deviceName:string, deviceId:string, state?:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
         let body = {
             device: deviceName,
             device_id: deviceId
@@ -213,7 +213,7 @@ export class XsollaAuth {
      * @zh
      * 创建新用户。
      */
-    static registerNewUser(username:string, password:string, email:string, payload?:string, state?:string, extras?: RegistrationExtras, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
+    static registerNewUser(username:string, password:string, email:string, state?:string, extras?: RegistrationExtras, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
         let body = {
             password: password,
             username: username,
@@ -248,7 +248,7 @@ export class XsollaAuth {
      * @zh
      * 重新向用户发送帐户验证邮件。要完成帐户验证，用户需点击邮件中的链接。
      */
-    static resendAccountConfirmationEmail(username:string, payload?:string, state?:string, onComplete?:() => void, onError?:(error:LoginError) => void) {
+    static resendAccountConfirmationEmail(username:string, state?:string, onComplete?:() => void, onError?:(error:LoginError) => void) {
         let body = {
             username: username
         };

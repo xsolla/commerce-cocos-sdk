@@ -39,6 +39,16 @@ export class NativeUtil {
             jsb.reflection.callStaticMethod("com/cocos/game/XsollaNativeUtils", "updateUserProfilePicture", "(Ljava/lang/String;Ljava/lang/String;)V",
             avatarUpdate.image.nativeUrl, TokenStorage.token.access_token);
         }
-        
+    }
+
+    static getAppId() {
+        let appId:string;
+        if (sys.platform.toLowerCase() == 'ios') {
+            appId = jsb.reflection.callStaticMethod("XsollaNativeUtils", "getBundleIdentifier");
+        }
+        if (sys.platform.toLowerCase() == 'android') {
+            appId = jsb.reflection.callStaticMethod("com/cocos/game/XsollaNativeUtils", "getPackageName", "()Ljava/lang/String;");
+        }
+        return appId;
     }
 }

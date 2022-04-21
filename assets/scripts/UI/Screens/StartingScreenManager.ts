@@ -70,7 +70,7 @@ export class StartingScreenManager extends Component {
         }
 
         UIManager.instance.showLoaderPopup(true);
-        XsollaAuth.authByDeviceId(deviceName, deviceId, 'xsollatest', 'xsollatest', token => {
+        XsollaAuth.authByDeviceId(deviceName, deviceId, 'xsollatest', token => {
             UIManager.instance.showLoaderPopup(false);
             console.log(token);
             TokenStorage.saveToken(token, true);

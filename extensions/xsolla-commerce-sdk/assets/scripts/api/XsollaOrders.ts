@@ -1,6 +1,7 @@
 // Copyright 2022 Xsolla Inc. All Rights Reserved.
 
 import { sys } from "cc";
+import { NativeUtil } from "../common/NativeUtil";
 import { CommerceError, handleCommerceError } from "../core/Error";
 import { HttpUtil, RequestContentType } from "../core/HttpUtil";
 import { UrlBuilder } from "../core/UrlBuilder";
@@ -83,14 +84,7 @@ export class XsollaOrders {
 
         if(redirectPolicySettings.useSettingsFromPublisherAccount) {
             if (sys.isMobile){
-                let appid : String;
-                if (isAndroidPlatform) {
-                    appid = jsb.reflection.callStaticMethod("com/cocos/game/XsollaNativeUtils", "getPackageName", "()Ljava/lang/String;");
-                }
-                if (isIosPlatform) {
-                    appid = jsb.reflection.callStaticMethod("XsollaNativeUtils", "getBundleIdentifier");
-                }
-                paymentSettings.return_url = 'app://xpayment.' + appid;
+                paymentSettings.return_url = 'app://xpayment.' + NativeUtil.getAppId();
 
                 paymentSettings.redirect_policy = {
                     redirect_conditions: PaymentRedirectCondition[PaymentRedirectCondition.any],

@@ -111,7 +111,7 @@ export class AuthByPhoneManager extends Component {
 
     sendCodeClicked() {
         UIManager.instance.showLoaderPopup(true);
-        XsollaAuth.startAuthByPhoneNumber(this.credentialsEditBox.string, 'xsollatest', 'xsollatest', operationId => {
+        XsollaAuth.startAuthByPhoneNumber(this.credentialsEditBox.string, 'xsollatest', operationId => {
             UIManager.instance.showLoaderPopup(false);
             this._operationId = operationId;
             this.changeStep(2);

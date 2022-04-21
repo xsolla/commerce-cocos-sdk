@@ -58,7 +58,7 @@ export class BasicAuthManager extends Component {
 
     onLoginClicked() {
         UIManager.instance.showLoaderPopup(true);
-        XsollaAuth.authByUsernameAndPassword(this.usernameEditBox.string, this.passwordEditBox.string, this.remeberMeToggle.isChecked, 'xsollatest', token => {
+        XsollaAuth.authByUsernameAndPassword(this.usernameEditBox.string, this.passwordEditBox.string, this.remeberMeToggle.isChecked, token => {
             UIManager.instance.showLoaderPopup(false);
             console.log(token);
             TokenStorage.saveToken(token, this.remeberMeToggle.isChecked);
