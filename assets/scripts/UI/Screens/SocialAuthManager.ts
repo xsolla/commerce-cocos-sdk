@@ -1,12 +1,12 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component, Button, EditBox, sys, ScrollView, Prefab, SpriteFrame, instantiate, CCString, director } from 'cc';
-import { Xsolla } from 'db://xsolla-commerce-sdk/scripts/Xsolla';
 import { Token } from 'db://xsolla-commerce-sdk/scripts/api/XsollaAuth';
 import { TokenStorage } from "db://xsolla-commerce-sdk/scripts/common/TokenStorage";
 import { UIManager, UIScreenType } from '../UIManager';
 import { SocialNetworkItem } from '../Misc/SocialNetworkItem';
 import { Events } from 'db://xsolla-commerce-sdk/scripts/core/Events';
+import { NativeUtil } from 'db://xsolla-commerce-sdk/scripts/common/NativeUtil';
 const { ccclass, property } = _decorator;
 
 @ccclass('SocialNetworkItemData')
@@ -79,13 +79,7 @@ export class SocialAuthManager extends Component {
 
     authViaSocialNetwork(socialNetworkName:string) {
         UIManager.instance.showLoaderPopup(true);
-        if(sys.platform.toLowerCase() == 'ios') {
-            jsb.reflection.callStaticMethod("XsollaNativeUtils", "authViaSocialNetwork:client:state:redirect:",
-                socialNetworkName, Xsolla.settings.clientId, 'xsollatest', 'app://xsollalogin');
-        }
-        if(sys.platform.toLowerCase() == 'android') {
-            jsb.reflection.callStaticMethod("com/cocos/game/XsollaNativeAuth", "authSocial", "(Ljava/lang/String;ZZ)V", socialNetworkName, true, false);
-        }
+        NativeUtil.authSocial(socialNetworkName);
     }
 
     handleSuccessfulSocialAuth(token:Token) {

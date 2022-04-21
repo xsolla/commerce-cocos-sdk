@@ -4,6 +4,7 @@ import { _decorator, Component, Node, Button, Texture2D, instantiate, Prefab, sy
 import { UserDetails, UserDetailsUpdate, XsollaUserAccount } from 'db://xsolla-commerce-sdk/scripts/api/XsollaUserAccount';
 import { TokenStorage } from "db://xsolla-commerce-sdk/scripts/common/TokenStorage";
 import { Events } from 'db://xsolla-commerce-sdk/scripts/core/Events';
+import { NativeUtil } from 'db://xsolla-commerce-sdk/scripts/common/NativeUtil';
 import { UserAccountItem } from '../Misc/UserAccountItem';
 import { UserAvatarItem } from '../Misc/UserAvatarItem';
 import { UIManager, UIScreenType } from '../UIManager';
@@ -106,38 +107,17 @@ export class UserAccountManager extends Component {
     }
 
     modifyUserAccountData(userDetailsUpdate: UserDetailsUpdate) {
+        UIManager.instance.showLoaderPopup(true);
         if (sys.isBrowser) {
             this.modifyUserAccountDataBrowser(userDetailsUpdate);
         }
-        if (sys.platform.toLowerCase() == 'android') {
-            this.modifyUserAccountDataAndroid(userDetailsUpdate);
-        }
-        if (sys.platform.toLowerCase() == 'ios') {
-            this.modifyUserAccountDataIos(userDetailsUpdate);
-        }
+        NativeUtil.modifyUserAccountData(userDetailsUpdate);
     }
 
     modifyUserAccountDataBrowser(userDetailsUpdate: UserDetailsUpdate) {
-        UIManager.instance.showLoaderPopup(true);
         XsollaUserAccount.updateUserDetails(TokenStorage.token.access_token, userDetailsUpdate, userDetails => {
             this.handleSuccessfulUserAccountDataUpdate();
         }, err => this.handleErrorUserAccountDataUpdate);
-    }
-
-
-    modifyUserAccountDataAndroid(userDetailsUpdate: UserDetailsUpdate) {
-        UIManager.instance.showLoaderPopup(true);
-        jsb.reflection.callStaticMethod("com/cocos/game/XsollaNativeUtils", "modifyUserAccountData",
-        "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V",
-            TokenStorage.token.access_token, userDetailsUpdate.birthday,
-            userDetailsUpdate.first_name, userDetailsUpdate.gender,
-            userDetailsUpdate.last_name, userDetailsUpdate.nickname);
-    }
-
-    modifyUserAccountDataIos(userDetailsUpdate: UserDetailsUpdate) {
-        UIManager.instance.showLoaderPopup(true);
-        jsb.reflection.callStaticMethod("XsollaNativeUtils", "modifyUserAccountData:userBirthday:userFirstName:userGender:userLastName:userNickname:",
-        TokenStorage.token.access_token, userDetailsUpdate.birthday, userDetailsUpdate.first_name, userDetailsUpdate.gender, userDetailsUpdate.last_name, userDetailsUpdate.nickname);
     }
 
     handleSuccessfulUserAccountDataUpdate() {
@@ -166,25 +146,12 @@ export class UserAccountManager extends Component {
     }
 
     updateUserAvatarBrowser(avatarUpdate: Texture2D) {
-        UIManager.instance.showLoaderPopup(true);
         ImageUtils.getBase64Image(avatarUpdate, base64image => {
             let base64imageWithoutHeader: string = base64image.substring(base64image.indexOf(',') + 1);
             let buffer = Uint8Array.from(atob(base64imageWithoutHeader), c => c.charCodeAt(0));
             XsollaUserAccount.updateUserProfilePicture(TokenStorage.getToken().access_token, buffer,
                 () => this.handleSuccessfulAvatarUpdate(), error => this.handleErrorAvatarUpdate(error.description));
         }, error => this.handleErrorAvatarUpdate(error));
-    }
-
-    updateUserAvatarAndroid(avatarUpdate: Texture2D) {
-        UIManager.instance.showLoaderPopup(true);
-        jsb.reflection.callStaticMethod("com/cocos/game/XsollaNativeUtils", "updateUserProfilePicture", "(Ljava/lang/String;Ljava/lang/String;)V",
-            avatarUpdate.image.nativeUrl, TokenStorage.token.access_token);
-    }
-
-    updateUserAvatarIos(avatarUpdate: Texture2D) {
-        UIManager.instance.showLoaderPopup(true);
-        jsb.reflection.callStaticMethod("XsollaNativeUtils", "updateUserProfilePicture:authToken:",
-            avatarUpdate.image.nativeUrl, TokenStorage.token.access_token);
     }
 
     handleSuccessfulAvatarUpdate() {
@@ -257,16 +224,12 @@ export class UserAccountManager extends Component {
         this.modifyUserPhoneNumber(value);
     }
 
-    onAvatarEdited(texture: Texture2D) {        
+    onAvatarEdited(texture: Texture2D) {
+        UIManager.instance.showLoaderPopup(true);
         if (sys.isBrowser) {
             this.updateUserAvatarBrowser(texture);
         }
-        if (sys.platform.toLowerCase() == 'android') {
-            this.updateUserAvatarAndroid(texture);
-        }
-        if (sys.platform.toLowerCase() == 'ios') {
-            this.updateUserAvatarIos(texture);
-        }
+       NativeUtil.updateUserAvatar(texture);
     }
 
     onAvatarRemoved() {
