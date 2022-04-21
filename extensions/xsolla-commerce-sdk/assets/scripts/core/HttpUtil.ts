@@ -24,6 +24,7 @@ export class HttpUtil {
             request.setRequestHeader('X-ENGINE-V', VERSION);
             request.setRequestHeader('X-SDK', 'COMMERCE');
             request.setRequestHeader('X-SDK-V', SDK_VERSION);
+            request.setRequestHeader('X-BUILD-PLATFORM', sys.platform.toUpperCase());
         }
 
         switch(contentType) {
