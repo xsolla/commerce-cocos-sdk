@@ -118,7 +118,11 @@ export class StoreItemInfoManager extends Component {
     }
 
     buyItemClicked() {
-        PurchaseUtil.buyItem(this._data);
+        PurchaseUtil.buyItem(this._data, () => {
+            this._parent.refreshVCBalance();
+            this._parent.openAllItemsScreen();
+            this._parent.currencyClicked();
+        });
     }
 
     closeClicked() {
