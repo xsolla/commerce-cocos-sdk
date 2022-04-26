@@ -164,15 +164,15 @@ export class UserAttributesManager extends Component {
         });
     }
 
-    editAttribute(data:UserAttribute, newKey: string, newValue: string) {
+    editAttribute(data: UserAttribute, newKey: string, newValue: string) {
         let arr: Array<UserAttribute> = new Array<UserAttribute>();
-        for(let attributeNode of this.userEditableAttributesList.content.children) {
+        for (let attributeNode of this.userEditableAttributesList.content.children) {
             let attributeItem: AttributeItem = attributeNode.getComponent(AttributeItem);
-            let userAttribute:UserAttribute = attributeItem.data;
-           if(data == attributeItem.data) {
+            let userAttribute: UserAttribute = attributeItem.data;
+            if (data == attributeItem.data) {
                 continue;
-           }
-           arr.push(userAttribute);
+            }
+            arr.push(userAttribute);
         }
         let newAttribute: UserAttribute = {
             key: newKey,
@@ -183,14 +183,20 @@ export class UserAttributesManager extends Component {
 
         UIManager.instance.showLoaderPopup(true);
         XsollaUserAccount.updateUserAttributes(TokenStorage.token.access_token, arr, () => {
-            XsollaUserAccount.removeUserAttributes(TokenStorage.token.access_token, [data.key], () => {
+            if (data.key != newKey) {
+                XsollaUserAccount.removeUserAttributes(TokenStorage.token.access_token, [data.key], () => {
+                    UIManager.instance.showLoaderPopup(false);
+                    this.openAttributeScreen(this.allAttributesScreen);
+                }, err => {
+                    console.log(err);
+                    UIManager.instance.showErrorPopup(err.description);
+                    UIManager.instance.showLoaderPopup(false);
+                });
+            }
+            else {
                 UIManager.instance.showLoaderPopup(false);
                 this.openAttributeScreen(this.allAttributesScreen);
-            }, err => {
-                console.log(err);
-                UIManager.instance.showErrorPopup(err.description);
-                UIManager.instance.showLoaderPopup(false);
-            });
+            }
         }, err => {
             console.log(err);
             UIManager.instance.showErrorPopup(err.description);
