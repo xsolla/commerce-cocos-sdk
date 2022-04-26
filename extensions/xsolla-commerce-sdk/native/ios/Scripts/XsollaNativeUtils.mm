@@ -37,7 +37,7 @@
 			NSLog(@"Error code: %ld", error.code);
 
 			NSString* errorString = error.localizedDescription;
-			NSString *errorScript = [NSString stringWithFormat: @"cc.director.getScene().emit(\"avatarUpdateError\", \"%@\")", errorString];
+			NSString *errorScript = [NSString stringWithFormat: @"cc.director.getScene().emit(\"avatarUpdateError\", \"%@\"))", errorString];
 			const char* errorScriptStr = [XsollaUtils createCStringFrom:errorScript];
 			cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
 				se::ScriptEngine::getInstance()->evalString(errorScriptStr);
@@ -87,7 +87,7 @@
 				}
 				
 				NSString* errorString = error.localizedDescription;
-				NSString *errorScript = [NSString stringWithFormat: @"cc.director.getScene().emit(\"socialAuthError\", (\"%@\")", errorString];
+				NSString *errorScript = [NSString stringWithFormat: @"cc.director.getScene().emit(\"socialAuthError\", (\"%@\"))", errorString];
 				const char* errorScriptStr = [XsollaUtils createCStringFrom:errorScript];
 				cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
 					se::ScriptEngine::getInstance()->evalString(errorScriptStr);
@@ -97,7 +97,7 @@
 			}
 
 			NSString* tokenInfoString = [XsollaUtils serializeTokenInfo:accesTokenInfo];
-			NSString *successScript = [NSString stringWithFormat: @"cc.director.getScene().emit(\"socialAuthSuccess\", (%@)", tokenInfoString];
+			NSString *successScript = [NSString stringWithFormat: @"cc.director.getScene().emit(\"socialAuthSuccess\", (%@))", tokenInfoString];
 			const char* successScriptStr = [XsollaUtils createCStringFrom:successScript];
 			cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
 				se::ScriptEngine::getInstance()->evalString(successScriptStr);
@@ -120,7 +120,7 @@
 			NSLog(@"Error code: %ld", error.code);
 
 			NSString* errorString = error.localizedDescription;
-			NSString *errorScript = [NSString stringWithFormat: @"cc.director.getScene().emit(\"accountDataUpdateError\", \"%@\")", errorString];
+			NSString *errorScript = [NSString stringWithFormat: @"cc.director.getScene().emit(\"accountDataUpdateError\", \"%@\"))", errorString];
 			const char* errorScriptStr = [XsollaUtils createCStringFrom:errorScript];
 			cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
 				se::ScriptEngine::getInstance()->evalString(errorScriptStr);
