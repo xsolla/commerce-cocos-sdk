@@ -1,0 +1,42 @@
+{
+  "name": "XsollaCommerceSdk",
+  "platform": "web-desktop",
+  "buildPath": "project://build",
+  "debug": false,
+  "md5Cache": false,
+  "sourceMaps": false,
+  "replaceSplashScreen": false,
+  "mainBundleCompressionType": "merge_dep",
+  "mainBundleIsRemote": false,
+  "mergeStartScene": false,
+  "experimentalEraseModules": false,
+  "compressTexture": true,
+  "packAutoAtlas": true,
+  "startScene": "7be50204-587b-47dd-a3a3-957e28347217",
+  "scenes": [
+    {
+      "url": "db://assets/scenes/Xsollus.scene",
+      "uuid": "7be50204-587b-47dd-a3a3-957e28347217",
+      "inBundle": false
+    }
+  ],
+  "outputName": "web-desktop",
+  "packages": {
+    "web-desktop": {
+      "resolution": {
+        "designWidth": 360,
+        "designHeight": 640
+      },
+      "polyfills": {
+        "asyncFunctions": true
+      },
+      "__version__": "1.0.0"
+    },
+    "cocos-service": {
+      "configID": "c98f70",
+      "services": [],
+      "__version__": "3.0.1"
+    }
+  },
+  "__version__": "1.2.9"
+}

@@ -1,0 +1,45 @@
+stages:
+  - build-demo
+
+variables:
+  PROJECT_PATH: "%cd%"
+  BUILD_SCRIPT: "cicd/build-demo.bat"
+  BUILD_TARGET_WEBGL: web-desktop
+  BUILD_TARGET_ANDROID: android
+  GRADLE_USER_HOME: 'C:\Users\Runner\.gradle'
+
+build-demo-webgl:
+  stage: build-demo
+  script:
+    - call %BUILD_SCRIPT% %PROJECT_PATH% %BUILD_TARGET_WEBGL%
+  after_script:
+    - call "cicd/after-build-actions.bat"
+  artifacts:
+    name: "WebGL_%CI_COMMIT_REF_NAME%"
+    when: always
+    paths:
+      - "%cd%/build/web-desktop"
+      - "%cd%/temp/builder/log"
+    expire_in: 3 days
+  dependencies: []
+  tags:
+    - sdk_ci
+    - windows
+
+build-demo-android:
+  stage: build-demo
+  script:
+    - call %BUILD_SCRIPT% %PROJECT_PATH% %BUILD_TARGET_ANDROID%
+  after_script:
+    - call "cicd/after-build-actions.bat"
+  artifacts:
+    name: "Android_%CI_COMMIT_REF_NAME%"
+    when: always
+    paths:
+      - "%cd%/build/android/proj/build/XsollaCommerceSdk/outputs/apk/release"
+      - "%cd%/temp/builder/log"
+    expire_in: 3 days
+  dependencies: []
+  tags:
+    - sdk_ci
+    - windows
