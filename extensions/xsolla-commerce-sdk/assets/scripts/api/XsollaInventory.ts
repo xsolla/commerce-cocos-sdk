@@ -74,19 +74,19 @@ export class XsollaInventory {
 
     /**
      * @en
-     * Gets the list of user subscriptions.
+     * Gets the list of time limited items.
      * @zh
-     * 获取用户订阅的列表。
+     * 获取时效性商品列表。
      */
-    static getSubscriptions(authToken:string, platform?:PublishingPlatform, onComplete?:(subscriptionData:SubscriptionData) => void, onError?:(error:CommerceError) => void): void {
+    static getTimeLimitedItems(authToken:string, platform?:PublishingPlatform, onComplete?:(timeLimitedItemsData:TimeLimitedItemsData) => void, onError?:(error:CommerceError) => void): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/user/subscriptions')
             .setPathParam('projectID', Xsolla.settings.projectId)
             .addStringParam('platform', platform ? PublishingPlatform[platform] : null)
             .build();
 
         let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, authToken, result => {
-            let subscriptionData: SubscriptionData  = JSON.parse(result);
-            onComplete?.(subscriptionData);
+            let timeLimitedItemsData: TimeLimitedItemsData  = JSON.parse(result);
+            onComplete?.(timeLimitedItemsData);
         }, handleCommerceError(onError));
         request.send();
     }
@@ -123,7 +123,7 @@ export interface VirtualCurrencyBalanceData {
     items: Array<VirtualCurrencyBalance>
 }
 
-export interface SubscriptionItem {
+export interface TimeLimitedItem {
     sku: string,
     name: string,
     type: string,
@@ -134,8 +134,8 @@ export interface SubscriptionItem {
     status: string
 }
 
-export interface SubscriptionData {
-    items: Array<SubscriptionItem>
+export interface TimeLimitedItemsData {
+    items: Array<TimeLimitedItem>
 }
 
 export enum PublishingPlatform {

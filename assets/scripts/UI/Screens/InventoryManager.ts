@@ -1,7 +1,7 @@
 // Copyright 2022 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component, Node, ScrollView, Prefab, instantiate, Button } from 'cc';
-import { InventoryItem as XsollaInventoryItem, SubscriptionItem, VirtualCurrencyBalance, XsollaInventory} from 'db://xsolla-commerce-sdk/scripts/api/XsollaInventory';
+import { InventoryItem as XsollaInventoryItem, TimeLimitedItem, VirtualCurrencyBalance, XsollaInventory} from 'db://xsolla-commerce-sdk/scripts/api/XsollaInventory';
 import { StoreItem, XsollaCatalog } from 'db://xsolla-commerce-sdk/scripts/api/XsollaCatalog';
 import { TokenStorage } from "db://xsolla-commerce-sdk/scripts/common/TokenStorage";
 import { GroupsItem } from '../Misc/GroupsItem';
@@ -54,7 +54,7 @@ export class InventoryManager extends Component {
 
     vcBalanceItems: Array<VirtualCurrencyBalance>;
 
-    subscriptionItems: Array<SubscriptionItem>;
+    timeLimitedItemsData: Array<TimeLimitedItem>;
 
     itemGroups: Map<string, string>;
 
@@ -85,8 +85,8 @@ export class InventoryManager extends Component {
         UIManager.instance.showLoaderPopup(true);
         XsollaInventory.getInventory(TokenStorage.getToken().access_token, null, inventoryData => {
             this.inventoryItems = inventoryData.items.filter(x => x.type != 'virtual_currency');
-            XsollaInventory.getSubscriptions(TokenStorage.getToken().access_token, null, subscriptionData => {
-                this.subscriptionItems = subscriptionData.items;
+            XsollaInventory.getTimeLimitedItems(TokenStorage.getToken().access_token, null, timeLimitedItemsData => {
+                this.timeLimitedItemsData = timeLimitedItemsData.items;
                 XsollaCatalog.getCatalog('', '', [], storeItemsData => {
                     this.storeItems = storeItemsData.items;
                     if(this.inventoryItems.length > 0) {
@@ -219,7 +219,7 @@ export class InventoryManager extends Component {
     }
 
     getSubscriptionExpirationTime(sku: string): number {
-        for(let subscription of this.subscriptionItems) {
+        for(let subscription of this.timeLimitedItemsData) {
             if(sku == subscription.sku) {
                 return subscription.expired_at;
             }
