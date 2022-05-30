@@ -39,6 +39,7 @@ export interface XsollaSettings {
     projectId: string;
     clientId: number;
     enableSandbox?: boolean;
+    enableInAppBrowser?: boolean;
     paymentUISettingsWebGL?:PaymentUISettings;
     paymentUISettingsAndroid?:PaymentUISettings;
     paymentUISettingsIOS?:PaymentUISettings;
@@ -51,6 +52,9 @@ export class Xsolla {
     static settings: XsollaSettings;
 
     static init(settings: XsollaSettings) {
+        if (settings.enableInAppBrowser == null)
+            settings.enableInAppBrowser = true;
+
         Xsolla.settings = settings;
     }
 }

@@ -3,6 +3,7 @@
 import { sys, _decorator } from 'cc';
 import { UrlBuilder } from '../core/UrlBuilder';
 import { Xsolla } from '../Xsolla';
+import { NativeUtil } from './NativeUtil';
 
 export class BrowserUtil {
 
@@ -17,7 +18,12 @@ export class BrowserUtil {
                 url = new UrlBuilder('https://secure.xsolla.com/paystation3');
             }
             url.addStringParam('access_token', token);
-            sys.openURL(url.build());
+
+            if (Xsolla.settings.enableInAppBrowser) {
+                NativeUtil.openPurchaseUI(token, sandbox);
+            } else {
+                sys.openURL(url.build());
+            }
         }
         else {
             this.openPaystationWidget(token, sandbox);

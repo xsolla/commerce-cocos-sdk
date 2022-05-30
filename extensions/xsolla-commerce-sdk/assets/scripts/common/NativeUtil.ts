@@ -41,6 +41,24 @@ export class NativeUtil {
         }
     }
 
+    static openPurchaseUI(token: string, sandbox: boolean) {
+        if (sys.platform.toLowerCase() == 'ios') {
+            jsb.reflection.callStaticMethod("XsollaNativeUtils", "openPurchaseUI:sandbox:redirectUri:",
+                token,
+                sandbox,
+                "app://xpayment." + NativeUtil.getAppId());
+        }
+
+        if (sys.platform.toLowerCase() == 'android') {
+            jsb.reflection.callStaticMethod("com/cocos/game/XsollaNativePayments", "openPurchaseUI",
+                "(Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;)V",
+                token,
+                sandbox,
+                "app",
+                "xpayment." + NativeUtil.getAppId());
+        }
+    }
+
     static getAppId() {
         let appId:string;
         if (sys.platform.toLowerCase() == 'ios') {

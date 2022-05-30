@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-
 import androidx.annotation.Nullable;
 
 import com.cocos.lib.CocosHelper;
@@ -23,7 +22,6 @@ import org.json.JSONObject;
 public class XsollaNativeAuthActivity extends Activity {
     public static String ARG_SOCIAL_NETWORK = "social_network";
     public static String ARG_WITH_LOGOUT = "with_logout";
-	public static String REMEMBER_ME = "remember_me";
 
     private TokenUtils tokenUtils;
 

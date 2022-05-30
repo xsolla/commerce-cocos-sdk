@@ -19,13 +19,16 @@ export class XsollaAndroid extends Component {
     @property(CCString)
     qqAppId: String = '';
     
-    start () {
-        if(sys.platform.toLowerCase() == 'android') {
+    start() {
+        if (sys.platform.toLowerCase() == 'android') {
             jsb.reflection.callStaticMethod("com/cocos/game/XsollaNativeAuth", "xLoginInit",
-                "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V",
-                Xsolla.settings.loginId, Xsolla.settings.clientId.toString(), "https://login.xsolla.com/api/blank",
-                this.facebookAppId, this.googleAppId, this.wechatAppId, this.qqAppId);
-
+                "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V",
+                Xsolla.settings.loginId,
+                Xsolla.settings.clientId.toString(),
+                this.facebookAppId,
+                this.googleAppId,
+                this.wechatAppId,
+                this.qqAppId);
         }
     }
 }

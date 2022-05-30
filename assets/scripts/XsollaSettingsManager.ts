@@ -37,6 +37,13 @@ export class XsollaSettingsManager extends Component {
     enableSandbox: boolean = true;
 
     @property ({
+        displayName: 'Enable In-App Browser',
+        tooltip: 'If the option is enabled, the in-app browser is used to open Pay Station or a window for social login.',
+        group: 'General'
+    })
+    enableInAppBrowser: boolean = true;
+
+    @property ({
         displayName: 'Payment UI Theme',
         tooltip: 'User interface theme for the payment interface.',
         group: {name: 'Paystation UI WebGL', id: 'Paystation UI'}
@@ -292,6 +299,7 @@ export class XsollaSettingsManager extends Component {
             projectId: this.projectId,
             clientId: this.clientId,
             enableSandbox: this.enableSandbox,
+            enableInAppBrowser: this.enableInAppBrowser,
             paymentUISettingsWebGL: paymentUISettingsWebGL,
             paymentUISettingsAndroid: paymentUISettingsAndroid,
             paymentUISettingsIOS: paymentUISettingsIOS,

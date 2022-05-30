@@ -94,9 +94,10 @@ dependencies {
     implementation fileTree(dir: "${COCOS_ENGINE_PATH}/cocos/platform/android/java/libs", include: ['*.jar'])
     implementation project(':libservice')
     implementation project(':libcocos')
-    implementation 'com.xsolla.android:login:1.2.1'
-    implementation 'com.xsolla.android:login-facebook:1.2.1'
-    implementation 'com.xsolla.android:login-google:1.2.1'
-    implementation 'com.xsolla.android:login-wechat:1.2.1'
-    implementation 'com.xsolla.android:login-qq:1.2.1'
+    implementation 'com.xsolla.android:login:3.1.0'
+    implementation 'com.xsolla.android:login-facebook:3.1.0'
+    implementation 'com.xsolla.android:login-google:3.1.0'
+    implementation 'com.xsolla.android:login-wechat:3.1.0'
+    implementation 'com.xsolla.android:login-qq:3.1.0'
+    implementation 'com.xsolla.android:payments:1.0.0'
 }

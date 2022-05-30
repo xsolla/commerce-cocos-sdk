@@ -3,8 +3,8 @@
 #import <AuthenticationServices/AuthenticationServices.h>
 
 #import "XsollaSDKLoginKitObjectiveC-Bridging-Header.h"
-
 #import "XsollaUtils.h"
+#import "XsollaSDKPaymentsKitObjectiveC/XsollaSDKPaymentsKitObjectiveC-Swift.h"
 
 #include "platform/Application.h"
 #include "cocos/bindings/jswrapper/SeApi.h"
@@ -137,4 +137,16 @@
 	}];
 }
 
++(void) openPurchaseUI:(NSString*)tokenStr sandbox:(BOOL)sandboxBool redirectUri:(NSString*)redirectUriStr {
+    if (@available(iOS 13.4, *)) {
+        [[PaymentsKitObjectiveC shared] performPaymentWithPaymentToken:tokenStr presenter: [UIApplication sharedApplication].keyWindow.rootViewController isSandbox:sandboxBool redirectUrl:redirectUriStr completionHandler:^(NSError * _Nullable error) {
+            if(error != nil) {
+                NSLog(@"Error code: %ld", error.code);
+            }
+        }];
+    } else {
+        NSLog(@"Open purchase web view is not supported for current iOS version.");
+    }
+}
+    
 @end
