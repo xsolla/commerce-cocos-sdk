@@ -41,4 +41,4 @@
 
 # Proguard Xsolla for release
 -keep public class com.xsolla.** { *; }
--dontwarn com.xsolla.*
+-dontwarn com.xsolla.**

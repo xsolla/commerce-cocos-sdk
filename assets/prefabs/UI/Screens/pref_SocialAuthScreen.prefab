@@ -45,7 +45,7 @@
       }
     ],
     "_prefab": {
-      "__id__": 140
+      "__id__": 142
     },
     "_lpos": {
       "__type__": "cc.Vec3",
@@ -1977,6 +1977,12 @@
       },
       {
         "__id__": 139
+      },
+      {
+        "__id__": 140
+      },
+      {
+        "__id__": 141
       }
     ],
     "_id": ""
@@ -2014,6 +2020,22 @@
     "name": "BattleNet",
     "logo": {
       "__uuid__": "eadafcd2-7d6f-4db2-9bc3-c95e69a151ec@f9941",
+      "__expectedType__": "cc.SpriteFrame"
+    }
+  },
+  {
+    "__type__": "SocialNetworkItemData",
+    "name": "Discord",
+    "logo": {
+      "__uuid__": "d1215cae-9aeb-49aa-a6f8-4f9c43efed4e@f9941",
+      "__expectedType__": "cc.SpriteFrame"
+    }
+  },
+  {
+    "__type__": "SocialNetworkItemData",
+    "name": "Facebook",
+    "logo": {
+      "__uuid__": "c69efe84-bce9-45f4-8cad-63c008b83830@f9941",
       "__expectedType__": "cc.SpriteFrame"
     }
   },
@@ -2188,16 +2210,16 @@
     "fileId": "3bAK8HP4lMw6m5uX+kcXBs",
     "targetOverrides": [
       {
-        "__id__": 141
-      },
-      {
         "__id__": 143
       },
       {
         "__id__": 145
       },
       {
-        "__id__": 148
+        "__id__": 147
+      },
+      {
+        "__id__": 150
       }
     ]
   },
@@ -2214,7 +2236,7 @@
       "__id__": 10
     },
     "targetInfo": {
-      "__id__": 142
+      "__id__": 144
     }
   },
   {
@@ -2236,7 +2258,7 @@
       "__id__": 20
     },
     "targetInfo": {
-      "__id__": 144
+      "__id__": 146
     }
   },
   {
@@ -2251,7 +2273,7 @@
       "__id__": 20
     },
     "sourceInfo": {
-      "__id__": 146
+      "__id__": 148
     },
     "propertyPath": [
       "_textLabel"
@@ -2260,7 +2282,7 @@
       "__id__": 20
     },
     "targetInfo": {
-      "__id__": 147
+      "__id__": 149
     }
   },
   {
@@ -2281,7 +2303,7 @@
       "__id__": 20
     },
     "sourceInfo": {
-      "__id__": 149
+      "__id__": 151
     },
     "propertyPath": [
       "_placeholderLabel"
@@ -2290,7 +2312,7 @@
       "__id__": 20
     },
     "targetInfo": {
-      "__id__": 150
+      "__id__": 152
     }
   },
   {
