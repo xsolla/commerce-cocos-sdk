@@ -18,9 +18,12 @@ export class UrlBuilder {
         }
 
         var queryParamsStr: string = '';
+        var querySymbol = this._url.indexOf('?') > 0 ? '&' : '?';
         for (var key in this._queryParameters) {
-            queryParamsStr += queryParamsStr ? '&' : '?';
-            queryParamsStr += key + '=' + encodeURIComponent(this._queryParameters[key]);
+            queryParamsStr += querySymbol + key + '=' + encodeURIComponent(this._queryParameters[key]);
+            if (querySymbol == '?') {
+                querySymbol = '&';
+            }
         }
         return this._url + queryParamsStr;
     }
