@@ -1,4 +1,4 @@
-
+*本文亦提供[英文版本](https://github.com/xsolla/commerce-cocos-sdk/blob/master/extensions/xsolla-commerce-sdk/assets/README-en.md)。*
 
 通过此现成库轻松将艾克索拉服务嵌入使用Cocos Creator开发的游戏。
 
