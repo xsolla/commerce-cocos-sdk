@@ -1,4 +1,4 @@
-*This article can also be read in [Chinese](https://github.com/xsolla/commerce-cocos-sdk/blob/master/extensions/xsolla-commerce-sdk/assets/README-zh.md).*
+*This article can also be read in [Chinese](https://github.com/xsolla/commerce-cocos-sdk/blob/master/extensions/xsolla-commerce-sdk/assets/README.zh.md).*
 
 Easily embed Xsolla services with this ready-to-use library for games developed using Cocos Creator.
 

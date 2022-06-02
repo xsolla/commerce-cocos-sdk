@@ -1,7 +1,7 @@
 {
   "name": "xsolla-commerce-sdk",
   "package_version": 2,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": "Xsolla Inc.",
   "main": "./browser.js",
   "description": "Xsolla Commerce SDK for Cocos Creator",
