@@ -137,6 +137,36 @@
 	}];
 }
 
++(void) linkSocialNetwork:(NSString*)tokenStr networkName:(NSString*)networkNameStr redirectUri:(NSString*)redirectUriStr{
+    if (@available(iOS 13.4, *)) {
+        
+        networkNameStr = networkNameStr.lowercaseString;
+              
+        [[LoginKitObjectiveC shared] linkSocialNetwork:networkNameStr accessToken:tokenStr redirectUrl:redirectUriStr  userAgent:NULL presenter:[UIApplication sharedApplication].keyWindow.rootViewController completion:^(NSError * _Nullable error) {     
+            if(error != nil) {
+                NSLog(@"XsollaSocialLinking error. Code: %ld", error.code);
+
+                NSString* errorString = error.localizedDescription;
+                NSString *errorScript = [NSString stringWithFormat: @"cc.director.getScene().emit(\"socialNetworkLinkingError\", \"%@\")", errorString];
+                const char* errorScriptStr = [XsollaUtils createCStringFrom:errorScript];
+                cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
+                    se::ScriptEngine::getInstance()->evalString(errorScriptStr);
+                });
+
+                return;
+            }
+            
+            NSString *successScript = [NSString stringWithFormat: @"cc.director.getScene().emit(\"socialNetworkLinkingSuccess\", \"%@\")", networkNameStr];
+            const char* successScriptStr = [XsollaUtils createCStringFrom:successScript];
+            cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
+                se::ScriptEngine::getInstance()->evalString(successScriptStr);
+            });
+        }];
+    } else {
+        NSLog(@"Linking social network is not supported for current iOS version.");
+    }
+}
+
 +(void) openPurchaseUI:(NSString*)tokenStr sandbox:(BOOL)sandboxBool redirectUri:(NSString*)redirectUriStr {
     if (@available(iOS 13.4, *)) {
         [[PaymentsKitObjectiveC shared] performPaymentWithPaymentToken:tokenStr presenter: [UIApplication sharedApplication].keyWindow.rootViewController isSandbox:sandboxBool redirectUrl:redirectUriStr completionHandler:^(NSError * _Nullable error) {
