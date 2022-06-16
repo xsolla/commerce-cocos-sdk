@@ -10,4 +10,7 @@ export class Events {
 
     static ACCOUNT_DATA_UPDATE_SUCCESS: string = 'accountDataUpdateSuccess';
     static ACCOUNT_DATA_UPDATE_ERROR: string = 'accountDataUpdateError';
+
+    static SOCIAL_NETWORK_LINKING_SUCCESS: string = 'socialNetworkLinkingSuccess';
+    static SOCIAL_NETWORK_LINKING_ERROR: string = 'socialNetworkLinkingError';
 }

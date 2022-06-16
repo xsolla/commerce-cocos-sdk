@@ -41,6 +41,22 @@ export class NativeUtil {
         }
     }
 
+    static linkSocialNetwork(networkName: string) {
+        if (sys.platform.toLowerCase() == 'ios') {
+            jsb.reflection.callStaticMethod("XsollaNativeUtils", "linkSocialNetwork:networkName:redirectUri:",
+                TokenStorage.token.access_token,
+                networkName,
+                "app://xlogin." + NativeUtil.getAppId());
+        }
+
+        if (sys.platform.toLowerCase() == 'android') {
+            jsb.reflection.callStaticMethod("com/cocos/game/XsollaNativeUtils", "linkSocialNetwork",
+                "(Ljava/lang/String;Ljava/lang/String;)V",
+                TokenStorage.token.access_token,
+                networkName);
+        }
+    }
+
     static openPurchaseUI(token: string, sandbox: boolean) {
         if (sys.platform.toLowerCase() == 'ios') {
             jsb.reflection.callStaticMethod("XsollaNativeUtils", "openPurchaseUI:sandbox:redirectUri:",

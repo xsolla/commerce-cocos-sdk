@@ -1,6 +1,6 @@
 // Copyright 2022 Xsolla Inc. All Rights Reserved.
 
-import { _decorator, Component, Node, Button, Texture2D, instantiate, Prefab, sys, Sprite, SpriteFrame, UITransform, director } from 'cc';
+import { _decorator, Component, Node, Button, Texture2D, instantiate, Prefab, sys, Sprite, SpriteFrame, UITransform, CCString, ScrollView, director } from 'cc';
 import { UserDetails, UserDetailsUpdate, XsollaUserAccount } from 'db://xsolla-commerce-sdk/scripts/api/XsollaUserAccount';
 import { TokenStorage } from "db://xsolla-commerce-sdk/scripts/common/TokenStorage";
 import { Events } from 'db://xsolla-commerce-sdk/scripts/core/Events';
@@ -9,7 +9,18 @@ import { UserAccountItem } from '../Misc/UserAccountItem';
 import { UserAvatarItem } from '../Misc/UserAvatarItem';
 import { UIManager, UIScreenType } from '../UIManager';
 import { ImageUtils } from '../Utils/ImageUtils';
+import { SocialNetworkLinkItem } from '../Misc/SocialNetworkLinkItem';
 const { ccclass, property } = _decorator;
+
+@ccclass('SocialNetworkLinkItemData')
+export class SocialNetworkLinkItemData {
+
+    @property(CCString)
+    name: String = '';
+
+    @property(SpriteFrame)
+    logo: SpriteFrame = null;
+}
 
 @ccclass('UserAccountManager')
 export class UserAccountManager extends Component {
@@ -65,8 +76,25 @@ export class UserAccountManager extends Component {
     @property(Texture2D)
     defaultAvatars: Texture2D[] = [];
 
+    @property(ScrollView)
+    socialNetworkLinksList: ScrollView;
+
+    @property(Prefab)
+    socialNetworkLinkItemPrefab: Prefab;
+
+    @property([SocialNetworkLinkItemData])
+    socialNetworkLinksData: SocialNetworkLinkItemData[] = [];
+
     start() {
         this.populateAvatrsList();
+
+        if (sys.isMobile) {
+            this.populateSocialNetworksList();
+            this.refreshLinkedSocialNetworks();
+        }
+        else {
+            this.socialNetworkLinksList.node.active = false;
+        }
     }
 
     onEnable() {
@@ -104,6 +132,45 @@ export class UserAccountManager extends Component {
             UIManager.instance.showErrorPopup(err.description);
         });
         this.avatarsList.getComponentsInChildren(UserAvatarItem).forEach(item => item.showSelection(false));
+    }
+
+    populateSocialNetworksList() {
+        for (let i = 0; i < this.socialNetworkLinksData.length; ++i) {
+            let socialNetworkLinkItem = instantiate(this.socialNetworkLinkItemPrefab);
+            this.socialNetworkLinksList.content.addChild(socialNetworkLinkItem);
+            let itemLinkData = this.socialNetworkLinksData[i];
+            socialNetworkLinkItem.getComponent(SocialNetworkLinkItem).init(itemLinkData);
+            socialNetworkLinkItem.on(SocialNetworkLinkItem.LINK_NETWORK, this.onNetworkLinkClicked, this);
+        }
+    }
+
+    refreshLinkedSocialNetworks() {
+        UIManager.instance.showLoaderPopup(true);
+
+        this.socialNetworkLinksList.content.getComponentsInChildren(SocialNetworkLinkItem).forEach(element => {
+            element.setIsLinked(false);
+        });
+
+        XsollaUserAccount.getLinkedSocialAccounts(TokenStorage.token.access_token, linkedAccounts => {
+            UIManager.instance.showLoaderPopup(false);
+            linkedAccounts.forEach(account => {
+                this.refreshSocialNetworkLinkStatus(account.provider, true);
+            });
+        }, err => {
+            console.log(err);
+            UIManager.instance.showLoaderPopup(false);
+            UIManager.instance.showErrorPopup(err.description);
+        })
+    }
+
+    refreshSocialNetworkLinkStatus(networkName: string, isNetworkLinked: boolean) {
+        let socialNetworkLinkItems = this.socialNetworkLinksList.content.getComponentsInChildren(SocialNetworkLinkItem);
+        let linkedItem = socialNetworkLinkItems.find(item => item.data.name.toUpperCase() === networkName.toUpperCase());
+        if (linkedItem) {
+            linkedItem.setIsLinked(isNetworkLinked);
+            linkedItem.node.setSiblingIndex(0);
+            this.socialNetworkLinksList.scrollToLeft();
+        }
     }
 
     modifyUserAccountData(userDetailsUpdate: UserDetailsUpdate) {
@@ -160,9 +227,19 @@ export class UserAccountManager extends Component {
     }
 
     handleErrorAvatarUpdate(error: string) {
+        console.log(error);
         UIManager.instance.showLoaderPopup(false);
         UIManager.instance.showErrorPopup(error);
         this.setAvatarEditMode(false);
+    }
+
+    handleSuccessSocialNetworkLinking(networkName: string) {
+        this.refreshSocialNetworkLinkStatus(networkName, true);
+    }
+
+    handleErrorSocialNetworkLinking(error: string) {
+        console.log(error);
+        UIManager.instance.showErrorPopup(error);
     }
 
     setAvatarEditMode(isPickerVisible: boolean) {
@@ -246,6 +323,15 @@ export class UserAccountManager extends Component {
         this.setAvatarEditMode(false);
     }
 
+    onNetworkLinkClicked(networkName: string, isNetworkLinked: boolean) {
+        if (isNetworkLinked) {
+            console.log(networkName + ' is already linked.')
+            return;
+        }
+
+        NativeUtil.linkSocialNetwork(networkName);
+    }
+
     addListeners() {
         this.backButton.node.on(Button.EventType.CLICK, this.onBackClicked, this);
         this.nicknameItem.node.on(UserAccountItem.ITEM_EDIT, this.onNicknameEdited, this);
@@ -259,6 +345,8 @@ export class UserAccountManager extends Component {
         director.getScene().on(Events.ACCOUNT_DATA_UPDATE_ERROR, this.handleErrorUserAccountDataUpdate, this );
         director.getScene().on(Events.AVATAR_UPDATE_SUCCESS, this.handleSuccessfulAvatarUpdate, this );
         director.getScene().on(Events.AVATAR_UPDATE_ERROR, this.handleErrorAvatarUpdate, this );
+        director.getScene().on(Events.SOCIAL_NETWORK_LINKING_SUCCESS, this.handleSuccessSocialNetworkLinking, this );
+        director.getScene().on(Events.SOCIAL_NETWORK_LINKING_ERROR, this.handleErrorSocialNetworkLinking, this );
     }
 
     removeListeners() {
@@ -274,5 +362,7 @@ export class UserAccountManager extends Component {
         director.getScene().off(Events.ACCOUNT_DATA_UPDATE_ERROR, this.handleErrorUserAccountDataUpdate, this );
         director.getScene().off(Events.AVATAR_UPDATE_SUCCESS, this.handleSuccessfulAvatarUpdate, this );
         director.getScene().off(Events.AVATAR_UPDATE_ERROR, this.handleErrorAvatarUpdate, this );
+        director.getScene().off(Events.SOCIAL_NETWORK_LINKING_SUCCESS, this.handleSuccessSocialNetworkLinking, this );
+        director.getScene().off(Events.SOCIAL_NETWORK_LINKING_ERROR, this.handleErrorSocialNetworkLinking, this );
     }
 }

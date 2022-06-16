@@ -2,10 +2,11 @@
 
 package com.cocos.game;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Build;
 import android.provider.Settings;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,8 +34,8 @@ public class XsollaNativeUtils {
         return Build.MANUFACTURER + Build.MODEL;
     }
 
-    public static String getPackageName() { 
-        return AppActivity.getAppActivity().getPackageName(); 
+    public static String getPackageName() {
+        return AppActivity.getAppActivity().getPackageName();
     }
 
     public static void updateUserProfilePicture(String filePath, String token) {
@@ -117,5 +118,13 @@ public class XsollaNativeUtils {
                 });
             }
         });
+    }
+
+    public static void linkSocialNetwork(String token, String networkName){
+        Activity appActivity = AppActivity.getAppActivity();
+        Intent intent = new Intent(appActivity, XsollaNativeSocialNetworkLinkingActivity.class);
+        intent.putExtra(XsollaNativeSocialNetworkLinkingActivity.ARG_TOKEN, token);
+        intent.putExtra(XsollaNativeSocialNetworkLinkingActivity.ARG_NETWORK_NAME, networkName);
+        appActivity.startActivity(intent);
     }
 }
