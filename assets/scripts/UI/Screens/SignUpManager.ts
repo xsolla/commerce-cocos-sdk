@@ -67,7 +67,7 @@ export class SignUpManager extends Component {
 
     onSignUpClicked() {
         UIManager.instance.showLoaderPopup(true);
-        XsollaAuth.registerNewUser(this.usernameEditBox.string, this.passwordEditBox.string, this.emailEditBox.string, 'xsollatest', null, token => {
+        XsollaAuth.registerNewUser(this.usernameEditBox.string, this.passwordEditBox.string, this.emailEditBox.string, 'xsollatest', null, null, token => {
             UIManager.instance.showLoaderPopup(false);
             if(token != null) {
                 console.log(token);                
@@ -92,7 +92,7 @@ export class SignUpManager extends Component {
 
     onResendEmailClicked() {
         UIManager.instance.showLoaderPopup(true);
-        XsollaAuth.resendAccountConfirmationEmail(this.usernameEditBox.string, 'xsollatest', () => {
+        XsollaAuth.resendAccountConfirmationEmail(this.usernameEditBox.string, null, 'xsollatest', () => {
             UIManager.instance.showLoaderPopup(false);
             console.log('Email resent successfully.')
         }, err => {
