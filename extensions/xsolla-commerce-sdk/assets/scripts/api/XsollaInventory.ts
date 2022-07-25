@@ -79,7 +79,7 @@ export class XsollaInventory {
      * 获取时效性商品列表。
      */
     static getTimeLimitedItems(authToken:string, platform?:PublishingPlatform, onComplete?:(timeLimitedItemsData:TimeLimitedItemsData) => void, onError?:(error:CommerceError) => void): void {
-        let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/user/subscriptions')
+        let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/user/time_limited_items')
             .setPathParam('projectID', Xsolla.settings.projectId)
             .addStringParam('platform', platform ? PublishingPlatform[platform] : null)
             .build();
