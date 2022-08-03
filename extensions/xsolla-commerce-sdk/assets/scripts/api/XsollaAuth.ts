@@ -213,7 +213,7 @@ export class XsollaAuth {
      * @zh
      * 创建新用户。
      */
-    static registerNewUser(username:string, password:string, email:string, state?:string, extras?: RegistrationExtras, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
+    static registerNewUser(username:string, password:string, email:string, state?:string, extras?: RegistrationExtras, locale?:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
         let body = {
             password: password,
             username: username,
@@ -229,6 +229,7 @@ export class XsollaAuth {
             .addStringParam('redirect_uri', 'https://login.xsolla.com/api/blank')
             .addStringParam('state', state)
             .addStringParam('scope', 'offline')
+            .addStringParam('locale', locale)
             .build();
 
         let request = HttpUtil.createRequest(url, 'POST', RequestContentType.Json, null, result => {
@@ -248,7 +249,7 @@ export class XsollaAuth {
      * @zh
      * 重新向用户发送帐户验证邮件。要完成帐户验证，用户需点击邮件中的链接。
      */
-    static resendAccountConfirmationEmail(username:string, state?:string, onComplete?:() => void, onError?:(error:LoginError) => void) {
+    static resendAccountConfirmationEmail(username:string, state?:string, locale?:string, onComplete?:() => void, onError?:(error:LoginError) => void) {
         let body = {
             username: username
         };
@@ -257,6 +258,7 @@ export class XsollaAuth {
             .addNumberParam('client_id', Xsolla.settings.clientId)
             .addStringParam('redirect_uri', 'https://login.xsolla.com/api/blank')
             .addStringParam('state', state)
+            .addStringParam('locale', locale)
             .build();
 
         let request = HttpUtil.createRequest(url, 'POST', RequestContentType.Json, null, result => {
@@ -271,7 +273,7 @@ export class XsollaAuth {
      * @zh
      * 通过用户确认重置用户密码。如用户数据保存在艾克索拉数据存储或您自己一侧，用户将收到一封密码更改确认邮件。
      */
-    static resetPassword(username:string, onComplete?:() => void, onError?:(error:LoginError) => void) {
+    static resetPassword(username:string, locale:string, onComplete?:() => void, onError?:(error:LoginError) => void) {
         let body = {
             username: username
         };
@@ -279,24 +281,13 @@ export class XsollaAuth {
         let url = new UrlBuilder('https://login.xsolla.com/api/password/reset/request')
             .addStringParam('projectId', Xsolla.settings.loginId)
             .addStringParam('login_url', 'https://login.xsolla.com/api/blank')
+            .addStringParam('locale', locale)
             .build();
 
         let request = HttpUtil.createRequest(url, 'POST', RequestContentType.Json, null, result => {
             onComplete?.();
         }, handleLoginError(onError));
         request.send(JSON.stringify(body));
-    }
-
-    private static handleUrlWithToken(onComplete: (token: Token) => void): (result: any) => void {
-        return result => {
-            let authUrl: AuthUrl = JSON.parse(result);
-            let params = HttpUtil.decodeUrlParams(authUrl.login_url);
-            let token: Token = {
-                access_token: params['token'],
-                token_type: 'bearer'
-            };
-            onComplete?.(token);
-        };
     }
 
     private static handleUrlWithCode(onComplete: (token: Token) => void, onError?:(error:LoginError) => void): (result: any) => void {

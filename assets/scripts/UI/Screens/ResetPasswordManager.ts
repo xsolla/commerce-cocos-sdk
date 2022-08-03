@@ -51,10 +51,10 @@ export class ResetPasswordManager extends Component {
 
     onResetClicked() {
         UIManager.instance.showLoaderPopup(true);
-        XsollaAuth.resetPassword(this.emailEditBox.string, () => {
+        XsollaAuth.resetPassword(this.emailEditBox.string, null, () => {
             UIManager.instance.showLoaderPopup(false);
             this.resetScreen.active = false;
-            this.successScreen.active = true;      
+            this.successScreen.active = true;
             this.confirmationEmailMessage.string = this.confirmationEmailMessage.string.replace('{email}', this.emailEditBox.string);    
         }, err => {
             UIManager.instance.showLoaderPopup(false);
