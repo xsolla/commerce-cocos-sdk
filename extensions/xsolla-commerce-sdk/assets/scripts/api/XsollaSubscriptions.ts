@@ -4,10 +4,10 @@ import { CommerceError, handleCommerceError } from "../core/Error";
 import { HttpUtil, RequestContentType } from "../core/HttpUtil";
 import { UrlBuilder } from "../core/UrlBuilder";
 import { Xsolla } from "../Xsolla";
-import { XsollaOrders } from "./XsollaOrders";
 
 export class XsollaSubscriptions {
 
+    //textreview
     /**
      * @en
      * Returns a list of all plans, including plans purchased by the user while promotions are active.
@@ -32,6 +32,7 @@ export class XsollaSubscriptions {
         request.send();
     }
 
+    //textreview
     /**
      * @en
      * Returns a list of all plans, including plans purchased by the user while promotions are active.
@@ -56,6 +57,7 @@ export class XsollaSubscriptions {
         request.send();
     }
 
+    //textreview
     /**
      * @en
      * Returns a list of active recurrent subscriptions that have the status `active`, `non renewing`, and `pause`.
@@ -77,6 +79,7 @@ export class XsollaSubscriptions {
         request.send();
     }
 
+    //textreview
     /**
      * @en
      * Returns information about a subscription by its ID. Subscription can be in any status.
@@ -97,6 +100,7 @@ export class XsollaSubscriptions {
         request.send();
     }
 
+    //textreview
     /**
      * @en
      * Returns Pay Station URL for the subscription purchase.
@@ -123,6 +127,7 @@ export class XsollaSubscriptions {
         request.send(JSON.stringify(body));
     }
 
+    //textreview
     /**
      * @en
      * Returns Pay Station URL for the subscription management.
@@ -148,6 +153,7 @@ export class XsollaSubscriptions {
         request.send(JSON.stringify(body));
     }
 
+    //textreview
     /**
      * @en
      * Returns Pay Station URL for the subscription renewal.
@@ -173,6 +179,7 @@ export class XsollaSubscriptions {
         request.send(JSON.stringify(body));
     }
 
+    //textreview
     /**
      * @en
      * Changes a regular subscription status to non_renewing (subscription is automatically canceled after expiration).
