@@ -7,12 +7,11 @@ import { Xsolla } from "../Xsolla";
 
 export class XsollaSubscriptions {
 
-    //textreview
     /**
      * @en
      * Returns a list of all plans, including plans purchased by the user while promotions are active.
      * @zh
-     * 
+     *
      */
     static getSubscriptionPublicPlans(planId:Array<number>, planExternalId:Array<string>, country?:string, locale?:string, onComplete?:(itemsList: SubscriptionPlansList) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
         let url = new UrlBuilder('https://subscriptions.xsolla.com/api/public/v1/projects/{projectID}/user_plans')
@@ -32,12 +31,11 @@ export class XsollaSubscriptions {
         request.send();
     }
 
-    //textreview
     /**
      * @en
      * Returns a list of all plans, including plans purchased by the user while promotions are active.
      * @zh
-     * 
+     *
      */
      static getSubscriptionPlans(authToken:string, planId:Array<number>, planExternalId:Array<string>, country?:string, locale?:string, onComplete?:(itemsList: SubscriptionPlansList) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
         let url = new UrlBuilder('https://subscriptions.xsolla.com/api/user/v1/projects/{projectID}/plans')
@@ -57,12 +55,11 @@ export class XsollaSubscriptions {
         request.send();
     }
 
-    //textreview
     /**
      * @en
-     * Returns a list of active recurrent subscriptions that have the status `active`, `non renewing`, and `pause`.
+     * Returns a list of active recurrent subscriptions that have the `active`, `non renewing`, and `pause` status.
      * @zh
-     * 
+     *
      */
      static getSubscriptions(authToken:string, locale?:string, onComplete?:(itemsList: SubscriptionsList) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
         let url = new UrlBuilder('https://subscriptions.xsolla.com/api/user/v1/projects/{projectID}/subscriptions')
@@ -79,12 +76,11 @@ export class XsollaSubscriptions {
         request.send();
     }
 
-    //textreview
     /**
      * @en
-     * Returns information about a subscription by its ID. Subscription can be in any status.
+     * Returns information about a subscription by its ID. Subscription can have any status.
      * @zh
-     * 
+     *
      */
      static getSubscriptionDetails(authToken:string, subscriptionId: number, locale?:string, onComplete?:(details: SubscriptionDetails) => void, onError?:(error:CommerceError) => void): void {
         let url = new UrlBuilder('https://subscriptions.xsolla.com/api/user/v1/projects/{projectID}/subscriptions/{subscriptionId}')
@@ -100,12 +96,11 @@ export class XsollaSubscriptions {
         request.send();
     }
 
-    //textreview
     /**
      * @en
      * Returns Pay Station URL for the subscription purchase.
      * @zh
-     * 
+     *
      */
      static getSubscriptionPurchaseUrl(authToken:string, planExternalId: string, country?:string, onComplete?:(linkToPaystation: string) => void, onError?:(error:CommerceError) => void): void {
         let body = {
@@ -127,12 +122,11 @@ export class XsollaSubscriptions {
         request.send(JSON.stringify(body));
     }
 
-    //textreview
     /**
      * @en
      * Returns Pay Station URL for the subscription management.
      * @zh
-     * 
+     *
      */
      static getSubscriptionManagementUrl(authToken:string, country?:string, onComplete?:(linkToPaystation: string) => void, onError?:(error:CommerceError) => void): void {
         let body = {
@@ -153,12 +147,11 @@ export class XsollaSubscriptions {
         request.send(JSON.stringify(body));
     }
 
-    //textreview
     /**
      * @en
      * Returns Pay Station URL for the subscription renewal.
      * @zh
-     * 
+     *
      */
      static getSubscriptionRenewalUrl(authToken:string, subscriptionId:number, onComplete?:(linkToPaystation: string) => void, onError?:(error:CommerceError) => void): void {
         let body = {
@@ -166,7 +159,7 @@ export class XsollaSubscriptions {
                 sandbox: Xsolla.settings.enableSandbox
             }
         };
-        
+
         let url = new UrlBuilder('https://subscriptions.xsolla.com/api/user/v1/projects/{projectID}/subscriptions/{subscriptionId}/renew')
             .setPathParam('projectID', Xsolla.settings.projectId)
             .setPathParam('subscriptionId', subscriptionId.toString())
@@ -179,12 +172,11 @@ export class XsollaSubscriptions {
         request.send(JSON.stringify(body));
     }
 
-    //textreview
     /**
      * @en
      * Changes a regular subscription status to non_renewing (subscription is automatically canceled after expiration).
      * @zh
-     * 
+     *
      */
      static cancelSubscription(authToken:string, subscriptionId:number, onComplete?:() => void, onError?:(error:CommerceError) => void): void {
         let url = new UrlBuilder('https://subscriptions.xsolla.com/api/user/v1/projects/{projectID}/subscriptions/{subscriptionId}/cancel')
