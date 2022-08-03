@@ -23,6 +23,16 @@ export function handleLoginError(onError:(error:LoginError) => void): (requestEr
     };
 }
 
+export function handleSubscriptionError(onError:(error:SubscriptionError) => void): (requestError:HttpError) => void {
+    return requestError => {
+        let subscriptionError: SubscriptionError = {
+            code: requestError.code,
+            description: requestError.description
+        };
+        onError?.(subscriptionError);
+    };
+}
+
 export interface CommerceError {
     status?: number,
     code: number,
@@ -30,6 +40,11 @@ export interface CommerceError {
 }
 
 export interface LoginError {
+    code: string,
+    description: string
+}
+
+export interface SubscriptionError {
     code: string,
     description: string
 }

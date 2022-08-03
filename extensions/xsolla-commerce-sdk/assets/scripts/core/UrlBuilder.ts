@@ -33,7 +33,7 @@ export class UrlBuilder {
         return this;
     }
 
-    addStringParam(paramName:string, paramValue:string, ignoreEmpty:boolean = true) : UrlBuilder {
+    addStringParam(paramName:string, paramValue:string | number, ignoreEmpty:boolean = true) : UrlBuilder {
         if (ignoreEmpty && !paramValue) {
             return this;
         }
@@ -51,8 +51,8 @@ export class UrlBuilder {
             this.addStringParam(paramName, additionalFieldsString, ignoreEmpty);
         }
         else {
-            for (var param in paramValueArray) {
-                this.addStringParam(paramName, param, ignoreEmpty);
+            for (let i = 0; i < paramValueArray.length; ++i) {
+                this.addStringParam(paramName, paramValueArray[i], ignoreEmpty);
             }
         }    
         return this;

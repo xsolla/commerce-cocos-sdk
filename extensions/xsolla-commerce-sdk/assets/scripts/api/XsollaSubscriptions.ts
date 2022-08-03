@@ -1,6 +1,6 @@
 // Copyright 2022 Xsolla Inc. All Rights Reserved.
 
-import { CommerceError, handleCommerceError } from "../core/Error";
+import { handleSubscriptionError, SubscriptionError } from "../core/Error";
 import { HttpUtil, RequestContentType } from "../core/HttpUtil";
 import { UrlBuilder } from "../core/UrlBuilder";
 import { Xsolla } from "../Xsolla";
@@ -14,7 +14,7 @@ export class XsollaSubscriptions {
      * @zh
      * 
      */
-    static getSubscriptionPublicPlans(planId:Array<number>, planExternalId:Array<string>, country?:string, locale?:string, onComplete?:(itemsList: SubscriptionPlansList) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
+    static getSubscriptionPublicPlans(planId:Array<number>, planExternalId:Array<string>, country?:string, locale?:string, onComplete?:(itemsList: SubscriptionPlansList) => void, onError?:(error:SubscriptionError) => void, limit:number = 50, offset:number = 0): void {
         let url = new UrlBuilder('https://subscriptions.xsolla.com/api/public/v1/projects/{projectID}/user_plans')
             .setPathParam('projectID', Xsolla.settings.projectId)
             .addArrayParam('plan_id', planId)
@@ -28,7 +28,7 @@ export class XsollaSubscriptions {
         let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, null, result => {
             let itemsList: SubscriptionPlansList = JSON.parse(result);
             onComplete?.(itemsList);
-        }, handleCommerceError(onError));
+        }, handleSubscriptionError(onError));
         request.send();
     }
 
@@ -39,7 +39,7 @@ export class XsollaSubscriptions {
      * @zh
      * 
      */
-     static getSubscriptionPlans(authToken:string, planId:Array<number>, planExternalId:Array<string>, country?:string, locale?:string, onComplete?:(itemsList: SubscriptionPlansList) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
+     static getSubscriptionPlans(authToken:string, planId:Array<number>, planExternalId:Array<string>, country?:string, locale?:string, onComplete?:(itemsList: SubscriptionPlansList) => void, onError?:(error:SubscriptionError) => void, limit:number = 50, offset:number = 0): void {
         let url = new UrlBuilder('https://subscriptions.xsolla.com/api/user/v1/projects/{projectID}/plans')
             .setPathParam('projectID', Xsolla.settings.projectId)
             .addArrayParam('plan_id', planId)
@@ -53,7 +53,7 @@ export class XsollaSubscriptions {
         let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, authToken, result => {
             let itemsList: SubscriptionPlansList = JSON.parse(result);
             onComplete?.(itemsList);
-        }, handleCommerceError(onError));
+        }, handleSubscriptionError(onError));
         request.send();
     }
 
@@ -64,7 +64,7 @@ export class XsollaSubscriptions {
      * @zh
      * 
      */
-     static getSubscriptions(authToken:string, locale?:string, onComplete?:(itemsList: SubscriptionsList) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
+     static getSubscriptions(authToken:string, locale?:string, onComplete?:(itemsList: SubscriptionsList) => void, onError?:(error:SubscriptionError) => void, limit:number = 50, offset:number = 0): void {
         let url = new UrlBuilder('https://subscriptions.xsolla.com/api/user/v1/projects/{projectID}/subscriptions')
             .setPathParam('projectID', Xsolla.settings.projectId)
             .addStringParam('locale', locale)
@@ -75,7 +75,7 @@ export class XsollaSubscriptions {
         let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, authToken, result => {
             let itemsList: SubscriptionsList = JSON.parse(result);
             onComplete?.(itemsList);
-        }, handleCommerceError(onError));
+        }, handleSubscriptionError(onError));
         request.send();
     }
 
@@ -86,7 +86,7 @@ export class XsollaSubscriptions {
      * @zh
      * 
      */
-     static getSubscriptionDetails(authToken:string, subscriptionId: number, locale?:string, onComplete?:(details: SubscriptionDetails) => void, onError?:(error:CommerceError) => void): void {
+     static getSubscriptionDetails(authToken:string, subscriptionId: number, locale?:string, onComplete?:(details: SubscriptionDetails) => void, onError?:(error:SubscriptionError) => void): void {
         let url = new UrlBuilder('https://subscriptions.xsolla.com/api/user/v1/projects/{projectID}/subscriptions/{subscriptionId}')
             .setPathParam('projectID', Xsolla.settings.projectId)
             .setPathParam('subscriptionId', subscriptionId.toString())
@@ -96,7 +96,7 @@ export class XsollaSubscriptions {
         let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, authToken, result => {
             let details: SubscriptionDetails = JSON.parse(result);
             onComplete?.(details);
-        }, handleCommerceError(onError));
+        }, handleSubscriptionError(onError));
         request.send();
     }
 
@@ -107,7 +107,7 @@ export class XsollaSubscriptions {
      * @zh
      * 
      */
-     static getSubscriptionPurchaseUrl(authToken:string, planExternalId: string, country?:string, onComplete?:(linkToPaystation: string) => void, onError?:(error:CommerceError) => void): void {
+     static getSubscriptionPurchaseUrl(authToken:string, planExternalId: string, country?:string, onComplete?:(linkToPaystation: string) => void, onError?:(error:SubscriptionError) => void): void {
         let body = {
             plan_external_id: planExternalId,
             settings: {
@@ -123,7 +123,7 @@ export class XsollaSubscriptions {
         let request = HttpUtil.createRequest(url, 'POST', RequestContentType.Json, authToken, result => {
             let linkData: SubscriptionPaystationLink = JSON.parse(result);
             onComplete?.(linkData.link_to_ps);
-        }, handleCommerceError(onError));
+        }, handleSubscriptionError(onError));
         request.send(JSON.stringify(body));
     }
 
@@ -134,7 +134,7 @@ export class XsollaSubscriptions {
      * @zh
      * 
      */
-     static getSubscriptionManagementUrl(authToken:string, country?:string, onComplete?:(linkToPaystation: string) => void, onError?:(error:CommerceError) => void): void {
+     static getSubscriptionManagementUrl(authToken:string, country?:string, onComplete?:(linkToPaystation: string) => void, onError?:(error:SubscriptionError) => void): void {
         let body = {
             settings: {
                 sandbox: Xsolla.settings.enableSandbox
@@ -149,7 +149,7 @@ export class XsollaSubscriptions {
         let request = HttpUtil.createRequest(url, 'POST', RequestContentType.Json, authToken, result => {
             let linkData: SubscriptionPaystationLink = JSON.parse(result);
             onComplete?.(linkData.link_to_ps);
-        }, handleCommerceError(onError));
+        }, handleSubscriptionError(onError));
         request.send(JSON.stringify(body));
     }
 
@@ -160,7 +160,7 @@ export class XsollaSubscriptions {
      * @zh
      * 
      */
-     static getSubscriptionRenewalUrl(authToken:string, subscriptionId:number, onComplete?:(linkToPaystation: string) => void, onError?:(error:CommerceError) => void): void {
+     static getSubscriptionRenewalUrl(authToken:string, subscriptionId:number, onComplete?:(linkToPaystation: string) => void, onError?:(error:SubscriptionError) => void): void {
         let body = {
             settings: {
                 sandbox: Xsolla.settings.enableSandbox
@@ -175,7 +175,7 @@ export class XsollaSubscriptions {
         let request = HttpUtil.createRequest(url, 'POST', RequestContentType.Json, authToken, result => {
             let linkData: SubscriptionPaystationLink = JSON.parse(result);
             onComplete?.(linkData.link_to_ps);
-        }, handleCommerceError(onError));
+        }, handleSubscriptionError(onError));
         request.send(JSON.stringify(body));
     }
 
@@ -186,13 +186,13 @@ export class XsollaSubscriptions {
      * @zh
      * 
      */
-     static cancelSubscription(authToken:string, subscriptionId:number, onComplete?:() => void, onError?:(error:CommerceError) => void): void {
+     static cancelSubscription(authToken:string, subscriptionId:number, onComplete?:() => void, onError?:(error:SubscriptionError) => void): void {
         let url = new UrlBuilder('https://subscriptions.xsolla.com/api/user/v1/projects/{projectID}/subscriptions/{subscriptionId}/cancel')
             .setPathParam('projectID', Xsolla.settings.projectId)
             .setPathParam('subscriptionId', subscriptionId.toString())
             .build();
 
-        let request = HttpUtil.createRequest(url, 'POST', RequestContentType.Json, authToken, onComplete, handleCommerceError(onError));
+        let request = HttpUtil.createRequest(url, 'PUT', RequestContentType.Json, authToken, onComplete, handleSubscriptionError(onError));
         request.send();
     }
 }
