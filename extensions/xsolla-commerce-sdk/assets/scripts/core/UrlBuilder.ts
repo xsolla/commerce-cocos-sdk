@@ -41,7 +41,7 @@ export class UrlBuilder {
         return this;
     }
 
-    addArrayParam(paramName:string, paramValueArray:Array<string>, ignoreEmpty:boolean = true, asOneParam:boolean = false) : UrlBuilder {
+    addArrayParam(paramName:string, paramValueArray:Array<string | number>, ignoreEmpty:boolean = true, asOneParam:boolean = false) : UrlBuilder {
         if (ignoreEmpty && paramValueArray.length == 0) {
             return this;
         }    
