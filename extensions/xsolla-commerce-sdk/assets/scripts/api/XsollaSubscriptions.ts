@@ -11,7 +11,7 @@ export class XsollaSubscriptions {
      * @en
      * Returns a list of all plans, including plans purchased by the user while promotions are active.
      * @zh
-     *
+     * 返回所有订阅计划的列表，包括促销活动进行期间用户购买的计划。
      */
     static getSubscriptionPublicPlans(planId:Array<number>, planExternalId:Array<string>, country?:string, locale?:string, onComplete?:(itemsList: SubscriptionPlansList) => void, onError?:(error:SubscriptionError) => void, limit:number = 50, offset:number = 0): void {
         let url = new UrlBuilder('https://subscriptions.xsolla.com/api/public/v1/projects/{projectID}/user_plans')
@@ -35,7 +35,7 @@ export class XsollaSubscriptions {
      * @en
      * Returns a list of all plans, including plans purchased by the user while promotions are active.
      * @zh
-     *
+     * 返回所有订阅计划的列表，包括促销活动进行期间用户购买的计划。
      */
      static getSubscriptionPlans(authToken:string, planId:Array<number>, planExternalId:Array<string>, country?:string, locale?:string, onComplete?:(itemsList: SubscriptionPlansList) => void, onError?:(error:SubscriptionError) => void, limit:number = 50, offset:number = 0): void {
         let url = new UrlBuilder('https://subscriptions.xsolla.com/api/user/v1/projects/{projectID}/plans')
@@ -59,7 +59,7 @@ export class XsollaSubscriptions {
      * @en
      * Returns a list of active recurrent subscriptions that have the `active`, `non renewing`, and `pause` status.
      * @zh
-     *
+     *  返回状态为`active`、`non renewing`和`pause`的激活中定期重复订阅。
      */
      static getSubscriptions(authToken:string, locale?:string, onComplete?:(itemsList: SubscriptionsList) => void, onError?:(error:SubscriptionError) => void, limit:number = 50, offset:number = 0): void {
         let url = new UrlBuilder('https://subscriptions.xsolla.com/api/user/v1/projects/{projectID}/subscriptions')
@@ -80,7 +80,7 @@ export class XsollaSubscriptions {
      * @en
      * Returns information about a subscription by its ID. Subscription can have any status.
      * @zh
-     *
+     * 按订阅ID返回该订阅的信息。订阅可以处于任何状态。
      */
      static getSubscriptionDetails(authToken:string, subscriptionId: number, locale?:string, onComplete?:(details: SubscriptionDetails) => void, onError?:(error:SubscriptionError) => void): void {
         let url = new UrlBuilder('https://subscriptions.xsolla.com/api/user/v1/projects/{projectID}/subscriptions/{subscriptionId}')
@@ -100,7 +100,7 @@ export class XsollaSubscriptions {
      * @en
      * Returns Pay Station URL for the subscription purchase.
      * @zh
-     *
+     * 返回用于订阅购买的支付中心URL。
      */
      static getSubscriptionPurchaseUrl(authToken:string, planExternalId: string, country?:string, onComplete?:(linkToPaystation: string) => void, onError?:(error:SubscriptionError) => void): void {
         let body = {
@@ -126,7 +126,7 @@ export class XsollaSubscriptions {
      * @en
      * Returns Pay Station URL for the subscription management.
      * @zh
-     *
+     * 返回用于订阅管理的支付中心URL。
      */
      static getSubscriptionManagementUrl(authToken:string, country?:string, onComplete?:(linkToPaystation: string) => void, onError?:(error:SubscriptionError) => void): void {
         let body = {
@@ -151,7 +151,7 @@ export class XsollaSubscriptions {
      * @en
      * Returns Pay Station URL for the subscription renewal.
      * @zh
-     *
+     * 返回用于订阅续费的支付中心URL。
      */
      static getSubscriptionRenewalUrl(authToken:string, subscriptionId:number, onComplete?:(linkToPaystation: string) => void, onError?:(error:SubscriptionError) => void): void {
         let body = {
@@ -176,7 +176,7 @@ export class XsollaSubscriptions {
      * @en
      * Changes a regular subscription status to non_renewing (subscription is automatically canceled after expiration).
      * @zh
-     *
+     * 将定期订阅状态更改non_renewing（到期后自动取消的订阅）。
      */
      static cancelSubscription(authToken:string, subscriptionId:number, onComplete?:() => void, onError?:(error:SubscriptionError) => void): void {
         let url = new UrlBuilder('https://subscriptions.xsolla.com/api/user/v1/projects/{projectID}/subscriptions/{subscriptionId}/cancel')
