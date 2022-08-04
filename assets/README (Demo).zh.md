@@ -1,6 +1,7 @@
 *本文亦提供[英文版本](https://github.com/xsolla/commerce-cocos-sdk/blob/master/README-en.md)。*
 
-本演示项目展示艾克索拉产品（[登录管理器](http://localhost:1313/doc/login/)、[游戏内商店](http://localhost:1313/doc/in-game-store/)和[支付中心](http://localhost:1313/doc/pay-station/)）的一种可能用法。演示使用的是发布商帐户中包含一个完整配置的游戏内商店的预置项目以及[用于Cocos Creator的艾克索拉SDK](https://github.com/xsolla/commerce-cocos-sdk/blob/master/extensions/xsolla-commerce-sdk/LICENSE.txt)。
+本演示项目展示艾克索拉产品（[登录管理器](https://developers.xsolla.com/zh/doc/login/)、[游戏内商店](https://developers.xsolla.com/zh/doc/in-game-store/)和[支付中心](https://developers.xsolla.com/zh/doc/pay-station/)）的一种可能用法。演示使用的是发布商帐户中包含一个完整配置的游戏内商店的预置项目以及[用于Cocos 
+Creator的艾克索拉SDK](https://github.com/xsolla/commerce-cocos-sdk/blob/master/extensions/xsolla-commerce-sdk/LICENSE.txt)。
 
 演示项目有两种用途：
 * 作为示例。
@@ -20,7 +21,7 @@
 * 一键购买或通过购物车下单
 * 消耗玩家物品库中的商品
 
-**注：** 演示项目默认在沙盒模式下运行。要测试购买过程，请使用[测试银行卡](https://developers.xsolla.com/doc/pay-station/references/test-cards/)。沙盒模式只模拟支付方式的行为，不涉及真实支付。使用沙盒模式无需与艾克索拉签署任何协议或支付任何费用。
+**注：** 演示项目默认在沙盒模式下运行。要测试购买过程，请使用[测试银行卡](https://developers.xsolla.com/zh/doc/pay-station/references/test-cards/)。沙盒模式只模拟支付方式的行为，不涉及真实支付。使用沙盒模式无需与艾克索拉签署任何协议或支付任何费用。
 
 演示项目还展示以下用户管理功能：
 
@@ -37,4 +38,4 @@
 ## 其他资源
 
 * [艾克索拉官方网站](https://xsolla.com/)
-* [开发者文档](https://developers.xsolla.com/sdk/cocos/?utm_source=sdk&utm_medium=cocos-store)
+* [开发者文档](https://developers.xsolla.com/zh/sdk/cocos/?utm_source=sdk&utm_medium=cocos-store)
