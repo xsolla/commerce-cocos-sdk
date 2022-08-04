@@ -1,8 +1,6 @@
 *本文亦提供[英文版本](https://github.com/xsolla/commerce-cocos-sdk/blob/master/README-en.md)。*
 
-本演示项目展示艾克索拉产品（[登录管理器](https://developers.xsolla.com/zh/doc/login/)、[游戏内商店](https://
-developers.xsolla.com/zh/doc/in-game-
-store/)和[支付中心](https://developers.xsolla.com/zh/doc/pay-station/)）的一种可能用法。演示使用的是发布商帐户中包含一个完整配置的游戏内商店的预置项目以及[用于Cocos 
+本演示项目展示艾克索拉产品（[登录管理器](https://developers.xsolla.com/zh/doc/login/)、[游戏内商店](https://developers.xsolla.com/zh/doc/in-game-store/)和[支付中心](https://developers.xsolla.com/zh/doc/pay-station/)）的一种可能用法。演示使用的是发布商帐户中包含一个完整配置的游戏内商店的预置项目以及[用于Cocos 
 Creator的艾克索拉SDK](https://github.com/xsolla/commerce-cocos-sdk/blob/master/extensions/xsolla-commerce-sdk/LICENSE.txt)。
 
 演示项目有两种用途：
