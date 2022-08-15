@@ -164,17 +164,26 @@ export class StoreManager extends Component {
                     UIManager.instance.showLoaderPopup(false);
                     console.log(error);
                     UIManager.instance.showErrorPopup(error.description);
-                });
+                },
+                50,
+                0,
+                TokenStorage.getToken().access_token);
             }, error => {
                 UIManager.instance.showLoaderPopup(false);
                 console.log(error);
                 UIManager.instance.showErrorPopup(error.description);
-            });
+            },
+            50,
+            0,
+            TokenStorage.getToken().access_token);
         }, err => {
             UIManager.instance.showLoaderPopup(false);
             console.log(err);
             UIManager.instance.showErrorPopup(err.description);
-        })
+        },
+        50,
+        0,
+        TokenStorage.getToken().access_token);
     }
 
     onDisable() {
@@ -341,7 +350,8 @@ export class StoreManager extends Component {
                 UIManager.instance.showLoaderPopup(false);
                 console.log(error.description);
                 UIManager.instance.showErrorPopup(error.description);
-            });
+            },
+            TokenStorage.getToken().access_token);
             return;
         }
 

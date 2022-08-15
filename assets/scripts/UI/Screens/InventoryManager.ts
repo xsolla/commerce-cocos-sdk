@@ -104,7 +104,10 @@ export class InventoryManager extends Component {
                     console.log(error);
                     UIManager.instance.showErrorPopup(error.description);
                     UIManager.instance.showLoaderPopup(false);
-                });
+                },
+                50,
+                0,
+                TokenStorage.getToken().access_token);
             }, error => {
                 console.log(error);
                 UIManager.instance.showErrorPopup(error.description);
