@@ -12,10 +12,14 @@ export class XsollaCatalog {
     /**
      * @en
      * Gets a list of virtual items available for the configured project.
+     * You can get items that match the personalization rules for the current user.
+     * For that, in the authToken parameter, pass the user JWT obtained during authorization using Xsolla Login.
      * @zh
      * 获取所配置项目的可用虚拟物品列表。
+     * 您可以获取符合当前用户个性化规则的商品。
+     * 方法是在`authToken`参数中，传入在通过艾克索拉登录管理器授权过程中获得的用户JWT。
      */
-    static getCatalog(locale:string, country:string, additionalFields:Array<string>, onComplete?:(itemsData:StoreItemsData) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
+    static getCatalog(locale:string, country:string, additionalFields:Array<string>, onComplete?:(itemsData:StoreItemsData) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0, authToken?:string): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/items/virtual_items')
             .setPathParam('projectID', Xsolla.settings.projectId)
             .addStringParam('locale', locale)
@@ -25,7 +29,7 @@ export class XsollaCatalog {
             .addStringParam('offset', offset.toString())
             .build();
 
-        let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, null, result => {
+        let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, authToken, result => {
             let itemsData:StoreItemsData = JSON.parse(result);
             itemsData.groupIds = new Set<string>();
             for(let item of itemsData.items) {
@@ -41,10 +45,14 @@ export class XsollaCatalog {
     /**
      * @en
      * Gets a list of bundles for building a catalog.
+     * You can get items that match the personalization rules for the current user.
+     * For that, in the authToken parameter, pass the user JWT obtained during authorization using Xsolla Login.
      * @zh
      * 获取用于生成目录的捆绑包列表。
+     * 您可以获取符合当前用户个性化规则的商品。
+     * 方法是在`authToken`参数中，传入在通过艾克索拉登录管理器授权过程中获得的用户JWT。
      */
-    static getBundleList(locale:string, country:string, additionalFields:Array<string>, onComplete?:(itemsData:StoreListOfBundles) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0) {
+    static getBundleList(locale:string, country:string, additionalFields:Array<string>, onComplete?:(itemsData:StoreListOfBundles) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0, authToken?:string) {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/items/bundle')
             .setPathParam('projectID', Xsolla.settings.projectId)
             .addStringParam('locale', locale)
@@ -54,7 +62,7 @@ export class XsollaCatalog {
             .addStringParam('offset', offset.toString())
             .build();
 
-        let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, null, result => {
+        let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, authToken, result => {
             let bundlesList: StoreListOfBundles = JSON.parse(result);
             onComplete?.(bundlesList);
         }, handleCommerceError(onError));
@@ -64,16 +72,20 @@ export class XsollaCatalog {
     /**
      * @en
      * Gets a specified bundle.
+     * You can get bundle that match the personalization rules for the current user.
+     * For that, in the authToken parameter, pass the user JWT obtained during authorization using Xsolla Login.
      * @zh
      * 获取指定的捆绑包。
+     * 您可以获取符合当前用户个性化规则的商品。
+     * 方法是在`authToken`参数中，传入在通过艾克索拉登录管理器授权过程中获得的用户JWT。
      */
-    static getSpecifiedBundle(sku:string, onComplete?:(bundle:StoreBundle) => void, onError?:(error:CommerceError) => void) {
+    static getSpecifiedBundle(sku:string, onComplete?:(bundle:StoreBundle) => void, onError?:(error:CommerceError) => void, authToken?:string) {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/items/bundle/sku/{sku}')
             .setPathParam('projectID', Xsolla.settings.projectId)
             .setPathParam('sku', sku)
             .build();
 
-        let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, null, result => {
+        let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, authToken, result => {
             let bundle: StoreBundle = JSON.parse(result);
             onComplete?.(bundle);
         }, handleCommerceError(onError));
@@ -83,16 +95,20 @@ export class XsollaCatalog {
     /**
      * @en
      * Gets a list of all virtual items.
+     * You can get items that match the personalization rules for the current user.
+     * For that, in the authToken parameter, pass the user JWT obtained during authorization using Xsolla Login.
      * @zh
      * 获取全部虚拟物品的列表。
+     * 您可以获取符合当前用户个性化规则的商品。
+     * 方法是在`authToken`参数中，传入在通过艾克索拉登录管理器授权过程中获得的用户JWT。
      */
-    static getCatalogSimplified(locale:string, onComplete?:(data: StoreItemsList) => void, onError?:(error:CommerceError) => void): void {
+    static getCatalogSimplified(locale:string, onComplete?:(data: StoreItemsList) => void, onError?:(error:CommerceError) => void, authToken?:string): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{ProjectID}/items/virtual_items/all')
             .setPathParam('projectID', Xsolla.settings.projectId)
             .addStringParam('locale', locale)
             .build();
 
-        let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, null, result => {
+        let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, authToken, result => {
             let itemsList: StoreItemsList = JSON.parse(result);
             onComplete?.(itemsList);
         }, handleCommerceError(onError));
@@ -125,10 +141,14 @@ export class XsollaCatalog {
     /**
      * @en
      * Gets the list of virtual currency packages.
+     * You can get items that match the personalization rules for the current user.
+     * For that, in the authToken parameter, pass the user JWT obtained during authorization using Xsolla Login.
      * @zh
      * 获取虚拟货币套餐的列表。
+     * 您可以获取符合当前用户个性化规则的商品。
+     * 方法是在`authToken`参数中，传入在通过艾克索拉登录管理器授权过程中获得的用户JWT。
      */
-    static getVirtualCurrencyPackages(locale:string, country:string, additionalFields:Array<string>, onComplete?:(data:VirtualCurrencyPackagesData) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
+    static getVirtualCurrencyPackages(locale:string, country:string, additionalFields:Array<string>, onComplete?:(data:VirtualCurrencyPackagesData) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0, authToken?:string): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/items/virtual_currency/package')
             .setPathParam('projectID', Xsolla.settings.projectId)
             .addStringParam('locale', locale)
@@ -138,7 +158,7 @@ export class XsollaCatalog {
             .addStringParam('offset', offset.toString())
             .build();
 
-        let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, null, result => {
+        let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, authToken, result => {
             let virtualCurrencyPackages: VirtualCurrencyPackagesData = JSON.parse(result);
             onComplete?.(virtualCurrencyPackages);
         }, handleCommerceError(onError));
@@ -148,10 +168,14 @@ export class XsollaCatalog {
     /**
      * @en
      * Gets an item list from the specified group for building a catalog.
+     * You can get items that match the personalization rules for the current user.
+     * For that, in the authToken parameter, pass the user JWT obtained during authorization using Xsolla Login.
      * @zh
      * 从指定组中获取商品列表用于生成目录。
+     * 您可以获取符合当前用户个性化规则的商品。
+     * 方法是在`authToken`参数中，传入在通过艾克索拉登录管理器授权过程中获得的用户JWT。
      */
-    static getItemsBySpecifiedGroup(externalId: string, locale:string, country:string, additionalFields:Array<string>, onComplete?:(itemsList: StoreItemsList) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0): void {
+    static getItemsBySpecifiedGroup(externalId: string, locale:string, country:string, additionalFields:Array<string>, onComplete?:(itemsList: StoreItemsList) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0, authToken?:string): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/items/virtual_items/group/{externalId}')
             .setPathParam('projectID', Xsolla.settings.projectId)
             .setPathParam('externalId', externalId.length != 0 ? externalId: 'all')
@@ -162,7 +186,7 @@ export class XsollaCatalog {
             .addStringParam('offset', offset.toString())
             .build();
 
-        let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, null, result => {
+        let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, authToken, result => {
             let itemsList: StoreItemsList = JSON.parse(result);
             onComplete?.(itemsList);
         }, handleCommerceError(onError));
