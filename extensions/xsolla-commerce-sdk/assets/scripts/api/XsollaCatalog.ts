@@ -16,6 +16,8 @@ export class XsollaCatalog {
      * For that, in the authToken parameter, pass the user JWT obtained during authorization using Xsolla Login.
      * @zh
      * 获取所配置项目的可用虚拟物品列表。
+     * 您可以获取符合当前用户个性化规则的商品。
+     * 方法是在`authToken`参数中，传入在通过艾克索拉登录管理器授权过程中获得的用户JWT。
      */
     static getCatalog(locale:string, country:string, additionalFields:Array<string>, onComplete?:(itemsData:StoreItemsData) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0, authToken?:string): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/items/virtual_items')
@@ -47,6 +49,8 @@ export class XsollaCatalog {
      * For that, in the authToken parameter, pass the user JWT obtained during authorization using Xsolla Login.
      * @zh
      * 获取用于生成目录的捆绑包列表。
+     * 您可以获取符合当前用户个性化规则的商品。
+     * 方法是在`authToken`参数中，传入在通过艾克索拉登录管理器授权过程中获得的用户JWT。
      */
     static getBundleList(locale:string, country:string, additionalFields:Array<string>, onComplete?:(itemsData:StoreListOfBundles) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0, authToken?:string) {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/items/bundle')
@@ -72,6 +76,8 @@ export class XsollaCatalog {
      * For that, in the authToken parameter, pass the user JWT obtained during authorization using Xsolla Login.
      * @zh
      * 获取指定的捆绑包。
+     * 您可以获取符合当前用户个性化规则的商品。
+     * 方法是在`authToken`参数中，传入在通过艾克索拉登录管理器授权过程中获得的用户JWT。
      */
     static getSpecifiedBundle(sku:string, onComplete?:(bundle:StoreBundle) => void, onError?:(error:CommerceError) => void, authToken?:string) {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/items/bundle/sku/{sku}')
@@ -93,6 +99,8 @@ export class XsollaCatalog {
      * For that, in the authToken parameter, pass the user JWT obtained during authorization using Xsolla Login.
      * @zh
      * 获取全部虚拟物品的列表。
+     * 您可以获取符合当前用户个性化规则的商品。
+     * 方法是在`authToken`参数中，传入在通过艾克索拉登录管理器授权过程中获得的用户JWT。
      */
     static getCatalogSimplified(locale:string, onComplete?:(data: StoreItemsList) => void, onError?:(error:CommerceError) => void, authToken?:string): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{ProjectID}/items/virtual_items/all')
@@ -137,6 +145,8 @@ export class XsollaCatalog {
      * For that, in the authToken parameter, pass the user JWT obtained during authorization using Xsolla Login.
      * @zh
      * 获取虚拟货币套餐的列表。
+     * 您可以获取符合当前用户个性化规则的商品。
+     * 方法是在`authToken`参数中，传入在通过艾克索拉登录管理器授权过程中获得的用户JWT。
      */
     static getVirtualCurrencyPackages(locale:string, country:string, additionalFields:Array<string>, onComplete?:(data:VirtualCurrencyPackagesData) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0, authToken?:string): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/items/virtual_currency/package')
@@ -162,6 +172,8 @@ export class XsollaCatalog {
      * For that, in the authToken parameter, pass the user JWT obtained during authorization using Xsolla Login.
      * @zh
      * 从指定组中获取商品列表用于生成目录。
+     * 您可以获取符合当前用户个性化规则的商品。
+     * 方法是在`authToken`参数中，传入在通过艾克索拉登录管理器授权过程中获得的用户JWT。
      */
     static getItemsBySpecifiedGroup(externalId: string, locale:string, country:string, additionalFields:Array<string>, onComplete?:(itemsList: StoreItemsList) => void, onError?:(error:CommerceError) => void, limit:number = 50, offset:number = 0, authToken?:string): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/items/virtual_items/group/{externalId}')
