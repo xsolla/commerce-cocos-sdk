@@ -77,6 +77,7 @@ export class BasicAuthManager extends Component {
             let token: Token = JSON.parse(result);
             UIManager.instance.showLoaderPopup(false);
             console.log(token);
+            TokenStorage.saveToken(token, true);
             UIManager.instance.openScreen(UIScreenType.MainMenu);
         }, err => {
             UIManager.instance.showLoaderPopup(false);
