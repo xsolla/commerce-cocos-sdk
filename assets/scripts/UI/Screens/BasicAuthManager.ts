@@ -1,8 +1,9 @@
 // Copyright 2022 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component, Button, EditBox, Toggle } from 'cc';
-import { XsollaAuth } from 'db://xsolla-commerce-sdk/scripts/api/XsollaAuth';
+import { Token, XsollaAuth } from 'db://xsolla-commerce-sdk/scripts/api/XsollaAuth';
 import { TokenStorage } from "db://xsolla-commerce-sdk/scripts/common/TokenStorage";
+import { HttpUtil, RequestContentType } from 'db://xsolla-commerce-sdk/scripts/core/HttpUtil';
 import { UIManager, UIScreenType } from '../UIManager';
 const { ccclass, property } = _decorator;
  
@@ -67,14 +68,23 @@ export class BasicAuthManager extends Component {
             UIManager.instance.showLoaderPopup(false);
             console.log(err);
             UIManager.instance.showErrorPopup(err.description);
-        })
+        });
     }
 
     onDemoUserClicked() {
-        this.usernameEditBox.string = 'xsolla';
-        this.passwordEditBox.string = 'xsolla';
-
-        this.onLoginClicked();
+        UIManager.instance.showLoaderPopup(true);
+        let request = HttpUtil.createRequest('https://us-central1-xsolla-sdk-demo.cloudfunctions.net/generateDemoUserToken', 'POST', RequestContentType.WwwForm, null, result => {
+            let token: Token = JSON.parse(result);
+            UIManager.instance.showLoaderPopup(false);
+            console.log(token);
+            TokenStorage.saveToken(token, true);
+            UIManager.instance.openScreen(UIScreenType.MainMenu);
+        }, err => {
+            UIManager.instance.showLoaderPopup(false);
+            console.log(err);
+            UIManager.instance.showErrorPopup(err.description);
+        });
+        request.send();
     }
 
     onCredentialsChanged() {
