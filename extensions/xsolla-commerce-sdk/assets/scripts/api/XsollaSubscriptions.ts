@@ -16,8 +16,8 @@ export class XsollaSubscriptions {
     static getSubscriptionPublicPlans(planId:Array<number>, planExternalId:Array<string>, country?:string, locale?:string, onComplete?:(itemsList: SubscriptionPlansList) => void, onError?:(error:SubscriptionError) => void, limit:number = 50, offset:number = 0): void {
         let url = new UrlBuilder('https://subscriptions.xsolla.com/api/public/v1/projects/{projectID}/user_plans')
             .setPathParam('projectID', Xsolla.settings.projectId)
-            .addArrayParam('plan_id', planId)
-            .addArrayParam('plan_external_id', planExternalId)
+            .addArrayParam('plan_id[]', planId)
+            .addArrayParam('plan_external_id[]', planExternalId)
             .addStringParam('country', country)
             .addStringParam('locale', locale)
             .addStringParam('limit', limit.toString())
@@ -40,8 +40,8 @@ export class XsollaSubscriptions {
      static getSubscriptionPlans(authToken:string, planId:Array<number>, planExternalId:Array<string>, country?:string, locale?:string, onComplete?:(itemsList: SubscriptionPlansList) => void, onError?:(error:SubscriptionError) => void, limit:number = 50, offset:number = 0): void {
         let url = new UrlBuilder('https://subscriptions.xsolla.com/api/user/v1/projects/{projectID}/plans')
             .setPathParam('projectID', Xsolla.settings.projectId)
-            .addArrayParam('plan_id', planId)
-            .addArrayParam('plan_external_id', planExternalId)
+            .addArrayParam('plan_id[]', planId)
+            .addArrayParam('plan_external_id[]', planExternalId)
             .addStringParam('country', country)
             .addStringParam('locale', locale)
             .addStringParam('limit', limit.toString())

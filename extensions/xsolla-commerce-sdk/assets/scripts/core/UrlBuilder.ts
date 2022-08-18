@@ -2,7 +2,7 @@
 
 export class UrlBuilder {
     private _url: string;
-    private _queryParameters = {};
+    private _queryParameters:Array<QueryParam> = [];
     private _pathParameters = {};
 
     constructor(url:string) {
@@ -19,8 +19,9 @@ export class UrlBuilder {
 
         var queryParamsStr: string = '';
         var querySymbol = this._url.indexOf('?') > 0 ? '&' : '?';
-        for (var key in this._queryParameters) {
-            queryParamsStr += querySymbol + key + '=' + encodeURIComponent(this._queryParameters[key]);
+        for (let i = 0; i < this._queryParameters.length; ++i) {
+            let queryParam = this._queryParameters[i];
+            queryParamsStr += querySymbol + queryParam.key + '=' + encodeURIComponent(queryParam.value);
             if (querySymbol == '?') {
                 querySymbol = '&';
             }
@@ -37,7 +38,15 @@ export class UrlBuilder {
         if (ignoreEmpty && !paramValue) {
             return this;
         }
-        this._queryParameters[paramName] = paramValue;
+
+        if(typeof paramValue == 'number') {
+            this._queryParameters.push({key:paramName, value:(paramValue as number).toString()});
+        }
+
+        if(typeof paramValue == 'string') {
+            this._queryParameters.push({key:paramName, value:(paramValue as string)});
+        }
+
         return this;
     }
 
@@ -59,17 +68,22 @@ export class UrlBuilder {
     }
 
     addNumberParam(paramName:string, paramValue:number) : UrlBuilder {
-        this._queryParameters[paramName] = paramValue.toString();
+        this._queryParameters.push({key: paramName, value: paramValue.toString()});
         return this;
     }
 
     addBoolParam(paramName:string, paramValue:boolean, asNumber:boolean = true) : UrlBuilder {
         if (asNumber) {
-            this._queryParameters[paramName] = paramValue ? '1' : '0'
+            this._queryParameters.push({key: paramName, value :paramValue ? '1' : '0'});
         }
         else {
-            this._queryParameters[paramName] = paramValue ? 'true' : 'false'
+            this._queryParameters.push({key:paramName, value: paramValue ? 'true' : 'false'});
         }
         return this;
     }
+}
+
+interface QueryParam {
+    key: string;
+    value: string;
 }
