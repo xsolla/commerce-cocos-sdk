@@ -4,6 +4,7 @@ import { handleSubscriptionError, SubscriptionError } from "../core/Error";
 import { HttpUtil, RequestContentType } from "../core/HttpUtil";
 import { UrlBuilder } from "../core/UrlBuilder";
 import { Xsolla } from "../Xsolla";
+import { XsollaOrders } from "./XsollaOrders";
 
 export class XsollaSubscriptions {
 
@@ -103,11 +104,11 @@ export class XsollaSubscriptions {
      * 返回用于订阅购买的支付中心URL。
      */
      static getSubscriptionPurchaseUrl(authToken:string, planExternalId: string, country?:string, onComplete?:(linkToPaystation: string) => void, onError?:(error:SubscriptionError) => void): void {
+        let paymentSettings = XsollaOrders.getPaymentSettings();
+        paymentSettings.sandbox = Xsolla.settings.enableSandbox;
         let body = {
             plan_external_id: planExternalId,
-            settings: {
-                sandbox: Xsolla.settings.enableSandbox
-            }
+            settings: paymentSettings
         };
 
         let url = new UrlBuilder('https://subscriptions.xsolla.com/api/user/v1/projects/{projectID}/subscriptions/buy')
@@ -129,10 +130,10 @@ export class XsollaSubscriptions {
      * 返回用于订阅管理的支付中心URL。
      */
      static getSubscriptionManagementUrl(authToken:string, country?:string, onComplete?:(linkToPaystation: string) => void, onError?:(error:SubscriptionError) => void): void {
+        let paymentSettings = XsollaOrders.getPaymentSettings();
+        paymentSettings.sandbox = Xsolla.settings.enableSandbox;
         let body = {
-            settings: {
-                sandbox: Xsolla.settings.enableSandbox
-            }
+            settings: paymentSettings
         };
 
         let url = new UrlBuilder('https://subscriptions.xsolla.com/api/user/v1/projects/{projectID}/subscriptions/manage')
@@ -154,10 +155,10 @@ export class XsollaSubscriptions {
      * 返回用于订阅续费的支付中心URL。
      */
      static getSubscriptionRenewalUrl(authToken:string, subscriptionId:number, onComplete?:(linkToPaystation: string) => void, onError?:(error:SubscriptionError) => void): void {
+        let paymentSettings = XsollaOrders.getPaymentSettings();
+        paymentSettings.sandbox = Xsolla.settings.enableSandbox;
         let body = {
-            settings: {
-                sandbox: Xsolla.settings.enableSandbox
-            }
+            settings: paymentSettings
         };
 
         let url = new UrlBuilder('https://subscriptions.xsolla.com/api/user/v1/projects/{projectID}/subscriptions/{subscriptionId}/renew')
