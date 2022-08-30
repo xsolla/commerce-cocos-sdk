@@ -1,3 +1,12 @@
+# Changelog
+
+## [0.3.0] - 2022-08-30
+
+### Added
+- Personalization methods
+- Subscriptions
+
+
 ## [0.2.0] - 2022-06-01
 
 ### Added
