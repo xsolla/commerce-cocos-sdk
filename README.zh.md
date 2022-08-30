@@ -6,16 +6,17 @@
 
 集成后，您可以：
 
-* 使用[登录管理器](https://developers.xsolla.com/doc/login/)认证用户身份及管理好友系统和用户帐户。
-* 使用[游戏内商店](https://developers.xsolla.com/doc/in-game-store/)在您的应用程序中管理游戏内购买和玩家物品库。
-* 使用[支付中心](https://developers.xsolla.com/doc/pay-station/)设置支付流程。
-* 
+* 使用[登录管理器](https://developers.xsolla.com/zh/doc/login/)认证用户身份及管理好友系统和用户帐户。
+* 使用[游戏内商店](https://developers.xsolla.com/zh/doc/in-game-store/)在您的应用程序中管理游戏内购买和玩家物品库。
+* 使用[支付中心](https://developers.xsolla.com/zh/doc/pay-station/)设置支付流程。
+* 使用[订阅](https://developers.xsolla.com/zh/doc/subscriptions/)在指定条件下（即订阅价格和有效时间）向用户提供对
+  服务套餐的访问权限。
 
 [了解支持功能的详细信息 →](#features)
 
 要开始使用SDK，需安装此扩展并在[艾克索拉发布商项目](https://publisher.xsolla.com/signup?store_type=sdk&utm_source=sdk&utm_medium=cocos-store)中设置项目。
 
-[前往集成指南 →](https://developers.xsolla.com/sdk/cocos/integrate-complete-solution/?utm_source=sdk&utm_medium=cocos-store)
+[前往集成指南 →](https://developers.xsolla.com/zh/sdk/cocos/integrate-complete-solution/?utm_source=sdk&utm_medium=cocos-store)
 
 ## 功能
 
@@ -54,12 +55,12 @@
 
 **信息提示：** 您可以通过艾克索拉发布商帐户在目录中添加商品及管理折扣、优惠券和促销码活动。
 
-### 
-* 
-* 
-* 
+### 订阅
+* 销售订阅。
+* 订阅续订和取消。
+* 在用户仪表板中管理订阅。
 
-
+**信息:** 您可以通过艾克索拉发布商帐户添加和管理订阅计划。
 
 ### 商品购买
 
@@ -120,4 +121,4 @@
 ## 其他资源
 
 * [艾克索拉官方网站](https://xsolla.com/)
-* [开发者文档](https://developers.xsolla.com/sdk/cocos/?utm_source=sdk&utm_medium=cocos-store)
+* [开发者文档](https://developers.xsolla.com/zh/sdk/cocos/?utm_source=sdk&utm_medium=cocos-store)
