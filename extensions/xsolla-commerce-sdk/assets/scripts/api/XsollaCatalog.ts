@@ -401,6 +401,34 @@ export interface ItemGroup {
     children: Array<string>
 }
 
+export interface StoreItemPromotion {
+    name: string,
+    date_start: string,
+    date_end: string,
+    discount: StoreItemDiscount,
+    bonus: StoreItemBonus,
+    limits: StoreItemLimits
+}
+
+export interface StoreItemDiscount {
+    percent: string,
+    value: string
+}
+
+export interface StoreItemBonus {
+    sku: string,
+    quantity: number
+}
+
+export interface StoreItemLimits {
+    per_user: StoreItemLimitsPerUser
+}
+
+export interface StoreItemLimitsPerUser{
+    available: number,
+    total: number
+}
+
 export interface StoreItem {
     sku: string,
     name: string,
@@ -419,7 +447,8 @@ export interface StoreItem {
     attributes: Array<ItemAttribute>,
     long_description: string,
     order: number,
-    media_list: Array<StoreItemMediaList>
+    media_list: Array<StoreItemMediaList>,
+    promotions: Array<StoreItemPromotion>
 }
 
 export interface StoreItemsData {
@@ -446,7 +475,8 @@ export interface VirtualCurrency {
     inventory_options: ItemOptions,
     long_description: string,
     order: number,
-    media_list: Array<StoreItemMediaList>
+    media_list: Array<StoreItemMediaList>,
+    promotions: Array<StoreItemPromotion>
 }
 
 export interface VirtualCurrencyData {
@@ -480,7 +510,8 @@ export interface VirtualCurrencyPackage {
     content: Array<CurrencyPackageContent>,
     long_description: string,
     order: number,
-    media_list: Array<StoreItemMediaList>
+    media_list: Array<StoreItemMediaList>,
+    promotions: Array<StoreItemPromotion>
 }
 
 export interface VirtualCurrencyPackagesData {
@@ -500,7 +531,8 @@ export interface StoreBundle {
     price: Price,
     total_content_price: Price,
     virtual_prices: Array< VirtualCurrencyPrice>,
-    content: Array<StoreBundleContent>
+    content: Array<StoreBundleContent>,
+    promotions: Array<StoreItemPromotion>
 }
 
 export interface StoreListOfBundles {
