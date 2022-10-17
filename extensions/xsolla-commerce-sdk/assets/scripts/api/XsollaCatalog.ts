@@ -102,14 +102,14 @@ export class XsollaCatalog {
      * 您可以获取符合当前用户个性化规则的商品。
      * 方法是在`authToken`参数中，传入在通过艾克索拉登录管理器授权过程中获得的用户JWT。
      */
-    static getCatalogSimplified(locale:string, onComplete?:(data: StoreItemsList) => void, onError?:(error:CommerceError) => void, authToken?:string): void {
+    static getCatalogSimplified(locale:string, onComplete?:(data: SimplifiedStoreItemsList) => void, onError?:(error:CommerceError) => void, authToken?:string): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{ProjectID}/items/virtual_items/all')
             .setPathParam('projectID', Xsolla.settings.projectId)
             .addStringParam('locale', locale)
             .build();
 
         let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, authToken, result => {
-            let itemsList: StoreItemsList = JSON.parse(result);
+            let itemsList: SimplifiedStoreItemsList = JSON.parse(result);
             onComplete?.(itemsList);
         }, handleCommerceError(onError));
         request.send();
@@ -406,7 +406,7 @@ export interface StoreItemPromotion {
     date_start: string,
     date_end: string,
     discount: StoreItemDiscount,
-    bonus: StoreItemBonus,
+    bonus: Array<StoreItemBonus>,
     limits: StoreItemLimits
 }
 
@@ -451,6 +451,13 @@ export interface StoreItem {
     promotions: Array<StoreItemPromotion>
 }
 
+export interface SimplifiedStoreItem {
+    sku: string,
+    name: string,
+    description: string,
+    groups: Array<ItemGroup>
+}
+
 export interface StoreItemsData {
     items: Array<StoreItem>,
     groupIds: Set<string>,
@@ -459,6 +466,10 @@ export interface StoreItemsData {
 
 export interface StoreItemsList {
     items: Array<StoreItem>
+}
+
+export interface SimplifiedStoreItemsList {
+    items: Array<SimplifiedStoreItem>
 }
 
 export interface VirtualCurrency {
