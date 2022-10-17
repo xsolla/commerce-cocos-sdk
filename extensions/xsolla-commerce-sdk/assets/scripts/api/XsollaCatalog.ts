@@ -102,14 +102,14 @@ export class XsollaCatalog {
      * 您可以获取符合当前用户个性化规则的商品。
      * 方法是在`authToken`参数中，传入在通过艾克索拉登录管理器授权过程中获得的用户JWT。
      */
-    static getCatalogSimplified(locale:string, onComplete?:(data: StoreItemsList) => void, onError?:(error:CommerceError) => void, authToken?:string): void {
+    static getCatalogSimplified(locale:string, onComplete?:(data: SimplifiedStoreItemsList) => void, onError?:(error:CommerceError) => void, authToken?:string): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{ProjectID}/items/virtual_items/all')
             .setPathParam('projectID', Xsolla.settings.projectId)
             .addStringParam('locale', locale)
             .build();
 
         let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, authToken, result => {
-            let itemsList: StoreItemsList = JSON.parse(result);
+            let itemsList: SimplifiedStoreItemsList = JSON.parse(result);
             onComplete?.(itemsList);
         }, handleCommerceError(onError));
         request.send();
@@ -401,6 +401,34 @@ export interface ItemGroup {
     children: Array<string>
 }
 
+export interface StoreItemPromotion {
+    name: string,
+    date_start: string,
+    date_end: string,
+    discount: StoreItemDiscount,
+    bonus: Array<StoreItemBonus>,
+    limits: StoreItemLimits
+}
+
+export interface StoreItemDiscount {
+    percent: string,
+    value: string
+}
+
+export interface StoreItemBonus {
+    sku: string,
+    quantity: number
+}
+
+export interface StoreItemLimits {
+    per_user: StoreItemLimitsPerUser
+}
+
+export interface StoreItemLimitsPerUser{
+    available: number,
+    total: number
+}
+
 export interface StoreItem {
     sku: string,
     name: string,
@@ -419,7 +447,15 @@ export interface StoreItem {
     attributes: Array<ItemAttribute>,
     long_description: string,
     order: number,
-    media_list: Array<StoreItemMediaList>
+    media_list: Array<StoreItemMediaList>,
+    promotions: Array<StoreItemPromotion>
+}
+
+export interface SimplifiedStoreItem {
+    sku: string,
+    name: string,
+    description: string,
+    groups: Array<ItemGroup>
 }
 
 export interface StoreItemsData {
@@ -430,6 +466,10 @@ export interface StoreItemsData {
 
 export interface StoreItemsList {
     items: Array<StoreItem>
+}
+
+export interface SimplifiedStoreItemsList {
+    items: Array<SimplifiedStoreItem>
 }
 
 export interface VirtualCurrency {
@@ -446,7 +486,8 @@ export interface VirtualCurrency {
     inventory_options: ItemOptions,
     long_description: string,
     order: number,
-    media_list: Array<StoreItemMediaList>
+    media_list: Array<StoreItemMediaList>,
+    promotions: Array<StoreItemPromotion>
 }
 
 export interface VirtualCurrencyData {
@@ -480,7 +521,8 @@ export interface VirtualCurrencyPackage {
     content: Array<CurrencyPackageContent>,
     long_description: string,
     order: number,
-    media_list: Array<StoreItemMediaList>
+    media_list: Array<StoreItemMediaList>,
+    promotions: Array<StoreItemPromotion>
 }
 
 export interface VirtualCurrencyPackagesData {
@@ -500,7 +542,8 @@ export interface StoreBundle {
     price: Price,
     total_content_price: Price,
     virtual_prices: Array< VirtualCurrencyPrice>,
-    content: Array<StoreBundleContent>
+    content: Array<StoreBundleContent>,
+    promotions: Array<StoreItemPromotion>
 }
 
 export interface StoreListOfBundles {
