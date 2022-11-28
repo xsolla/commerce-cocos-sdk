@@ -1,11 +1,12 @@
 // Copyright 2022 Xsolla Inc. All Rights Reserved.
 
 import { StoreItem, VirtualCurrencyPackage, XsollaCatalog } from "db://xsolla-commerce-sdk/scripts/api/XsollaCatalog";
-import { OrderTracker, XsollaOrderStatus, } from "db://xsolla-commerce-sdk/scripts/common/OrderTracker";
 import { OrderCheckObject } from "db://xsolla-commerce-sdk/scripts/common/OrderCheckObject";
 import { TokenStorage } from "db://xsolla-commerce-sdk/scripts/common/TokenStorage";
 import { UIManager } from "../UI/UIManager";
 import { BrowserUtil } from "db://xsolla-commerce-sdk/scripts/common/BrowserUtil";
+import { CommerceError } from "db://xsolla-commerce-sdk/scripts/core/Error";
+import { OrderTracker } from "db://xsolla-commerce-sdk/scripts/common/OrderTracker";
 
 export class PurchaseUtil {
 
@@ -31,8 +32,10 @@ export class PurchaseUtil {
             UIManager.instance.showLoaderPopup(true);
             XsollaCatalog.fetchPaymentToken(TokenStorage.getToken().access_token, item.sku, 1, undefined, undefined, undefined, undefined, result => {
                 UIManager.instance.showLoaderPopup(false);
-                this.checkPendingOrder(result.orderId, () => {
+                this.checkPendingOrder(result.token, result.orderId, () => {
                     onSuccessPurchase?.();
+                }, error => {
+                    console.log(error.description);
                 });
                 BrowserUtil.openPurchaseUI(result.token);
             }, error => {
@@ -43,30 +46,18 @@ export class PurchaseUtil {
         }
     }
 
-    static checkPendingOrder(orderId: number, onSuccess: () => void) {
-        let orderCheckObject = OrderTracker.createOrderCheckObject(orderId, (resultOrderId, orderStatus) => {
-            if (orderStatus == XsollaOrderStatus.done) {
-                UIManager.instance.showMessagePopup('success purchase!');
-                onSuccess();
-                this._cachedOrderCheckObjects = this._cachedOrderCheckObjects.filter(obj => obj !== orderCheckObject);
-                orderCheckObject.destroy();
-            }
-        }, errorMessage => {
-            OrderTracker.shortPollingCheckOrder(orderId, () => {
-                UIManager.instance.showMessagePopup('success purchase!');
-                onSuccess();
-            });
+    static checkPendingOrder(accessToken: string, orderId: number, onSuccess: () => void, onError: (error: CommerceError) => void) {
+        let orderCheckObject = OrderTracker.createOrderCheckObject(accessToken, orderId, () => {
+            UIManager.instance.showMessagePopup('success purchase!');
+            onSuccess();
             this._cachedOrderCheckObjects = this._cachedOrderCheckObjects.filter(obj => obj !== orderCheckObject);
             orderCheckObject.destroy();
-        }, () => {
-            OrderTracker.shortPollingCheckOrder(orderId, () => {
-                UIManager.instance.showMessagePopup('success purchase!');
-                onSuccess();
-            });
+        }, error => {
+            UIManager.instance.showMessagePopup(`Order checking failed - Status code: ${error.status}, Error code: ${error.code}, Error message: ${error.description}`);
+            onError(error);
             this._cachedOrderCheckObjects = this._cachedOrderCheckObjects.filter(obj => obj !== orderCheckObject);
             orderCheckObject.destroy();
         });
-
         this._cachedOrderCheckObjects.push(orderCheckObject);
     }
 }

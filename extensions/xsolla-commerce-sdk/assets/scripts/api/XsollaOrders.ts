@@ -16,13 +16,13 @@ export class XsollaOrders {
      * @zh
      * 根据订单ID查询待处理订单的状态。
      */
-    static checkOrder(authToken:string, orderId:number, onComplete?:(checkOrderResult: CheckOrderResult) => void, onError?:(error:CommerceError) => void): void {
+    static checkOrder(accessToken:string, orderId:number, onComplete?:(checkOrderResult: CheckOrderResult) => void, onError?:(error:CommerceError) => void): void {
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/order/{orderId}')
             .setPathParam('projectID', Xsolla.settings.projectId)
             .setPathParam('orderId', orderId.toString())
             .build();
 
-        let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, authToken, result => {
+        let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, accessToken, result => {
             let jsonResult = JSON.parse(result);
             let checkOrderResult: CheckOrderResult = {
                 orderId: jsonResult.order_id,
