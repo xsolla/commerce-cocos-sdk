@@ -312,8 +312,8 @@ export class XsollaSettingsManager extends Component {
     }
 
     @property({
-        displayName: 'Settings Invalid',
-        tooltip: 'Some settings has incorrect values',
+        displayName: 'Settings Invalid', //TEXTREVIEW
+        tooltip: 'Some settings has incorrect values', //TEXTREVIEW
         readonly: true,
         visible: function (this: XsollaSettingsManager) { return this.getSettingsError() != null; }
     })
@@ -324,14 +324,14 @@ export class XsollaSettingsManager extends Component {
     getSettingsError() {
         var regex = new RegExp('^(?:\\{{0,1}(?:[0-9a-fA-F]){8}-(?:[0-9a-fA-F]){4}-(?:[0-9a-fA-F]){4}-(?:[0-9a-fA-F]){4}-(?:[0-9a-fA-F]){12}\\}{0,1})$');
         if (!regex.test(this.loginId))
-            return "Login ID has incorrect value";
+            return "Login ID has incorrect value"; //TEXTREVIEW
 
         regex = new RegExp("^[1-9]\\d*$");
         if (!regex.test(this.projectId))
-            return "Project Id has incorrect value";
+            return "Project Id has incorrect value"; //TEXTREVIEW
 
         if (this.clientId <= 0)
-            return "Client Id has incorrect value";
+            return "Client Id has incorrect value"; //TEXTREVIEW
 
         return null;
     }
