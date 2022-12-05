@@ -1,8 +1,8 @@
 // Copyright 2022 Xsolla Inc. All Rights Reserved.
 
-import { _decorator, Component, Enum} from 'cc';
+import { _decorator, Component, Enum, CCInteger} from 'cc';
 import { XsollaSettings, Xsolla, PaymentUiTheme, PaymentUiSize, PaymentUiVersion, PaymentRedirectCondition, PaymentRedirectStatusManual, RedirectPolicySettings, PaymentUISettings } from 'db://xsolla-commerce-sdk/scripts/Xsolla';
-const { ccclass, property, disallowMultiple, type  } = _decorator;
+const { ccclass, property, disallowMultiple, type } = _decorator;
  
 @ccclass('XsollaSettingsManager')
 @disallowMultiple(true)
@@ -35,6 +35,9 @@ export class XsollaSettingsManager extends Component {
         displayName: 'Client ID',
         tooltip: 'Client ID from your Publisher Account',
         group: 'General',
+        type: CCInteger,
+        min: 1,
+        step: 1
     })
     clientId: number = 57;
 
