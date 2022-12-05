@@ -1,12 +1,21 @@
 // Copyright 2022 Xsolla Inc. All Rights Reserved.
 
-import { _decorator, Component, Enum} from 'cc';
+import { _decorator, Component, Enum, CCInteger} from 'cc';
 import { XsollaSettings, Xsolla, PaymentUiTheme, PaymentUiSize, PaymentUiVersion, PaymentRedirectCondition, PaymentRedirectStatusManual, RedirectPolicySettings, PaymentUISettings } from 'db://xsolla-commerce-sdk/scripts/Xsolla';
-const { ccclass, property, disallowMultiple, type  } = _decorator;
+const { ccclass, property, disallowMultiple, type } = _decorator;
  
 @ccclass('XsollaSettingsManager')
 @disallowMultiple(true)
 export class XsollaSettingsManager extends Component {
+
+    @property({
+        displayName: 'Settings validation', //TEXTREVIEW
+        tooltip: 'Some settings has incorrect values', //TEXTREVIEW
+        group: 'General'
+    })
+    get errorField() {
+        return this.getSettingsError();
+    }
 
     @property({
         displayName: 'Login ID',
@@ -26,6 +35,9 @@ export class XsollaSettingsManager extends Component {
         displayName: 'Client ID',
         tooltip: 'Client ID from your Publisher Account',
         group: 'General',
+        type: CCInteger,
+        min: 1,
+        step: 1
     })
     clientId: number = 57;
 
@@ -309,5 +321,20 @@ export class XsollaSettingsManager extends Component {
         }
 
         Xsolla.init(settings);
+    }
+
+    getSettingsError() {
+        var regex = new RegExp('^(?:\\{{0,1}(?:[0-9a-fA-F]){8}-(?:[0-9a-fA-F]){4}-(?:[0-9a-fA-F]){4}-(?:[0-9a-fA-F]){4}-(?:[0-9a-fA-F]){12}\\}{0,1})$');
+        if (!regex.test(this.loginId))
+            return "Login ID has incorrect value"; //TEXTREVIEW
+
+        regex = new RegExp("^[1-9]\\d*$");
+        if (!regex.test(this.projectId))
+            return "Project Id has incorrect value"; //TEXTREVIEW
+
+        if (this.clientId <= 0)
+            return "Client Id has incorrect value"; //TEXTREVIEW
+
+        return "Everything is fine"; //TEXTREVIEW
     }
 }
