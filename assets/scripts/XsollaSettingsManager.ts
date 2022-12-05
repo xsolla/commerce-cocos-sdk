@@ -9,6 +9,15 @@ const { ccclass, property, disallowMultiple, type  } = _decorator;
 export class XsollaSettingsManager extends Component {
 
     @property({
+        displayName: 'Settings validation', //TEXTREVIEW
+        tooltip: 'Some settings has incorrect values', //TEXTREVIEW
+        group: 'General'
+    })
+    get errorField() {
+        return this.getSettingsError();
+    }
+
+    @property({
         displayName: 'Login ID',
         tooltip: 'Login ID in the UUID format from your Publisher Account (required)',
         group: 'General'
@@ -311,16 +320,6 @@ export class XsollaSettingsManager extends Component {
         Xsolla.init(settings);
     }
 
-    @property({
-        displayName: 'Settings Invalid', //TEXTREVIEW
-        tooltip: 'Some settings has incorrect values', //TEXTREVIEW
-        readonly: true,
-        visible: function (this: XsollaSettingsManager) { return this.getSettingsError() != null; }
-    })
-    get errorField() {
-        return this.getSettingsError();
-    }
-
     getSettingsError() {
         var regex = new RegExp('^(?:\\{{0,1}(?:[0-9a-fA-F]){8}-(?:[0-9a-fA-F]){4}-(?:[0-9a-fA-F]){4}-(?:[0-9a-fA-F]){4}-(?:[0-9a-fA-F]){12}\\}{0,1})$');
         if (!regex.test(this.loginId))
@@ -333,6 +332,6 @@ export class XsollaSettingsManager extends Component {
         if (this.clientId <= 0)
             return "Client Id has incorrect value"; //TEXTREVIEW
 
-        return null;
+        return "Everything is fine"; //TEXTREVIEW
     }
 }
