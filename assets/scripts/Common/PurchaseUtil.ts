@@ -14,6 +14,7 @@ export class PurchaseUtil {
 
     static buyItem(item: StoreItem | VirtualCurrencyPackage, onSuccessPurchase?: () => void) {
         let isVirtual = item.virtual_prices.length > 0;
+        let isFree = !isVirtual && item.price == null;
         if (isVirtual) {
             UIManager.instance.showConfirmationPopup('Are you sure you want to purchase this item?', 'CONFIRM', () => {
                 UIManager.instance.showLoaderPopup(true);
@@ -28,7 +29,7 @@ export class PurchaseUtil {
                 })
             });
         }
-        else {
+        else if (!isFree) {
             UIManager.instance.showLoaderPopup(true);
             XsollaCatalog.fetchPaymentToken(TokenStorage.getToken().access_token, item.sku, 1, undefined, undefined, undefined, undefined, result => {
                 UIManager.instance.showLoaderPopup(false);
@@ -38,6 +39,18 @@ export class PurchaseUtil {
                     console.log(error.description);
                 });
                 BrowserUtil.openPurchaseUI(result.token);
+            }, error => {
+                UIManager.instance.showLoaderPopup(false);
+                console.log(error.description);
+                UIManager.instance.showErrorPopup(error.description);
+            });
+        }
+        else{
+            UIManager.instance.showLoaderPopup(true);
+            XsollaCatalog.createOrderWithSpecifiedFreeItem(TokenStorage.getToken().access_token, item.sku, 1, undefined, undefined, undefined, result => {
+                UIManager.instance.showLoaderPopup(false);
+                UIManager.instance.showMessagePopup('success purchase!');
+                onSuccessPurchase?.();
             }, error => {
                 UIManager.instance.showLoaderPopup(false);
                 console.log(error.description);
