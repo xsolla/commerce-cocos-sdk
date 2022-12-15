@@ -22,11 +22,6 @@ export class OrderCheckObject {
 
     init(accessToken: string, orderId: number, onSuccess:() => void, onError:(error:CommerceError) => void, webSocketLifeTime: number = 300, shortPollingLifeTime: number = 600) {
         
-        let url = new UrlBuilder('wss://store-ws.xsolla.com/sub/order/status')
-        .addStringParam('order_id', orderId.toString())
-        .addStringParam('project_id', Xsolla.settings.projectId)
-        .build();
-
         this._webSocketLifeTime = Math.max(1, Math.min(webSocketLifeTime, 3600)); // clamp
         this._shortPollingLifeTime = Math.max(1, Math.min(shortPollingLifeTime, 3600)); // clamp
         this._orderId = orderId;
@@ -34,24 +29,7 @@ export class OrderCheckObject {
         this._onSuccess = onSuccess;
         this._onError = onError;
 
-        this._websocket = new WebSocket(url);
-
-        this._websocket.onopen = function(event:Event) {
-            console.log('Connected to the websocket server.');
-        };
-        this._websocket.onerror = this.onConnectionError.bind(this);
-        this._websocket.onmessage = this.onMessage.bind(this);
-        this._websocket.onclose = this.onClosed.bind(this);
-
-        this._websocketTimerInverval = setTimeout(result => {
-            console.log('Websocket object expired.');
-            this._websocket.onopen = null;
-            this._websocket.onerror = null;
-            this._websocket.onmessage = null;
-            this._websocket.onclose = null;
-            this._websocket.close();
-            this.activateShortPolling();
-        }, this._webSocketLifeTime * 1000);
+        this.activateWebSocket();
     }
 
     onConnectionError(event:Event) {
@@ -117,6 +95,40 @@ export class OrderCheckObject {
         }
     }
 
+    activateWebSocket() {
+        let url = new UrlBuilder('wss://store-ws.xsolla.com/sub/order/status')
+        .addStringParam('order_id', this._orderId.toString())
+        .addStringParam('project_id', Xsolla.settings.projectId)
+        .build();
+        this._websocket = new WebSocket(url);
+        this._websocket.onopen = function(event:Event) {
+            console.log('Connected to the websocket server.');
+        };
+        this._websocket.onerror = this.onConnectionError.bind(this);
+        this._websocket.onmessage = this.onMessage.bind(this);
+        this._websocket.onclose = this.onClosed.bind(this);
+
+        this._websocketTimerInverval = setTimeout(result => {
+            console.log('Websocket object expired.');
+            this.destroyWebSocket();
+            this.activateWebSocket();
+        }, this._webSocketLifeTime * 1000);
+    }
+
+    destroyWebSocket() {
+        console.log('Destroy websocket.');
+        if(this._websocket != null) {
+            this._websocket.onopen = null;
+            this._websocket.onerror = null;
+            this._websocket.onmessage = null;
+            this._websocket.onclose = null;
+            this._websocket.close();
+            this._websocket = null;
+        }
+
+        clearTimeout( this._websocketTimerInverval);
+    }
+
     shortPollingCheckOrder() {
         XsollaOrders.checkOrder(this._accessToken, this._orderId, result => {
             console.log('shortPollingCheckOrder ' + result.status);
@@ -142,18 +154,8 @@ export class OrderCheckObject {
     }
 
     destroy() {
-        console.log('Destroy websocket.');
-        if(this._websocket != null) {
-            this._websocket.onopen = null;
-            this._websocket.onerror = null;
-            this._websocket.onmessage = null;
-            this._websocket.onclose = null;
-            this._websocket.close();
-        }
-
+        this.destroyWebSocket();
         this._bShortPollingExpired = true;
-
-        clearTimeout( this._websocketTimerInverval);
         clearTimeout( this._shortPollingTimerInverval);
     }
 }
