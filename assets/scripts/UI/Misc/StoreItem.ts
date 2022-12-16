@@ -38,6 +38,9 @@ export class StoreItem extends Component {
     @property(Label)
     priceWithoutDiscount: Label;
 
+    @property(Node)
+    freePrice: Node;
+
     @property(Button)
     buyBtn: Button;
 
@@ -53,8 +56,6 @@ export class StoreItem extends Component {
     private _parent: StoreManager;
 
     private _data: XsollaStoreItem | VirtualCurrencyPackage;
-
-    private _isVirtualCurrency: boolean;
 
     onEnable() {
         this.addListeners();
@@ -92,25 +93,33 @@ export class StoreItem extends Component {
         this.buyBtn.node.active = !isItemPurchased && !isBundle;
         this.purchased.node.active = isItemPurchased;
         this.previewBtn.node.active = isBundle;
-        this._isVirtualCurrency = data.virtual_prices.length > 0;
-        if(data.inventory_options && data.inventory_options.expiration_period) {
+
+        let isVirtualCurrency = data.virtual_prices.length > 0;
+        let isFree = !isVirtualCurrency && data.price == null;
+
+        if (data.inventory_options && data.inventory_options.expiration_period) {
             this.timerLabel.string = data.inventory_options.expiration_period.value + data.inventory_options.expiration_period.type;
         }
         this.itemName.string = data.name;
-        this.currencyIcon.node.active = this._isVirtualCurrency;
+        
         let price;
         let priceWithoutDiscount;
-        if(this._isVirtualCurrency) {
-            price =  data.virtual_prices[0].amount.toString();
-            priceWithoutDiscount =  data.virtual_prices[0].amount_without_discount.toString();
-        } else {
+        if (isVirtualCurrency) {
+            price = data.virtual_prices[0].amount.toString();
+            priceWithoutDiscount = data.virtual_prices[0].amount_without_discount.toString();
+        } else if (!isFree) {
             price = CurrencyFormatter.formatPrice(parseFloat(data.price.amount), data.price.currency);
             priceWithoutDiscount = CurrencyFormatter.formatPrice(parseFloat(data.price.amount_without_discount), data.price.currency);
         }
 
         this.price.string = price;
         this.priceWithoutDiscount.string = priceWithoutDiscount;
-        this.priceWithoutDiscount.node.getParent().active = price != priceWithoutDiscount;
+
+        this.currencyIcon.node.active = isVirtualCurrency;
+        this.price.node.active = !isFree;
+        this.priceWithoutDiscount.node.active = !isFree;
+        this.priceWithoutDiscount.node.getParent().active = !isFree && price != priceWithoutDiscount;
+        this.freePrice.active = isFree;
 
         ImageUtils.loadImage(data.image_url, spriteFrame => {
             if(this.icon != null) {
@@ -118,7 +127,7 @@ export class StoreItem extends Component {
             }
         });
 
-        if(this._isVirtualCurrency) {
+        if(isVirtualCurrency) {
             ImageUtils.loadImage(data.virtual_prices[0].image_url, spriteFrame => {
                 if(this.currencyIcon != null) {
                     this.currencyIcon.spriteFrame = spriteFrame;

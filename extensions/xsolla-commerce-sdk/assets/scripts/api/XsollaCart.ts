@@ -325,6 +325,40 @@ export class XsollaCart {
         }, handleCommerceError(onError));
         request.send(JSON.stringify(body));
     }
+
+    //TEXTREVIEW
+    /**
+     * @en
+     * Create order with free cart.
+     * @zh
+     * 使用免费购物车创建订单。
+     */
+    static createOrderWithFreeCart(authToken:string, cartId:string, currency?:string, locale?:string, customParameters?:object, onComplete?:(orderId:number) => void, onError?:(error:CommerceError) => void): void {
+        let body = {
+            currency: currency,
+            locale: locale,
+            sandbox: Xsolla.settings.enableSandbox,
+            customParameters: customParameters,
+            settings: XsollaOrders.getPaymentSettings()
+        };
+
+        let endpoint = cartId == undefined ? 'https://store.xsolla.com/api/v2/project/{project_id}/free/cart':'https://store.xsolla.com/api/v2/project/{project_id}/free/cart/{cartId}';
+
+        let url = new UrlBuilder(endpoint)
+            .setPathParam('project_id', Xsolla.settings.projectId)
+            .setPathParam('cartId', cartId)
+            .build();
+
+        let request = HttpUtil.createRequest(url, 'POST', RequestContentType.Json, authToken, result => {
+            let jsonResult = JSON.parse(result);
+            let tokenResult: PaymentTokenResult = {
+                token: jsonResult.token,
+                orderId: jsonResult.order_id
+            };
+            onComplete?.(tokenResult.orderId);
+        }, handleCommerceError(onError));
+        request.send(JSON.stringify(body));
+    }
 }
 
 export interface CartItemsData {

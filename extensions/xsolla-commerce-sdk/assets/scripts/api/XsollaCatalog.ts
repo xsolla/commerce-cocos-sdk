@@ -309,6 +309,40 @@ export class XsollaCatalog {
         }, handleCommerceError(onError));
         request.send(JSON.stringify(body));
     }
+
+    //TEXTREVIEW
+    /**
+     * @en
+     * Create order with specified free item.
+     * @zh
+     * 使用指定的免费项目创建订单。
+     */
+    static createOrderWithSpecifiedFreeItem(authToken:string, itemSKU:string, quantity:number, currency?:string, locale?:string, customParameters?:object, onComplete?:(orderId:number) => void, onError?:(error:CommerceError) => void): void {
+
+        let body = {
+            currency: currency,
+            locale: locale,
+            sandbox: Xsolla.settings.enableSandbox,
+            customParameters: customParameters,
+            quantity: quantity,
+            settings: XsollaOrders.getPaymentSettings()
+        };
+
+        let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/free/item/{itemSKU}')
+            .setPathParam('projectID', Xsolla.settings.projectId)
+            .setPathParam('itemSKU', itemSKU)
+            .build();
+
+        let request = HttpUtil.createRequest(url, 'POST', RequestContentType.Json, authToken, result => {
+            let jsonResult = JSON.parse(result);
+            let tokenResult: PaymentTokenResult = {
+                token: jsonResult.token,
+                orderId: jsonResult.order_id
+            };
+            onComplete?.(tokenResult.orderId);
+        }, handleCommerceError(onError));
+        request.send(JSON.stringify(body));
+    }
 }
 
 export interface VirtualCurrencyCalculatedPrice {

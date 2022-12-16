@@ -54,6 +54,9 @@ export class InventoryItemInfoManager extends Component {
     @property(Label)
     price: Label;
 
+    @property(Node)
+    freePrice: Node;
+
     @property(Label)
     priceWithoutDiscount: Label;
 
@@ -144,23 +147,31 @@ export class InventoryItemInfoManager extends Component {
         let types: Array<string> = [];
         data.groups.forEach(x => types.push(x.name));
         this.typesLabel.string = types.join(', ');
+        this.typesLabel.node.getParent().active = types.length > 0;
 
         this.buyAgainContainer.active = isNonRenewingSubscription && storeItem != null;
         if(storeItem != null) {
             let isVirtualCurrency = storeItem.virtual_prices.length > 0;
-            this.currency.node.active = isVirtualCurrency;
+            let isFree = !isVirtualCurrency && storeItem.price == null;
+
             let price;
             let priceWithoutDiscount;
             if(isVirtualCurrency) {
                 price =  storeItem.virtual_prices[0].amount.toString();
                 priceWithoutDiscount =  storeItem.virtual_prices[0].amount_without_discount.toString();
-            } else {
+            } else if (!isFree) {
                 price = CurrencyFormatter.formatPrice(parseFloat(storeItem.price.amount), storeItem.price.currency);
                 priceWithoutDiscount = CurrencyFormatter.formatPrice(parseFloat(storeItem.price.amount_without_discount), storeItem.price.currency);
             }
+
             this.price.string = price;
             this.priceWithoutDiscount.string = priceWithoutDiscount;
-            this.priceWithoutDiscount.node.getParent().active = price != priceWithoutDiscount;
+
+            this.currency.node.active = isVirtualCurrency;
+            this.price.node.active = !isFree;
+            this.priceWithoutDiscount.node.active = !isFree;
+            this.priceWithoutDiscount.node.getParent().active = !isFree && price != priceWithoutDiscount;
+            this.freePrice.active = isFree;
         }
         this.consumeContainer.active = isConsumable;
     }

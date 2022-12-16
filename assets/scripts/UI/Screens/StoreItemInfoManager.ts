@@ -39,6 +39,9 @@ export class StoreItemInfoManager extends Component {
     @property(Label)
     priceWithoutDiscount: Label;
 
+    @property(Node)
+    freePrice: Node;
+
     @property(Button)
     buyBtn: Button;
 
@@ -80,22 +83,28 @@ export class StoreItemInfoManager extends Component {
 
         this.itemName.string = item.name;
         this.description.string = item.description;
+
         let isVirtualCurrency = item.virtual_prices.length > 0;
-        this.currency.node.active = isVirtualCurrency;
+        let isFree = !isVirtualCurrency && item.price == null;
+
         let price;
         let priceWithoutDiscount;
         if(isVirtualCurrency) {
             price =  item.virtual_prices[0].amount.toString();
             priceWithoutDiscount =  item.virtual_prices[0].amount_without_discount.toString();
-        } else {
+        } else if (!isFree) {
             price = CurrencyFormatter.formatPrice(parseFloat(item.price.amount), item.price.currency);
             priceWithoutDiscount = CurrencyFormatter.formatPrice(parseFloat(item.price.amount_without_discount), item.price.currency);
         }
 
         this.price.string = price;
         this.priceWithoutDiscount.string = priceWithoutDiscount;
-        this.priceWithoutDiscount.node.getParent().active = price != priceWithoutDiscount;
 
+        this.currency.node.active = isVirtualCurrency;
+        this.price.node.active = !isFree;
+        this.priceWithoutDiscount.node.active = !isFree;
+        this.priceWithoutDiscount.node.getParent().active = !isFree && price != priceWithoutDiscount;
+        this.freePrice.active = isFree;
         this.bundleContainer.active = bundleContent != null;
 
         if(isVirtualCurrency) {
