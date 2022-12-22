@@ -9,24 +9,23 @@ export class BrowserUtil {
 
     static openPurchaseUI(token: string) {
         let sandbox = Xsolla.settings.enableSandbox;
-
-        if (sys.isMobile) {
-            let url: UrlBuilder;
-            if (sandbox) {
-                url = new UrlBuilder('https://sandbox-secure.xsolla.com/paystation3');
-            } else {
-                url = new UrlBuilder('https://secure.xsolla.com/paystation3');
-            }
-            url.addStringParam('access_token', token);
-
-            if (Xsolla.settings.enableInAppBrowser) {
-                NativeUtil.openPurchaseUI(token, sandbox);
-            } else {
-                sys.openURL(url.build());
-            }
+        let url: UrlBuilder;
+        if (sandbox) {
+            url = new UrlBuilder('https://sandbox-secure.xsolla.com/paystation3');
+        } else {
+            url = new UrlBuilder('https://secure.xsolla.com/paystation3');
         }
-        else {
-            this.openPaystationWidget(token, sandbox);
+        url.addStringParam('access_token', token);
+
+        if (Xsolla.settings.enableInAppBrowser) {
+            if (sys.isMobile) {
+                NativeUtil.openPurchaseUI(token, sandbox);
+            }
+            else {
+                this.openPaystationWidget(token, sandbox);
+            }
+        } else {
+            sys.openURL(url.build());
         }
     }
 
