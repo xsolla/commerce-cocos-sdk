@@ -1,5 +1,11 @@
+include:
+  - project: 'security/security-tools'
+    ref: 'v1'
+    file: 'gitlab-ci.yml'
+
 stages:
   - build-demo
+  - security scan
 
 variables:
   PROJECT_PATH: "%cd%"
