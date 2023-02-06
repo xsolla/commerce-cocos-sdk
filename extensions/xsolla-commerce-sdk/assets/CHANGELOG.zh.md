@@ -1,5 +1,13 @@
 # 更改日志
 
+## [0.4.0] - 2023-02-07
+
+### Added
+- SDK methods for ordering free items (`createOrderWithSpecifiedFreeItem` and `createOrderWithFreeCart` SDK methods)
+
+### Changed
+- Refinement of the payment status check (10 minutes for shortpolling and recreate websocket connection if time expired)
+
 ## [0.3.0] - 2022-08-30
 
 ### 新增内容
