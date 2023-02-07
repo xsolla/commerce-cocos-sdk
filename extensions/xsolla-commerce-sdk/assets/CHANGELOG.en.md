@@ -3,10 +3,10 @@
 ## [0.4.0] - 2023-02-07
 
 ### Added
-- SDK methods for ordering free items (`createOrderWithSpecifiedFreeItem` and `createOrderWithFreeCart` SDK methods)
+- Ability to order free items. Use `createOrderWithSpecifiedFreeItem` and `createOrderWithFreeCart` SDK methods to implement it. The `fetchCartPaymentToken` SDK method also supports free items
 
 ### Changed
-- Refinement of the payment status check (10 minutes for shortpolling and recreate websocket connection if time expired)
+- Tracking order status logic. Order status is requested via a web socket. After 5 minutes, the web socket connection is re-created. If the web socket returned an error, the status is requested with a short-polling. Short-polling is expired after 10 minutes
 
 ## [0.3.0] - 2022-08-30
 
