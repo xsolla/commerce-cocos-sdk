@@ -310,12 +310,12 @@ export class XsollaCatalog {
         request.send(JSON.stringify(body));
     }
 
-    //TEXTREVIEW
+
     /**
      * @en
-     * Create order with specified free item.
+     * Creates an order with a specified free item. The created order will get a `done` order status.
      * @zh
-     * 使用指定的免费项目创建订单。
+     * 使用指定免费商品创建订单。创建的订单将具有`done`的订单状态。
      */
     static createOrderWithSpecifiedFreeItem(authToken:string, itemSKU:string, quantity:number, currency?:string, locale?:string, customParameters?:object, onComplete?:(orderId:number) => void, onError?:(error:CommerceError) => void): void {
 

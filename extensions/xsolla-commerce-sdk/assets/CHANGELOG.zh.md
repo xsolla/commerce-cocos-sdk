@@ -2,11 +2,13 @@
 
 ## [0.4.0] - 2023-02-07
 
-### Added
-- SDK methods for ordering free items (`createOrderWithSpecifiedFreeItem` and `createOrderWithFreeCart` SDK methods)
+### 新增内容
+- 支持下单免费商品。使用`createOrderWithSpecifiedFreeItem`和`createOrderWithFreeCart` 
+  SDK方法进行实现。此外，`fetchCartPaymentToken` SDK方法也支持免费商品
 
-### Changed
-- Refinement of the payment status check (10 minutes for shortpolling and recreate websocket connection if time expired)
+### 更新内容
+- 跟踪订单状态逻辑。订单状态通过Web socket来请求。5分钟后Web socket连接将重新创建。如Web 
+  socket返回错误，则通过短轮询进行请求。短轮询有效期为10分钟
 
 ## [0.3.0] - 2022-08-30
 

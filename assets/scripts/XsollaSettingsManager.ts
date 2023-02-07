@@ -3,14 +3,14 @@
 import { _decorator, Component, Enum, CCInteger} from 'cc';
 import { XsollaSettings, Xsolla, PaymentUiTheme, PaymentUiSize, PaymentUiVersion, PaymentRedirectCondition, PaymentRedirectStatusManual, RedirectPolicySettings, PaymentUISettings } from 'db://xsolla-commerce-sdk/scripts/Xsolla';
 const { ccclass, property, disallowMultiple, type } = _decorator;
- 
+
 @ccclass('XsollaSettingsManager')
 @disallowMultiple(true)
 export class XsollaSettingsManager extends Component {
 
     @property({
-        displayName: 'Settings validation', //TEXTREVIEW
-        tooltip: 'Some settings has incorrect values', //TEXTREVIEW
+        displayName: 'Settings validation',
+        tooltip: 'Some settings have incorrect values',
         group: 'General'
     })
     get errorField() {
@@ -326,15 +326,15 @@ export class XsollaSettingsManager extends Component {
     getSettingsError() {
         var regex = new RegExp('^(?:\\{{0,1}(?:[0-9a-fA-F]){8}-(?:[0-9a-fA-F]){4}-(?:[0-9a-fA-F]){4}-(?:[0-9a-fA-F]){4}-(?:[0-9a-fA-F]){12}\\}{0,1})$');
         if (!regex.test(this.loginId))
-            return "Login ID has incorrect value"; //TEXTREVIEW
+            return "Login ID has incorrect value";
 
         regex = new RegExp("^[1-9]\\d*$");
         if (!regex.test(this.projectId))
-            return "Project Id has incorrect value"; //TEXTREVIEW
+            return "Project ID has incorrect value";
 
         if (this.clientId <= 0)
-            return "Client Id has incorrect value"; //TEXTREVIEW
+            return "Client ID has incorrect value";
 
-        return "Everything is fine"; //TEXTREVIEW
+        return "ID format is valid";
     }
 }

@@ -326,12 +326,12 @@ export class XsollaCart {
         request.send(JSON.stringify(body));
     }
 
-    //TEXTREVIEW
+
     /**
      * @en
-     * Create order with free cart.
+     * Creates an order with all items from the free cart. The created order will get a `done` order status.
      * @zh
-     * 使用免费购物车创建订单。
+     * 使用免费购物车中的所有商品创建一个订单。创建的订单将具有`done`的订单状态。
      */
     static createOrderWithFreeCart(authToken:string, cartId:string, currency?:string, locale?:string, customParameters?:object, onComplete?:(orderId:number) => void, onError?:(error:CommerceError) => void): void {
         let body = {
