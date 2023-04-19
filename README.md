@@ -97,6 +97,8 @@ To get started with the SDK, you need to install this extension and set up a pro
 * iOS
 * HTML5
 
+The SDK uses [Google Mobile Services](https://www.android.com/gms/) and doesn’t support builds for devices without Google Mobile Services, such as Huawei.
+
 ## Pricing
 
 Xsolla offers the necessary tools to help you build and grow your gaming business, including personalized support at every stage. The terms of payment are determined by the contract that you can sign in Publisher Account.
