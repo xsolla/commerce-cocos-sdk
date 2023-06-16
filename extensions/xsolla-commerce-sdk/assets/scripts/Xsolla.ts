@@ -1,13 +1,5 @@
 // Copyright 2022 Xsolla Inc. All Rights Reserved.
 
-export enum PaymentUiTheme {
-    default_light = 0,
-	default_dark = 1,
-	dark = 2,
-	ps4_default_light = 3,
-	ps4_default_dark = 4
-}
-
 export enum PaymentUiSize {
     small = 0,
 	medium = 1,
@@ -69,7 +61,7 @@ export interface RedirectPolicySettings {
 }
 
 export interface PaymentUISettings {
-    theme?: PaymentUiTheme;
+    theme?: string;
     size?: PaymentUiSize;
     version?: PaymentUiVersion;
 }
