@@ -441,7 +441,7 @@ export interface StoreItemPromotion {
     date_end: string,
     discount: StoreItemDiscount,
     bonus: Array<StoreItemBonus>,
-    limits: StoreItemLimits
+    limits: PromotionLimits
 }
 
 export interface StoreItemDiscount {
@@ -454,13 +454,28 @@ export interface StoreItemBonus {
     quantity: number
 }
 
+export interface PromotionLimits {
+    per_user: PromotionLimitsPerUser
+}
+
+export interface PromotionLimitsPerUser {
+    available: number,
+    total: number
+}
+
 export interface StoreItemLimits {
     per_user: StoreItemLimitsPerUser
 }
 
-export interface StoreItemLimitsPerUser{
+export interface StoreItemLimitsPerUser {
     available: number,
-    total: number
+    total: number,
+    recurrent_schedule: RecurrentSchedule
+}
+
+export interface RecurrentSchedule {
+    interval_type: string,
+    reset_next_date: number
 }
 
 export interface StoreItem {
@@ -482,7 +497,8 @@ export interface StoreItem {
     long_description: string,
     order: number,
     media_list: Array<StoreItemMediaList>,
-    promotions: Array<StoreItemPromotion>
+    promotions: Array<StoreItemPromotion>,
+    limits: StoreItemLimits
 }
 
 export interface SimplifiedStoreItem {
@@ -521,7 +537,8 @@ export interface VirtualCurrency {
     long_description: string,
     order: number,
     media_list: Array<StoreItemMediaList>,
-    promotions: Array<StoreItemPromotion>
+    promotions: Array<StoreItemPromotion>,
+    limits: StoreItemLimits
 }
 
 export interface VirtualCurrencyData {
@@ -556,7 +573,8 @@ export interface VirtualCurrencyPackage {
     long_description: string,
     order: number,
     media_list: Array<StoreItemMediaList>,
-    promotions: Array<StoreItemPromotion>
+    promotions: Array<StoreItemPromotion>,
+    limits: StoreItemLimits
 }
 
 export interface VirtualCurrencyPackagesData {
@@ -577,7 +595,8 @@ export interface StoreBundle {
     total_content_price: Price,
     virtual_prices: Array< VirtualCurrencyPrice>,
     content: Array<StoreBundleContent>,
-    promotions: Array<StoreItemPromotion>
+    promotions: Array<StoreItemPromotion>,
+    limits: StoreItemLimits
 }
 
 export interface StoreListOfBundles {
