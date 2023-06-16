@@ -71,8 +71,8 @@ export class XsollaSettingsManager extends Component {
     paymentInterfaceSizeWebGL: PaymentUiSize = PaymentUiSize.medium;
 
     @property ({
-        displayName: 'Payment UI Size',
-        tooltip: 'User interface size for the payment interface.',
+        displayName: 'Payment UI Version',
+        tooltip: 'Device type used to present payment interface.',
         group: {name: 'Paystation UI WebGL', id: 'Paystation UI'}
     })
     @type(Enum(PaymentUiVersion))
@@ -94,8 +94,8 @@ export class XsollaSettingsManager extends Component {
     paymentInterfaceSizeAndroid: PaymentUiSize = PaymentUiSize.medium;
 
     @property ({
-        displayName: 'Payment UI Size',
-        tooltip: 'User interface size for the payment interface. ',
+        displayName: 'Payment UI Version',
+        tooltip: 'Device type used to present payment interface.',
         group: {name: 'Paystation UI Android', id: 'Paystation UI'}
     })
     @type(Enum(PaymentUiVersion))
@@ -117,8 +117,8 @@ export class XsollaSettingsManager extends Component {
     paymentInterfaceSizeIOS: PaymentUiSize = PaymentUiSize.medium;
 
     @property ({
-        displayName: 'Payment UI Size',
-        tooltip: 'User interface size for the payment interface.',
+        displayName: 'Payment UI Version',
+        tooltip: 'Device type used to present payment interface.',
         group: {name: 'Paystation UI IOS', id: 'Paystation UI'}
     })
     @type(Enum(PaymentUiVersion))
