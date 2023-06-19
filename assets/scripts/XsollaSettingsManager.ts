@@ -60,7 +60,7 @@ export class XsollaSettingsManager extends Component {
         tooltip: 'User interface theme for the payment interface. To use default themes, enter "default" or "default_dark" values. Or enter the name of the custom theme you configured in Publisher Account to use it.',
         group: {name: 'Paystation UI WebGL', id: 'Paystation UI'}
     })
-    paymentInterfaceThemeWebGL: string = "default";
+    paymentInterfaceThemeWebGL: string = "default_dark";
 
     @property ({
         displayName: 'Payment UI Size',
@@ -83,7 +83,7 @@ export class XsollaSettingsManager extends Component {
         tooltip: 'User interface theme for the payment interface. To use default themes, enter "default" or "default_dark" values. Or enter the name of the custom theme you configured in Publisher Account to use it.',
         group: {name: 'Paystation UI Android', id: 'Paystation UI'}
     })
-    paymentInterfaceThemeAndroid: string = "default";
+    paymentInterfaceThemeAndroid: string = "default_dark";
 
     @property ({
         displayName: 'Payment UI Size',
@@ -106,7 +106,7 @@ export class XsollaSettingsManager extends Component {
         tooltip: 'User interface theme for the payment interface. To use default themes, enter "default" or "default_dark" values. Or enter the name of the custom theme you configured in Publisher Account to use it.',
         group: {name: 'Paystation UI IOS', id: 'Paystation UI'}
     })
-    paymentInterfaceThemeIOS: string = "default";
+    paymentInterfaceThemeIOS: string = "default_dark";
 
     @property ({
         displayName: 'Payment UI Size',
