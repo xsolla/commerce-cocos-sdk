@@ -282,7 +282,7 @@ export class XsollaCatalog {
      * @zh
      * 发起商品购买会话并获取支付控制台的令牌。
      */
-     static fetchPaymentToken(authToken:string, itemSKU:string, quantity:number, currency?:string, country?:string, locale?:string, customParameters?:object, onComplete?:(tokenResult: PaymentTokenResult) => void, onError?:(error:CommerceError) => void): void {
+     static fetchPaymentToken(authToken:string, itemSKU:string, quantity:number, currency?:string, country?:string, locale?:string, customParameters?:object, externalId?:string, onComplete?:(tokenResult: PaymentTokenResult) => void, onError?:(error:CommerceError) => void): void {
 
         let body = {
             currency: currency,
@@ -293,6 +293,8 @@ export class XsollaCatalog {
             quantity: quantity,
             settings: XsollaOrders.getPaymentSettings()
         };
+
+        body.settings.external_id = externalId;
 
         let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{projectID}/payment/item/{itemSKU}')
             .setPathParam('projectID', Xsolla.settings.projectId)

@@ -31,7 +31,7 @@ export class PurchaseUtil {
         }
         else if (!isFree) {
             UIManager.instance.showLoaderPopup(true);
-            XsollaCatalog.fetchPaymentToken(TokenStorage.getToken().access_token, item.sku, 1, undefined, undefined, undefined, undefined, result => {
+            XsollaCatalog.fetchPaymentToken(TokenStorage.getToken().access_token, item.sku, 1, undefined, undefined, undefined, undefined, undefined, result => {
                 UIManager.instance.showLoaderPopup(false);
                 this.checkPendingOrder(result.token, result.orderId, () => {
                     onSuccessPurchase?.();

@@ -298,7 +298,7 @@ export class XsollaCart {
      * @zh
      * 发起购物车购买会话并获取支付控制台的令牌。
      */
-     static fetchCartPaymentToken(authToken:string, cartId:string, currency?:string, country?:string, locale?:string, customParameters?:object, onComplete?:(tokenResult: PaymentTokenResult) => void, onError?:(error:CommerceError) => void): void {
+     static fetchCartPaymentToken(authToken:string, cartId:string, currency?:string, country?:string, locale?:string, customParameters?:object, externalId?:string, onComplete?:(tokenResult: PaymentTokenResult) => void, onError?:(error:CommerceError) => void): void {
         let body = {
             currency: currency,
             country: country,
@@ -307,6 +307,8 @@ export class XsollaCart {
             customParameters: customParameters,
             settings: XsollaOrders.getPaymentSettings()
         };
+
+        body.settings.external_id = externalId;
 
         let endpoint = cartId == undefined ? 'https://store.xsolla.com/api/v2/project/{project_id}/payment/cart':'https://store.xsolla.com/api/v2/project/{project_id}/payment/cart/{cartId}';
 
