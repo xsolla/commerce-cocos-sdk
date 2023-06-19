@@ -1,7 +1,7 @@
 // Copyright 2022 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component, Enum, CCInteger} from 'cc';
-import { XsollaSettings, Xsolla, PaymentUiTheme, PaymentUiSize, PaymentUiVersion, PaymentRedirectCondition, PaymentRedirectStatusManual, RedirectPolicySettings, PaymentUISettings } from 'db://xsolla-commerce-sdk/scripts/Xsolla';
+import { XsollaSettings, Xsolla, PaymentUiSize, PaymentUiVersion, PaymentRedirectCondition, PaymentRedirectStatusManual, RedirectPolicySettings, PaymentUISettings } from 'db://xsolla-commerce-sdk/scripts/Xsolla';
 const { ccclass, property, disallowMultiple, type } = _decorator;
 
 @ccclass('XsollaSettingsManager')
@@ -57,11 +57,10 @@ export class XsollaSettingsManager extends Component {
 
     @property ({
         displayName: 'Payment UI Theme',
-        tooltip: 'User interface theme for the payment interface.',
+        tooltip: 'User interface theme for the payment interface. To use default themes, enter "default" or "default_dark" values. Or enter the name of the custom theme you configured in Publisher Account to use it.',
         group: {name: 'Paystation UI WebGL', id: 'Paystation UI'}
     })
-    @type(Enum(PaymentUiTheme))
-    paymentInterfaceThemeWebGL: PaymentUiTheme = PaymentUiTheme.ps4_default_dark;
+    paymentInterfaceThemeWebGL: string = "default_dark";
 
     @property ({
         displayName: 'Payment UI Size',
@@ -72,8 +71,8 @@ export class XsollaSettingsManager extends Component {
     paymentInterfaceSizeWebGL: PaymentUiSize = PaymentUiSize.medium;
 
     @property ({
-        displayName: 'Payment UI Size',
-        tooltip: 'User interface size for the payment interface.',
+        displayName: 'Payment UI Version',
+        tooltip: 'Device type used to present payment interface.',
         group: {name: 'Paystation UI WebGL', id: 'Paystation UI'}
     })
     @type(Enum(PaymentUiVersion))
@@ -81,11 +80,10 @@ export class XsollaSettingsManager extends Component {
 
     @property ({
         displayName: 'Payment UI Theme',
-        tooltip: 'User interface theme for the payment interface.',
+        tooltip: 'User interface theme for the payment interface. To use default themes, enter "default" or "default_dark" values. Or enter the name of the custom theme you configured in Publisher Account to use it.',
         group: {name: 'Paystation UI Android', id: 'Paystation UI'}
     })
-    @type(Enum(PaymentUiTheme))
-    paymentInterfaceThemeAndroid: PaymentUiTheme = PaymentUiTheme.ps4_default_dark;
+    paymentInterfaceThemeAndroid: string = "default_dark";
 
     @property ({
         displayName: 'Payment UI Size',
@@ -96,8 +94,8 @@ export class XsollaSettingsManager extends Component {
     paymentInterfaceSizeAndroid: PaymentUiSize = PaymentUiSize.medium;
 
     @property ({
-        displayName: 'Payment UI Size',
-        tooltip: 'User interface size for the payment interface.',
+        displayName: 'Payment UI Version',
+        tooltip: 'Device type used to present payment interface.',
         group: {name: 'Paystation UI Android', id: 'Paystation UI'}
     })
     @type(Enum(PaymentUiVersion))
@@ -105,11 +103,10 @@ export class XsollaSettingsManager extends Component {
 
     @property ({
         displayName: 'Payment UI Theme',
-        tooltip: 'User interface theme for the payment interface.',
+        tooltip: 'User interface theme for the payment interface. To use default themes, enter "default" or "default_dark" values. Or enter the name of the custom theme you configured in Publisher Account to use it.',
         group: {name: 'Paystation UI IOS', id: 'Paystation UI'}
     })
-    @type(Enum(PaymentUiTheme))
-    paymentInterfaceThemeIOS: PaymentUiTheme = PaymentUiTheme.ps4_default_dark;
+    paymentInterfaceThemeIOS: string = "default_dark";
 
     @property ({
         displayName: 'Payment UI Size',
@@ -120,8 +117,8 @@ export class XsollaSettingsManager extends Component {
     paymentInterfaceSizeIOS: PaymentUiSize = PaymentUiSize.medium;
 
     @property ({
-        displayName: 'Payment UI Size',
-        tooltip: 'User interface size for the payment interface.',
+        displayName: 'Payment UI Version',
+        tooltip: 'Device type used to present payment interface.',
         group: {name: 'Paystation UI IOS', id: 'Paystation UI'}
     })
     @type(Enum(PaymentUiVersion))

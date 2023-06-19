@@ -5,7 +5,7 @@ import { NativeUtil } from "../common/NativeUtil";
 import { CommerceError, handleCommerceError } from "../core/Error";
 import { HttpUtil, RequestContentType } from "../core/HttpUtil";
 import { UrlBuilder } from "../core/UrlBuilder";
-import { PaymentRedirectCondition, PaymentRedirectStatusManual, PaymentUISettings, PaymentUiSize, PaymentUiTheme, PaymentUiVersion, RedirectPolicySettings, Xsolla } from "../Xsolla";
+import { PaymentRedirectCondition, PaymentRedirectStatusManual, PaymentUISettings, PaymentUiSize, PaymentUiVersion, RedirectPolicySettings, Xsolla } from "../Xsolla";
 import { OrderContent } from "./XsollaCatalog";
 
 export class XsollaOrders {
@@ -48,14 +48,14 @@ export class XsollaOrders {
         }
         if(uiSettings == null) {
             uiSettings = {
-                theme: PaymentUiTheme.ps4_default_dark,
+                theme: "default",
                 size: PaymentUiSize.medium,
                 version: PaymentUiVersion.mobile
             };
         }
         
         let paymentUISettings = {
-            theme: this.getPaymentInerfaceTheme(uiSettings),
+            theme: uiSettings.theme == null ? "default" : uiSettings.theme,
             size: uiSettings.size == null ? PaymentUiSize[PaymentUiSize.medium] : PaymentUiSize[uiSettings.size],
             version: uiSettings.version == null ? PaymentUiVersion[PaymentUiVersion.desktop] : PaymentUiVersion[uiSettings.version]
         };
@@ -109,24 +109,6 @@ export class XsollaOrders {
         }
 
         return paymentSettings;
-    }
-
-    private static getPaymentInerfaceTheme(paymentUISettings: PaymentUISettings) {
-        if(paymentUISettings.theme == null) {
-            return 'default';
-        }
-        switch(paymentUISettings.theme) {
-            case PaymentUiTheme.default_light:
-            return 'default';
-            case PaymentUiTheme.default_dark:
-            return 'default-dark';
-            case PaymentUiTheme.dark:
-            return 'dark';
-            case PaymentUiTheme.ps4_default_light:
-            return 'ps4-default-light';
-            case PaymentUiTheme.ps4_default_dark:
-            return 'ps4-default-dark';
-        }
     }
 
     private static getPaymentRedirectStatusManual(redirectStatusManual: PaymentRedirectStatusManual) {
