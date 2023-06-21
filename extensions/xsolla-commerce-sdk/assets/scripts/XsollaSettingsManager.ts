@@ -1,6 +1,6 @@
 // Copyright 2022 Xsolla Inc. All Rights Reserved.
 
-import { _decorator, Component, Enum, CCInteger} from 'cc';
+import { _decorator, Component, Enum, CCInteger, CCString, sys} from 'cc';
 import { XsollaSettings, Xsolla, PaymentUiSize, PaymentUiVersion, PaymentRedirectCondition, PaymentRedirectStatusManual, RedirectPolicySettings, PaymentUISettings } from './Xsolla';
 const { ccclass, property, disallowMultiple, type } = _decorator;
 
@@ -256,7 +256,42 @@ export class XsollaSettingsManager extends Component {
     })
     redirectButtonCaptionIOS: string = '';
 
+    @property({
+        tooltip: 'Facebook app identifier (can be obtained on Facebook developer page). Used for native user authentication via Facebook Android application.',
+        group: {name: 'Android', id: 'General'}
+    })
+    facebookAppId: String = '';
+
+    @property({
+        tooltip: 'Google app identifier (can be obtained on Google developer page). Used for native user authentication via Google Android application.',
+        group: {name: 'Android', id: 'General'}
+    })
+    googleAppId: String = '';
+
+    @property({
+        tooltip: 'WeChat app identifier (can be obtained on WeChat developer page). Used for native user authentication via WeChat Android application.',
+        group: {name: 'Android', id: 'General'}
+    })
+    wechatAppId: String = '';
+
+    @property({
+        tooltip: 'QQ app identifier (can be obtained on QQ developer page). Used for native user authentication via QQ Android application.',
+        group: {name: 'Android', id: 'General'}
+    })
+    qqAppId: String = '';
+
     start() {
+
+        if (sys.platform.toLowerCase() == 'android') {
+            jsb.reflection.callStaticMethod("com/cocos/game/XsollaNativeAuth", "xLoginInit",
+                "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V",
+                Xsolla.settings.loginId,
+                Xsolla.settings.clientId.toString(),
+                this.facebookAppId,
+                this.googleAppId,
+                this.wechatAppId,
+                this.qqAppId);
+        }
 
         let redirectPolicySettingsWebGL: RedirectPolicySettings = {
             useSettingsFromPublisherAccount: this.UseSettingsFromPublisherAccountWebGL,
