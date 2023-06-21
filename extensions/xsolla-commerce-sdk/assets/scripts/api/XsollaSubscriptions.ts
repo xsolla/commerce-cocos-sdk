@@ -1,4 +1,4 @@
-// Copyright 2022 Xsolla Inc. All Rights Reserved.
+// Copyright 2023 Xsolla Inc. All Rights Reserved.
 
 import { handleSubscriptionError, SubscriptionError } from "../core/Error";
 import { HttpUtil, RequestContentType } from "../core/HttpUtil";
