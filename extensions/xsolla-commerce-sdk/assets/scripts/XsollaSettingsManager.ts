@@ -1,7 +1,7 @@
 // Copyright 2022 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component, Enum, CCInteger} from 'cc';
-import { XsollaSettings, Xsolla, PaymentUiSize, PaymentUiVersion, PaymentRedirectCondition, PaymentRedirectStatusManual, RedirectPolicySettings, PaymentUISettings } from 'db://xsolla-commerce-sdk/scripts/Xsolla';
+import { XsollaSettings, Xsolla, PaymentUiSize, PaymentUiVersion, PaymentRedirectCondition, PaymentRedirectStatusManual, RedirectPolicySettings, PaymentUISettings } from './Xsolla';
 const { ccclass, property, disallowMultiple, type } = _decorator;
 
 @ccclass('XsollaSettingsManager')
