@@ -77,17 +77,6 @@
     "_id": "691+ITzClJQo2eLDQyQyp0"
   },
   {
-    "__type__": "4b3a3ZI8TdKsY8NBky9KneJ",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 2
-    },
-    "_enabled": true,
-    "__prefab": null,
-    "_id": "d9BV7jcK5DApo5NncpLpOh"
-  },
-  {
     "__type__": "802d7glTP5BZrRaqorj8wGV",
     "_name": "",
     "_objFlags": 0,
@@ -133,6 +122,17 @@
     "wechatAppId": "",
     "qqAppId": "",
     "_id": "b8Mk7IA3FIj5ssNtyP2mEK"
+  },
+  {
+    "__type__": "4b3a3ZI8TdKsY8NBky9KneJ",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 2
+    },
+    "_enabled": true,
+    "__prefab": null,
+    "_id": "d9BV7jcK5DApo5NncpLpOh"
   },
   {
     "__type__": "cc.Node",

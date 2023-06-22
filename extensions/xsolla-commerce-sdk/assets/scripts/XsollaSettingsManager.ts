@@ -282,17 +282,6 @@ export class XsollaSettingsManager extends Component {
 
     start() {
 
-        if (sys.platform.toLowerCase() == 'android') {
-            jsb.reflection.callStaticMethod("com/cocos/game/XsollaNativeAuth", "xLoginInit",
-                "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V",
-                Xsolla.settings.loginId,
-                Xsolla.settings.clientId.toString(),
-                this.facebookAppId,
-                this.googleAppId,
-                this.wechatAppId,
-                this.qqAppId);
-        }
-
         let redirectPolicySettingsWebGL: RedirectPolicySettings = {
             useSettingsFromPublisherAccount: this.UseSettingsFromPublisherAccountWebGL,
             returnUrl: this.returnUrlWebGL,
@@ -353,6 +342,17 @@ export class XsollaSettingsManager extends Component {
         }
 
         Xsolla.init(settings);
+
+        if (sys.platform.toLowerCase() == 'android') {
+            jsb.reflection.callStaticMethod("com/cocos/game/XsollaNativeAuth", "xLoginInit",
+                "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V",
+                Xsolla.settings.loginId,
+                Xsolla.settings.clientId.toString(),
+                this.facebookAppId,
+                this.googleAppId,
+                this.wechatAppId,
+                this.qqAppId);
+        }
     }
 
     getSettingsError() {
