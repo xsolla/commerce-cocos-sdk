@@ -1,17 +1,17 @@
 # 更改日志
 
-## [0.5.0] - 2023-06-28
+## 
 
-### Changed
-- `fetchPaymentToken` and `fetchCartPaymentToken` SDK methods. Added the `externalId` parameter
-- XsollaSettingsManager. The `paymentInterfaceThemeWebGL`, `paymentInterfaceThemeAndroid`, `paymentInterfaceThemeIOS` are converted to `string`
-- SDK methods for getting catalog (`XsollaCatalog` class). Added the `limits` parameter for items
-- default interface theme (default-dark)
+### 更新内容
+- 
+- 
+- 
+- 
 
-### Moved
-- CurrencyFormatter from xsolla-commerce-sdk to Demo
-- XsollaSettingsManager from Demo to xsolla-commerce-sdk
-- checkPendingOrder from Demo to xsolla-commerce-sdk
+### 
+- 
+- 
+- 
 
 ## [0.4.0] - 2023-02-07
 
