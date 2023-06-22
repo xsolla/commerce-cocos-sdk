@@ -1,4 +1,4 @@
-// Copyright 2022 Xsolla Inc. All Rights Reserved.
+// Copyright 2023 Xsolla Inc. All Rights Reserved.
 
 import { assetManager, ImageAsset, SpriteFrame, Texture2D } from "cc";
 import { UIManager } from "../UIManager";

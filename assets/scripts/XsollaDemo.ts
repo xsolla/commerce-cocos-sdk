@@ -1,8 +1,8 @@
-// Copyright 2022 Xsolla Inc. All Rights Reserved.
+// Copyright 2023 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component } from 'cc';
 import { XsollaAuth } from 'db://xsolla-commerce-sdk/scripts/api/XsollaAuth';
-import { CurrencyFormatter } from 'db://xsolla-commerce-sdk/scripts/common/CurrencyFormatter';
+import { CurrencyFormatter } from './Common/CurrencyFormatter';
 import { UIManager, UIScreenType } from './UI/UIManager';
 import { TokenStorage } from "db://xsolla-commerce-sdk/scripts/common/TokenStorage";
 import { TokenUtils } from 'db://xsolla-commerce-sdk/scripts/common/TokenParser';

@@ -1,4 +1,4 @@
-// Copyright 2022 Xsolla Inc. All Rights Reserved.
+// Copyright 2023 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component, Label, Button } from 'cc';
 import { UserAttribute } from 'db://xsolla-commerce-sdk/scripts/api/XsollaUserAccount';
