@@ -2,13 +2,13 @@
 
 ## [0.5.0] - 2023-06-28
 
-### Moved
-- CurrencyFormatter from xsolla-commerce-sdk to Demo
-- XsollaSettingsManager from Demo to xsolla-commerce-sdk
-- checkPendingOrder from Demo to xsolla-commerce-sdk
+### Changed
+- `CurrencyFormatter` class moved from `xsolla-commerce-sdk` extension to demo project
+- `XsollaSettingsManager` class moved from demo project to `xsolla-commerce-sdk` extension
+- `checkPendingOrder` method moved from demo project to `xsolla-commerce-sdk` extension
 
 ### Removed
-- XsollaAndroid class
+- `XsollaAndroid` class
 
 ## [0.4.0] - 2023-02-07
 

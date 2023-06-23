@@ -4,14 +4,12 @@
 
 ### Changed
 - `fetchPaymentToken` and `fetchCartPaymentToken` SDK methods. Added the `externalId` parameter
-- XsollaSettingsManager. The `paymentInterfaceThemeWebGL`, `paymentInterfaceThemeAndroid`, `paymentInterfaceThemeIOS` are converted to `string`
+- `XsollaSettingsManager` class. The `paymentInterfaceThemeWebGL`, `paymentInterfaceThemeAndroid`, `paymentInterfaceThemeIOS` are converted to `string`
 - SDK methods for getting catalog (`XsollaCatalog` class). Added the `limits` parameter for items
-- default interface theme (default-dark)
-
-### Moved
-- CurrencyFormatter from xsolla-commerce-sdk to Demo
-- XsollaSettingsManager from Demo to xsolla-commerce-sdk
-- checkPendingOrder from Demo to xsolla-commerce-sdk
+- Payment UI theme is `default_dark` by default
+- `CurrencyFormatter` class moved from `xsolla-commerce-sdk` extension to demo project
+- `XsollaSettingsManager` class moved from demo project to `xsolla-commerce-sdk` extension
+- `checkPendingOrder` method moved from demo project to `xsolla-commerce-sdk` extension
 
 ## [0.4.0] - 2023-02-07
 
