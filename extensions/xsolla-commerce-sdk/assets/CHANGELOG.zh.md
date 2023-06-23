@@ -1,15 +1,16 @@
 # 更改日志
 
-## 
+## [0.5.0] - 2023-06-28
 
 ### 更新内容
-- 
-- 
-- 
-- 
-- 
-- 
-- 
+- `fetchPaymentToken`和`fetchCartPaymentToken` SDK方法。新增`externalId`参数
+- `XsollaSettingsManager`类。`paymentInterfaceThemeWebGL`、`paymentInterfaceThemeAndr
+  oid`、`paymentInterfaceThemeIOS`转换为`string`
+- 获取目录（`XsollaCatalog`类）的SDK方法。新增用于商品的`limits`参数
+- 支付UI主题默认为`default_dark`
+- `CurrencyFormatter`类从`xsolla-commerce-sdk`扩展移至演示项目
+- `XsollaSettingsManager`类从演示项目移至`xsolla-commerce-sdk`扩展
+- `checkPendingOrder`方法从演示项目移至`xsolla-commerce-sdk`扩展
 
 ## [0.4.0] - 2023-02-07
 
