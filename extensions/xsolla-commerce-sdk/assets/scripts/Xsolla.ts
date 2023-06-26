@@ -30,6 +30,7 @@ export interface XsollaSettings {
     loginId: string;
     projectId: string;
     clientId: number;
+    redirectURI: string;
     enableSandbox?: boolean;
     enableInAppBrowser?: boolean;
     paymentUISettingsWebGL?:PaymentUISettings;

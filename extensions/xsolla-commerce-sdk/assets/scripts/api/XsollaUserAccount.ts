@@ -471,7 +471,7 @@ export class XsollaUserAccount {
     static getUrlToLinkSocialAccount(token:string, platform:string, onComplete?:(authUrl:string) => void, onError?:(error:LoginError) => void) {
         let url = new UrlBuilder('https://login.xsolla.com/api/users/me/social_providers/{providerName}/login_url')
             .setPathParam('providerName', platform)
-            .addStringParam('login_url', 'https://login.xsolla.com/api/blank')
+            .addStringParam('login_url', encodeURI(Xsolla.settings.redirectURI))
             .build();
 
         let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, token, result => {

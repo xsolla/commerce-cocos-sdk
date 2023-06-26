@@ -43,7 +43,7 @@ export class XsollaAuth {
             client_id: Xsolla.settings.clientId,
             grant_type: 'refresh_token',
             refresh_token: refreshToken,
-            redirect_uri: 'https://login.xsolla.com/api/blank'
+            redirect_uri: Xsolla.settings.redirectURI
         };
 
         let url = new UrlBuilder('https://login.xsolla.com/api/oauth2/token').build();
@@ -66,7 +66,7 @@ export class XsollaAuth {
             client_id: Xsolla.settings.clientId,
             grant_type: 'authorization_code',
             code: authCode,
-            redirect_uri: 'https://login.xsolla.com/api/blank'
+            redirect_uri: Xsolla.settings.redirectURI
         };
 
         let url = new UrlBuilder('https://login.xsolla.com/api/oauth2/token').build();
@@ -97,7 +97,7 @@ export class XsollaAuth {
         let url = new UrlBuilder('https://login.xsolla.com/api/oauth2/login/phone/request')
             .addNumberParam('client_id', Xsolla.settings.clientId)
             .addStringParam('response_type', 'code')
-            .addStringParam('redirect_uri', 'https://login.xsolla.com/api/blank')
+            .addStringParam('redirect_uri', Xsolla.settings.redirectURI)
             .addStringParam('state', state)
             .addStringParam('scope', 'offline')
             .build();
@@ -149,7 +149,7 @@ export class XsollaAuth {
         let url = new UrlBuilder('https://login.xsolla.com/api/oauth2/login/email/request')
             .addNumberParam('client_id', Xsolla.settings.clientId)
             .addStringParam('response_type', 'code')
-            .addStringParam('redirect_uri', 'https://login.xsolla.com/api/blank')
+            .addStringParam('redirect_uri', Xsolla.settings.redirectURI)
             .addStringParam('state', state)
             .addStringParam('scope', 'offline')
             .build();
@@ -198,7 +198,7 @@ export class XsollaAuth {
             .setPathParam('PlatformName', sys.platform.toLowerCase())
             .addNumberParam('client_id', Xsolla.settings.clientId)
             .addStringParam('response_type', 'code')
-            .addStringParam('redirect_uri', 'https://login.xsolla.com/api/blank')
+            .addStringParam('redirect_uri', Xsolla.settings.redirectURI)
             .addStringParam('state', state)
             .addStringParam('scope', 'offline')
             .build();
@@ -226,7 +226,7 @@ export class XsollaAuth {
         let url = new UrlBuilder('https://login.xsolla.com/api/oauth2/user')
             .addNumberParam('client_id', Xsolla.settings.clientId)
             .addStringParam('response_type', 'code')
-            .addStringParam('redirect_uri', 'https://login.xsolla.com/api/blank')
+            .addStringParam('redirect_uri', Xsolla.settings.redirectURI)
             .addStringParam('state', state)
             .addStringParam('scope', 'offline')
             .addStringParam('locale', locale)
@@ -256,7 +256,7 @@ export class XsollaAuth {
 
         let url = new UrlBuilder('https://login.xsolla.com/api/oauth2/user/resend_confirmation_link')
             .addNumberParam('client_id', Xsolla.settings.clientId)
-            .addStringParam('redirect_uri', 'https://login.xsolla.com/api/blank')
+            .addStringParam('redirect_uri', Xsolla.settings.redirectURI)
             .addStringParam('state', state)
             .addStringParam('locale', locale)
             .build();
@@ -280,7 +280,7 @@ export class XsollaAuth {
 
         let url = new UrlBuilder('https://login.xsolla.com/api/password/reset/request')
             .addStringParam('projectId', Xsolla.settings.loginId)
-            .addStringParam('login_url', 'https://login.xsolla.com/api/blank')
+            .addStringParam('login_url', encodeURI(Xsolla.settings.redirectURI))
             .addStringParam('locale', locale)
             .build();
 
