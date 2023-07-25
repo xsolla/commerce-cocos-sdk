@@ -6,27 +6,27 @@
 	<dict>
 		<key>.swiftlint.yml</key>
 		<data>
-		4+dUhykytExmluBzLzqo6JttnIc=
+		yCQ4S+suX8abrrdOxNoHT0caJlM=
 		</data>
 		<key>Frameworks/XsollaSDKUtilities.framework/.swiftlint.yml</key>
 		<data>
-		4+dUhykytExmluBzLzqo6JttnIc=
+		yCQ4S+suX8abrrdOxNoHT0caJlM=
 		</data>
 		<key>Frameworks/XsollaSDKUtilities.framework/Info.plist</key>
 		<data>
-		85kHOkquubBIl5oYKwRdWZaMuWM=
+		iKGWBsmuey9J6CPJJqAmgKQacDQ=
 		</data>
 		<key>Frameworks/XsollaSDKUtilities.framework/XsollaSDKUtilities</key>
 		<data>
-		Lk+6aio4QUhSbx3j1+3wYBvm8ws=
+		2j3H4RnA3BnNPBHilvVDSg9kcLs=
 		</data>
 		<key>Frameworks/XsollaSDKUtilities.framework/_CodeSignature/CodeResources</key>
 		<data>
-		99omNGT0qRYOAdCUCVqF/zd483A=
+		uc20BZzKdTg8vY+J2vxnGaqaxOg=
 		</data>
 		<key>Info.plist</key>
 		<data>
-		5IKMgICWA5rNMD6DxHHB2Qr+ULs=
+		a9XVfaRqgJLE1d4HfYirxRVDrGg=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -35,35 +35,35 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			k8+IWbg3dmj2o0hNrtvF9ub9vDb/HSmPsLNM7rCjFHA=
+			pswMBRwaIsKJZsKApF61EkqXYcRlJ4lxKYpdSefGeWk=
 			</data>
 		</dict>
 		<key>Frameworks/XsollaSDKUtilities.framework/.swiftlint.yml</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			k8+IWbg3dmj2o0hNrtvF9ub9vDb/HSmPsLNM7rCjFHA=
+			pswMBRwaIsKJZsKApF61EkqXYcRlJ4lxKYpdSefGeWk=
 			</data>
 		</dict>
 		<key>Frameworks/XsollaSDKUtilities.framework/Info.plist</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			vk5IcYrQvuuDbuVKAIuSVxTJHj1dpd4yJ4fh4Xfkb5U=
+			PxNrv3RhqfjrOl6ZbQDj7oGFGNhnglpthPrZ9nKXGjA=
 			</data>
 		</dict>
 		<key>Frameworks/XsollaSDKUtilities.framework/XsollaSDKUtilities</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			j2kanGmFQU8u19FebN2EWfXE5Lu2ErRE0eY9+ricawM=
+			gqtPy0YQfDSVjtl+9s51va82JksWrzOlZIGifCvAZuk=
 			</data>
 		</dict>
 		<key>Frameworks/XsollaSDKUtilities.framework/_CodeSignature/CodeResources</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			Zy82i+OvVFGogvDPvSAUiTJqpt9SiMzFzGFLliHTGhg=
+			17Gjf2MFu6k4DBuafPoRj7jpDcQVcvK6Jm64mq7qvjw=
 			</data>
 		</dict>
 	</dict>
