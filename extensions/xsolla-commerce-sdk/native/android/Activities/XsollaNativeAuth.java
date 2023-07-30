@@ -26,7 +26,7 @@ public class XsollaNativeAuth {
     }
 
     @Keep
-    public static void authSocial(String provider, boolean rememberMe, boolean invalidateToken) {
+    public static void authSocial(String provider, boolean invalidateToken) {
         Activity appActivity = AppActivity.getAppActivity();
         SocialNetwork socialNetwork = SocialNetwork.valueOf(provider.toUpperCase());
         Intent intent = new Intent(appActivity, XsollaNativeAuthActivity.class);

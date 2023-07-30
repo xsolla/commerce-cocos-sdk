@@ -17,7 +17,6 @@ import com.xsolla.android.login.XLogin;
 import com.xsolla.android.login.callback.UpdateCurrentUserDetailsCallback;
 import com.xsolla.android.login.callback.UploadCurrentUserAvatarCallback;
 import com.xsolla.android.login.entity.response.PictureResponse;
-import com.xsolla.android.login.token.TokenUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -64,9 +63,7 @@ public class XsollaNativeUtils {
             throw new RuntimeException(e);
         }
 
-        TokenUtils tokenUtils = new TokenUtils(AppActivity.getAppActivity());
-        tokenUtils.setOauthAccessToken(token);
-
+        XLogin.setTokenData("", token, System.currentTimeMillis() / 1000 + 3600);
         XLogin.uploadCurrentUserAvatar(avatarTempFile, new UploadCurrentUserAvatarCallback() {
             @Override
             public void onSuccess(@NonNull PictureResponse pictureResponse) {
@@ -94,10 +91,9 @@ public class XsollaNativeUtils {
 
     public static void modifyUserAccountData(String token, String birthday, String firstName, String gender, String lastName, String nickname) {
 
-        TokenUtils tokenUtils = new TokenUtils(AppActivity.getAppActivity());
-        tokenUtils.setOauthAccessToken(token);
+        XLogin.setTokenData("", token, System.currentTimeMillis() / 1000 + 3600);
 
-        XLogin.updateCurrentUserDetails(birthday,firstName,gender,lastName,nickname, new UpdateCurrentUserDetailsCallback() {
+        XLogin.updateCurrentUserDetails(firstName, gender, lastName, nickname, new UpdateCurrentUserDetailsCallback() {
             @Override
             public void onSuccess() {
                 CocosHelper.runOnGameThread(new Runnable() {

@@ -13,8 +13,7 @@ import com.cocos.lib.CocosJavascriptJavaBridge;
 import com.xsolla.android.login.XLogin;
 import com.xsolla.android.login.callback.FinishSocialLinkingCallback;
 import com.xsolla.android.login.callback.StartSocialLinkingCallback;
-import com.xsolla.android.login.social.SocialNetworkForLinking;
-import com.xsolla.android.login.token.TokenUtils;
+import com.xsolla.android.login.social.SocialNetwork;
 
 public class XsollaNativeSocialNetworkLinkingActivity extends Activity {
 
@@ -26,13 +25,10 @@ public class XsollaNativeSocialNetworkLinkingActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         String tokenStr = getIntent().getStringExtra(ARG_TOKEN);
-
-        TokenUtils tokenUtils = new TokenUtils(AppActivity.getAppActivity());
-        tokenUtils.setOauthAccessToken(tokenStr);
+        XLogin.setTokenData("", tokenStr, System.currentTimeMillis() / 1000 + 3600);
 
         String networkStr = getIntent().getStringExtra(ARG_NETWORK_NAME).toUpperCase();
-        SocialNetworkForLinking network = SocialNetworkForLinking.valueOf(networkStr);
-
+        SocialNetwork network = SocialNetwork.valueOf(networkStr);
         XLogin.startSocialLinking(network, this, new StartSocialLinkingCallback() {
             @Override
             public void onLinkingStarted() {
