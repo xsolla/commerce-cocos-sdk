@@ -43,7 +43,7 @@ public class XsollaNativeSocialNetworkLinkingActivity extends Activity {
                 CocosHelper.runOnGameThread(new Runnable() {
                     @Override
                     public void run() {
-                        CocosJavascriptJavaBridge.evalString("cc.director.getScene().emit(\"socialNetworkLinkingError\"," + errorMessage + ")");
+                        CocosJavascriptJavaBridge.evalString("cc.director.getScene().emit(\"socialNetworkLinkingError\"," + "\"" + errorMessage + "\"" + ")");
                     }
                 });
 
@@ -86,7 +86,7 @@ public class XsollaNativeSocialNetworkLinkingActivity extends Activity {
                 CocosHelper.runOnGameThread(new Runnable() {
                     @Override
                     public void run() {
-                        CocosJavascriptJavaBridge.evalString("cc.director.getScene().emit(\"socialNetworkLinkingError\"," + errorMessage + ")");
+                        CocosJavascriptJavaBridge.evalString("cc.director.getScene().emit(\"socialNetworkLinkingError\"," + "\"" + errorMessage + "\"" + ")");
                     }
                 });
 

@@ -77,12 +77,12 @@ public class XsollaNativeUtils {
             }
 
             @Override
-            public void onError(@Nullable Throwable throwable, @Nullable String s) {
+            public void onError(@Nullable Throwable throwable, @Nullable String errorMessage) {
                 avatarTempFile.delete();
                 CocosHelper.runOnGameThread(new Runnable() {
                     @Override
                     public void run() {
-                        CocosJavascriptJavaBridge.evalString("cc.director.getScene().emit(\"avatarUpdateError\"," + s + ")");
+                        CocosJavascriptJavaBridge.evalString("cc.director.getScene().emit(\"avatarUpdateError\"," + "\"" + errorMessage + "\"" + ")");
                     }
                 });
             }
@@ -105,11 +105,11 @@ public class XsollaNativeUtils {
             }
 
             @Override
-            public void onError(@Nullable Throwable throwable, @Nullable String s) {
+            public void onError(@Nullable Throwable throwable, @Nullable String errorMessage) {
                 CocosHelper.runOnGameThread(new Runnable() {
                     @Override
                     public void run() {
-                        CocosJavascriptJavaBridge.evalString("cc.director.getScene().emit(\"accountDataUpdateError\"," + s + ")");
+                        CocosJavascriptJavaBridge.evalString("cc.director.getScene().emit(\"accountDataUpdateError\"," + "\"" + errorMessage + "\"" + ")");
                     }
                 });
             }

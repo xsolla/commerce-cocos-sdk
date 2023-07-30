@@ -91,7 +91,7 @@ public class XsollaNativeAuthActivity extends Activity {
                 CocosHelper.runOnGameThread(new Runnable() {
                     @Override
                     public void run() {
-                        CocosJavascriptJavaBridge.evalString("cc.director.getScene().emit(\"socialAuthError\"," + errorMessage + ")");
+                        CocosJavascriptJavaBridge.evalString("cc.director.getScene().emit(\"socialAuthError\"," + "\"" + errorMessage + "\"" + ")");
                     }
                 });
                 finish();
