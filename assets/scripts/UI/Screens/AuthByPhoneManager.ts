@@ -106,7 +106,7 @@ export class AuthByPhoneManager extends Component {
     }
 
     onBackClicked() {
-        UIManager.instance.openScreen(UIScreenType.Starting);
+        UIManager.instance.openScreen(UIScreenType.MoreLoginOptions);
     }
 
     sendCodeClicked() {

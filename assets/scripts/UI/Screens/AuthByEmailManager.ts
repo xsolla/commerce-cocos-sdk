@@ -106,7 +106,7 @@ export class AuthByEmailManager extends Component {
     }
 
     onBackClicked() {
-        UIManager.instance.openScreen(UIScreenType.Starting);
+        UIManager.instance.openScreen(UIScreenType.MoreLoginOptions);
     }
 
     sendCodeClicked() {

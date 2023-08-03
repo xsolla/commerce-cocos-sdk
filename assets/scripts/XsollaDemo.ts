@@ -12,7 +12,7 @@ const { ccclass } = _decorator;
 export class XsollaDemo extends Component {
     start () {
         CurrencyFormatter.init();
-        UIManager.instance.openScreen(UIScreenType.Starting);  
+        UIManager.instance.openScreen(UIScreenType.Starting);
         this.tryAutomaticAuth();
     }
 
