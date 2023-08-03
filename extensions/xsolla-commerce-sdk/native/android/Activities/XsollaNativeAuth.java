@@ -34,4 +34,11 @@ public class XsollaNativeAuth {
         intent.putExtra(XsollaNativeAuthActivity.ARG_WITH_LOGOUT, invalidateToken);
         appActivity.startActivity(intent);
     }
+
+    @Keep
+    public static void authViaXsollaWidget() {
+        Activity appActivity = AppActivity.getAppActivity();
+        Intent intent = new Intent(appActivity, XsollaNativeXsollaWidgetAuthActivity.class);
+        appActivity.startActivity(intent);
+    }
 }

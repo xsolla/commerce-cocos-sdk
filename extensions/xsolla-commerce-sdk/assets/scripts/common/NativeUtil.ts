@@ -16,6 +16,15 @@ export class NativeUtil {
         }
     }
 
+    static authWithXsollaWidget() {
+        if(sys.platform.toLowerCase() == 'ios') {
+
+        }
+        if(sys.platform.toLowerCase() == 'android') {
+            jsb.reflection.callStaticMethod("com/cocos/game/XsollaNativeAuth", "authViaXsollaWidget", "()V");
+        }
+    }
+
     static modifyUserAccountData(userDetailsUpdate: UserDetailsUpdate) {
         if (sys.platform.toLowerCase() == 'ios') {
             jsb.reflection.callStaticMethod("XsollaNativeUtils", "modifyUserAccountData:userBirthday:userFirstName:userGender:userLastName:userNickname:",
