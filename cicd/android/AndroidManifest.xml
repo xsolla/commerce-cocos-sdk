@@ -35,6 +35,10 @@
             android:screenOrientation="behind"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
         <activity
+            android:name="com.cocos.game.XsollaNativeXsollaWidgetAuthActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@android:style/Theme.NoTitleBar"/>
+        <activity
             android:name="com.cocos.game.XsollaNativeAuthActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@android:style/Theme.NoTitleBar"/>

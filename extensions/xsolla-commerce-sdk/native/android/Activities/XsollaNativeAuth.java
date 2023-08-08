@@ -26,12 +26,19 @@ public class XsollaNativeAuth {
     }
 
     @Keep
-    public static void authSocial(String provider, boolean rememberMe, boolean invalidateToken) {
+    public static void authSocial(String provider, boolean invalidateToken) {
         Activity appActivity = AppActivity.getAppActivity();
         SocialNetwork socialNetwork = SocialNetwork.valueOf(provider.toUpperCase());
         Intent intent = new Intent(appActivity, XsollaNativeAuthActivity.class);
         intent.putExtra(XsollaNativeAuthActivity.ARG_SOCIAL_NETWORK, socialNetwork.name());
         intent.putExtra(XsollaNativeAuthActivity.ARG_WITH_LOGOUT, invalidateToken);
+        appActivity.startActivity(intent);
+    }
+
+    @Keep
+    public static void authViaXsollaWidget() {
+        Activity appActivity = AppActivity.getAppActivity();
+        Intent intent = new Intent(appActivity, XsollaNativeXsollaWidgetAuthActivity.class);
         appActivity.startActivity(intent);
     }
 }

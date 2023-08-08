@@ -108,6 +108,52 @@
 	}
 }
 
++(void) authViaXsollaWidget:(NSString*)loginId client:(NSNumber*)clientId state:(NSString*)stateStr redirect:(NSString*)redirectUriStr  {
+	OAuth2Params *oauthParams = [[OAuth2Params alloc] initWithClientId:[clientId integerValue]
+																 state:stateStr
+																 scope:@"offline"
+																 redirectUri:redirectUriStr];
+
+	if (@available(iOS 13.4, *)) {
+		UIWindow* window = [[UIApplication sharedApplication] keyWindow];
+		WebAuthenticationPresentationContextProvider* context = [[WebAuthenticationPresentationContextProvider alloc] initWithPresentationAnchor:window];
+
+		[[LoginKitObjectiveC shared] authWithXsollaWidgetWithLoginId:loginId oAuth2Params:oauthParams presentationContextProvider:context completion:^(AccessTokenInfo * _Nullable accesTokenInfo, NSError * _Nullable error){
+
+			if(error != nil) {
+				NSLog(@"Error code: %ld", error.code);
+
+				if(error.code == NSError.loginKitErrorCodeASCanceledLogin) {
+					NSString *errorScript = [NSString stringWithFormat: @"cc.director.getScene().emit(\"xsollaWidgetAuthCanceled\")"];
+					const char* errorScriptStr = [XsollaUtils createCStringFrom:errorScript];
+					cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
+						se::ScriptEngine::getInstance()->evalString(errorScriptStr);
+					});
+					return;
+				}
+				
+				NSString* errorString = error.localizedDescription;
+				NSString *errorScript = [NSString stringWithFormat: @"cc.director.getScene().emit(\"xsollaWidgetAuthError\", (\"%@\"))", errorString];
+				const char* errorScriptStr = [XsollaUtils createCStringFrom:errorScript];
+				cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
+					se::ScriptEngine::getInstance()->evalString(errorScriptStr);
+				});
+
+				return;
+			}
+
+			NSString* tokenInfoString = [XsollaUtils serializeTokenInfo:accesTokenInfo];
+			NSString *successScript = [NSString stringWithFormat: @"cc.director.getScene().emit(\"xsollaWidgetAuthSuccess\", (%@))", tokenInfoString];
+			const char* successScriptStr = [XsollaUtils createCStringFrom:successScript];
+			cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
+				se::ScriptEngine::getInstance()->evalString(successScriptStr);
+			});
+		}];
+	} else {
+		NSLog(@"Authentication via xsolla widget is not supported for current iOS version.");
+	}
+}
+
 +(void) modifyUserAccountData:(NSString*)authToken userBirthday:(NSString*)birthday userFirstName:(NSString*)firstName userGender:(NSString*)gender userLastName:(NSString*)lastName userNickname:(NSString*)nickname {
 	NSBundle *main = [NSBundle mainBundle];
 

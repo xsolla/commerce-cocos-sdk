@@ -12,7 +12,17 @@ export class NativeUtil {
                 socialNetworkName, Xsolla.settings.clientId, 'xsollatest', 'app://xsollalogin');
         }
         if(sys.platform.toLowerCase() == 'android') {
-            jsb.reflection.callStaticMethod("com/cocos/game/XsollaNativeAuth", "authSocial", "(Ljava/lang/String;ZZ)V", socialNetworkName, true, false);
+            jsb.reflection.callStaticMethod("com/cocos/game/XsollaNativeAuth", "authSocial", "(Ljava/lang/String;Z)V", socialNetworkName, false);
+        }
+    }
+
+    static authWithXsollaWidget() {
+        if(sys.platform.toLowerCase() == 'ios') {
+            jsb.reflection.callStaticMethod("XsollaNativeUtils", "authViaXsollaWidget:client:state:redirect:",
+            Xsolla.settings.loginId, Xsolla.settings.clientId, 'xsollatest', 'app://xsollalogin');
+        }
+        if(sys.platform.toLowerCase() == 'android') {
+            jsb.reflection.callStaticMethod("com/cocos/game/XsollaNativeAuth", "authViaXsollaWidget", "()V");
         }
     }
 

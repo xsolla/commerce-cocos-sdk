@@ -6,35 +6,35 @@
 	<dict>
 		<key>Frameworks/XsollaSDKPaymentsKit.framework/.swiftlint.yml</key>
 		<data>
-		4+dUhykytExmluBzLzqo6JttnIc=
+		yCQ4S+suX8abrrdOxNoHT0caJlM=
 		</data>
 		<key>Frameworks/XsollaSDKPaymentsKit.framework/Frameworks/XsollaSDKUtilities.framework/.swiftlint.yml</key>
 		<data>
-		4+dUhykytExmluBzLzqo6JttnIc=
+		yCQ4S+suX8abrrdOxNoHT0caJlM=
 		</data>
 		<key>Frameworks/XsollaSDKPaymentsKit.framework/Frameworks/XsollaSDKUtilities.framework/Info.plist</key>
 		<data>
-		3a7/V2g0j+LKhrMyDSzo66mtTGk=
+		W1TXmyVTSIb+j5cgW26xOMd7uKQ=
 		</data>
 		<key>Frameworks/XsollaSDKPaymentsKit.framework/Frameworks/XsollaSDKUtilities.framework/XsollaSDKUtilities</key>
 		<data>
-		Ui+Cwofa/odxHG3g6+za5PGIPI8=
+		sAp2rU9n4JQ5TxC0auMkam2EQqU=
 		</data>
 		<key>Frameworks/XsollaSDKPaymentsKit.framework/Frameworks/XsollaSDKUtilities.framework/_CodeSignature/CodeResources</key>
 		<data>
-		1ijnAM4zqSzk9cvLguLhVUcy/H0=
+		+i+TOQJGPbAqdqhzHHN5aqJBLPc=
 		</data>
 		<key>Frameworks/XsollaSDKPaymentsKit.framework/Info.plist</key>
 		<data>
-		bQgEykIenv3kkn+MxJBaukYOnus=
+		EMc5gVdfXFXi1h/dv0IE5u/UJns=
 		</data>
 		<key>Frameworks/XsollaSDKPaymentsKit.framework/XsollaSDKPaymentsKit</key>
 		<data>
-		F8sL2ePsZYS22nUsWu21KSsuKrI=
+		8r3AAEiIB9akS3wtDzBBwdETM6E=
 		</data>
 		<key>Frameworks/XsollaSDKPaymentsKit.framework/_CodeSignature/CodeResources</key>
 		<data>
-		tsGqOcXGUDNuqScxie4ZSAkjGOE=
+		Si84MoYEk0aWq78Iu5aCJajuh8s=
 		</data>
 		<key>Headers/PaymentsKitObjectiveC.h</key>
 		<data>
@@ -46,7 +46,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		ky28AHcktybdz4948GWcHIfw3gI=
+		ExAPWzcqAnWEJrnm8VcTfAzn6jQ=
 		</data>
 		<key>Modules/XsollaSDKPaymentsKitObjectiveC.swiftmodule/arm64-apple-ios.swiftdoc</key>
 		<data>
@@ -58,7 +58,7 @@
 		</data>
 		<key>Modules/XsollaSDKPaymentsKitObjectiveC.swiftmodule/arm64-apple-ios.swiftmodule</key>
 		<data>
-		XVXNRfgIyClq56hAUg1h4cDtMAY=
+		jDO+HjvV13CJHjgVvetx2/OUBkI=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -71,56 +71,56 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			k8+IWbg3dmj2o0hNrtvF9ub9vDb/HSmPsLNM7rCjFHA=
+			pswMBRwaIsKJZsKApF61EkqXYcRlJ4lxKYpdSefGeWk=
 			</data>
 		</dict>
 		<key>Frameworks/XsollaSDKPaymentsKit.framework/Frameworks/XsollaSDKUtilities.framework/.swiftlint.yml</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			k8+IWbg3dmj2o0hNrtvF9ub9vDb/HSmPsLNM7rCjFHA=
+			pswMBRwaIsKJZsKApF61EkqXYcRlJ4lxKYpdSefGeWk=
 			</data>
 		</dict>
 		<key>Frameworks/XsollaSDKPaymentsKit.framework/Frameworks/XsollaSDKUtilities.framework/Info.plist</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			f/qxqCgO9cgIb/kIUOAPSsNXcEP+QACLHHUfrYkXnJg=
+			0hv7Y7jl8ZhXwWUPKRu0aG9PHDc7xcymQxzJNLNQ+8Y=
 			</data>
 		</dict>
 		<key>Frameworks/XsollaSDKPaymentsKit.framework/Frameworks/XsollaSDKUtilities.framework/XsollaSDKUtilities</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			eAgkt/GlchR1PXOFm7SaIrm/tLLmWD6qCXVih32q3eE=
+			yWYjC8pxpfrxALdGWpwBeFbZFq0ocwUmJKdCjlNF2Q8=
 			</data>
 		</dict>
 		<key>Frameworks/XsollaSDKPaymentsKit.framework/Frameworks/XsollaSDKUtilities.framework/_CodeSignature/CodeResources</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			sxAVz1AYFOqMNQIqtCGL+k05aMVqzBO1e4POOAsqAhw=
+			EgqL375PZf7YHhnTumVQ/fYUmomJQIrv7khp6NvJrc4=
 			</data>
 		</dict>
 		<key>Frameworks/XsollaSDKPaymentsKit.framework/Info.plist</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			00gj7H9ymL+jaXNNA2okfIevmpe8N2OmdxwbDWh52wk=
+			V0Fp/sNeBrvvveBF0u6ZBKV5RzK8/d3q0KZL3cJJlF0=
 			</data>
 		</dict>
 		<key>Frameworks/XsollaSDKPaymentsKit.framework/XsollaSDKPaymentsKit</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			UaCoBrpxAxL+VrmXRXyz2cuS2NTuFu86ljbpeSXaVyk=
+			IN3yUzIcEQshxzdXCFDu54peT8N3NJcTIVZ+ECUVseY=
 			</data>
 		</dict>
 		<key>Frameworks/XsollaSDKPaymentsKit.framework/_CodeSignature/CodeResources</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			rPfxby6TgS3rrhN4wU0/ADOWVLEDzqBZys3B7YYNEIY=
+			oYPAzrUOJiX91JEsKhkKPm7jPVbxVBVfjru46+HUHI4=
 			</data>
 		</dict>
 		<key>Headers/PaymentsKitObjectiveC.h</key>
@@ -155,7 +155,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			kfyQgScQfZ9QGQkMYiI8KHz1b7Sqw9EJlhtR3g/jeRA=
+			coOV2hSMjXm7pT+8Jmpg+sUloq7PjfmBbsssht17UuA=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>

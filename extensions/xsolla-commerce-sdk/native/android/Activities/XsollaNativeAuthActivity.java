@@ -14,7 +14,6 @@ import com.xsolla.android.login.XLogin;
 import com.xsolla.android.login.callback.FinishSocialCallback;
 import com.xsolla.android.login.callback.StartSocialCallback;
 import com.xsolla.android.login.social.SocialNetwork;
-import com.xsolla.android.login.token.TokenUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,26 +22,22 @@ public class XsollaNativeAuthActivity extends Activity {
     public static String ARG_SOCIAL_NETWORK = "social_network";
     public static String ARG_WITH_LOGOUT = "with_logout";
 
-    private TokenUtils tokenUtils;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        tokenUtils = new TokenUtils(this);
-
         SocialNetwork socialNetwork = SocialNetwork.valueOf(getIntent().getStringExtra(ARG_SOCIAL_NETWORK));
         boolean withLogout = getIntent().getBooleanExtra(ARG_WITH_LOGOUT, false);
 
-        XLogin.startSocialAuth(this, socialNetwork, withLogout, new StartSocialCallback() {
+        XLogin.startSocialAuth(this, socialNetwork, new StartSocialCallback() {
             @Override
             public void onAuthStarted() {
-                Log.d("XsollaAuthActivity", "onAuthStarted");
+                Log.d("XsollaNativeAuthActivity", "onAuthStarted");
             }
 
             @Override
             public void onError(Throwable throwable, String s) {
-                Log.d("XsollaAuthActivity", "onError");
+                Log.d("XsollaNativeAuthActivity", "onError");
                 finish();
             }
         });
@@ -53,19 +48,17 @@ public class XsollaNativeAuthActivity extends Activity {
         super.onActivityResult(requestCode, resultCode, data);
 
         SocialNetwork socialNetwork = SocialNetwork.valueOf(getIntent().getStringExtra(ARG_SOCIAL_NETWORK));
-        boolean withLogout = getIntent().getBooleanExtra(ARG_WITH_LOGOUT, false);
-
-        XLogin.finishSocialAuth(this, socialNetwork, requestCode, resultCode, data, withLogout, new FinishSocialCallback() {
+        XLogin.finishSocialAuth(this, socialNetwork, requestCode, resultCode, data, new FinishSocialCallback() {
             @Override
             public void onAuthSuccess() {
-                Log.d("XsollaAuthActivity", "onAuthSuccess");
+                Log.d("XsollaNativeAuthActivity", "onAuthSuccess");
 
                 JSONObject tokenJson = new JSONObject();
                 try {
                     tokenJson.put("access_token", XLogin.getToken());
-                    tokenJson.put("refresh_token", tokenUtils.getOauthRefreshToken());
+                    tokenJson.put("refresh_token", XLogin.getRefreshToken());
                     tokenJson.put("token_type", "bearer");
-                    tokenJson.put("expires_in", tokenUtils.getOauthExpireTimeUnixSec());
+                    tokenJson.put("expires_in", XLogin.getTokenExpireTime() - System.currentTimeMillis() / 1000);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -81,7 +74,7 @@ public class XsollaNativeAuthActivity extends Activity {
 
             @Override
             public void onAuthCancelled() {
-                Log.d("XsollaAuthActivity", "onAuthCanceled");
+                Log.d("XsollaNativeAuthActivity", "onAuthCanceled");
                 CocosHelper.runOnGameThread(new Runnable() {
                     @Override
                     public void run() {
@@ -93,12 +86,12 @@ public class XsollaNativeAuthActivity extends Activity {
 
             @Override
             public void onAuthError(Throwable throwable, String error) {
-                Log.d("XsollaAuthActivity", "onAuthError");
+                Log.d("XsollaNativeAuthActivity", "onAuthError");
                 String errorMessage = (error != null && !error.isEmpty()) ? error : "Unknown error";
                 CocosHelper.runOnGameThread(new Runnable() {
                     @Override
                     public void run() {
-                        CocosJavascriptJavaBridge.evalString("cc.director.getScene().emit(\"socialAuthError\"," + errorMessage + ")");
+                        CocosJavascriptJavaBridge.evalString("cc.director.getScene().emit(\"socialAuthError\"," + "\"" + errorMessage + "\"" + ")");
                     }
                 });
                 finish();

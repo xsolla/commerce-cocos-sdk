@@ -5,6 +5,10 @@ export class Events {
     static SOCIAL_AUTH_ERROR: string = 'socialAuthError';
     static SOCIAL_AUTH_CANCELED: string = 'socialAuthCanceled';
 
+    static XSOLLA_WIDGET_AUTH_SUCCESS: string = 'xsollaWidgetAuthSuccess';
+    static XSOLLA_WIDGET_AUTH_ERROR: string = 'xsollaWidgetAuthError';
+    static XSOLLA_WIDGET_AUTH_CANCELED: string = 'xsollaWidgetAuthCanceled';
+
     static AVATAR_UPDATE_SUCCESS: string = 'avatarUpdateSuccess';
     static AVATAR_UPDATE_ERROR: string = 'avatarUpdateError';
 

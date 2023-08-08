@@ -9,7 +9,7 @@ const { ccclass, property } = _decorator;
 
 export enum UIScreenType {
     Starting = 0,
-    BasicAuth = 1,
+    MoreLoginOptions = 1,
     AuthByPhone = 2,
     AuthByEmail = 3,
     SocialAuth = 4,
@@ -29,7 +29,7 @@ export class UIManager extends Component {
     startingScreen: Prefab;
 
     @property(Prefab)
-    basicAuth: Prefab;
+    moreLoginOptions: Prefab;
 
     @property(Prefab)
     signUpScreen: Prefab;
@@ -86,14 +86,14 @@ export class UIManager extends Component {
     }
 
     openScreen(screenToOpen:UIScreenType) {
-        this._previousScreen = this._currentScreen;        
+        this._previousScreen = this._currentScreen;
         switch(screenToOpen) {
             case UIScreenType.Starting: {
                 this._currentScreen = instantiate(this.startingScreen);
                 break;
             }
-            case UIScreenType.BasicAuth: {
-                this._currentScreen = instantiate(this.basicAuth);
+            case UIScreenType.MoreLoginOptions: {
+                this._currentScreen = instantiate(this.moreLoginOptions);
                 break;
             }
             case UIScreenType.SignUp: {

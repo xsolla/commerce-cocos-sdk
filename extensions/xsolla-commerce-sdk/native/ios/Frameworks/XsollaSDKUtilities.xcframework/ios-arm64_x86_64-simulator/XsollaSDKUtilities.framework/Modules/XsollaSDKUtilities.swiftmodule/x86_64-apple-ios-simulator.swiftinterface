@@ -71,7 +71,7 @@ open class APIBaseRequest {
   }
   open func createRequest() -> Foundation.URLRequest
   open func createUrl() -> Foundation.URL
-  public typealias QueryParameters = [Swift.String : Swift.String]
+  public typealias QueryParameters = [Swift.String : Swift.CustomStringConvertible?]
   open var specialQueryParameters: XsollaSDKUtilities.APIBaseRequest.QueryParameters {
     get
   }
@@ -141,13 +141,13 @@ public protocol APIRequestProtocol {
   var request: Foundation.URLRequest { get }
   var customJSONDecoder: Foundation.JSONDecoder? { get }
   var errorHandler: Self.ErrorHandler { get }
-  func perform(completionHandler: Self.Callback) -> XsollaSDKUtilities.NetworkTask
+  func perform(_ completionHandler: Self.Callback) -> XsollaSDKUtilities.NetworkTask
   func handleSuccess(model: Self.ResponseModel, completionHandler: Self.Callback)
   func handleFailure(error: Self.ErrorType, completionHandler: Self.Callback)
 }
 extension XsollaSDKUtilities.APIRequestProtocol {
   @discardableResult
-  public func perform(completionHandler: Self.Callback) -> XsollaSDKUtilities.NetworkTask
+  public func perform(_ completionHandler: Self.Callback) -> XsollaSDKUtilities.NetworkTask
 }
 public struct LogCategory : XsollaSDKUtilities.LogCategoryProtocol {
   public let title: Swift.String
@@ -478,11 +478,6 @@ public struct APIEmptyRequestParams : XsollaSDKUtilities.RequestParams {
 }
 extension XsollaSDKUtilities.APIBaseRequest {
   public func createMultipartBody(fileURL: Foundation.URL, fileDataPartParameterName: Swift.String, boundary: Swift.String) throws -> Foundation.Data
-}
-open class APIBaseProxy {
-  final public let apiConfiguration: XsollaSDKUtilities.APIConfigurationProtocol
-  public init(_ apiConfiguration: XsollaSDKUtilities.APIConfigurationProtocol)
-  @objc deinit
 }
 public enum APIError<ErrorModel> : Swift.Error where ErrorModel : XsollaSDKUtilities.APIDecodableErrorModelProtocol {
   case noContent

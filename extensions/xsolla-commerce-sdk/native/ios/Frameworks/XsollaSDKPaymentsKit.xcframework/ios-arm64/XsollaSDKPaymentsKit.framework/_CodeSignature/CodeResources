@@ -6,23 +6,23 @@
 	<dict>
 		<key>.swiftlint.yml</key>
 		<data>
-		4+dUhykytExmluBzLzqo6JttnIc=
+		yCQ4S+suX8abrrdOxNoHT0caJlM=
 		</data>
 		<key>Frameworks/XsollaSDKUtilities.framework/.swiftlint.yml</key>
 		<data>
-		4+dUhykytExmluBzLzqo6JttnIc=
+		yCQ4S+suX8abrrdOxNoHT0caJlM=
 		</data>
 		<key>Frameworks/XsollaSDKUtilities.framework/Info.plist</key>
 		<data>
-		3a7/V2g0j+LKhrMyDSzo66mtTGk=
+		W1TXmyVTSIb+j5cgW26xOMd7uKQ=
 		</data>
 		<key>Frameworks/XsollaSDKUtilities.framework/XsollaSDKUtilities</key>
 		<data>
-		Zc//ppJdKZJqpcjuO7UcamIi7Cg=
+		SVnVXn8GT3izaFwIDzr2Nlg8f/U=
 		</data>
 		<key>Frameworks/XsollaSDKUtilities.framework/_CodeSignature/CodeResources</key>
 		<data>
-		1ijnAM4zqSzk9cvLguLhVUcy/H0=
+		+i+TOQJGPbAqdqhzHHN5aqJBLPc=
 		</data>
 		<key>Headers/PaymentsKit.h</key>
 		<data>
@@ -34,7 +34,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		bQgEykIenv3kkn+MxJBaukYOnus=
+		EMc5gVdfXFXi1h/dv0IE5u/UJns=
 		</data>
 		<key>Modules/XsollaSDKPaymentsKit.swiftmodule/arm64-apple-ios.swiftdoc</key>
 		<data>
@@ -46,7 +46,7 @@
 		</data>
 		<key>Modules/XsollaSDKPaymentsKit.swiftmodule/arm64-apple-ios.swiftmodule</key>
 		<data>
-		2o1VsORYa0g88uyYkrxzP0xo6l8=
+		fgNxn86lKS3kej2FoueQ7g14sis=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -59,35 +59,35 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			k8+IWbg3dmj2o0hNrtvF9ub9vDb/HSmPsLNM7rCjFHA=
+			pswMBRwaIsKJZsKApF61EkqXYcRlJ4lxKYpdSefGeWk=
 			</data>
 		</dict>
 		<key>Frameworks/XsollaSDKUtilities.framework/.swiftlint.yml</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			k8+IWbg3dmj2o0hNrtvF9ub9vDb/HSmPsLNM7rCjFHA=
+			pswMBRwaIsKJZsKApF61EkqXYcRlJ4lxKYpdSefGeWk=
 			</data>
 		</dict>
 		<key>Frameworks/XsollaSDKUtilities.framework/Info.plist</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			f/qxqCgO9cgIb/kIUOAPSsNXcEP+QACLHHUfrYkXnJg=
+			0hv7Y7jl8ZhXwWUPKRu0aG9PHDc7xcymQxzJNLNQ+8Y=
 			</data>
 		</dict>
 		<key>Frameworks/XsollaSDKUtilities.framework/XsollaSDKUtilities</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			KK7se+HLwvCQ7TMb2KVC6cUE2ZpfaTOkAIklH+Cmllo=
+			HA2J+DOsAXGyI7zZKIu9qRuZD7uFvBXaMS+8ub+lLDU=
 			</data>
 		</dict>
 		<key>Frameworks/XsollaSDKUtilities.framework/_CodeSignature/CodeResources</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			sxAVz1AYFOqMNQIqtCGL+k05aMVqzBO1e4POOAsqAhw=
+			EgqL375PZf7YHhnTumVQ/fYUmomJQIrv7khp6NvJrc4=
 			</data>
 		</dict>
 		<key>Headers/PaymentsKit.h</key>
@@ -122,7 +122,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			ZlNAK71UX1B7gCk1rp5+VGNpgAFxPSX/ITv6A2okUFs=
+			ILJC/yPLfqQb0VnBHndeYYJkDBNwDQOudEBcuFF4fcQ=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
