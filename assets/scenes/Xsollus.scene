@@ -119,6 +119,7 @@
     "redirectStatusManualIOS": 0,
     "redirectButtonCaptionIOS": "",
     "facebookAppId": "",
+    "facebookClientToken": "",
     "googleAppId": "",
     "wechatAppId": "",
     "qqAppId": "",
