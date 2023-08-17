@@ -270,6 +270,12 @@ export class XsollaSettingsManager extends Component {
     facebookAppId: String = '';
 
     @property({
+        tooltip: 'Facebook client token (can be obtained on Facebook developer page). Used for native user authentication via Facebook Android application.',
+        group: {name: 'Android', id: 'General'}
+    })
+    facebookClientToken: String = '';
+
+    @property({
         tooltip: 'Google app identifier (can be obtained on Google developer page). Used for native user authentication via Google Android application.',
         group: {name: 'Android', id: 'General'}
     })
@@ -353,10 +359,11 @@ export class XsollaSettingsManager extends Component {
 
         if (sys.platform.toLowerCase() == 'android') {
             jsb.reflection.callStaticMethod("com/cocos/game/XsollaNativeAuth", "xLoginInit",
-                "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V",
+                "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V",
                 Xsolla.settings.loginId,
                 Xsolla.settings.clientId.toString(),
                 this.facebookAppId,
+                this.facebookClientToken,
                 this.googleAppId,
                 this.wechatAppId,
                 this.qqAppId);
