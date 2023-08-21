@@ -62,12 +62,13 @@ export class XsollaSettingsManager extends Component {
     })
     enableInAppBrowser: boolean = true;
 
+    //TEXTREVIEW
     @property ({
-        displayName: 'Payment UI Theme',
-        tooltip: 'User interface theme for the payment interface. To use default themes, enter "default" or "default_dark" values. Or enter the name of the custom theme you configured in Publisher Account to use it.',
+        displayName: 'Payment UI Theme Id',
+        tooltip: 'User interface theme id for the payment interface. To use default themes, enter "63295a9a2e47fab76f7708e1" (light) or "63295aab2e47fab76f7708e3" (dark) values. Or enter the id of the custom theme you configured in Publisher Account to use it.',
         group: {name: 'Pay Station UI WebGL', id: 'Paystation UI'}
     })
-    paymentInterfaceThemeWebGL: string = "default_dark";
+    paymentInterfaceThemeIdWebGL: string = "63295aab2e47fab76f7708e3";
 
     @property ({
         displayName: 'Payment UI Size',
@@ -85,12 +86,13 @@ export class XsollaSettingsManager extends Component {
     @type(Enum(PaymentUiVersion))
     paymentInterfaceVersionWebGL: PaymentUiVersion = PaymentUiVersion.desktop;
 
+    //TEXTREVIEW
     @property ({
-        displayName: 'Payment UI Theme',
-        tooltip: 'User interface theme for the payment interface. To use default themes, enter "default" or "default_dark" values. Or enter the name of the custom theme you configured in Publisher Account to use it.',
+        displayName: 'Payment UI Theme Id',
+        tooltip: 'User interface theme id for the payment interface. To use default themes, enter "63295a9a2e47fab76f7708e1" (light) or "63295aab2e47fab76f7708e3" (dark) values. Or enter the id of the custom theme you configured in Publisher Account to use it.',
         group: {name: 'Pay Station UI Android', id: 'Paystation UI'}
     })
-    paymentInterfaceThemeAndroid: string = "default_dark";
+    paymentInterfaceThemeIdAndroid: string = "63295aab2e47fab76f7708e3";
 
     @property ({
         displayName: 'Payment UI Size',
@@ -108,12 +110,13 @@ export class XsollaSettingsManager extends Component {
     @type(Enum(PaymentUiVersion))
     paymentInterfaceVersionAndroid: PaymentUiVersion = PaymentUiVersion.mobile;
 
+    //TEXTREVIEW
     @property ({
-        displayName: 'Payment UI Theme',
-        tooltip: 'User interface theme for the payment interface. To use default themes, enter "default" or "default_dark" values. Or enter the name of the custom theme you configured in Publisher Account to use it.',
+        displayName: 'Payment UI Theme Id',
+        tooltip: 'User interface theme id for the payment interface. To use default themes, enter "63295a9a2e47fab76f7708e1" (light) or "63295aab2e47fab76f7708e3" (dark) values. Or enter the id of the custom theme you configured in Publisher Account to use it.',
         group: {name: 'Pay Station UI IOS', id: 'Paystation UI'}
     })
-    paymentInterfaceThemeIOS: string = "default_dark";
+    paymentInterfaceThemeIdIOS: string = "63295aab2e47fab76f7708e3";
 
     @property ({
         displayName: 'Payment UI Size',
@@ -323,19 +326,19 @@ export class XsollaSettingsManager extends Component {
         };
 
         let paymentUISettingsWebGL: PaymentUISettings = {
-            theme: this.paymentInterfaceThemeWebGL,
+            theme: this.paymentInterfaceThemeIdWebGL,
             size: this.paymentInterfaceSizeWebGL,
             version: this.paymentInterfaceVersionWebGL,
         };
 
         let paymentUISettingsAndroid: PaymentUISettings = {
-            theme: this.paymentInterfaceThemeAndroid,
+            theme: this.paymentInterfaceThemeIdAndroid,
             size: this.paymentInterfaceSizeAndroid,
             version: this.paymentInterfaceVersionAndroid,
         };
 
         let paymentUISettingsIOS: PaymentUISettings = {
-            theme: this.paymentInterfaceThemeIOS,
+            theme: this.paymentInterfaceThemeIdIOS,
             size: this.paymentInterfaceSizeIOS,
             version: this.paymentInterfaceVersionIOS,
         };
