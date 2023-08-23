@@ -108,7 +108,6 @@ export class XsollaSettingsManager extends Component {
     @type(Enum(PaymentUiVersion))
     paymentInterfaceVersionAndroid: PaymentUiVersion = PaymentUiVersion.mobile;
 
-    //TEXTREVIEW
     @property ({
         displayName: 'Payment UI Theme Id',
         tooltip: 'User interface theme ID for the payment interface. To use default themes, enter "63295a9a2e47fab76f7708e1" (light) or "63295aab2e47fab76f7708e3" (dark) values. Or enter the ID of a custom theme you have configured in Publisher Account to use it.',
