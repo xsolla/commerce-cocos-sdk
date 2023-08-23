@@ -62,10 +62,9 @@ export class XsollaSettingsManager extends Component {
     })
     enableInAppBrowser: boolean = true;
 
-    //TEXTREVIEW
     @property ({
         displayName: 'Payment UI Theme Id',
-        tooltip: 'User interface theme id for the payment interface. To use default themes, enter "63295a9a2e47fab76f7708e1" (light) or "63295aab2e47fab76f7708e3" (dark) values. Or enter the id of the custom theme you configured in Publisher Account to use it.',
+        tooltip: 'User interface theme ID for the payment interface. To use default themes, enter "63295a9a2e47fab76f7708e1" (light) or "63295aab2e47fab76f7708e3" (dark) values. Or enter the ID of a custom theme you have configured in Publisher Account to use it.',
         group: {name: 'Pay Station UI WebGL', id: 'Paystation UI'}
     })
     paymentInterfaceThemeIdWebGL: string = "63295aab2e47fab76f7708e3";
@@ -86,10 +85,9 @@ export class XsollaSettingsManager extends Component {
     @type(Enum(PaymentUiVersion))
     paymentInterfaceVersionWebGL: PaymentUiVersion = PaymentUiVersion.desktop;
 
-    //TEXTREVIEW
     @property ({
         displayName: 'Payment UI Theme Id',
-        tooltip: 'User interface theme id for the payment interface. To use default themes, enter "63295a9a2e47fab76f7708e1" (light) or "63295aab2e47fab76f7708e3" (dark) values. Or enter the id of the custom theme you configured in Publisher Account to use it.',
+        tooltip: 'User interface theme ID for the payment interface. To use default themes, enter "63295a9a2e47fab76f7708e1" (light) or "63295aab2e47fab76f7708e3" (dark) values. Or enter the ID of a custom theme you have configured in Publisher Account to use it.',
         group: {name: 'Pay Station UI Android', id: 'Paystation UI'}
     })
     paymentInterfaceThemeIdAndroid: string = "63295aab2e47fab76f7708e3";
@@ -113,7 +111,7 @@ export class XsollaSettingsManager extends Component {
     //TEXTREVIEW
     @property ({
         displayName: 'Payment UI Theme Id',
-        tooltip: 'User interface theme id for the payment interface. To use default themes, enter "63295a9a2e47fab76f7708e1" (light) or "63295aab2e47fab76f7708e3" (dark) values. Or enter the id of the custom theme you configured in Publisher Account to use it.',
+        tooltip: 'User interface theme ID for the payment interface. To use default themes, enter "63295a9a2e47fab76f7708e1" (light) or "63295aab2e47fab76f7708e3" (dark) values. Or enter the ID of a custom theme you have configured in Publisher Account to use it.',
         group: {name: 'Pay Station UI IOS', id: 'Paystation UI'}
     })
     paymentInterfaceThemeIdIOS: string = "63295aab2e47fab76f7708e3";
