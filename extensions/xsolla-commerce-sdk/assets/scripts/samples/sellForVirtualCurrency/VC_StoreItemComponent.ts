@@ -1,44 +1,71 @@
-
-import { _decorator, Component, Node } from 'cc';
+import { _decorator, assetManager, Button, Component, ImageAsset, Label, Sprite, SpriteFrame, Texture2D } from 'cc';
+import { StoreItem, XsollaCatalog } from 'db://xsolla-commerce-sdk/scripts/api/XsollaCatalog';
+import { TokenStorage } from 'db://xsolla-commerce-sdk/scripts/common/TokenStorage';
+import { OrderTracker } from 'db://xsolla-commerce-sdk/scripts/common/OrderTracker';
 const { ccclass, property } = _decorator;
 
-/**
- * Predefined variables
- * Name = VCStoreItemComponent
- * DateTime = Wed Aug 30 2023 09:27:35 GMT+0300 (Москва, стандартное время)
- * Author = lelka
- * FileBasename = VC_StoreItemComponent.ts
- * FileBasenameNoExtension = VC_StoreItemComponent
- * URL = db://xsolla-commerce-sdk/scripts/samples/sellForRealMoney/VC_StoreItemComponent.ts
- * ManualUrl = https://docs.cocos.com/creator/3.3/manual/en/
- *
- */
- 
-@ccclass('VCStoreItemComponent')
-export class VCStoreItemComponent extends Component {
-    // [1]
-    // dummy = '';
+export namespace sellForVirtualCurrencyItem {
 
-    // [2]
-    // @property
-    // serializableDummy = 0;
+    @ccclass('VC_StoreItemComponent')
+    export class VC_StoreItemComponent extends Component {
 
-    start () {
-        // [3]
+        @property(Sprite)
+        iconSprite: Sprite;
+
+        @property(Label)
+        itemNameLabel: Label;
+
+        @property(Label)
+        itemDescriptionLabel: Label;
+
+        @property(Label)
+        priceLabel: Label;
+
+        @property(Button)
+        buyButton: Button;
+
+        private _data: StoreItem;
+
+        start() {
+            this.buyButton.node.on(Button.EventType.CLICK, this.onBuyClicked, this);
+        }
+
+        init(data: StoreItem) {
+            
+            this._data = data;
+
+            this.itemNameLabel.string = data.name;
+            this.itemDescriptionLabel.string = data.description;
+            
+            if (data.virtual_prices.length > 0) {
+                this.priceLabel.string = data.virtual_prices[0].amount.toString() + ' ' + data.virtual_prices[0].name;
+            } else {
+                this.priceLabel.string = parseFloat(data.price.amount) + ' ' + data.price.currency;
+            }
+
+            assetManager.loadRemote<ImageAsset>(data.image_url, (err, imageAsset) => {
+                if(err == null) {
+                const spriteFrame = new SpriteFrame();
+                const texture = new Texture2D();
+                texture.image = imageAsset;
+                spriteFrame.texture = texture;
+                this.iconSprite.spriteFrame = spriteFrame;
+                } else {
+                    console.log(`Cant load image with url ${data.image_url}`);
+                }
+            });
+        }
+
+        onBuyClicked() {
+            XsollaCatalog.purchaseItemForVirtualCurrency(TokenStorage.getToken().access_token, this._data.sku, this._data.virtual_prices[0].sku, orderId => {
+                OrderTracker.checkPendingOrder(TokenStorage.getToken().access_token, orderId, () => {
+                    console.log('success purchase!');
+                }, error => {
+                    console.log(`Order checking failed - Status code: ${error.status}, Error code: ${error.code}, Error message: ${error.description}`);
+                });
+            }, error => {
+                console.log(error.description);
+            });
+        }
     }
-
-    // update (deltaTime: number) {
-    //     // [4]
-    // }
 }
-
-/**
- * [1] Class member could be defined like this.
- * [2] Use `property` decorator if your want the member to be serializable.
- * [3] Your initialization goes here.
- * [4] Your update function goes here.
- *
- * Learn more about scripting: https://docs.cocos.com/creator/3.3/manual/en/scripting/
- * Learn more about CCClass: https://docs.cocos.com/creator/3.3/manual/en/scripting/ccclass.html
- * Learn more about life-cycle callbacks: https://docs.cocos.com/creator/3.3/manual/en/scripting/life-cycle-callbacks.html
- */
