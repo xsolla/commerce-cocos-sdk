@@ -1,5 +1,17 @@
 # 更改日志
 
+## [0.6.0] - 2023-09-11
+
+### Added
+- `authWithXsollaWidget` SDK method. Allows to open Login widget on mobile platforms
+- samples
+
+### Updated
+- `XsollaSettingsManager` class. Added:
+	- `FacebookClientToken` parameter for project settings. Allows to set up native user authentication via Facebook Android application
+- `XsollaSettingsManager` class. Updated:
+	- The `paymentInterfaceThemeWebGL`, `paymentInterfaceThemeAndroid`, `paymentInterfaceThemeIOS` renamed to `paymentInterfaceThemeIdWebGL`, `paymentInterfaceThemeIdAndroid`, `paymentInterfaceThemeIdIOS` accordingly
+
 ## [0.5.0] - 2023-06-28
 
 ### 更新内容

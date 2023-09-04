@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.6.0] - 2023-09-11
+
+### Added
+- `MoreLoginOptions` screen
+- `LOG IN WITH XSOLLA WIDGET` button on mobile platforms
+
 ## [0.5.0] - 2023-06-28
 
 ### Changed
