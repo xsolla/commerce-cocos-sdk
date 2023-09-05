@@ -1,13 +1,17 @@
 # 更改日志
 
-## 
+## [0.6.0] - 2023-09-11
 
 ### 新增内容
-- 
-- 
+- `authWithXsollaWidget` SDK方法。可在移动平台上打开艾克索拉登录管理器小组件
+- 常见用户场景的代码示例。
 
-### 
-- 
+### 更新内容
+- `XsollaSettingsManager`类： - 项目设置新增`FacebookClientToken`参数。可设置通过Facebook 
+  Android应用进行本机用户认证 - 
+  `paymentInterfaceThemeWebGL`更名为`paymentInterfaceThemeIdWebGL` - 
+  `paymentInterfaceThemeAndroid`更名为`paymentInterfaceThemeIdAndroid` - 
+  `paymentInterfaceThemeIOS`更名为`paymentInterfaceThemeIdIOS`
 
 ## [0.5.0] - 2023-06-28
 
