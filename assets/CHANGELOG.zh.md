@@ -4,7 +4,7 @@
 
 ### 新增内容
 - `MoreLoginOptions`屏幕。可在演示项目中查看所有可用身份认证方式
-- 移动平台新增“LOG IN WITH XSOLLA WIDGET”按钮。可打开艾克索拉登录管理器小组件
+- 移动平台新增`LOG IN WITH XSOLLA WIDGET`按钮。可打开艾克索拉登录管理器小组件
 
 ## [0.5.0] - 2023-06-28
 
