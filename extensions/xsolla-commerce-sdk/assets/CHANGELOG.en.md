@@ -3,13 +3,13 @@
 ## [0.6.0] - 2023-09-11
 
 ### Added
-- `authWithXsollaWidget` SDK method. Allows to open Xsolla Login widget on mobile platforms
+- `authWithXsollaWidget` NativeUtil method. Allows to open Xsolla Login widget on mobile platforms
 - Code samples for most common user scenarios.
 
 ### Updated
 - `XsollaSettingsManager` class:
 
-	- Added `FacebookClientToken` parameter for project settings. Allows to set up native user authentication via Facebook Android application	
+	- Added `FacebookClientToken` parameter for project settings. Allows to set up native user authentication via Facebook Android application
 	- `paymentInterfaceThemeWebGL` renamed to `paymentInterfaceThemeIdWebGL`
 	- `paymentInterfaceThemeAndroid` renamed to `paymentInterfaceThemeIdAndroid`
 	- `paymentInterfaceThemeIOS` renamed to `paymentInterfaceThemeIdIOS`
