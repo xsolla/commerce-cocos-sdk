@@ -3,8 +3,8 @@
 ## [0.6.0] - 2023-09-11
 
 ### Added
-- `MoreLoginOptions` screen
-- `LOG IN WITH XSOLLA WIDGET` button on mobile platforms
+- `MoreLoginOptions` screen. Allows to see all possible authentication options in demo project
+- `LOG IN WITH XSOLLA WIDGET` button on mobile platforms. Allows to open Xsolla Login widget
 
 ## [0.5.0] - 2023-06-28
 
