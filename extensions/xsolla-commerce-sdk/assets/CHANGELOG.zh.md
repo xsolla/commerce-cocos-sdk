@@ -7,11 +7,9 @@
 - 常见用户场景的代码示例。
 
 ### 更新内容
-- `XsollaSettingsManager`类：- 项目设置新增`FacebookClientToken`参数。可设置通过Facebook 
-  Android应用进行本机用户认证 - 
-  `paymentInterfaceThemeWebGL`更名为`paymentInterfaceThemeIdWebGL` - 
-  `paymentInterfaceThemeAndroid`更名为`paymentInterfaceThemeIdAndroid` - 
-  `paymentInterfaceThemeIOS`更名为`paymentInterfaceThemeIdIOS`
+- 
+
+
 
 ## [0.5.0] - 2023-06-28
 
