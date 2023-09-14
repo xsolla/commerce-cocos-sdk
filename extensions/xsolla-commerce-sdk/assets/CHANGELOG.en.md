@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.6.0] - 2023-09-11
+## [0.6.0] - 2023-09-14
 
 ### Added
 - `authWithXsollaWidget` NativeUtil method. Allows to open Xsolla Login widget on mobile platforms

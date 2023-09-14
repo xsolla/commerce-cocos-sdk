@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.6.0] - 2023-09-11
+## [0.6.0] - 2023-09-14
 
 ### Added
 - `MoreLoginOptions` screen. Allows to see all possible authentication options in demo project
