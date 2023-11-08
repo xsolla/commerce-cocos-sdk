@@ -9,7 +9,7 @@ export class OrderTracker {
 
     static createOrderCheckObject(accessToken: string, orderId:number, onSuccess:() => void, onError:(error:CommerceError) => void) {
         let orderCheckObject = new OrderCheckObject();
-        orderCheckObject.init(accessToken, orderId, onSuccess, onError);
+        orderCheckObject.init(accessToken, orderId, true, onSuccess, onError);
         return orderCheckObject;
     }
 
