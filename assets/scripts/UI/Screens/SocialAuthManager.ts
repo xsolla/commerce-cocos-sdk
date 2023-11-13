@@ -72,7 +72,7 @@ export class SocialAuthManager extends Component {
                 socialNetworkItems[i].node.active = true;
             }   
             else {
-                socialNetworkItems[i].node.active = socialNetworkItems[i].data.name.toLowerCase().startsWith(socialNetworkFilter);
+                socialNetworkItems[i].node.active = socialNetworkItems[i].data.name.toLowerCase().startsWith(socialNetworkFilter.toLowerCase());
             }
         }
     }
