@@ -11,15 +11,15 @@ export class OrderCheckObject {
 
     private _shortPollingLifeTime: number;
     private _bShortPollingExpired: boolean = false;
-    private _orderId: number;
     private _accessToken: string;
     private _onSuccess: (orderId: number) => void;
     private _onError: (error:CommerceError) => void;
+    orderId: number;
 
     init(accessToken: string, orderId: number, shouldStartWithCentrifugo: boolean = false,onSuccess:() => void, onError:(error:CommerceError) => void, shortPollingLifeTime: number = 600) {
         
         this._shortPollingLifeTime = Math.max(1, Math.min(shortPollingLifeTime, 3600)); // clamp
-        this._orderId = orderId;
+        this.orderId = orderId;
         this._accessToken = accessToken;
         this._onSuccess = onSuccess;
         this._onError = onError;
@@ -41,7 +41,7 @@ export class OrderCheckObject {
             return;
         }
 
-        if(data.order_id != this._orderId) {
+        if(data.order_id != this.orderId) {
             return;
         }
 
@@ -72,7 +72,7 @@ export class OrderCheckObject {
         }
     }
 
-    onClosed(event:CloseEvent) {
+    onClosed(errorMessage: string) {
         this.activateShortPolling();
     }
 
@@ -91,21 +91,14 @@ export class OrderCheckObject {
 
     startCentrifugoTracking() {
         CentrifugoService.addTracker(this);
-        CentrifugoService.orderStatusUpdated = this.onOrderStatusUpdated.bind(this);
-        CentrifugoService.error = this.onConnectionError.bind(this);
-        CentrifugoService.close = this.onClosed.bind(this);
     }
 
     stopCentrifugoTracking() {
-        console.log('StopCentrifugoTracking');
         CentrifugoService.removeTracker(this);
-        CentrifugoService.orderStatusUpdated.bind(null);
-        CentrifugoService.error.bind(null);
-        CentrifugoService.close.bind(null);
     }
 
     shortPollingCheckOrder() {
-        XsollaOrders.checkOrder(this._accessToken, this._orderId, result => {
+        XsollaOrders.checkOrder(this._accessToken, this.orderId, result => {
             console.log('shortPollingCheckOrder ' + result.status);
             if (result.status == 'new' || result.status == 'paid') {
                 if (this._bShortPollingExpired) {
@@ -121,7 +114,7 @@ export class OrderCheckObject {
                 this._onError({code: 0, description: 'Order canceled.'});
             }
             if (result.status == 'done') {
-                this._onSuccess(this._orderId);
+                this._onSuccess(this.orderId);
             }
         }, error => {
             this._onError(error);

@@ -15,11 +15,8 @@ export class CentrifugoService {
     private static _pingInterval: number = 25;
     private static _timeoutLimit: number = 600;
 
-    public static orderStatusUpdated: (data: OrderStatusData) => void;
-    public static error: () => void;
-    public static close: () => void;
-
     static addTracker(tracker: OrderCheckObject) {
+        console.log(`addTracker ${tracker.orderId}`)
         this._trackers.push(tracker);
         if(this._centrifugoClient == null) {
             this.createCentrifugoClient();
@@ -27,6 +24,7 @@ export class CentrifugoService {
     }
 
     static removeTracker(tracker: OrderCheckObject) {
+        console.log(`removeTracker ${tracker.orderId}`)
         const index = this._trackers.indexOf(tracker, 0);
         if (index > -1) {
             this._trackers.splice(index, 1);
@@ -82,7 +80,7 @@ export class CentrifugoService {
 
         if(receivedObject["push"] != null) {
             let orderStatusMessage: OrderStatusMessage = receivedObject;
-            this.orderStatusUpdated(orderStatusMessage.push.pub.data);
+            this._trackers.forEach(tracker => tracker.onOrderStatusUpdated(orderStatusMessage.push.pub.data));
             return;
         }
 
@@ -94,11 +92,11 @@ export class CentrifugoService {
     }
 
     static onCentrifugoError(errorMessage: string) {
-        this.error();
+        this._trackers.forEach(tracker => tracker.onConnectionError());
     }
 
     static onCentrifugoClosed(errorMessage: string) {
-        this.close();
+        this._trackers.forEach(tracker => tracker.onClosed(errorMessage));
     }
 
     static doPing() {
