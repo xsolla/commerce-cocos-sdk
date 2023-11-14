@@ -7,7 +7,7 @@ import { NativeUtil } from './NativeUtil';
 
 export class BrowserUtil {
 
-    static openPurchaseUI(token: string) {
+    static openPurchaseUI(token: string, onClose?:(isManually: boolean) => void) {
         let sandbox = Xsolla.settings.enableSandbox;
         let url: UrlBuilder;
         if (sandbox) {
@@ -19,17 +19,17 @@ export class BrowserUtil {
 
         if (Xsolla.settings.enableInAppBrowser) {
             if (sys.isMobile) {
-                NativeUtil.openPurchaseUI(token, sandbox);
+                NativeUtil.openPurchaseUI(token, sandbox, onClose);
             }
             else {
-                this.openPaystationWidget(token, sandbox);
+                this.openPaystationWidget(token, sandbox, onClose);
             }
         } else {
             sys.openURL(url.build());
         }
     }
 
-    private static openPaystationWidget(token: string, sandbox: boolean) {
+    private static openPaystationWidget(token: string, sandbox: boolean, onClose?:(isManually: boolean) => void) {
         console.log('openPaystationWidget opened');
         var jsToken = token;
         var isSandbox = sandbox;
@@ -54,12 +54,14 @@ export class BrowserUtil {
             // @ts-ignore 
             XPayStationWidget.on(XPayStationWidget.eventTypes.STATUS, function (event, data) {
                 console.log('openPaystationWidget status event');
+                onClose?.(false);
                 BrowserUtil.closePaystationWidget();
             });
 
             // @ts-ignore 
             XPayStationWidget.on(XPayStationWidget.eventTypes.CLOSE, function (event, data) {
                 console.log('openPaystationWidget close event');
+                onClose?.(true);
                 BrowserUtil.closePaystationWidget();
             });
 

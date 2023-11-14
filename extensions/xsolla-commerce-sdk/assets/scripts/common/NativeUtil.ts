@@ -1,9 +1,10 @@
 // Copyright 2023 Xsolla Inc. All Rights Reserved.
 
-import { sys, Texture2D } from "cc";
+import { director, sys, Texture2D } from "cc";
 import { UserDetailsUpdate } from "../api/XsollaUserAccount";
 import { Xsolla } from "../Xsolla";
 import { TokenStorage } from "./TokenStorage";
+import { Events } from "../core/Events";
 
 export class NativeUtil {
     static authSocial(socialNetworkName: string) {
@@ -67,7 +68,7 @@ export class NativeUtil {
         }
     }
 
-    static openPurchaseUI(token: string, sandbox: boolean) {
+    static openPurchaseUI(token: string, sandbox: boolean, onClose?:(isManually: boolean) => void) {
         if (sys.platform.toLowerCase() == 'ios') {
             jsb.reflection.callStaticMethod("XsollaNativeUtils", "openPurchaseUI:sandbox:redirectUri:",
                 token,
@@ -83,6 +84,11 @@ export class NativeUtil {
                 "app",
                 "xpayment." + NativeUtil.getAppId());
         }
+
+        director.getScene().on(Events.PAYMENT_CLOSE, (isManually: boolean) => {
+            director.getScene().off(Events.PAYMENT_CLOSE);
+            onClose?.(isManually);
+        });
     }
 
     static getAppId() {
