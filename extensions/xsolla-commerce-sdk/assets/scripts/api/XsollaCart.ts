@@ -11,10 +11,9 @@ export class XsollaCart {
 
     /**
      * @en
-     * Returns user’s cart by cart ID.
-     * The current user cart will be used if cart ID is empty.
+     * Returns a list of items from the cart with the specified ID or from the cart of the current user. For each item, complete data is returned.
      * @zh
-     * 按购物车ID返回用户的购物车。
+     * 返回指定ID购物车的商品列表或返回当前用户的购物车商品列表。每个商品均返回完整数据。
      */
     static getCart(cartId:string, locale:string, currency:string, onComplete?:(cartData:CartItemsData) => void, onError?:(error:CommerceError) => void): void {
         let endpoint = cartId == '' ? 'https://store.xsolla.com/api/v2/project/{project_id}/cart' : 'https://store.xsolla.com/api/v2/project/{project_id}/cart/{cart_id}';
@@ -34,10 +33,9 @@ export class XsollaCart {
 
     /**
      * @en
-     * Deletes all items in a specified cart.
-     * The current user cart will be updated if cart ID is empty.
+     * Removes all items from the cart with the specified ID or from the cart of the current user.
      * @zh
-     * 删除指定购物车中的全部商品。
+     * 移除指定ID购物车中的所有商品或移除当前用户购物车中的所有商品。
      */
     static clearCart(cartId:string, onComplete?:() => void, onError?:(error:CommerceError) => void): void {
         let endpoint = cartId == '' ? 'https://store.xsolla.com/api/v2/project/{project_id}/cart/clear' : 'https://store.xsolla.com/api/v2/project/{project_id}/cart/{cart_id}/clear';
@@ -54,10 +52,9 @@ export class XsollaCart {
 
     /**
      * @en
-     * Fills the specific cart with items. If the cart already has an item with the same SKU, the existing item position will be replaced by the passed value.
-     * The current user cart will be updated if cart ID is empty.
+     * Fills the cart with the specified ID or the cart of the current user with items. If there is already an item with the same SKU in the cart, the existing item position will be replaced by the passed value.
      * @zh
-     * 在指定购物车里添加商品。如果购物车中已有具有相同SKU的商品，则现有商品位置将被传入的值替换。
+     * 用商品填充指定ID的购物车或填充当前用户的购物车。如购物车中已有相同SKU的商品，则用传入的值替换现有商品的位置。
      */
     static fillCart(cartId:string, items:Array<CartItem>, onComplete?:() => void, onError?:(error:CommerceError) => void): void {
         let fillItems = items.map((item) => {
@@ -85,10 +82,9 @@ export class XsollaCart {
 
     /**
      * @en
-     * Updates an existing cart item or creates the one in the specified cart.
-     * The current user cart will be updated if cart ID is empty.
+     * Updates the quantity of a previously added item in the cart with the specified ID or in the current user cart. If there is no item with the specified SKU in the cart, it will be added.
      * @zh
-     * 更新现有的购物车商品或在指定购物车中创建商品。
+     * 更新指定ID购物车或当前用户购物车中之前添加的商品的数量。如购物车中没有指定SKU的商品，则添加该商品。
      */
     static updateItemInCart(cartId:string, itemSku:string, quantity:number, onComplete?:() => void, onError?:(error:CommerceError) => void): void {
         let body = {
@@ -110,10 +106,9 @@ export class XsollaCart {
 
     /**
      * @en
-     * Removes an item from the specified cart.
-     * The current user cart will be updated if cart ID is empty.
+     * Removes the item from the cart with the specified ID or from the cart of the current user.
      * @zh
-     * 从指定购物车中删除一个商品。
+     * 移除指定ID购物车中的商品或移除当前用户购物车中的商品。
      */
     static removeItemFromCart(cartId:string, itemSku:string, onComplete?:() => void, onError?:(error:CommerceError) => void): void {
         let endpoint = cartId == '' ? 'https://store.xsolla.com/api/v2/project/{project_id}/cart/item/{item_sku}' : 'https://store.xsolla.com/api/v2/project/{project_id}/cart/{cart_id}/item/{item_sku}';
@@ -199,10 +194,9 @@ export class XsollaCart {
 
     /**
      * @en
-     * Initiates a cart purchase session and fetches a token for payment console.
-     * The current user cart will be used if cart ID is empty.
+     * Launches purchase process for the cart with the specified ID or for the cart of the current user. This method encapsulates methods for creating an order, opening a payment UI, and tracking the order status.
      * @zh
-     * 发起购物车购买会话并获取支付控制台的令牌。
+     * 启动指定ID购物车或当前用户购物车的购买流程。此方法会封装创建订单、打开支付UI和跟踪订单状态的方法。
      */
      static fetchCartPaymentToken(authToken:string, cartId:string, currency?:string, country?:string, locale?:string, customParameters?:object, externalId?:string, onComplete?:(tokenResult: PaymentTokenResult) => void, onError?:(error:CommerceError) => void): void {
         let body = {
