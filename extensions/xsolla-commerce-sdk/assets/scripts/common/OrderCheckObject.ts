@@ -73,6 +73,7 @@ export class OrderCheckObject {
     }
 
     onClosed(errorMessage: string) {
+        CentrifugoService.removeTracker(this);
         this.activateShortPolling();
     }
 

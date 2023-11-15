@@ -1,5 +1,6 @@
 // Copyright 2023 Xsolla Inc. All Rights Reserved.
 
+import { Game, game } from "cc";
 import { Xsolla } from "../Xsolla";
 import { CentrifugoClient } from "./CentrifugoClient";
 import { OrderCheckObject } from "./OrderCheckObject";
@@ -16,40 +17,53 @@ export class CentrifugoService {
     private static _timeoutLimit: number = 600;
 
     static addTracker(tracker: OrderCheckObject) {
-        console.log(`addTracker ${tracker.orderId}`)
-        this._trackers.push(tracker);
-        if(this._centrifugoClient == null) {
-            this.createCentrifugoClient();
+        console.log(`addTracker ${tracker.orderId}`);
+        CentrifugoService._trackers.push(tracker);
+        if(CentrifugoService._centrifugoClient == null) {
+            CentrifugoService.createCentrifugoClient();
         }
     }
 
     static removeTracker(tracker: OrderCheckObject) {
-        console.log(`removeTracker ${tracker.orderId}`)
-        const index = this._trackers.indexOf(tracker, 0);
+        const index = CentrifugoService._trackers.indexOf(tracker, 0);
         if (index > -1) {
-            this._trackers.splice(index, 1);
+            CentrifugoService._trackers.splice(index, 1);
+            console.log(`removeTracker ${tracker.orderId}`);
         }
-        if(this._trackers.length == 0 && this._centrifugoClient != null) {
-            this.terminateCentrifugoClient();
+        if(CentrifugoService._trackers.length == 0 && CentrifugoService._centrifugoClient != null) {
+            CentrifugoService.terminateCentrifugoClient();
         }
     }
 
     static createCentrifugoClient() {
-        this._centrifugoClient = new CentrifugoClient();
-        this._centrifugoClient.onOpen = this.onCentrifugoOpen.bind(this);
-        this._centrifugoClient.onMessageReceived = this.OnCentrifugoMessageReceived.bind(this);
-        this._centrifugoClient.onError = this.onCentrifugoError.bind(this);
-        this._centrifugoClient.onClose = this.onCentrifugoClosed.bind(this);
-        this._centrifugoClient.connect();
+        CentrifugoService._centrifugoClient = new CentrifugoClient();
+        CentrifugoService._centrifugoClient.onOpen = CentrifugoService.onCentrifugoOpen.bind(CentrifugoService);
+        CentrifugoService._centrifugoClient.onMessageReceived = CentrifugoService.OnCentrifugoMessageReceived.bind(CentrifugoService);
+        CentrifugoService._centrifugoClient.onError = CentrifugoService.onCentrifugoError.bind(CentrifugoService);
+        CentrifugoService._centrifugoClient.onClose = CentrifugoService.onCentrifugoClosed.bind(CentrifugoService);
+        CentrifugoService._centrifugoClient.connect();
+
+        game.on(Game.EVENT_SHOW, CentrifugoService.onDisconnectClient);
+        game.on(Game.EVENT_HIDE, CentrifugoService.onConnectClient);
+    }
+
+    static onDisconnectClient() {
+
+    }
+
+    static onConnectClient() {
+
     }
 
     static terminateCentrifugoClient() {
-        this._centrifugoClient.onMessageReceived.bind(null);
-        this._centrifugoClient.onError.bind(null);
-        this._centrifugoClient.onClose.bind(null);
-        this._centrifugoClient.disconnect();
-        this._centrifugoClient = null;
-        clearTimeout(this._centrifugoTimerInverval);
+        CentrifugoService._centrifugoClient.onMessageReceived.bind(null);
+        CentrifugoService._centrifugoClient.onError.bind(null);
+        CentrifugoService._centrifugoClient.onClose.bind(null);
+        CentrifugoService._centrifugoClient.disconnect();
+        CentrifugoService._centrifugoClient = null;
+        clearTimeout(CentrifugoService._centrifugoTimerInverval);
+        game.off(Game.EVENT_SHOW, CentrifugoService.onDisconnectClient);
+        game.off(Game.EVENT_HIDE, CentrifugoService.onConnectClient);
         console.log('Centrifugo client terminated');
     }
 
@@ -67,20 +81,21 @@ export class CentrifugoService {
             id: id
         }
 
-        this._centrifugoClient.send(JSON.stringify(connectionMessage));
+        CentrifugoService._centrifugoClient.send(JSON.stringify(connectionMessage));
 
-        this._centrifugoTimerInverval = setTimeout(this.doPing, 1 * 1000);
+        CentrifugoService._centrifugoTimerInverval = setTimeout(CentrifugoService.doPing, 1 * 1000);
+        
         console.log('Centrifugo client created');
     }
 
     static OnCentrifugoMessageReceived(message: string) {
-        this._pingCounter = 0;
+        CentrifugoService._pingCounter = 0;
 
         let receivedObject = JSON.parse(message);
 
         if(receivedObject["push"] != null) {
             let orderStatusMessage: OrderStatusMessage = receivedObject;
-            this._trackers.forEach(tracker => tracker.onOrderStatusUpdated(orderStatusMessage.push.pub.data));
+            CentrifugoService._trackers.forEach(tracker => tracker.onOrderStatusUpdated(orderStatusMessage.push.pub.data));
             return;
         }
 
@@ -92,29 +107,29 @@ export class CentrifugoService {
     }
 
     static onCentrifugoError(errorMessage: string) {
-        this._trackers.forEach(tracker => tracker.onConnectionError());
+        CentrifugoService._trackers.forEach(tracker => tracker.onConnectionError());
     }
 
     static onCentrifugoClosed(errorMessage: string) {
-        this._trackers.forEach(tracker => tracker.onClosed(errorMessage));
+        CentrifugoService._trackers.forEach(tracker => tracker.onClosed(errorMessage));
     }
 
     static doPing() {
-        this._pingCounter += 1;
-        if(this._pingCounter >= this._pingInterval) {
-            this._pingCounter = 0;
-            this._centrifugoClient.sendPing();
-            if(this._centrifugoClient.isAlive()) {
-                this._timeoutCounter = 0;
+        CentrifugoService._pingCounter += 1;
+        if(CentrifugoService._pingCounter >= CentrifugoService._pingInterval) {
+            CentrifugoService._pingCounter = 0;
+            CentrifugoService._centrifugoClient.sendPing();
+            if(CentrifugoService._centrifugoClient.isAlive()) {
+                CentrifugoService._timeoutCounter = 0;
             } else {
-                this._timeoutCounter += this._pingInterval;
-                if(this._timeoutCounter >= this._timeoutLimit) {
+                CentrifugoService._timeoutCounter += CentrifugoService._pingInterval;
+                if(CentrifugoService._timeoutCounter >= CentrifugoService._timeoutLimit) {
                     console.log('Centrifugo connection timeout limit exceeded.');
-                    this.onCentrifugoClosed('Network problems');
+                    CentrifugoService.onCentrifugoClosed('Network problems');
                 }
             }
         }
-        this._centrifugoTimerInverval = setTimeout(this.doPing, 1 * 1000);
+        CentrifugoService._centrifugoTimerInverval = setTimeout(CentrifugoService.doPing, 1 * 1000);
     }
 }
 

@@ -29,7 +29,9 @@ export class CentrifugoClient {
         this._websocket.onerror = null;
         this._websocket.onmessage = null;
         this._websocket.onclose = null;
-        this._websocket.close();
+        if(this._websocket.readyState != WebSocket.CLOSED) {
+            this._websocket.close();
+        }
         this._websocket = null;
     }
 

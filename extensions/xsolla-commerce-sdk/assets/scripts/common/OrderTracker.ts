@@ -16,14 +16,14 @@ export class OrderTracker {
     static checkPendingOrder(accessToken: string, orderId: number, onSuccess: () => void, onError: (error: CommerceError) => void) {
         let orderCheckObject = OrderTracker.createOrderCheckObject(accessToken, orderId, () => {
             onSuccess();
-            this._cachedOrderCheckObjects = this._cachedOrderCheckObjects.filter(obj => obj !== orderCheckObject);
+            OrderTracker._cachedOrderCheckObjects = OrderTracker._cachedOrderCheckObjects.filter(obj => obj !== orderCheckObject);
             orderCheckObject.destroy();
         }, error => {
             onError(error);
-            this._cachedOrderCheckObjects = this._cachedOrderCheckObjects.filter(obj => obj !== orderCheckObject);
+            OrderTracker._cachedOrderCheckObjects = OrderTracker._cachedOrderCheckObjects.filter(obj => obj !== orderCheckObject);
             orderCheckObject.destroy();
         });
-        this._cachedOrderCheckObjects.push(orderCheckObject);
+        OrderTracker._cachedOrderCheckObjects.push(orderCheckObject);
     }
 }
 
