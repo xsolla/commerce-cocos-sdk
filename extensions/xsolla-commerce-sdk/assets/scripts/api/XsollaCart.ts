@@ -194,9 +194,9 @@ export class XsollaCart {
 
     /**
      * @en
-     * Launches purchase process for the cart with the specified ID or for the cart of the current user. This method encapsulates methods for creating an order, opening a payment UI, and tracking the order status.
+     * 	Creates an order with items from the cart with the specified ID or from the cart of the current user. Returns the payment token and order ID.
      * @zh
-     * 启动指定ID购物车或当前用户购物车的购买流程。此方法会封装创建订单、打开支付UI和跟踪订单状态的方法。
+     * 用指定ID购物车中的商品创建订单或用当前用户购物车中的商品创建订单。返回支付令牌和订单ID。
      */
      static fetchCartPaymentToken(authToken:string, cartId:string, currency?:string, country?:string, locale?:string, customParameters?:object, externalId?:string, onComplete?:(tokenResult: PaymentTokenResult) => void, onError?:(error:CommerceError) => void): void {
         let body = {
