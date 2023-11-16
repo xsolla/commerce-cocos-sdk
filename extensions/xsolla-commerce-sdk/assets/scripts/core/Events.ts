@@ -17,4 +17,6 @@ export class Events {
 
     static SOCIAL_NETWORK_LINKING_SUCCESS: string = 'socialNetworkLinkingSuccess';
     static SOCIAL_NETWORK_LINKING_ERROR: string = 'socialNetworkLinkingError';
+
+    static PAYMENT_CLOSE: string = 'paymentClose';
 }

@@ -219,6 +219,13 @@
             if(error != nil) {
                 NSLog(@"Error code: %ld", error.code);
             }
+            
+            NSString *isManually = error != nil && error.code == NSError.cancelledByUserError ? @"true" : @"false";
+            NSString *script = [NSString stringWithFormat: @"cc.director.getScene().emit(\"paymentClose\", \"%@\")", isManually];
+            const char* scriptStr = [XsollaUtils createCStringFrom:script];
+            cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
+                se::ScriptEngine::getInstance()->evalString(scriptStr);
+            });
         }];
     } else {
         NSLog(@"Open purchase web view is not supported for current iOS version.");

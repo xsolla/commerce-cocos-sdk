@@ -5,7 +5,10 @@ package com.cocos.game;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
+import com.cocos.lib.CocosHelper;
+import com.cocos.lib.CocosJavascriptJavaBridge;
 import com.xsolla.android.payments.XPayments;
 import com.xsolla.android.payments.data.AccessToken;
 
@@ -43,6 +46,17 @@ public class XsollaNativePaymentsActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        XPayments.Result result = data.getParcelableExtra("result");
+        String isManually = result.getStatus() == XPayments.Status.CANCELLED ? "true" : "false";
+
+        Log.d("XsollaNativePaymentsActivity", "payment was closed with status: " + result.getStatus());
+        CocosHelper.runOnGameThread(new Runnable() {
+            @Override
+            public void run() {
+                CocosJavascriptJavaBridge.evalString("cc.director.getScene().emit(\"paymentClose\"," + "\"" +  isManually + "\"" + ")");
+            }
+        });
         finish();
     }
 }
