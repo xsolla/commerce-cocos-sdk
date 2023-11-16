@@ -11,19 +11,20 @@ export class XsollaCart {
 
     /**
      * @en
-     * Returns user’s cart by cart ID.
+     * Returns a list of items from the cart with the specified ID or from the cart of the current user. For each item, complete data is returned.
      * @zh
-     * 按购物车ID返回用户的购物车。
+     * 返回指定ID购物车的商品列表或返回当前用户的购物车商品列表。每个商品均返回完整数据。
      */
-    static getCartById(cartId:string, locale:string, currency:string, onComplete?:(cartData:CartItemsData) => void, onError?:(error:CommerceError) => void): void {
-        let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{project_id}/cart/{cart_id}')
+    static getCart(authToken:string, cartId:string, locale:string, currency:string, onComplete?:(cartData:CartItemsData) => void, onError?:(error:CommerceError) => void): void {
+        let endpoint = cartId == '' ? 'https://store.xsolla.com/api/v2/project/{project_id}/cart' : 'https://store.xsolla.com/api/v2/project/{project_id}/cart/{cart_id}';
+        let url = new UrlBuilder(endpoint)
             .setPathParam('project_id', Xsolla.settings.projectId)
             .setPathParam('cart_id', cartId)
             .addStringParam('locale', locale)
             .addStringParam('currency', currency)
             .build();
 
-        let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, null, result => {
+        let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, authToken, result => {
             let itemsData:CartItemsData = JSON.parse(result);
             onComplete?.(itemsData);
         }, handleCommerceError(onError));
@@ -32,37 +33,18 @@ export class XsollaCart {
 
     /**
      * @en
-     * Returns the current user's cart.
+     * Removes all items from the cart with the specified ID or from the cart of the current user.
      * @zh
-     * 返回当前用户的购物车。
+     * 移除指定ID购物车中的所有商品或移除当前用户购物车中的所有商品。
      */
-    static getCart(locale:string, currency:string, onComplete?:(cartData:CartItemsData) => void, onError?:(error:CommerceError) => void): void {
-        let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{project_id}/cart')
-            .setPathParam('project_id', Xsolla.settings.projectId)
-            .addStringParam('locale', locale)
-            .addStringParam('currency', currency)
-            .build();
-
-        let request = HttpUtil.createRequest(url, 'GET', RequestContentType.None, null, result => {
-            let itemsData:CartItemsData = JSON.parse(result);
-            onComplete?.(itemsData);
-        }, handleCommerceError(onError));
-        request.send();
-    }
-
-    /**
-     * @en
-     * Deletes all items in a specified cart.
-     * @zh
-     * 删除指定购物车中的全部商品。
-     */
-    static clearCartById(cartId:string, onComplete?:() => void, onError?:(error:CommerceError) => void): void {
-        let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{project_id}/cart/{cart_id}/clear')
+    static clearCart(authToken:string, cartId:string, onComplete?:() => void, onError?:(error:CommerceError) => void): void {
+        let endpoint = cartId == '' ? 'https://store.xsolla.com/api/v2/project/{project_id}/cart/clear' : 'https://store.xsolla.com/api/v2/project/{project_id}/cart/{cart_id}/clear';
+        let url = new UrlBuilder(endpoint)
             .setPathParam('project_id', Xsolla.settings.projectId)
             .setPathParam('cart_id', cartId)
             .build();
 
-        let request = HttpUtil.createRequest(url, 'PUT', RequestContentType.None, null, result => {
+        let request = HttpUtil.createRequest(url, 'PUT', RequestContentType.None, authToken, result => {
             onComplete?.();
         }, handleCommerceError(onError));
         request.send();
@@ -70,28 +52,11 @@ export class XsollaCart {
 
     /**
      * @en
-     * Deletes all items in the current user's cart.
+     * Fills the cart with the specified ID or the cart of the current user with items. If there is already an item with the same SKU in the cart, the existing item position will be replaced by the passed value.
      * @zh
-     * 删除当前用户购物车中的全部商品。
+     * 用商品填充指定ID的购物车或填充当前用户的购物车。如购物车中已有相同SKU的商品，则用传入的值替换现有商品的位置。
      */
-    static clearCart(onComplete?:() => void, onError?:(error:CommerceError) => void): void {
-        let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{project_id}/cart/clear')
-            .setPathParam('project_id', Xsolla.settings.projectId)
-            .build();
-
-        let request = HttpUtil.createRequest(url, 'PUT', RequestContentType.None, null, result => {
-            onComplete?.();
-        }, handleCommerceError(onError));
-        request.send();
-    }
-
-    /**
-     * @en
-     * Fills the specific cart with items. If the cart already has an item with the same SKU, the existing item position will be replaced by the passed value.
-     * @zh
-     * 在指定购物车里添加商品。如果购物车中已有具有相同SKU的商品，则现有商品位置将被传入的值替换。
-     */
-    static fillCartById(cartId:string, items:Array<CartItem>, onComplete?:() => void, onError?:(error:CommerceError) => void): void {
+    static fillCart(authToken:string, cartId:string, items:Array<CartItem>, onComplete?:() => void, onError?:(error:CommerceError) => void): void {
         let fillItems = items.map((item) => {
             return {
                 sku: item.sku,
@@ -103,12 +68,13 @@ export class XsollaCart {
             items: fillItems
         };
 
-        let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{project_id}/cart/{cart_id}/fill')
+        let endpoint = cartId == '' ? 'https://store.xsolla.com/api/v2/project/{project_id}/cart/fill' : 'https://store.xsolla.com/api/v2/project/{project_id}/cart/{cart_id}/fill';
+        let url = new UrlBuilder(endpoint)
             .setPathParam('project_id', Xsolla.settings.projectId)
             .setPathParam('cart_id', cartId)
             .build();
 
-        let request = HttpUtil.createRequest(url, 'PUT', RequestContentType.Json, null, result => {
+        let request = HttpUtil.createRequest(url, 'PUT', RequestContentType.Json, authToken, result => {
             onComplete?.();
         }, handleCommerceError(onError));
         request.send(JSON.stringify(body));
@@ -116,50 +82,23 @@ export class XsollaCart {
 
     /**
      * @en
-     * Fills the cart with items. If the cart already has an item with the same SKU, the existing item will be replaced by the passed value.
+     * Updates the quantity of a previously added item in the cart with the specified ID or in the current user cart. If there is no item with the specified SKU in the cart, it will be added.
      * @zh
-     * 在购物车里添加商品。如果购物车中已有具有相同SKU的商品，则现有商品将被传入的值替换。
+     * 更新指定ID购物车或当前用户购物车中之前添加的商品的数量。如购物车中没有指定SKU的商品，则添加该商品。
      */
-    static fillCart(items:Array<CartItem>, onComplete?:() => void, onError?:(error:CommerceError) => void): void {
-        let fillItems = items.map((item) => {
-            return {
-                sku: item.sku,
-                quantity: item.quantity
-            }
-        });
-
-        let body = {
-            items: fillItems
-        };
-
-        let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{project_id}/cart/fill')
-            .setPathParam('project_id', Xsolla.settings.projectId)
-            .build();
-
-        let request = HttpUtil.createRequest(url, 'PUT', RequestContentType.None, null, result => {
-            onComplete?.();
-        }, handleCommerceError(onError));
-        request.send(JSON.stringify(body));
-    }
-
-    /**
-     * @en
-     * Updates an existing cart item or creates the one in the specified cart.
-     * @zh
-     * 更新现有的购物车商品或在指定购物车中创建商品。
-     */
-    static updateItemInCartById(cartId:string, itemSku:string, quantity:number, onComplete?:() => void, onError?:(error:CommerceError) => void): void {
+    static updateItemInCart(authToken:string, cartId:string, itemSku:string, quantity:number, onComplete?:() => void, onError?:(error:CommerceError) => void): void {
         let body = {
             quantity: quantity
         };
 
-        let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{project_id}/cart/{cart_id}/item/{item_sku}')
+        let endpoint = cartId == '' ? 'https://store.xsolla.com/api/v2/project/{project_id}/cart/item/{item_sku}' : 'https://store.xsolla.com/api/v2/project/{project_id}/cart/{cart_id}/item/{item_sku}';
+        let url = new UrlBuilder(endpoint)
             .setPathParam('project_id', Xsolla.settings.projectId)
             .setPathParam('cart_id', cartId)
             .setPathParam('item_sku', itemSku)
             .build();
 
-        let request = HttpUtil.createRequest(url, 'PUT', RequestContentType.Json, null, result => {
+        let request = HttpUtil.createRequest(url, 'PUT', RequestContentType.Json, authToken, result => {
             onComplete?.();
         }, handleCommerceError(onError));
         request.send(JSON.stringify(body));
@@ -167,58 +106,19 @@ export class XsollaCart {
 
     /**
      * @en
-     * Updates an existing cart item or creates the one in the current user's cart.
+     * Removes the item from the cart with the specified ID or from the cart of the current user.
      * @zh
-     * 更新现有的购物车商品或在当前用户的购物车中创建商品。
+     * 移除指定ID购物车中的商品或移除当前用户购物车中的商品。
      */
-    static updateItemInCart(itemSku:string, quantity:number, onComplete?:() => void, onError?:(error:CommerceError) => void): void {
-        let body = {
-            quantity: quantity
-        };
-
-        let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{project_id}/cart/item/{item_sku}')
-            .setPathParam('project_id', Xsolla.settings.projectId)
-            .setPathParam('item_sku', itemSku)
-            .build();
-
-        let request = HttpUtil.createRequest(url, 'PUT', RequestContentType.None, null, result => {
-            onComplete?.();
-        }, handleCommerceError(onError));
-        request.send(JSON.stringify(body));
-    }
-
-    /**
-     * @en
-     * Removes an item from the specified cart.
-     * @zh
-     * 从指定购物车中删除一个商品。
-     */
-    static removeItemFromCartById(cartId:string, itemSku:string, onComplete?:() => void, onError?:(error:CommerceError) => void): void {
-        let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{project_id}/cart/{cart_id}/item/{item_sku}')
+    static removeItemFromCart(authToken:string, cartId:string, itemSku:string, onComplete?:() => void, onError?:(error:CommerceError) => void): void {
+        let endpoint = cartId == '' ? 'https://store.xsolla.com/api/v2/project/{project_id}/cart/item/{item_sku}' : 'https://store.xsolla.com/api/v2/project/{project_id}/cart/{cart_id}/item/{item_sku}';
+        let url = new UrlBuilder(endpoint)
             .setPathParam('project_id', Xsolla.settings.projectId)
             .setPathParam('cart_id', cartId)
             .setPathParam('item_sku', itemSku)
             .build();
 
-        let request = HttpUtil.createRequest(url, 'DELETE', RequestContentType.None, null, result => {
-            onComplete?.();
-        }, handleCommerceError(onError));
-        request.send();
-    }
-
-    /**
-     * @en
-     * Removes an item from the current user's cart.
-     * @zh
-     * 从当前用户的购物车中删除一个商品。
-     */
-    static removeItemFromCart(itemSku:string, onComplete?:() => void, onError?:(error:CommerceError) => void): void {
-        let url = new UrlBuilder('https://store.xsolla.com/api/v2/project/{project_id}/cart/item/{item_sku}')
-            .setPathParam('project_id', Xsolla.settings.projectId)
-            .setPathParam('item_sku', itemSku)
-            .build();
-
-        let request = HttpUtil.createRequest(url, 'DELETE', RequestContentType.None, null, result => {
+        let request = HttpUtil.createRequest(url, 'DELETE', RequestContentType.None, authToken, result => {
             onComplete?.();
         }, handleCommerceError(onError));
         request.send();
@@ -294,9 +194,9 @@ export class XsollaCart {
 
     /**
      * @en
-     * Initiates a cart purchase session and fetches a token for payment console.
+     * 	Creates an order with items from the cart with the specified ID or from the cart of the current user. Returns the payment token and order ID.
      * @zh
-     * 发起购物车购买会话并获取支付控制台的令牌。
+     * 用指定ID购物车中的商品创建订单或用当前用户购物车中的商品创建订单。返回支付令牌和订单ID。
      */
      static fetchCartPaymentToken(authToken:string, cartId:string, currency?:string, country?:string, locale?:string, customParameters?:object, externalId?:string, onComplete?:(tokenResult: PaymentTokenResult) => void, onError?:(error:CommerceError) => void): void {
         let body = {
@@ -310,11 +210,11 @@ export class XsollaCart {
 
         body.settings.external_id = externalId;
 
-        let endpoint = cartId == undefined ? 'https://store.xsolla.com/api/v2/project/{project_id}/payment/cart':'https://store.xsolla.com/api/v2/project/{project_id}/payment/cart/{cartId}';
+        let endpoint = cartId == '' ? 'https://store.xsolla.com/api/v2/project/{project_id}/payment/cart':'https://store.xsolla.com/api/v2/project/{project_id}/payment/cart/{cart_id}';
 
         let url = new UrlBuilder(endpoint)
             .setPathParam('project_id', Xsolla.settings.projectId)
-            .setPathParam('cartId', cartId)
+            .setPathParam('cart_id', cartId)
             .build();
 
         let request = HttpUtil.createRequest(url, 'POST', RequestContentType.Json, authToken, result => {
