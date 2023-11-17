@@ -16,7 +16,7 @@ export class OrderCheckObject {
     private _onError: (error:CommerceError) => void;
     orderId: number;
 
-    init(accessToken: string, orderId: number, shouldStartWithCentrifugo: boolean = false,onSuccess:() => void, onError:(error:CommerceError) => void, shortPollingLifeTime: number = 600) {
+    init(accessToken: string, orderId: number, shouldStartWithCentrifugo: boolean = false, onSuccess:() => void, onError:(error:CommerceError) => void, shortPollingLifeTime: number = 600) {
         
         this._shortPollingLifeTime = Math.max(1, Math.min(shortPollingLifeTime, 3600)); // clamp
         this.orderId = orderId;

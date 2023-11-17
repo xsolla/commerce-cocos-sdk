@@ -1,6 +1,5 @@
 // Copyright 2023 Xsolla Inc. All Rights Reserved.
 
-import { Game, game } from "cc";
 import { Xsolla } from "../Xsolla";
 import { CentrifugoClient } from "./CentrifugoClient";
 import { OrderCheckObject } from "./OrderCheckObject";
@@ -42,17 +41,6 @@ export class CentrifugoService {
         CentrifugoService._centrifugoClient.onError = CentrifugoService.onCentrifugoError.bind(CentrifugoService);
         CentrifugoService._centrifugoClient.onClose = CentrifugoService.onCentrifugoClosed.bind(CentrifugoService);
         CentrifugoService._centrifugoClient.connect();
-
-        game.on(Game.EVENT_SHOW, CentrifugoService.onDisconnectClient);
-        game.on(Game.EVENT_HIDE, CentrifugoService.onConnectClient);
-    }
-
-    static onDisconnectClient() {
-
-    }
-
-    static onConnectClient() {
-
     }
 
     static terminateCentrifugoClient() {
@@ -62,8 +50,6 @@ export class CentrifugoService {
         CentrifugoService._centrifugoClient.disconnect();
         CentrifugoService._centrifugoClient = null;
         clearTimeout(CentrifugoService._centrifugoTimerInverval);
-        game.off(Game.EVENT_SHOW, CentrifugoService.onDisconnectClient);
-        game.off(Game.EVENT_HIDE, CentrifugoService.onConnectClient);
         console.log('Centrifugo client terminated');
     }
 

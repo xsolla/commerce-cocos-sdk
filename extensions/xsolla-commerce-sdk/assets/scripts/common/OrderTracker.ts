@@ -2,6 +2,7 @@
 
 import { OrderCheckObject } from "./OrderCheckObject";
 import { CommerceError } from "../core/Error";
+import { sys } from "cc";
 
 export class OrderTracker {
    
@@ -9,7 +10,7 @@ export class OrderTracker {
 
     static createOrderCheckObject(accessToken: string, orderId:number, onSuccess:() => void, onError:(error:CommerceError) => void) {
         let orderCheckObject = new OrderCheckObject();
-        orderCheckObject.init(accessToken, orderId, true, onSuccess, onError);
+        orderCheckObject.init(accessToken, orderId, !sys.isMobile, onSuccess, onError);
         return orderCheckObject;
     }
 

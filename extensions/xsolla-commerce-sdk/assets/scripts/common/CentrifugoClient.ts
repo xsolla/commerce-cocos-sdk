@@ -25,10 +25,6 @@ export class CentrifugoClient {
     }
 
     disconnect() {
-        this._websocket.onopen = null;
-        this._websocket.onerror = null;
-        this._websocket.onmessage = null;
-        this._websocket.onclose = null;
         if(this._websocket.readyState != WebSocket.CLOSED) {
             this._websocket.close();
         }
