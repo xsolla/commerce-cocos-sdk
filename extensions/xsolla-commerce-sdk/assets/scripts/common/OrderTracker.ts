@@ -2,6 +2,7 @@
 
 import { OrderCheckObject } from "./OrderCheckObject";
 import { CommerceError } from "../core/Error";
+import { sys } from "cc";
 
 export class OrderTracker {
    
@@ -9,21 +10,21 @@ export class OrderTracker {
 
     static createOrderCheckObject(accessToken: string, orderId:number, onSuccess:() => void, onError:(error:CommerceError) => void) {
         let orderCheckObject = new OrderCheckObject();
-        orderCheckObject.init(accessToken, orderId, onSuccess, onError);
+        orderCheckObject.init(accessToken, orderId, !sys.isMobile, onSuccess, onError);
         return orderCheckObject;
     }
 
     static checkPendingOrder(accessToken: string, orderId: number, onSuccess: () => void, onError: (error: CommerceError) => void) {
         let orderCheckObject = OrderTracker.createOrderCheckObject(accessToken, orderId, () => {
             onSuccess();
-            this._cachedOrderCheckObjects = this._cachedOrderCheckObjects.filter(obj => obj !== orderCheckObject);
+            OrderTracker._cachedOrderCheckObjects = OrderTracker._cachedOrderCheckObjects.filter(obj => obj !== orderCheckObject);
             orderCheckObject.destroy();
         }, error => {
             onError(error);
-            this._cachedOrderCheckObjects = this._cachedOrderCheckObjects.filter(obj => obj !== orderCheckObject);
+            OrderTracker._cachedOrderCheckObjects = OrderTracker._cachedOrderCheckObjects.filter(obj => obj !== orderCheckObject);
             orderCheckObject.destroy();
         });
-        this._cachedOrderCheckObjects.push(orderCheckObject);
+        OrderTracker._cachedOrderCheckObjects.push(orderCheckObject);
     }
 }
 

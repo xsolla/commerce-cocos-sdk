@@ -2,73 +2,69 @@
 
 import { XsollaOrders } from "../api/XsollaOrders";
 import { CommerceError } from "../core/Error";
-import { UrlBuilder } from "../core/UrlBuilder";
-import { Xsolla } from "../Xsolla";
+import { CentrifugoService, OrderStatusData } from "./CentrifugoService";
 import { XsollaOrderStatus } from "./OrderTracker";
 
 export class OrderCheckObject {
 
-    private _websocket: WebSocket;
-    private _websocketTimerInverval: number = -1;
     private _shortPollingTimerInverval: number = -1;
 
-    private _webSocketLifeTime: number;
     private _shortPollingLifeTime: number;
     private _bShortPollingExpired: boolean = false;
-    private _orderId: number;
     private _accessToken: string;
-    private _onSuccess: () => void;
+    private _onSuccess: (orderId: number) => void;
     private _onError: (error:CommerceError) => void;
+    orderId: number;
 
-    init(accessToken: string, orderId: number, onSuccess:() => void, onError:(error:CommerceError) => void, webSocketLifeTime: number = 300, shortPollingLifeTime: number = 600) {
+    init(accessToken: string, orderId: number, shouldStartWithCentrifugo: boolean = false, onSuccess:() => void, onError:(error:CommerceError) => void, shortPollingLifeTime: number = 600) {
         
-        this._webSocketLifeTime = Math.max(1, Math.min(webSocketLifeTime, 3600)); // clamp
         this._shortPollingLifeTime = Math.max(1, Math.min(shortPollingLifeTime, 3600)); // clamp
-        this._orderId = orderId;
+        this.orderId = orderId;
         this._accessToken = accessToken;
         this._onSuccess = onSuccess;
         this._onError = onError;
 
-        this.activateWebSocket();
+        if(shouldStartWithCentrifugo) {
+            this.startCentrifugoTracking();
+        } else {
+            this.activateShortPolling();
+        }
     }
 
-    onConnectionError(event:Event) {
-        let errorMessage = `Failed to connect to a websocket server`;
-        console.log(errorMessage);
+    onConnectionError() {
         this.activateShortPolling();
     }
 
-    onMessage(event:MessageEvent) {
-        console.log(`Received message from the websocket server:${event.data}`);
-        let response = JSON.parse(event.data);
-
-        if(response == null) {
-            console.warn(`Can't parse received message.`);
+    onOrderStatusUpdated(data: OrderStatusData) {
+        
+        if(data.status.length == 0) {
             return;
         }
-        let orderStatusStr:string = response['status'];
-        let orderId:string = response['order_id'];
-    
+
+        if(data.order_id != this.orderId) {
+            return;
+        }
+
         let orderStatus = XsollaOrderStatus.unknown;
     
-        if (orderStatusStr == 'new') {
+        if (data.status == 'new') {
             orderStatus = XsollaOrderStatus.new;
         }
-        else if (orderStatusStr == 'paid') {
+        else if (data.status == 'paid') {
             orderStatus = XsollaOrderStatus.paid;
         }
-        else if (orderStatusStr == 'done') {
+        else if (data.status == 'done') {
             orderStatus = XsollaOrderStatus.done;
         }
-        else if (orderStatusStr == 'canceled') {
+        else if (data.status == 'canceled') {
             orderStatus = XsollaOrderStatus.canceled;
         }
         else {
-            console.warn(`WebsocketObject: Unknown order status:${orderStatusStr} ${orderId}`);
+            console.warn(`Centrifugo: Unknown order status: ${data.status} ${data.order_id}`);
         }
     
         if(orderStatus == XsollaOrderStatus.done) {
-            this._onSuccess();
+            this._onSuccess(data.order_id);
         }
 
         if(orderStatus == XsollaOrderStatus.canceled) {
@@ -76,9 +72,8 @@ export class OrderCheckObject {
         }
     }
 
-    onClosed(event:CloseEvent) {
-        let errorMessage = `Connection to the websocket server has been closed with the code:${event.code}`;
-        console.log(errorMessage);
+    onClosed(errorMessage: string) {
+        CentrifugoService.removeTracker(this);
         this.activateShortPolling();
     }
 
@@ -95,42 +90,16 @@ export class OrderCheckObject {
         }
     }
 
-    activateWebSocket() {
-        let url = new UrlBuilder('wss://store-ws.xsolla.com/sub/order/status')
-        .addStringParam('order_id', this._orderId.toString())
-        .addStringParam('project_id', Xsolla.settings.projectId)
-        .build();
-        this._websocket = new WebSocket(url);
-        this._websocket.onopen = function(event:Event) {
-            console.log('Connected to the websocket server.');
-        };
-        this._websocket.onerror = this.onConnectionError.bind(this);
-        this._websocket.onmessage = this.onMessage.bind(this);
-        this._websocket.onclose = this.onClosed.bind(this);
-
-        this._websocketTimerInverval = setTimeout(result => {
-            console.log('Websocket object expired.');
-            this.destroyWebSocket();
-            this.activateWebSocket();
-        }, this._webSocketLifeTime * 1000);
+    startCentrifugoTracking() {
+        CentrifugoService.addTracker(this);
     }
 
-    destroyWebSocket() {
-        console.log('Destroy websocket.');
-        if(this._websocket != null) {
-            this._websocket.onopen = null;
-            this._websocket.onerror = null;
-            this._websocket.onmessage = null;
-            this._websocket.onclose = null;
-            this._websocket.close();
-            this._websocket = null;
-        }
-
-        clearTimeout( this._websocketTimerInverval);
+    stopCentrifugoTracking() {
+        CentrifugoService.removeTracker(this);
     }
 
     shortPollingCheckOrder() {
-        XsollaOrders.checkOrder(this._accessToken, this._orderId, result => {
+        XsollaOrders.checkOrder(this._accessToken, this.orderId, result => {
             console.log('shortPollingCheckOrder ' + result.status);
             if (result.status == 'new' || result.status == 'paid') {
                 if (this._bShortPollingExpired) {
@@ -146,7 +115,7 @@ export class OrderCheckObject {
                 this._onError({code: 0, description: 'Order canceled.'});
             }
             if (result.status == 'done') {
-                this._onSuccess();
+                this._onSuccess(this.orderId);
             }
         }, error => {
             this._onError(error);
@@ -154,7 +123,7 @@ export class OrderCheckObject {
     }
 
     destroy() {
-        this.destroyWebSocket();
+        this.stopCentrifugoTracking();
         this._bShortPollingExpired = true;
         clearTimeout( this._shortPollingTimerInverval);
     }
