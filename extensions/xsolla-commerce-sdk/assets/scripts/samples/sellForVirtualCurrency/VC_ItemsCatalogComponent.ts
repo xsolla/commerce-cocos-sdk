@@ -1,9 +1,9 @@
 
 import { _decorator, Component, instantiate, Prefab, ScrollView } from 'cc';
-import { XsollaCatalog } from 'db://xsolla-commerce-sdk/scripts/api/XsollaCatalog';
 import { sellForVirtualCurrencyItem } from './VC_StoreItemComponent';
-import { XsollaAuth } from 'db://xsolla-commerce-sdk/scripts/api/XsollaAuth';
-import { TokenStorage } from 'db://xsolla-commerce-sdk/scripts/common/TokenStorage';
+import { XsollaAuth } from '../../api/XsollaAuth';
+import { TokenStorage } from '../../common/TokenStorage';
+import { XsollaCatalog } from '../../api/XsollaCatalog';
 const { ccclass, property } = _decorator;
 
 namespace sellForVirtualCurrency {

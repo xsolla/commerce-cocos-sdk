@@ -1,6 +1,6 @@
 
 import { _decorator, Button, Component, EditBox } from 'cc';
-import { XsollaAuth } from 'db://xsolla-commerce-sdk/scripts/api/XsollaAuth';
+import { XsollaAuth } from '../../api/XsollaAuth';
 const { ccclass, property } = _decorator;
 
 namespace authorization { 

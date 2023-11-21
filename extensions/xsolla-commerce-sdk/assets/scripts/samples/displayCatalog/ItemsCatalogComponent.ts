@@ -1,7 +1,7 @@
 
 import { _decorator, Component, instantiate, Prefab, ScrollView } from 'cc';
 import { displayCatalogItem } from './StoreItemComponent';
-import { XsollaCatalog } from 'db://xsolla-commerce-sdk/scripts/api/XsollaCatalog';
+import { XsollaCatalog } from '../../api/XsollaCatalog';
 const { ccclass, property } = _decorator;
 
  namespace displayCatalog {

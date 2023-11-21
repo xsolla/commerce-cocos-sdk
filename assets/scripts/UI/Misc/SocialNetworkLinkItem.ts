@@ -1,6 +1,6 @@
 // Copyright 2021 Xsolla Inc. All Rights Reserved.
 
-import { _decorator, Component, Node, Label, Button, Sprite, Color } from 'cc';
+import { _decorator, Component, Node, Button, Sprite, Color } from 'cc';
 import { SocialNetworkLinkItemData } from '../Screens/UserAccountManager';
 const { ccclass, property } = _decorator;
  

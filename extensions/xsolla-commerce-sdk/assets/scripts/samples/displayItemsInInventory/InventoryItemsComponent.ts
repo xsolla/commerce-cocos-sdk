@@ -1,8 +1,8 @@
 
 import { _decorator, Component, instantiate, Prefab, ScrollView } from 'cc';
-import { XsollaAuth } from 'db://xsolla-commerce-sdk/scripts/api/XsollaAuth';
-import { XsollaInventory } from 'db://xsolla-commerce-sdk/scripts/api/XsollaInventory';
 import { displayItemsInInventoryItem } from './InventoryItemComponent';
+import { XsollaAuth } from '../../api/XsollaAuth';
+import { XsollaInventory } from '../../api/XsollaInventory';
 const { ccclass, property } = _decorator;
 
 namespace displayItemsInInventory {

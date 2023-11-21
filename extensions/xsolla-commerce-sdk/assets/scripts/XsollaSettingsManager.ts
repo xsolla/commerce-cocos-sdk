@@ -1,6 +1,6 @@
 // Copyright 2023 Xsolla Inc. All Rights Reserved.
 
-import { _decorator, Component, Enum, CCInteger, CCString, sys} from 'cc';
+import { _decorator, Component, Enum, CCInteger, sys} from 'cc';
 import { XsollaSettings, Xsolla, PaymentUiSize, PaymentUiVersion, PaymentRedirectCondition, PaymentRedirectStatusManual, RedirectPolicySettings, PaymentUISettings } from './Xsolla';
 const { ccclass, property, disallowMultiple, type } = _decorator;
 
