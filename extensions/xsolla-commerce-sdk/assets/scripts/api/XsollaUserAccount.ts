@@ -1,9 +1,13 @@
 // Copyright 2023 Xsolla Inc. All Rights Reserved.
 
+import { Texture2D, director, sys } from "cc";
 import { handleLoginError, LoginError } from "../core/Error";
 import { HttpUtil, RequestContentType } from "../core/HttpUtil";
 import { UrlBuilder } from "../core/UrlBuilder";
 import { Xsolla } from "../Xsolla";
+import { Events } from "../core/Events";
+import { NativeUtil } from "../common/NativeUtil";
+import { ImageUtils } from "../common/ImageUtils";
 
 export class XsollaUserAccount {
 
@@ -30,13 +34,37 @@ export class XsollaUserAccount {
      * 修改指定用户的详细信息。
      */
     static updateUserDetails(token:string, userDetailsUpdate:UserDetailsUpdate, onComplete?:(userDetails:UserDetails) => void, onError?:(error:LoginError) => void) {
-        let url = new UrlBuilder('https://login.xsolla.com/api/users/me').build();
+        if (sys.isBrowser) {
+            let url = new UrlBuilder('https://login.xsolla.com/api/users/me').build();
+            let request = HttpUtil.createRequest(url, 'PATCH', RequestContentType.Json, token, result => {
+                let user: UserDetails = JSON.parse(result);
+                onComplete?.(user);
+            }, handleLoginError(onError));
+            request.send(JSON.stringify(userDetailsUpdate));
+        } else {
+            if (sys.platform.toLowerCase() == 'ios') {
+                jsb.reflection.callStaticMethod("XsollaNativeUtils", "modifyUserAccountData:userBirthday:userFirstName:userGender:userLastName:userNickname:",
+                token, userDetailsUpdate.birthday, userDetailsUpdate.first_name, userDetailsUpdate.gender, userDetailsUpdate.last_name, userDetailsUpdate.nickname);
+            }
+            if (sys.platform.toLowerCase() == 'android') {
+                jsb.reflection.callStaticMethod("com/cocos/game/XsollaNativeUtils", "modifyUserAccountData",
+                "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V",
+                token, userDetailsUpdate.birthday,
+                userDetailsUpdate.first_name, userDetailsUpdate.gender,
+                userDetailsUpdate.last_name, userDetailsUpdate.nickname);
+            }
 
-        let request = HttpUtil.createRequest(url, 'PATCH', RequestContentType.Json, token, result => {
-            let user: UserDetails = JSON.parse(result);
-            onComplete?.(user);
-        }, handleLoginError(onError));
-        request.send(JSON.stringify(userDetailsUpdate));
+            director.getScene().on(Events.ACCOUNT_DATA_UPDATE_SUCCESS, () => {
+                director.getScene().off(Events.ACCOUNT_DATA_UPDATE_SUCCESS);
+                director.getScene().off(Events.ACCOUNT_DATA_UPDATE_ERROR);
+                this.getUserDetails(token, onComplete, onError);
+            }, this );
+            director.getScene().on(Events.ACCOUNT_DATA_UPDATE_ERROR, (error:string) => {
+                director.getScene().off(Events.ACCOUNT_DATA_UPDATE_SUCCESS);
+                director.getScene().off(Events.ACCOUNT_DATA_UPDATE_ERROR);
+                onError?.({ code:'-1', description:error});
+            }, this );
+        }
     }
 
     /**
@@ -160,36 +188,65 @@ export class XsollaUserAccount {
      * @zh
      * 修改用户个人资料图片。
      */
-    static updateUserProfilePicture(token:string, buffer?:Uint8Array, onComplete?:() => void, onError?:(error:LoginError) => void) {
-        if (buffer == null) {
-            onError?.({ code:'-1', description:'Picture is invalid.'});
-            return;
+    static updateUserProfilePicture(token:string, texture:Texture2D, onComplete?:() => void, onError?:(error:LoginError) => void) {
+
+        if (sys.isBrowser) {
+            ImageUtils.getBase64Image(texture, base64image => {
+                let base64imageWithoutHeader: string = base64image.substring(base64image.indexOf(',') + 1);
+                let buffer = Uint8Array.from(atob(base64imageWithoutHeader), c => c.charCodeAt(0));
+                if (buffer == null) {
+                    onError?.({ code:'-1', description:'Picture is invalid.'});
+                    return;
+                }
+        
+                let boundaryStr = '---------------------------' + Date.now().toString();
+                let beginBoundary = Uint8Array.from('\r\n--' + boundaryStr + '\r\n', x => x.charCodeAt(0));
+                let endBoundary = Uint8Array.from('\r\n--' + boundaryStr + '--\r\n', x => x.charCodeAt(0));
+                let pictureHeaderStr = 'Content-Disposition: form-data;';
+                pictureHeaderStr = pictureHeaderStr.concat('name=\"picture\";');
+                pictureHeaderStr = pictureHeaderStr.concat('filename=\"avatar.png\"');
+                pictureHeaderStr = pictureHeaderStr.concat('\r\nContent-Type: \r\n\r\n');
+                let pictureHeader = Uint8Array.from(pictureHeaderStr, x => x.charCodeAt(0));
+        
+                let length = beginBoundary.length + pictureHeader.length + buffer.length + endBoundary.length;
+                let uploadContent:Uint8Array = new Uint8Array(length);
+                let offset = 0;
+                uploadContent.set(beginBoundary, offset);
+                offset += beginBoundary.length;
+                uploadContent.set(pictureHeader, offset);
+                offset += pictureHeader.length;
+                uploadContent.set(buffer, offset);
+                offset += buffer.length;
+                uploadContent.set(endBoundary, offset);
+        
+                let url = new UrlBuilder('https://login.xsolla.com/api/users/me/picture').build();
+                let request = HttpUtil.createRequest(url, 'POST', RequestContentType.None, token, onComplete, handleLoginError(onError));
+                request.setRequestHeader('Content-Type', (`multipart/form-data; boundary =${boundaryStr}`));
+                request.send(uploadContent);
+            }, error => {
+                onError?.({ code:'-1', description:error});
+            });
+        }  else {
+            if (sys.platform.toLowerCase() == 'ios') {
+                jsb.reflection.callStaticMethod("XsollaNativeUtils", "updateUserProfilePicture:authToken:",
+                texture.image.nativeUrl, token);
+            }
+            if (sys.platform.toLowerCase() == 'android') {
+                jsb.reflection.callStaticMethod("com/cocos/game/XsollaNativeUtils", "updateUserProfilePicture", "(Ljava/lang/String;Ljava/lang/String;)V",
+                texture.image.nativeUrl, token);
+            }
+
+            director.getScene().on(Events.AVATAR_UPDATE_SUCCESS, () => {
+                director.getScene().off(Events.AVATAR_UPDATE_SUCCESS);
+                director.getScene().off(Events.AVATAR_UPDATE_ERROR);
+                onComplete?.();
+            }, this );
+            director.getScene().on(Events.AVATAR_UPDATE_ERROR, (error:string) => {
+                director.getScene().off(Events.AVATAR_UPDATE_SUCCESS);
+                director.getScene().off(Events.AVATAR_UPDATE_ERROR);
+                onError?.({ code:'-1', description:error});
+            }, this );
         }
-
-        let boundaryStr = '---------------------------' + Date.now().toString();
-        let beginBoundary = Uint8Array.from('\r\n--' + boundaryStr + '\r\n', x => x.charCodeAt(0));
-        let endBoundary = Uint8Array.from('\r\n--' + boundaryStr + '--\r\n', x => x.charCodeAt(0));
-        let pictureHeaderStr = 'Content-Disposition: form-data;';
-        pictureHeaderStr = pictureHeaderStr.concat('name=\"picture\";');
-        pictureHeaderStr = pictureHeaderStr.concat('filename=\"avatar.png\"');
-        pictureHeaderStr = pictureHeaderStr.concat('\r\nContent-Type: \r\n\r\n');
-        let pictureHeader = Uint8Array.from(pictureHeaderStr, x => x.charCodeAt(0));
-
-        let length = beginBoundary.length + pictureHeader.length + buffer.length + endBoundary.length;
-        let uploadContent:Uint8Array = new Uint8Array(length);
-        let offset = 0;
-        uploadContent.set(beginBoundary, offset);
-        offset += beginBoundary.length;
-        uploadContent.set(pictureHeader, offset);
-        offset += pictureHeader.length;
-        uploadContent.set(buffer, offset);
-        offset += buffer.length;
-        uploadContent.set(endBoundary, offset);
-
-        let url = new UrlBuilder('https://login.xsolla.com/api/users/me/picture').build();
-        let request = HttpUtil.createRequest(url, 'POST', RequestContentType.None, token, onComplete, handleLoginError(onError));
-        request.setRequestHeader('Content-Type', (`multipart/form-data; boundary =${boundaryStr}`));
-        request.send(uploadContent);
     }
 
     /**
@@ -256,6 +313,39 @@ export class XsollaUserAccount {
 
         let request = HttpUtil.createRequest(url, 'DELETE', RequestContentType.None, token, onComplete, handleLoginError(onError));
         request.send();
+    }
+
+    /**
+     * @en
+     * Links a social network that can be used for authentication to the current account. Mobile only.
+     * @zh
+     * 
+     */
+    static linkSocialNetwork(token:string, networkName:string, onComplete?:(networkName:string) => void, onError?:(error:string) => void) {
+        if (sys.platform.toLowerCase() == 'ios') {
+            jsb.reflection.callStaticMethod("XsollaNativeUtils", "linkSocialNetwork:networkName:redirectUri:",
+                token,
+                networkName,
+                "app://xlogin." + NativeUtil.getAppId());
+        }
+
+        if (sys.platform.toLowerCase() == 'android') {
+            jsb.reflection.callStaticMethod("com/cocos/game/XsollaNativeUtils", "linkSocialNetwork",
+                "(Ljava/lang/String;Ljava/lang/String;)V",
+                token,
+                networkName);
+        }
+
+        director.getScene().on(Events.SOCIAL_NETWORK_LINKING_SUCCESS, (networkName:string) => {
+            director.getScene().off(Events.SOCIAL_NETWORK_LINKING_SUCCESS);
+            director.getScene().off(Events.SOCIAL_NETWORK_LINKING_ERROR);
+            onComplete?.(networkName);
+        }, this );
+        director.getScene().on(Events.SOCIAL_NETWORK_LINKING_ERROR, (error:string) => {
+            director.getScene().off(Events.SOCIAL_NETWORK_LINKING_SUCCESS);
+            director.getScene().off(Events.SOCIAL_NETWORK_LINKING_ERROR);
+            onError?.(error);
+        }, this );
     }
 
     /**

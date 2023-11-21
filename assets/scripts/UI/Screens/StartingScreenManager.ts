@@ -1,12 +1,10 @@
 // Copyright 2023 Xsolla Inc. All Rights Reserved.
 
-import { _decorator, Component, Button, EditBox, Toggle, Node, sys, director } from 'cc';
+import { _decorator, Component, Button, EditBox, Toggle, Node, sys } from 'cc';
 import { Token, XsollaAuth } from 'db://xsolla-commerce-sdk/scripts/api/XsollaAuth';
 import { TokenStorage } from "db://xsolla-commerce-sdk/scripts/common/TokenStorage";
 import { HttpUtil, RequestContentType } from 'db://xsolla-commerce-sdk/scripts/core/HttpUtil';
 import { UIManager, UIScreenType } from '../UIManager';
-import { NativeUtil } from 'db://xsolla-commerce-sdk/scripts/common/NativeUtil';
-import { Events } from 'db://xsolla-commerce-sdk/scripts/core/Events';
 const { ccclass, property } = _decorator;
  
 @ccclass('StartingScreenManager')
@@ -120,17 +118,17 @@ export class StartingScreenManager extends Component {
 
     onGoogleClicked() {
         UIManager.instance.showLoaderPopup(true);
-        NativeUtil.authSocial("google");
+        XsollaAuth.authSocial('google', this.handleSuccessfulSocialAuth, this.handleCancelSocialAuth, this.handleErrorSocialAuth);
     }
 
     onTwitterClicked() {
         UIManager.instance.showLoaderPopup(true);
-        NativeUtil.authSocial("twitter");
+        XsollaAuth.authSocial('twitter', this.handleSuccessfulSocialAuth, this.handleCancelSocialAuth, this.handleErrorSocialAuth);
     }
 
     onDiscordClicked() {
         UIManager.instance.showLoaderPopup(true);
-        NativeUtil.authSocial("discord");
+        XsollaAuth.authSocial('discord', this.handleSuccessfulSocialAuth, this.handleCancelSocialAuth, this.handleErrorSocialAuth);
     }
 
     onOtherSocialClicked() {
@@ -165,10 +163,6 @@ export class StartingScreenManager extends Component {
         this.socialOtherButton.node.on(Button.EventType.CLICK, this.onOtherSocialClicked, this);
         this.usernameEditBox.node.on(EditBox.EventType.TEXT_CHANGED, this.onCredentialsChanged, this);
         this.passwordEditBox.node.on(EditBox.EventType.TEXT_CHANGED, this.onCredentialsChanged, this);
-
-        director.getScene().on(Events.SOCIAL_AUTH_SUCCESS, this.handleSuccessfulSocialAuth, this );
-        director.getScene().on(Events.SOCIAL_AUTH_ERROR, this.handleErrorSocialAuth, this );
-        director.getScene().on(Events.SOCIAL_AUTH_CANCELED, this.handleCancelSocialAuth, this );
     }
 
     removeListeners () {
@@ -183,9 +177,5 @@ export class StartingScreenManager extends Component {
         this.socialOtherButton.node.off(Button.EventType.CLICK, this.onOtherSocialClicked, this);
         this.usernameEditBox.node.off(EditBox.EventType.TEXT_CHANGED, this.onCredentialsChanged, this);
         this.passwordEditBox.node.off(EditBox.EventType.TEXT_CHANGED, this.onCredentialsChanged, this);
-
-        director.getScene().off(Events.SOCIAL_AUTH_SUCCESS, this.handleSuccessfulSocialAuth, this );
-        director.getScene().off(Events.SOCIAL_AUTH_ERROR, this.handleErrorSocialAuth, this );
-        director.getScene().off(Events.SOCIAL_AUTH_CANCELED, this.handleCancelSocialAuth, this );
     }
 }

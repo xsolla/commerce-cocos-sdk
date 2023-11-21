@@ -8,7 +8,7 @@ import { TokenStorage } from "db://xsolla-commerce-sdk/scripts/common/TokenStora
 import { PurchaseUtil } from '../../Common/PurchaseUtil';
 import { InventoryItem } from '../Misc/InventoryItem';
 import { UIManager } from '../UIManager';
-import { ImageUtils } from '../Utils/ImageUtils';
+import { ImageUtils } from 'db://xsolla-commerce-sdk/scripts/common/ImageUtils';
 import { InventoryManager } from './InventoryManager';
 const { ccclass, property } = _decorator;
  
@@ -126,6 +126,8 @@ export class InventoryItemInfoManager extends Component {
             if(this.icon != null) {
                 this.icon.spriteFrame = spriteFrame;
             }
+        }, error => {
+            UIManager.instance.showErrorPopup(error);
         });
 
         this.itemName.string = data.name;

@@ -5,7 +5,8 @@ import { StoreItem as XsollaStoreItem, VirtualCurrencyPackage } from 'db://xsoll
 import { CurrencyFormatter } from '../../Common/CurrencyFormatter';
 import { PurchaseUtil } from '../../Common/PurchaseUtil';
 import { StoreManager } from '../Screens/StoreManager';
-import { ImageUtils } from '../Utils/ImageUtils';
+import { ImageUtils } from 'db://xsolla-commerce-sdk/scripts/common/ImageUtils';
+import { UIManager } from '../UIManager';
 const { ccclass, property } = _decorator;
  
 @ccclass('StoreItem')
@@ -125,6 +126,8 @@ export class StoreItem extends Component {
             if(this.icon != null) {
                 this.icon.spriteFrame = spriteFrame;
             }
+        }, error => {
+            UIManager.instance.showErrorPopup(error);
         });
 
         if(isVirtualCurrency) {
@@ -133,6 +136,8 @@ export class StoreItem extends Component {
                     this.currencyIcon.spriteFrame = spriteFrame;
                     this.currencyIcon.getComponent(UITransform).setContentSize(20, 20); 
                 }
+            }, error => {
+                UIManager.instance.showErrorPopup(error);
             });
         }
     }

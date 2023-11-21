@@ -2,7 +2,8 @@
 
 import { _decorator, Component, Sprite, Label } from 'cc';
 import { RedeemedCouponItem as XsollaRedeemedCouponItem} from 'db://xsolla-commerce-sdk/scripts/api/XsollaCatalog';
-import { ImageUtils } from '../Utils/ImageUtils';
+import { ImageUtils } from 'db://xsolla-commerce-sdk/scripts/common/ImageUtils';
+import { UIManager } from '../UIManager';
 const { ccclass, property } = _decorator;
  
 @ccclass('RedeemedCouponItem')
@@ -25,6 +26,8 @@ export class RedeemedCouponItem extends Component {
             if(this.icon != null) {
                 this.icon.spriteFrame = spriteFrame;
             }
+        }, error => {
+            UIManager.instance.showErrorPopup(error);
         });
         this.itemName.string = bundle.name;
         this.description.string = bundle.description;

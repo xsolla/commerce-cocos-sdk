@@ -1,11 +1,10 @@
 // Copyright 2023 Xsolla Inc. All Rights Reserved.
 
-import { _decorator, Component, Button, sys, director } from 'cc';
+import { _decorator, Component, Button, sys } from 'cc';
 import { Token, XsollaAuth } from 'db://xsolla-commerce-sdk/scripts/api/XsollaAuth';
 import { TokenStorage } from "db://xsolla-commerce-sdk/scripts/common/TokenStorage";
 import { UIManager, UIScreenType } from '../UIManager';
 import { NativeUtil } from 'db://xsolla-commerce-sdk/scripts/common/NativeUtil';
-import { Events } from 'db://xsolla-commerce-sdk/scripts/core/Events';
 const { ccclass, property } = _decorator;
  
 @ccclass('MoreLoginOptionsManager')
@@ -45,10 +44,6 @@ export class MoreLoginOptionsManager extends Component {
         this.authByEmailButton.node.on(Button.EventType.CLICK, this.onAuthByEmailClicked, this);
         this.authByPhoneButton.node.on(Button.EventType.CLICK, this.onAuthByPhoneClicked, this);
         this.xsollaWidgetAuthButton.node.on(Button.EventType.CLICK, this.onXsollaWidgetAuthClicked, this);
-
-        director.getScene().on(Events.XSOLLA_WIDGET_AUTH_SUCCESS, this.handleSuccessfulXsollaWidgetAuth, this );
-        director.getScene().on(Events.XSOLLA_WIDGET_AUTH_ERROR, this.handleErrorXsollaWidgetAuth, this );
-        director.getScene().on(Events.XSOLLA_WIDGET_AUTH_CANCELED, this.handleCancelXsollaWidgetAuth, this );
     }
 
     removeListeners() {
@@ -57,10 +52,6 @@ export class MoreLoginOptionsManager extends Component {
         this.authByEmailButton.node.off(Button.EventType.CLICK, this.onAuthByEmailClicked, this);
         this.authByPhoneButton.node.off(Button.EventType.CLICK, this.onAuthByPhoneClicked, this);
         this.xsollaWidgetAuthButton.node.off(Button.EventType.CLICK, this.onXsollaWidgetAuthClicked, this);
-
-        director.getScene().off(Events.XSOLLA_WIDGET_AUTH_SUCCESS, this.handleSuccessfulXsollaWidgetAuth, this );
-        director.getScene().off(Events.XSOLLA_WIDGET_AUTH_ERROR, this.handleErrorXsollaWidgetAuth, this );
-        director.getScene().off(Events.XSOLLA_WIDGET_AUTH_CANCELED, this.handleCancelXsollaWidgetAuth, this );
     }
 
     onBackClicked() {
@@ -68,16 +59,8 @@ export class MoreLoginOptionsManager extends Component {
     }
 
     onDeviceIdAuthClicked() {
-        let deviceId: string;
-        let deviceName: string;
-        if(sys.platform.toLowerCase() == 'android') {
-            deviceId = jsb.reflection.callStaticMethod("com/cocos/game/XsollaNativeUtils", "getDeviceId", "()Ljava/lang/String;");
-            deviceName = jsb.reflection.callStaticMethod("com/cocos/game/XsollaNativeUtils", "getDeviceName", "()Ljava/lang/String;");
-        }
-        if(sys.platform.toLowerCase() == 'ios') {
-            deviceId = jsb.reflection.callStaticMethod("XsollaNativeUtils", "getDeviceId");
-            deviceName = jsb.reflection.callStaticMethod("XsollaNativeUtils", "getDeviceName");
-        }
+        let deviceId: string = NativeUtil.getDeviceId();
+        let deviceName: string = NativeUtil.getDeviceName();
 
         UIManager.instance.showLoaderPopup(true);
         XsollaAuth.authByDeviceId(deviceName, deviceId, 'xsollatest', token => {
@@ -102,22 +85,16 @@ export class MoreLoginOptionsManager extends Component {
 
     onXsollaWidgetAuthClicked() {
         UIManager.instance.showLoaderPopup(true);
-        NativeUtil.authWithXsollaWidget();
-    }
-
-    handleSuccessfulXsollaWidgetAuth(token:Token) {
-        UIManager.instance.showLoaderPopup(false);
-        TokenStorage.saveToken(token, true);
-        UIManager.instance.openScreen(UIScreenType.MainMenu);
-    }
-
-    handleCancelXsollaWidgetAuth() {
-        UIManager.instance.showLoaderPopup(false);
-    }
-
-    handleErrorXsollaWidgetAuth(error:string) {
-        UIManager.instance.showLoaderPopup(false);
-        console.log(error);
-        UIManager.instance.showErrorPopup(error);
+        XsollaAuth.authWithXsollaWidget((token:Token) => {
+            UIManager.instance.showLoaderPopup(false);
+            TokenStorage.saveToken(token, true);
+            UIManager.instance.openScreen(UIScreenType.MainMenu);
+        }, () => {
+            UIManager.instance.showLoaderPopup(false);
+        }, (error:string) => {
+            UIManager.instance.showLoaderPopup(false);
+            console.log(error);
+            UIManager.instance.showErrorPopup(error);
+        });
     }
 }

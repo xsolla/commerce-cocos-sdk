@@ -2,7 +2,8 @@
 
 import { _decorator, Component, Sprite, Button, Label, UITransform } from 'cc';
 import { VirtualCurrencyBalance } from 'db://xsolla-commerce-sdk/scripts/api/XsollaInventory';
-import { ImageUtils } from '../Utils/ImageUtils';
+import { ImageUtils } from 'db://xsolla-commerce-sdk/scripts/common/ImageUtils';
+import { UIManager } from '../UIManager';
 const { ccclass, property } = _decorator;
  
 @ccclass('VCBalanceItem')
@@ -45,6 +46,8 @@ export class VCBalanceItem extends Component {
                 this.currencyIcon.spriteFrame = spriteFrame;
                 this.currencyIcon.getComponent(UITransform).setContentSize(13, 13); 
             }
+        }, error => {
+            UIManager.instance.showErrorPopup(error);
         });
     }
 

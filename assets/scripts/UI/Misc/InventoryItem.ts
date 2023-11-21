@@ -3,7 +3,8 @@
 import { _decorator, Component, Node, Sprite, Label, Button, Color } from 'cc';
 import { InventoryItem as XsollaInventoryItem } from 'db://xsolla-commerce-sdk/scripts/api/XsollaInventory';
 import { InventoryManager } from '../Screens/InventoryManager';
-import { ImageUtils } from '../Utils/ImageUtils';
+import { ImageUtils } from 'db://xsolla-commerce-sdk/scripts/common/ImageUtils';
+import { UIManager } from '../UIManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('InventoryItem')
@@ -92,6 +93,8 @@ export class InventoryItem extends Component {
             if(this.icon != null) {
                 this.icon.spriteFrame = spriteFrame;
             }
+        }, error => {
+            UIManager.instance.showErrorPopup(error);
         });
     }
 
