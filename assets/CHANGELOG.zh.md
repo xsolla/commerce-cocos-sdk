@@ -7,7 +7,7 @@
 
 
 ### 更新内容
-- `authWithXsollaWidget` SDK方法移至`XsollaAuth`
+- `authWithXsollaWidget` SDK方法移至`XsollaAuth`类
 - `authSocial` SDK方法移至`XsollaAuth`类
 - `linkSocialNetwork` SDK方法移至`XsollaUserAccount`类
 - `openPurchaseUI` SDK方法：移至`XsollaPayments`类，新增`onClose`回调参数（可选）
