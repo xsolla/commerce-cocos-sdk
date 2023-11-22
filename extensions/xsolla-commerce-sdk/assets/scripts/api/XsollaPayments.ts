@@ -11,9 +11,9 @@ export class XsollaPayments {
 
     /**
      * @en
-     * Opens payment console for the provided access token.
+     * Opens Pay Station in the browser with a provided payment token.
      * @zh
-     * 
+     *
      */
     static openPurchaseUI(token: string, onClose?:(isManually: boolean) => void) {
         if (Xsolla.settings.enableInAppBrowser) {
@@ -24,7 +24,7 @@ export class XsollaPayments {
                         Xsolla.settings.enableSandbox,
                         "app://xpayment." + NativeUtil.getAppId());
                 }
-        
+
                 if (sys.platform.toLowerCase() == 'android') {
                     jsb.reflection.callStaticMethod("com/cocos/game/XsollaNativePayments", "openPurchaseUI",
                         "(Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;)V",
@@ -33,7 +33,7 @@ export class XsollaPayments {
                         "app",
                         "xpayment." + NativeUtil.getAppId());
                 }
-        
+
                 director.getScene().on(Events.PAYMENT_CLOSE, (isManually: boolean) => {
                     director.getScene().off(Events.PAYMENT_CLOSE);
                     onClose?.(isManually);

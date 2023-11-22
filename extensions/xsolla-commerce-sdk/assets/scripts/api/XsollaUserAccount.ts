@@ -198,7 +198,7 @@ export class XsollaUserAccount {
                     onError?.({ code:'-1', description:'Picture is invalid.'});
                     return;
                 }
-        
+
                 let boundaryStr = '---------------------------' + Date.now().toString();
                 let beginBoundary = Uint8Array.from('\r\n--' + boundaryStr + '\r\n', x => x.charCodeAt(0));
                 let endBoundary = Uint8Array.from('\r\n--' + boundaryStr + '--\r\n', x => x.charCodeAt(0));
@@ -207,7 +207,7 @@ export class XsollaUserAccount {
                 pictureHeaderStr = pictureHeaderStr.concat('filename=\"avatar.png\"');
                 pictureHeaderStr = pictureHeaderStr.concat('\r\nContent-Type: \r\n\r\n');
                 let pictureHeader = Uint8Array.from(pictureHeaderStr, x => x.charCodeAt(0));
-        
+
                 let length = beginBoundary.length + pictureHeader.length + buffer.length + endBoundary.length;
                 let uploadContent:Uint8Array = new Uint8Array(length);
                 let offset = 0;
@@ -218,7 +218,7 @@ export class XsollaUserAccount {
                 uploadContent.set(buffer, offset);
                 offset += buffer.length;
                 uploadContent.set(endBoundary, offset);
-        
+
                 let url = new UrlBuilder('https://login.xsolla.com/api/users/me/picture').build();
                 let request = HttpUtil.createRequest(url, 'POST', RequestContentType.None, token, onComplete, handleLoginError(onError));
                 request.setRequestHeader('Content-Type', (`multipart/form-data; boundary =${boundaryStr}`));
@@ -317,9 +317,9 @@ export class XsollaUserAccount {
 
     /**
      * @en
-     * Links a social network that can be used for authentication to the current account. Mobile only.
+     * Links a social network that can be used for authentication to the current account. Only for Android and iOS builds.
      * @zh
-     * 
+     *
      */
     static linkSocialNetwork(token:string, networkName:string, onComplete?:(networkName:string) => void, onError?:(error:string) => void) {
         if (sys.platform.toLowerCase() == 'ios') {

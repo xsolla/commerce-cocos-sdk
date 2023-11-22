@@ -210,9 +210,9 @@ export class XsollaAuth {
 
     /**
      * @en
-     * Authenticates user via social networks. Mobile only.
+     * Authenticates user via an account in the specified social networks. Only for Android and iOS builds.
      * @zh
-     * 
+     *
      */
     static authSocial(socialNetworkName:string, onComplete?:(token:Token) => void, onCancel?:() => void, onError?:(error:string) => void) {
         if(sys.platform.toLowerCase() == 'ios') {
@@ -245,9 +245,9 @@ export class XsollaAuth {
 
     /**
      * @en
-     * Authenticates the user with Xsolla Login widget. Mobile only.
+     * Authenticates the user with Xsolla Login widget. Only for Android and iOS builds.
      * @zh
-     * 
+     *
      */
     static authWithXsollaWidget(onComplete?:(token:Token) => void, onCancel?:() => void, onError?:(error:string) => void) {
         if(sys.platform.toLowerCase() == 'ios') {
