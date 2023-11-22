@@ -3,8 +3,8 @@
 import { StoreItem, VirtualCurrencyPackage, XsollaCatalog } from "db://xsolla-commerce-sdk/scripts/api/XsollaCatalog";
 import { TokenStorage } from "db://xsolla-commerce-sdk/scripts/common/TokenStorage";
 import { UIManager } from "../UI/UIManager";
-import { BrowserUtil } from "db://xsolla-commerce-sdk/scripts/common/BrowserUtil";
 import { OrderTracker } from "db://xsolla-commerce-sdk/scripts/common/OrderTracker";
+import { XsollaPayments } from "db://xsolla-commerce-sdk/scripts/api/XsollaPayments";
 
 export class PurchaseUtil {
 
@@ -36,7 +36,7 @@ export class PurchaseUtil {
                     UIManager.instance.showMessagePopup(`Order checking failed - Status code: ${error.status}, Error code: ${error.code}, Error message: ${error.description}`);
                     console.log(error.description);
                 });
-                BrowserUtil.openPurchaseUI(result.token);
+                XsollaPayments.openPurchaseUI(result.token);
             }, error => {
                 UIManager.instance.showLoaderPopup(false);
                 console.log(error.description);

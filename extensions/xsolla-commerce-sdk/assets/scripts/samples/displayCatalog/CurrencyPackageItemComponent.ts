@@ -1,5 +1,5 @@
 import { _decorator, assetManager, Component, ImageAsset, Label, Sprite, SpriteFrame, Texture2D } from 'cc';
-import { VirtualCurrencyPackage } from 'db://xsolla-commerce-sdk/scripts/api/XsollaCatalog';
+import { VirtualCurrencyPackage } from '../../api/XsollaCatalog';
 const { ccclass, property } = _decorator;
 
 export namespace displayCatalogItem {

@@ -5,8 +5,9 @@ import { StoreBundleContent, StoreItem, VirtualCurrencyPackage } from 'db://xsol
 import { CurrencyFormatter } from '../../Common/CurrencyFormatter';
 import { PurchaseUtil } from '../../Common/PurchaseUtil';
 import { BundleContentItem } from '../Misc/BundleContentItem';
-import { ImageUtils } from '../Utils/ImageUtils';
+import { ImageUtils } from 'db://xsolla-commerce-sdk/scripts/common/ImageUtils';
 import { StoreManager } from './StoreManager';
+import { UIManager } from '../UIManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('StoreItemInfoManager')
@@ -79,6 +80,8 @@ export class StoreItemInfoManager extends Component {
             if(this.icon != null) {
                 this.icon.spriteFrame = spriteFrame;
             }
+        }, error => {
+            UIManager.instance.showErrorPopup(error);
         });
 
         this.itemName.string = item.name;
@@ -112,6 +115,8 @@ export class StoreItemInfoManager extends Component {
                 if(this.currency != null) {
                     this.currency.spriteFrame = spriteFrame;
                 }
+            }, error => {
+                UIManager.instance.showErrorPopup(error);
             });
         }
 

@@ -1,5 +1,5 @@
 import { _decorator, assetManager, Component, ImageAsset, Label, Sprite, SpriteFrame, Texture2D } from 'cc';
-import { InventoryItem } from 'db://xsolla-commerce-sdk/scripts/api/XsollaInventory';
+import { InventoryItem } from '../../api/XsollaInventory';
 const { ccclass, property } = _decorator;
 
 export namespace displayItemsInInventoryItem {

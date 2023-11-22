@@ -1,7 +1,7 @@
 // Copyright 2023 Xsolla Inc. All Rights Reserved.
 
 import { sys } from 'cc';
-import { Token } from 'db://xsolla-commerce-sdk/scripts/api/XsollaAuth';
+import { Token } from '../api/XsollaAuth';
 
 export class TokenStorage {
 

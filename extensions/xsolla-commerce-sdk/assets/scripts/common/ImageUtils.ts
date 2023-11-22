@@ -1,7 +1,6 @@
 // Copyright 2023 Xsolla Inc. All Rights Reserved.
 
 import { assetManager, ImageAsset, SpriteFrame, Texture2D } from "cc";
-import { UIManager } from "../UIManager";
 
 export class ImageUtils {
     
@@ -28,13 +27,13 @@ export class ImageUtils {
         }
     }
 
-    static loadImage(url: string, onComplete:(spriteFrame: SpriteFrame) => void) {
+    static loadImage(url: string, onComplete:(spriteFrame: SpriteFrame) => void, onError?:(error: string) => void) {
         assetManager.loadRemote<ImageAsset>(url, (err, imageAsset) => {
             if(err != null || imageAsset == null) {
                 assetManager.loadRemote<ImageAsset>(url, (secondLoadErr, secondLoadImageAsset) => {
                     if(secondLoadErr != null || secondLoadImageAsset == null) {
                         if(secondLoadImageAsset == null) {
-                            UIManager.instance.showErrorPopup(secondLoadErr.message);
+                            onError?.(secondLoadErr.message);
                         }
                         return;
                     }

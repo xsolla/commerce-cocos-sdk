@@ -1,7 +1,7 @@
 import { _decorator, assetManager, Button, Component, ImageAsset, Label, Sprite, SpriteFrame, Texture2D } from 'cc';
-import { StoreItem, XsollaCatalog } from 'db://xsolla-commerce-sdk/scripts/api/XsollaCatalog';
-import { TokenStorage } from 'db://xsolla-commerce-sdk/scripts/common/TokenStorage';
-import { OrderTracker } from 'db://xsolla-commerce-sdk/scripts/common/OrderTracker';
+import { StoreItem, XsollaCatalog } from '../../api/XsollaCatalog';
+import { TokenStorage } from '../../common/TokenStorage';
+import { OrderTracker } from '../../common/OrderTracker';
 const { ccclass, property } = _decorator;
 
 export namespace sellForVirtualCurrencyItem {

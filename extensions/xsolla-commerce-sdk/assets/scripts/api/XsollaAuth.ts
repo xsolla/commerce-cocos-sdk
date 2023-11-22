@@ -1,10 +1,11 @@
 // Copyright 2023 Xsolla Inc. All Rights Reserved.
 
-import { sys } from "cc";
+import { director, sys } from "cc";
 import { handleLoginError, LoginError } from "../core/Error";
 import { HttpUtil, RequestContentType } from "../core/HttpUtil";
 import { UrlBuilder } from "../core/UrlBuilder";
 import { Xsolla } from "../Xsolla";
+import { Events } from "../core/Events";
 
 export class XsollaAuth {
 
@@ -209,11 +210,91 @@ export class XsollaAuth {
 
     /**
      * @en
+     * Authenticates user via an account in the specified social networks. Only for Android and iOS builds.
+     * @zh
+     * 通过指定社交网络帐户认证用户身份。仅适用于Android和iOS编译版本。
+     */
+    static authSocial(socialNetworkName:string, onComplete?:(token:Token) => void, onCancel?:() => void, onError?:(error:string) => void) {
+        if(!sys.isMobile) {
+            console.error(`'authSocial' should be called in mobile platforms builds (Android, iOS)`);
+            return;
+        }
+
+        if(sys.platform.toLowerCase() == 'ios') {
+            jsb.reflection.callStaticMethod("XsollaNativeUtils", "authViaSocialNetwork:client:state:redirect:",
+                socialNetworkName, Xsolla.settings.clientId, 'xsollatest', 'app://xsollalogin');
+        }
+        if(sys.platform.toLowerCase() == 'android') {
+            jsb.reflection.callStaticMethod("com/cocos/game/XsollaNativeAuth", "authSocial", "(Ljava/lang/String;Z)V", socialNetworkName, false);
+        }
+
+        director.getScene().on(Events.SOCIAL_AUTH_SUCCESS, (token:Token) => {
+            director.getScene().off(Events.SOCIAL_AUTH_SUCCESS);
+            director.getScene().off(Events.SOCIAL_AUTH_CANCELED);
+            director.getScene().off(Events.SOCIAL_AUTH_ERROR);
+            onComplete?.(token);
+        }, this);
+        director.getScene().on(Events.SOCIAL_AUTH_CANCELED, () => {
+            director.getScene().off(Events.SOCIAL_AUTH_SUCCESS);
+            director.getScene().off(Events.SOCIAL_AUTH_CANCELED);
+            director.getScene().off(Events.SOCIAL_AUTH_ERROR);
+            onCancel?.();
+        }, this);
+        director.getScene().on(Events.SOCIAL_AUTH_ERROR, (error:string) => {
+            director.getScene().off(Events.SOCIAL_AUTH_SUCCESS);
+            director.getScene().off(Events.SOCIAL_AUTH_CANCELED);
+            director.getScene().off(Events.SOCIAL_AUTH_ERROR);
+            onError?.(error);
+        }, this);
+    }
+
+    /**
+     * @en
+     * Authenticates the user with Xsolla Login widget. Only for Android and iOS builds.
+     * @zh
+     * 通过艾克索拉登录管理器小组件认证用户身份。仅适用于Android和iOS编译版本。
+     */
+    static authWithXsollaWidget(onComplete?:(token:Token) => void, onCancel?:() => void, onError?:(error:string) => void) {
+        if(!sys.isMobile) {
+            console.error(`'authWithXsollaWidget' should be called in mobile platforms builds (Android, iOS)`);
+            return;
+        }
+
+        if(sys.platform.toLowerCase() == 'ios') {
+            jsb.reflection.callStaticMethod("XsollaNativeUtils", "authViaXsollaWidget:client:state:redirect:",
+            Xsolla.settings.loginId, Xsolla.settings.clientId, 'xsollatest', 'app://xsollalogin');
+        }
+        if(sys.platform.toLowerCase() == 'android') {
+            jsb.reflection.callStaticMethod("com/cocos/game/XsollaNativeAuth", "authViaXsollaWidget", "()V");
+        }
+
+        director.getScene().on(Events.XSOLLA_WIDGET_AUTH_SUCCESS, (token:Token) => {
+            director.getScene().off(Events.XSOLLA_WIDGET_AUTH_SUCCESS);
+            director.getScene().off(Events.XSOLLA_WIDGET_AUTH_CANCELED);
+            director.getScene().off(Events.XSOLLA_WIDGET_AUTH_ERROR);
+            onComplete?.(token);
+        }, this);
+        director.getScene().on(Events.SOCIAL_AUTH_CANCELED, () => {
+            director.getScene().off(Events.XSOLLA_WIDGET_AUTH_SUCCESS);
+            director.getScene().off(Events.XSOLLA_WIDGET_AUTH_CANCELED);
+            director.getScene().off(Events.XSOLLA_WIDGET_AUTH_ERROR);
+            onCancel?.();
+        }, this);
+        director.getScene().on(Events.SOCIAL_AUTH_ERROR, (error:string) => {
+            director.getScene().off(Events.XSOLLA_WIDGET_AUTH_SUCCESS);
+            director.getScene().off(Events.XSOLLA_WIDGET_AUTH_CANCELED);
+            director.getScene().off(Events.XSOLLA_WIDGET_AUTH_ERROR);
+            onError?.(error);
+        }, this);
+    }
+
+    /**
+     * @en
      * Creates a new user.
      * @zh
      * 创建新用户。
      */
-    static registerNewUser(username:string, password:string, email:string, state?:string, extras?: RegistrationExtras, locale?:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
+    static registerNewUser(username:string, password:string, email:string, state?:string, extras?:RegistrationExtras, locale?:string, onComplete?:(token:Token) => void, onError?:(error:LoginError) => void) {
         let body = {
             password: password,
             username: username,
@@ -290,7 +371,7 @@ export class XsollaAuth {
         request.send(JSON.stringify(body));
     }
 
-    private static handleUrlWithCode(onComplete: (token: Token) => void, onError?:(error:LoginError) => void): (result: any) => void {
+    private static handleUrlWithCode(onComplete: (token:Token) => void, onError?:(error:LoginError) => void): (result: any) => void {
         return result => {
             let authUrl: AuthUrl = JSON.parse(result);
             let params = HttpUtil.decodeUrlParams(authUrl.login_url);

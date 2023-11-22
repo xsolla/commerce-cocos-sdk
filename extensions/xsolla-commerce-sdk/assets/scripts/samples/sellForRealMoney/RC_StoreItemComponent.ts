@@ -1,8 +1,8 @@
 import { _decorator, assetManager, Button, Component, ImageAsset, Label, Sprite, SpriteFrame, Texture2D } from 'cc';
-import { StoreItem, XsollaCatalog } from 'db://xsolla-commerce-sdk/scripts/api/XsollaCatalog';
-import { TokenStorage } from 'db://xsolla-commerce-sdk/scripts/common/TokenStorage';
-import { OrderTracker } from 'db://xsolla-commerce-sdk/scripts/common/OrderTracker';
-import { BrowserUtil } from 'db://xsolla-commerce-sdk/scripts/common/BrowserUtil';
+import { StoreItem, XsollaCatalog } from '../../api/XsollaCatalog';
+import { TokenStorage } from '../../common/TokenStorage';
+import { OrderTracker } from '../../common/OrderTracker';
+import { XsollaPayments } from '../../api/XsollaPayments';
 const { ccclass, property } = _decorator;
 
 export namespace sellForRealMoneyItem {
@@ -64,7 +64,7 @@ export namespace sellForRealMoneyItem {
                 }, error => {
                     console.log(`Order checking failed - Status code: ${error.status}, Error code: ${error.code}, Error message: ${error.description}`);
                 });
-                BrowserUtil.openPurchaseUI(result.token);
+                XsollaPayments.openPurchaseUI(result.token);
             }, error => {
                 console.log(error.description);
             });

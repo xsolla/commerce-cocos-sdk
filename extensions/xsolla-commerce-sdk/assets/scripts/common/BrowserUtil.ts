@@ -1,35 +1,10 @@
 // Copyright 2023 Xsolla Inc. All Rights Reserved.
 
-import { sys, _decorator } from 'cc';
-import { UrlBuilder } from '../core/UrlBuilder';
-import { Xsolla } from '../Xsolla';
-import { NativeUtil } from './NativeUtil';
+import { _decorator } from 'cc';
 
 export class BrowserUtil {
 
-    static openPurchaseUI(token: string, onClose?:(isManually: boolean) => void) {
-        let sandbox = Xsolla.settings.enableSandbox;
-        let url: UrlBuilder;
-        if (sandbox) {
-            url = new UrlBuilder('https://sandbox-secure.xsolla.com/paystation3');
-        } else {
-            url = new UrlBuilder('https://secure.xsolla.com/paystation3');
-        }
-        url.addStringParam('access_token', token);
-
-        if (Xsolla.settings.enableInAppBrowser) {
-            if (sys.isMobile) {
-                NativeUtil.openPurchaseUI(token, sandbox, onClose);
-            }
-            else {
-                this.openPaystationWidget(token, sandbox, onClose);
-            }
-        } else {
-            sys.openURL(url.build());
-        }
-    }
-
-    private static openPaystationWidget(token: string, sandbox: boolean, onClose?:(isManually: boolean) => void) {
+    public static openPaystationWidget(token: string, sandbox: boolean, onClose?:(isManually: boolean) => void) {
         console.log('openPaystationWidget opened');
         var jsToken = token;
         var isSandbox = sandbox;
@@ -75,7 +50,7 @@ export class BrowserUtil {
         head.appendChild(s);
     }
 
-    private static closePaystationWidget() {
+    public static closePaystationWidget() {
         console.log('closePaystationWidget');
         // @ts-ignore
         if (typeof XPayStationWidget !== undefined) {
