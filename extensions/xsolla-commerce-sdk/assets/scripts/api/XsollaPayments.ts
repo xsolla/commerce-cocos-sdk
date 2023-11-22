@@ -13,7 +13,7 @@ export class XsollaPayments {
      * @en
      * Opens Pay Station in the browser with a provided payment token.
      * @zh
-     *
+     * 通过提供的支付令牌在浏览器中打开支付中心。
      */
     static openPurchaseUI(token: string, onClose?:(isManually: boolean) => void) {
         if (Xsolla.settings.enableInAppBrowser) {

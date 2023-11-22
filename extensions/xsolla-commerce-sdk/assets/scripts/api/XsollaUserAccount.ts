@@ -319,7 +319,7 @@ export class XsollaUserAccount {
      * @en
      * Links a social network that can be used for authentication to the current account. Only for Android and iOS builds.
      * @zh
-     *
+     * 将可用于身份认证的社交网络关联至当前帐户。仅适用于Android和iOS编译版本。
      */
     static linkSocialNetwork(token:string, networkName:string, onComplete?:(networkName:string) => void, onError?:(error:string) => void) {
         if (sys.platform.toLowerCase() == 'ios') {

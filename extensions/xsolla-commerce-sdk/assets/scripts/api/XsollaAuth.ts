@@ -212,7 +212,7 @@ export class XsollaAuth {
      * @en
      * Authenticates user via an account in the specified social networks. Only for Android and iOS builds.
      * @zh
-     *
+     * 通过指定社交网络帐户认证用户身份。仅适用于Android和iOS编译版本。
      */
     static authSocial(socialNetworkName:string, onComplete?:(token:Token) => void, onCancel?:() => void, onError?:(error:string) => void) {
         if(sys.platform.toLowerCase() == 'ios') {
@@ -247,7 +247,7 @@ export class XsollaAuth {
      * @en
      * Authenticates the user with Xsolla Login widget. Only for Android and iOS builds.
      * @zh
-     *
+     * 通过艾克索拉登录管理器小组件认证用户身份。仅适用于Android和iOS编译版本。
      */
     static authWithXsollaWidget(onComplete?:(token:Token) => void, onCancel?:() => void, onError?:(error:string) => void) {
         if(sys.platform.toLowerCase() == 'ios') {
