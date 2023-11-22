@@ -215,6 +215,11 @@ export class XsollaAuth {
      * 通过指定社交网络帐户认证用户身份。仅适用于Android和iOS编译版本。
      */
     static authSocial(socialNetworkName:string, onComplete?:(token:Token) => void, onCancel?:() => void, onError?:(error:string) => void) {
+        if(!sys.isMobile) {
+            console.error(`'authSocial' should be called in mobile platforms builds (Android, iOS)`);
+            return;
+        }
+
         if(sys.platform.toLowerCase() == 'ios') {
             jsb.reflection.callStaticMethod("XsollaNativeUtils", "authViaSocialNetwork:client:state:redirect:",
                 socialNetworkName, Xsolla.settings.clientId, 'xsollatest', 'app://xsollalogin');
@@ -250,6 +255,11 @@ export class XsollaAuth {
      * 通过艾克索拉登录管理器小组件认证用户身份。仅适用于Android和iOS编译版本。
      */
     static authWithXsollaWidget(onComplete?:(token:Token) => void, onCancel?:() => void, onError?:(error:string) => void) {
+        if(!sys.isMobile) {
+            console.error(`'authWithXsollaWidget' should be called in mobile platforms builds (Android, iOS)`);
+            return;
+        }
+
         if(sys.platform.toLowerCase() == 'ios') {
             jsb.reflection.callStaticMethod("XsollaNativeUtils", "authViaXsollaWidget:client:state:redirect:",
             Xsolla.settings.loginId, Xsolla.settings.clientId, 'xsollatest', 'app://xsollalogin');

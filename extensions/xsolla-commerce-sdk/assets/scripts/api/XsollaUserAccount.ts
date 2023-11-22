@@ -322,6 +322,10 @@ export class XsollaUserAccount {
      * 将可用于身份认证的社交网络关联至当前帐户。仅适用于Android和iOS编译版本。
      */
     static linkSocialNetwork(token:string, networkName:string, onComplete?:(networkName:string) => void, onError?:(error:string) => void) {
+        if(!sys.isMobile) {
+            console.error(`'linkSocialNetwork' should be called in mobile platforms builds (Android, iOS)`);
+            return;
+        }
         if (sys.platform.toLowerCase() == 'ios') {
             jsb.reflection.callStaticMethod("XsollaNativeUtils", "linkSocialNetwork:networkName:redirectUri:",
                 token,
