@@ -99,5 +99,5 @@ dependencies {
     implementation 'com.xsolla.android:login-google:6.0.3'
     implementation 'com.xsolla.android:login-wechat:6.0.3'
     implementation 'com.xsolla.android:login-qq:6.0.3'
-    implementation 'com.xsolla.android:payments:1.0.6'
+    implementation 'com.xsolla.android:payments:1.1.0'
 }
