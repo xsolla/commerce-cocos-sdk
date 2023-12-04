@@ -37,7 +37,7 @@
 			NSLog(@"Error code: %ld", error.code);
 
 			NSString* errorString = error.localizedDescription;
-			NSString *errorScript = [NSString stringWithFormat: @"cc.director.getScene().emit(\"avatarUpdateError\", \"%@\"))", errorString];
+			NSString *errorScript = [NSString stringWithFormat: @"cc.director.getScene().emit(\"avatarUpdateError\", \"%@\")", errorString];
 			const char* errorScriptStr = [XsollaUtils createCStringFrom:errorScript];
 			cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
 				se::ScriptEngine::getInstance()->evalString(errorScriptStr);
