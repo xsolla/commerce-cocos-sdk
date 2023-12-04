@@ -1,14 +1,15 @@
 [
   {
     "__type__": "cc.Prefab",
-    "_name": "",
+    "_name": "pref_AuthByPhoneScreen",
     "_objFlags": 0,
     "_native": "",
     "data": {
       "__id__": 1
     },
     "optimizationPolicy": 0,
-    "asyncLoadAssets": false
+    "asyncLoadAssets": false,
+    "persistent": false
   },
   {
     "__type__": "cc.Node",
@@ -4592,6 +4593,26 @@
       },
       {
         "__id__": 328
+      }
+    ],
+    "nestedPrefabInstanceRoots": [
+      {
+        "__id__": 10
+      },
+      {
+        "__id__": 55
+      },
+      {
+        "__id__": 96
+      },
+      {
+        "__id__": 131
+      },
+      {
+        "__id__": 218
+      },
+      {
+        "__id__": 261
       }
     ]
   },

@@ -1,14 +1,15 @@
 [
   {
     "__type__": "cc.Prefab",
-    "_name": "",
+    "_name": "pref_UserAttributesScreen",
     "_objFlags": 0,
     "_native": "",
     "data": {
       "__id__": 1
     },
     "optimizationPolicy": 0,
-    "asyncLoadAssets": false
+    "asyncLoadAssets": false,
+    "persistent": false
   },
   {
     "__type__": "cc.Node",
@@ -2141,7 +2142,6 @@
     "_type": 0,
     "_inverted": false,
     "_segments": 64,
-    "_spriteFrame": null,
     "_alphaThreshold": 0.1,
     "_id": ""
   },
@@ -3983,7 +3983,6 @@
     "_type": 0,
     "_inverted": false,
     "_segments": 64,
-    "_spriteFrame": null,
     "_alphaThreshold": 0.1,
     "_id": ""
   },
@@ -10973,6 +10972,56 @@
       },
       {
         "__id__": 766
+      }
+    ],
+    "nestedPrefabInstanceRoots": [
+      {
+        "__id__": 36
+      },
+      {
+        "__id__": 61
+      },
+      {
+        "__id__": 112
+      },
+      {
+        "__id__": 132
+      },
+      {
+        "__id__": 167
+      },
+      {
+        "__id__": 228
+      },
+      {
+        "__id__": 248
+      },
+      {
+        "__id__": 317
+      },
+      {
+        "__id__": 363
+      },
+      {
+        "__id__": 413
+      },
+      {
+        "__id__": 442
+      },
+      {
+        "__id__": 508
+      },
+      {
+        "__id__": 554
+      },
+      {
+        "__id__": 604
+      },
+      {
+        "__id__": 633
+      },
+      {
+        "__id__": 666
       }
     ]
   },

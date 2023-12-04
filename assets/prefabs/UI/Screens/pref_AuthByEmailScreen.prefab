@@ -1,14 +1,15 @@
 [
   {
     "__type__": "cc.Prefab",
-    "_name": "",
+    "_name": "pref_AuthByEmailScreen",
     "_objFlags": 0,
     "_native": "",
     "data": {
       "__id__": 1
     },
     "optimizationPolicy": 0,
-    "asyncLoadAssets": false
+    "asyncLoadAssets": false,
+    "persistent": false
   },
   {
     "__type__": "cc.Node",
@@ -4604,6 +4605,26 @@
       },
       {
         "__id__": 328
+      }
+    ],
+    "nestedPrefabInstanceRoots": [
+      {
+        "__id__": 10
+      },
+      {
+        "__id__": 59
+      },
+      {
+        "__id__": 102
+      },
+      {
+        "__id__": 135
+      },
+      {
+        "__id__": 222
+      },
+      {
+        "__id__": 261
       }
     ]
   },

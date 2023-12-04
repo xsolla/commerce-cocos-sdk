@@ -1,14 +1,15 @@
 [
   {
     "__type__": "cc.Prefab",
-    "_name": "",
+    "_name": "pref_ConfirmationPopup",
     "_objFlags": 0,
     "_native": "",
     "data": {
       "__id__": 1
     },
     "optimizationPolicy": 0,
-    "asyncLoadAssets": false
+    "asyncLoadAssets": false,
+    "persistent": false
   },
   {
     "__type__": "cc.Node",
@@ -1887,6 +1888,14 @@
       },
       {
         "__id__": 135
+      }
+    ],
+    "nestedPrefabInstanceRoots": [
+      {
+        "__id__": 27
+      },
+      {
+        "__id__": 68
       }
     ]
   },
