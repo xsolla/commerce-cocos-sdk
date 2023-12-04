@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.7.0] - 2023-11-30
+## [0.7.0] - 2023-12-06
 
 ### Added
 - Centrifugo integration. Doesn’t establish web socket connection for Android and iOS builds, short polling is used instead

@@ -1,25 +1,9 @@
 # Changelog
 
-## [0.7.0] - 2023-11-30
-
-### Added
-- Centrifugo integration. Doesn’t establish web socket connection for Android and iOS builds, short polling is used instead
-
+## [0.7.0] - 2023-12-06
 
 ### Changed
-- `authWithXsollaWidget` SDK method moved to `XsollaAuth`
-- `authSocial` SDK method moved to `XsollaAuth` class
-- `linkSocialNetwork` SDK method moved to `XsollaUserAccount` class
-- `openPurchaseUI` SDK method: moved to `XsollaPayments` class, added `onClose` callback parameter (optional)
-- SDK methods for cart management. The following methods operate with the cart with specified ID or with the cart of current user if ID is not specified: `getCart`, `clearCart`, `fillCart`, `updateItemInCart`, `removeItemFromCart`
-
-
-### Removed
-- `getCartById` SDK method , use `getCart` instead
-- `clearCartById` SDK method , use `clearCart` instead
-- `fillCartById` SDK method , use `fillCart` instead
-- `updateItemInCartById` SDK method , use `updateItemInCart` instead
-- `removeItemFromCartById` SDK method , use `removeItemFromCart` instead
+- `ImageUtils` class moved from demo project to `xsolla-commerce-sdk` extension
 
 ### Fixed
 - Minor bugs
