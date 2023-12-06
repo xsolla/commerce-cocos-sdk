@@ -5,8 +5,8 @@ import { assetManager, ImageAsset, SpriteFrame, Texture2D } from "cc";
 export class ImageUtils {
     
     static getBase64Image(texture: Texture2D, onComplete:(base64image: string) => void, onError?:(message: string) => void, outputFormat: string = 'png') {
-        let data = texture.image.data;
-        if(data instanceof HTMLImageElement){
+        let url = texture.image.nativeUrl;
+        if(url.length > 0){
             const img = new Image();
             img.crossOrigin = 'Anonymous';
             img.onload = () => {
@@ -21,9 +21,9 @@ export class ImageUtils {
             img.onerror = () => {
                 onError?.('error occurs during texture loading');
             }
-            img.src = data.src;
+            img.src = url;
         } else {
-            onError?.('texture must be HTMLImageDocument');
+            onError?.(`texture's image.nativeUrl is empty`);
         }
     }
 
