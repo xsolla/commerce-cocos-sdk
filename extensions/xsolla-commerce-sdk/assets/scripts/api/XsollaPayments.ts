@@ -11,9 +11,9 @@ export class XsollaPayments {
 
     /**
      * @en
-     * Opens Pay Station in the browser with a provided payment token.
+     * Opens payment UI in the browser with a provided payment token. `onClose` callback is called after the browser is closed. The event is tracked only when the payment UI is opened in the built-in browser. External browser events can't be tracked.
      * @zh
-     * 通过提供的支付令牌在浏览器中打开支付中心。
+     * 使用提供的支付令牌在浏览器中打开支付UI。浏览器关闭后会调用`onClose`回调。仅当支付UI在内置浏览器中打开时才会跟踪该事件。无法跟踪外部浏览器事件。
      */
     static openPurchaseUI(token: string, onClose?:(isManually: boolean) => void) {
         if (Xsolla.settings.enableInAppBrowser) {
