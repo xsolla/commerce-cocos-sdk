@@ -99,6 +99,16 @@ To get started with the SDK, you need to install this extension and set up a pro
 
 The SDK uses [Google Mobile Services](https://www.android.com/gms/) and doesn’t support builds for devices without Google Mobile Services, such as Huawei.
 
+## Install SDK
+
+1. Go to [Cocos Store](https://store.cocos.com/app/en/detail/3715).
+2. Choose Xsolla SDK in the **Creator Extension > Plugins** section.
+3. Click **Get**.
+4. Click **Add To Project** to launch Cocos Dashboard.
+5. In Cocos Dashboard, click **Add To Project** and select a project.
+6. In the modal window that appears, click **Confirm** to begin downloading the ZIP archive with the SDK.
+7. Unzip archive to your project’s `assets` folder.
+
 ## Pricing
 
 Xsolla offers the necessary tools to help you build and grow your gaming business, including personalized support at every stage. The terms of payment are determined by the contract that you can sign in Publisher Account.

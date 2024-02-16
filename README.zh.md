@@ -101,6 +101,16 @@
 本SDK使用[Google移动服务](https://www.android.com/gms/)，不支持在没有Google移动服务的设备（如华为等）上使用的编译
 版本。
 
+## 安装SDK
+
+1. 前往[Cocos商店](https://store.cocos.com/app/en/detail/3715)。
+2. 在**Creator Extension > Plugins**部分选择艾克索拉SDK。
+3. 单击**Get**。
+4. 单击**Add To Project**启动Cocos仪表板。
+5. 在Cocos仪表板中，单击**Add To Project**，然后选择项目。
+6. 在显示的模态窗口中，单击**Confirm**开始下载包含SDK的ZIP压缩包。
+7. 将文件解压缩到项目的`assets`文件夹中。
+
 ## 定价
 
 艾克索拉提供必要的工具来帮助您建立和发展您的游戏业务，包括在每个阶段提供个性化的支持。付款条件由在发布商帐户中签署的合同决定。
