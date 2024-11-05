@@ -1,11 +1,11 @@
 include:
   - project: 'security/security-tools'
-    ref: 'v1'
-    file: 'gitlab-ci.yml'
+    ref: 'v2'
+    file: 'adapter/sdk/security-tools-commerce-cocos-sdk.yml'
 
 stages:
-  - build-demo
   - security scan
+  - build-demo
 
 variables:
   PROJECT_PATH: "%cd%"
