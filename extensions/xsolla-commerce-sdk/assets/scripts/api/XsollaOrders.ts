@@ -5,7 +5,7 @@ import { NativeUtil } from "../common/NativeUtil";
 import { CommerceError, handleCommerceError } from "../core/Error";
 import { HttpUtil, RequestContentType } from "../core/HttpUtil";
 import { UrlBuilder } from "../core/UrlBuilder";
-import { PaymentRedirectCondition, PaymentRedirectStatusManual, PaymentUISettings, PaymentUiSize, PaymentUiVersion, RedirectPolicySettings, Xsolla } from "../Xsolla";
+import { PaymentRedirectCondition, PaymentRedirectStatusManual, PaymentUISettings, RedirectPolicySettings, Xsolla } from "../Xsolla";
 import { OrderContent } from "./XsollaCatalog";
 
 export class XsollaOrders {
@@ -39,25 +39,15 @@ export class XsollaOrders {
         let isAndroidPlatform = platfrom == 'android';
         let isIosPlatform = platfrom == 'ios';
 
-        let uiSettings: PaymentUISettings = Xsolla.settings.paymentUISettingsWebGL;
-        if(isAndroidPlatform) {
-            uiSettings = Xsolla.settings.paymentUISettingsAndroid;
-        }
-        if(isIosPlatform) {
-            uiSettings = Xsolla.settings.paymentUISettingsIOS;
-        }
+        let uiSettings: PaymentUISettings = Xsolla.settings.paymentUISettings;
         if(uiSettings == null) {
             uiSettings = {
-                theme: "default",
-                size: PaymentUiSize.medium,
-                version: PaymentUiVersion.mobile
+                theme: "63295aab2e47fab76f7708e3"
             };
         }
         
         let paymentUISettings = {
-            theme: uiSettings.theme == null ? "default" : uiSettings.theme,
-            size: uiSettings.size == null ? PaymentUiSize[PaymentUiSize.medium] : PaymentUiSize[uiSettings.size],
-            version: uiSettings.version == null ? PaymentUiVersion[PaymentUiVersion.desktop] : PaymentUiVersion[uiSettings.version]
+            theme: uiSettings.theme == null ? "63295aab2e47fab76f7708e3" : uiSettings.theme,
         };
 
         let paymentSettings: any = {

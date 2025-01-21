@@ -1,7 +1,7 @@
 // Copyright 2023 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component, Enum, CCInteger, sys} from 'cc';
-import { XsollaSettings, Xsolla, PaymentUiSize, PaymentUiVersion, PaymentRedirectCondition, PaymentRedirectStatusManual, RedirectPolicySettings, PaymentUISettings } from './Xsolla';
+import { XsollaSettings, Xsolla, PaymentRedirectCondition, PaymentRedirectStatusManual, RedirectPolicySettings, PaymentUISettings } from './Xsolla';
 const { ccclass, property, disallowMultiple, type } = _decorator;
 
 @ccclass('XsollaSettingsManager')
@@ -65,71 +65,9 @@ export class XsollaSettingsManager extends Component {
     @property ({
         displayName: 'Payment UI Theme Id',
         tooltip: 'User interface theme ID for the payment interface. To use default themes, enter "63295a9a2e47fab76f7708e1" (light) or "63295aab2e47fab76f7708e3" (dark) values. Or enter the ID of a custom theme you have configured in Publisher Account to use it.',
-        group: {name: 'Pay Station UI WebGL', id: 'Paystation UI'}
+        group: {name: 'Paystation UI', id: 'Paystation UI'}
     })
-    paymentInterfaceThemeIdWebGL: string = "63295aab2e47fab76f7708e3";
-
-    @property ({
-        displayName: 'Payment UI Size',
-        tooltip: 'User interface size for the payment interface.',
-        group: {name: 'Pay Station UI WebGL', id: 'Paystation UI'}
-    })
-    @type(Enum(PaymentUiSize))
-    paymentInterfaceSizeWebGL: PaymentUiSize = PaymentUiSize.medium;
-
-    @property ({
-        displayName: 'Payment UI Version',
-        tooltip: 'Device type used to present payment interface.',
-        group: {name: 'Pay Station UI WebGL', id: 'Paystation UI'}
-    })
-    @type(Enum(PaymentUiVersion))
-    paymentInterfaceVersionWebGL: PaymentUiVersion = PaymentUiVersion.desktop;
-
-    @property ({
-        displayName: 'Payment UI Theme Id',
-        tooltip: 'User interface theme ID for the payment interface. To use default themes, enter "63295a9a2e47fab76f7708e1" (light) or "63295aab2e47fab76f7708e3" (dark) values. Or enter the ID of a custom theme you have configured in Publisher Account to use it.',
-        group: {name: 'Pay Station UI Android', id: 'Paystation UI'}
-    })
-    paymentInterfaceThemeIdAndroid: string = "63295aab2e47fab76f7708e3";
-
-    @property ({
-        displayName: 'Payment UI Size',
-        tooltip: 'User interface size for the payment interface.',
-        group: {name: 'Pay Station UI Android', id: 'Paystation UI'}
-    })
-    @type(Enum(PaymentUiSize))
-    paymentInterfaceSizeAndroid: PaymentUiSize = PaymentUiSize.medium;
-
-    @property ({
-        displayName: 'Payment UI Version',
-        tooltip: 'Device type used to present payment interface.',
-        group: {name: 'Pay Station UI Android', id: 'Paystation UI'}
-    })
-    @type(Enum(PaymentUiVersion))
-    paymentInterfaceVersionAndroid: PaymentUiVersion = PaymentUiVersion.mobile;
-
-    @property ({
-        displayName: 'Payment UI Theme Id',
-        tooltip: 'User interface theme ID for the payment interface. To use default themes, enter "63295a9a2e47fab76f7708e1" (light) or "63295aab2e47fab76f7708e3" (dark) values. Or enter the ID of a custom theme you have configured in Publisher Account to use it.',
-        group: {name: 'Pay Station UI IOS', id: 'Paystation UI'}
-    })
-    paymentInterfaceThemeIdIOS: string = "63295aab2e47fab76f7708e3";
-
-    @property ({
-        displayName: 'Payment UI Size',
-        tooltip: 'User interface size for the payment interface.',
-        group: {name: 'Pay Station UI IOS', id: 'Paystation UI'}
-    })
-    @type(Enum(PaymentUiSize))
-    paymentInterfaceSizeIOS: PaymentUiSize = PaymentUiSize.medium;
-
-    @property ({
-        displayName: 'Payment UI Version',
-        tooltip: 'Device type used to present payment interface.',
-        group: {name: 'Pay Station UI IOS', id: 'Paystation UI'}
-    })
-    @type(Enum(PaymentUiVersion))
-    paymentInterfaceVersionIOS: PaymentUiVersion = PaymentUiVersion.mobile;
+    paymentInterfaceThemeId: string = "63295aab2e47fab76f7708e3";
 
     @property ({
         displayName: 'Use settings from publisher account',
@@ -322,22 +260,8 @@ export class XsollaSettingsManager extends Component {
             redirectButtonCaption: this.redirectButtonCaptionIOS
         };
 
-        let paymentUISettingsWebGL: PaymentUISettings = {
-            theme: this.paymentInterfaceThemeIdWebGL,
-            size: this.paymentInterfaceSizeWebGL,
-            version: this.paymentInterfaceVersionWebGL,
-        };
-
-        let paymentUISettingsAndroid: PaymentUISettings = {
-            theme: this.paymentInterfaceThemeIdAndroid,
-            size: this.paymentInterfaceSizeAndroid,
-            version: this.paymentInterfaceVersionAndroid,
-        };
-
-        let paymentUISettingsIOS: PaymentUISettings = {
-            theme: this.paymentInterfaceThemeIdIOS,
-            size: this.paymentInterfaceSizeIOS,
-            version: this.paymentInterfaceVersionIOS,
+        let paymentUISettings: PaymentUISettings = {
+            theme: this.paymentInterfaceThemeId,
         };
 
         var settings: XsollaSettings = {
@@ -347,9 +271,7 @@ export class XsollaSettingsManager extends Component {
             redirectURI: this.redirectURI,
             enableSandbox: this.enableSandbox,
             enableInAppBrowser: this.enableInAppBrowser,
-            paymentUISettingsWebGL: paymentUISettingsWebGL,
-            paymentUISettingsAndroid: paymentUISettingsAndroid,
-            paymentUISettingsIOS: paymentUISettingsIOS,
+            paymentUISettings: paymentUISettings,
             redirectPolicySettingsWebGL: redirectPolicySettingsWebGL,
             redirectPolicySettingsAndroid: redirectPolicySettingsAndroid,
             redirectPolicySettingsIOS: redirectPolicySettingsIOS
