@@ -17,7 +17,7 @@ export class XsollaPayments {
      */
     static openPurchaseUI(token: string, onClose?:(isManually: boolean) => void) {
         if (Xsolla.settings.enableInAppBrowser) {
-            if (sys.isMobile) {
+            if (!sys.isBrowser) {
                 if (sys.platform.toLowerCase() == 'ios') {
                     jsb.reflection.callStaticMethod("XsollaNativeUtils", "openPurchaseUI:sandbox:redirectUri:",
                         token,
