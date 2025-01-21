@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.7.1] - 2025-01-22
+
+### Fixed
+- Opening Pay Station in web builds on mobile devices
+
 ## [0.7.0] - 2023-12-06
 
 ### Changed
