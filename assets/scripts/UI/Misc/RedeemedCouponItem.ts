@@ -1,4 +1,4 @@
-// Copyright 2023 Xsolla Inc. All Rights Reserved.
+// Copyright 2025 Xsolla Inc. All Rights Reserved.
 
 import { _decorator, Component, Sprite, Label } from 'cc';
 import { RedeemedCouponItem as XsollaRedeemedCouponItem} from 'db://xsolla-commerce-sdk/scripts/api/XsollaCatalog';

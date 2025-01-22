@@ -1,4 +1,4 @@
-// Copyright 2023 Xsolla Inc. All Rights Reserved.
+// Copyright 2025 Xsolla Inc. All Rights Reserved.
 
 import { Xsolla } from "../Xsolla";
 import { CentrifugoClient } from "./CentrifugoClient";

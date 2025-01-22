@@ -1,15 +1,4 @@
-// Copyright 2023 Xsolla Inc. All Rights Reserved.
-
-export enum PaymentUiSize {
-    small = 0,
-	medium = 1,
-	large = 2
-}
-
-export enum PaymentUiVersion {
-	desktop = 0,
-	mobile = 1
-}
+// Copyright 2025 Xsolla Inc. All Rights Reserved.
 
 export enum PaymentRedirectCondition {
     none = 0,
@@ -33,9 +22,7 @@ export interface XsollaSettings {
     redirectURI: string;
     enableSandbox?: boolean;
     enableInAppBrowser?: boolean;
-    paymentUISettingsWebGL?:PaymentUISettings;
-    paymentUISettingsAndroid?:PaymentUISettings;
-    paymentUISettingsIOS?:PaymentUISettings;
+    paymentUISettings?:PaymentUISettings;
     redirectPolicySettingsWebGL?: RedirectPolicySettings;
     redirectPolicySettingsAndroid?: RedirectPolicySettings;
     redirectPolicySettingsIOS?: RedirectPolicySettings;
@@ -63,6 +50,4 @@ export interface RedirectPolicySettings {
 
 export interface PaymentUISettings {
     theme?: string;
-    size?: PaymentUiSize;
-    version?: PaymentUiVersion;
 }
