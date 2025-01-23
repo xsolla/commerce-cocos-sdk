@@ -6,7 +6,7 @@
 #import "XsollaUtils.h"
 #import "XsollaSDKPaymentsKitObjectiveC/XsollaSDKPaymentsKitObjectiveC-Swift.h"
 
-#include "platform/Application.h"
+#include "application/ApplicationManager.h"
 #include "cocos/bindings/jswrapper/SeApi.h"
 
 @interface XsollaNativeUtils: NSObject
@@ -39,7 +39,7 @@
 			NSString* errorString = error.localizedDescription;
 			NSString *errorScript = [NSString stringWithFormat: @"cc.director.getScene().emit(\"avatarUpdateError\", \"%@\")", errorString];
 			const char* errorScriptStr = [XsollaUtils createCStringFrom:errorScript];
-			cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
+			CC_CURRENT_ENGINE()->getScheduler()->performFunctionInCocosThread([=](){
 				se::ScriptEngine::getInstance()->evalString(errorScriptStr);
 			});
 
@@ -48,7 +48,7 @@
 
 		NSString *successScript = [NSString stringWithFormat: @"cc.director.getScene().emit(\"avatarUpdateSuccess\")"];
 		const char* successScriptStr = [XsollaUtils createCStringFrom:successScript];
-		cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
+		CC_CURRENT_ENGINE()->getScheduler()->performFunctionInCocosThread([=](){
 			se::ScriptEngine::getInstance()->evalString(successScriptStr);
 		});
 	}];
@@ -80,7 +80,7 @@
 				if(error.code == NSError.loginKitErrorCodeASCanceledLogin) {
 					NSString *errorScript = [NSString stringWithFormat: @"cc.director.getScene().emit(\"socialAuthCanceled\")"];
 					const char* errorScriptStr = [XsollaUtils createCStringFrom:errorScript];
-					cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
+					CC_CURRENT_ENGINE()->getScheduler()->performFunctionInCocosThread([=](){
 						se::ScriptEngine::getInstance()->evalString(errorScriptStr);
 					});
 					return;
@@ -89,7 +89,7 @@
 				NSString* errorString = error.localizedDescription;
 				NSString *errorScript = [NSString stringWithFormat: @"cc.director.getScene().emit(\"socialAuthError\", (\"%@\"))", errorString];
 				const char* errorScriptStr = [XsollaUtils createCStringFrom:errorScript];
-				cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
+				CC_CURRENT_ENGINE()->getScheduler()->performFunctionInCocosThread([=](){
 					se::ScriptEngine::getInstance()->evalString(errorScriptStr);
 				});
 
@@ -99,7 +99,7 @@
 			NSString* tokenInfoString = [XsollaUtils serializeTokenInfo:accesTokenInfo];
 			NSString *successScript = [NSString stringWithFormat: @"cc.director.getScene().emit(\"socialAuthSuccess\", (%@))", tokenInfoString];
 			const char* successScriptStr = [XsollaUtils createCStringFrom:successScript];
-			cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
+			CC_CURRENT_ENGINE()->getScheduler()->performFunctionInCocosThread([=](){
 				se::ScriptEngine::getInstance()->evalString(successScriptStr);
 			});
 		}];
@@ -126,7 +126,7 @@
 				if(error.code == NSError.loginKitErrorCodeASCanceledLogin) {
 					NSString *errorScript = [NSString stringWithFormat: @"cc.director.getScene().emit(\"xsollaWidgetAuthCanceled\")"];
 					const char* errorScriptStr = [XsollaUtils createCStringFrom:errorScript];
-					cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
+					CC_CURRENT_ENGINE()->getScheduler()->performFunctionInCocosThread([=](){
 						se::ScriptEngine::getInstance()->evalString(errorScriptStr);
 					});
 					return;
@@ -135,7 +135,7 @@
 				NSString* errorString = error.localizedDescription;
 				NSString *errorScript = [NSString stringWithFormat: @"cc.director.getScene().emit(\"xsollaWidgetAuthError\", (\"%@\"))", errorString];
 				const char* errorScriptStr = [XsollaUtils createCStringFrom:errorScript];
-				cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
+				CC_CURRENT_ENGINE()->getScheduler()->performFunctionInCocosThread([=](){
 					se::ScriptEngine::getInstance()->evalString(errorScriptStr);
 				});
 
@@ -145,7 +145,7 @@
 			NSString* tokenInfoString = [XsollaUtils serializeTokenInfo:accesTokenInfo];
 			NSString *successScript = [NSString stringWithFormat: @"cc.director.getScene().emit(\"xsollaWidgetAuthSuccess\", (%@))", tokenInfoString];
 			const char* successScriptStr = [XsollaUtils createCStringFrom:successScript];
-			cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
+			CC_CURRENT_ENGINE()->getScheduler()->performFunctionInCocosThread([=](){
 				se::ScriptEngine::getInstance()->evalString(successScriptStr);
 			});
 		}];
@@ -168,7 +168,7 @@
 			NSString* errorString = error.localizedDescription;
 			NSString *errorScript = [NSString stringWithFormat: @"cc.director.getScene().emit(\"accountDataUpdateError\", \"%@\"))", errorString];
 			const char* errorScriptStr = [XsollaUtils createCStringFrom:errorScript];
-			cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
+			CC_CURRENT_ENGINE()->getScheduler()->performFunctionInCocosThread([=](){
 				se::ScriptEngine::getInstance()->evalString(errorScriptStr);
 			});
 
@@ -177,7 +177,7 @@
 
 		NSString *successScript = [NSString stringWithFormat: @"cc.director.getScene().emit(\"accountDataUpdateSuccess\")"];
 		const char* successScriptStr = [XsollaUtils createCStringFrom:successScript];
-		cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
+		CC_CURRENT_ENGINE()->getScheduler()->performFunctionInCocosThread([=](){
 			se::ScriptEngine::getInstance()->evalString(successScriptStr);
 		});
 	}];
@@ -195,7 +195,7 @@
                 NSString* errorString = error.localizedDescription;
                 NSString *errorScript = [NSString stringWithFormat: @"cc.director.getScene().emit(\"socialNetworkLinkingError\", \"%@\")", errorString];
                 const char* errorScriptStr = [XsollaUtils createCStringFrom:errorScript];
-                cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
+                CC_CURRENT_ENGINE()->getScheduler()->performFunctionInCocosThread([=](){
                     se::ScriptEngine::getInstance()->evalString(errorScriptStr);
                 });
 
@@ -204,7 +204,7 @@
             
             NSString *successScript = [NSString stringWithFormat: @"cc.director.getScene().emit(\"socialNetworkLinkingSuccess\", \"%@\")", networkNameStr];
             const char* successScriptStr = [XsollaUtils createCStringFrom:successScript];
-            cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
+            CC_CURRENT_ENGINE()->getScheduler()->performFunctionInCocosThread([=](){
                 se::ScriptEngine::getInstance()->evalString(successScriptStr);
             });
         }];
@@ -223,7 +223,7 @@
             NSString *isManually = error != nil && error.code == NSError.cancelledByUserError ? @"true" : @"false";
             NSString *script = [NSString stringWithFormat: @"cc.director.getScene().emit(\"paymentClose\", \"%@\")", isManually];
             const char* scriptStr = [XsollaUtils createCStringFrom:script];
-            cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
+            CC_CURRENT_ENGINE()->getScheduler()->performFunctionInCocosThread([=](){
                 se::ScriptEngine::getInstance()->evalString(scriptStr);
             });
         }];
