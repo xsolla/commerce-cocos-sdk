@@ -87,8 +87,8 @@ To get started with the SDK, you need to install this extension and set up a pro
 
 * 64-bit OS
 * Windows 7 and higher
-* macOS 10.9 and higher
-* Minimum supported version of Cocos Creator — 3.1.0
+* macOS 13.6.6 and higher
+* Minimum supported version of Cocos Creator — 3.3.1
 
 
 ### Target OS

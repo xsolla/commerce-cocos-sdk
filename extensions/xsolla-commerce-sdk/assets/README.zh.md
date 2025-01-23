@@ -88,8 +88,8 @@
 
 * 64位操作系统
 * Windows 7及更高版本
-* macOS 10.9及更高版本
-* 支持的最低Cocos Creator版本 — 3.1.0
+* macOS 13.6.6及更高版本
+* 支持的最低Cocos Creator版本 — 3.3.1
 
 
 ### 终端操作系统
