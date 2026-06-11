@@ -7,7 +7,7 @@
 > **The current recommended version is [Xsolla SDK 3](https://developers.xsolla.com/sdk/)**, which provides:
 > - ✅ Up-to-date authentication, catalog, store, and payment integrations
 > - ✅ Active development with ongoing bug fixes, new features, and platform updates
-> - ✅ 700+ payment methods across 200+ countries and territories
+> - ✅ 1000+ payment methods across 200+ countries and territories
 > - ✅ Cross-platform SDKs for Unity, Android, iOS, Windows, and web
 >
 > **Get started with SDK 3:**
