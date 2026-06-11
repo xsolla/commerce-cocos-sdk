@@ -1,3 +1,11 @@
+> [!WARNING]
+> **This repository is deprecated and is no longer actively maintained.**
+>
+> If you arrived here from a web search, you are looking at a legacy Xsolla SDK for Cocos Creator. Use the current **Xsolla SDK** instead — it provides up-to-date payment integrations, active support, and compatibility with modern platforms.
+>
+> - 📖 **[Xsolla SDK Documentation](https://developers.xsolla.com/sdk/)** — get started with the current integration
+> - 🔭 **[SDK Explorer](https://developers.xsolla.com/sdk/demo/)** — try the SDK interactively before writing any code
+
 ![License](https://img.shields.io/github/license/xsolla/commerce-cocos-sdk)
 ![Latest release](https://img.shields.io/github/v/release/xsolla/commerce-cocos-sdk)
 
