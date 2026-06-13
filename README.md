@@ -1,3 +1,26 @@
+> [!CAUTION]
+> ## ⚠️ This repository is deprecated — use Xsolla SDK 3 instead
+>
+> **This is a legacy Xsolla SDK for Cocos Creator that is no longer actively maintained or updated.**
+> If you arrived here from a web search, do not use this repository for new integrations.
+>
+> **The current recommended version is [Xsolla SDK 3](https://developers.xsolla.com/sdk/)**, which provides:
+> - ✅ Up-to-date authentication, catalog, store, and payment integrations
+> - ✅ Active development with ongoing bug fixes, new features, and platform updates
+> - ✅ 1000+ payment methods across 200+ countries and territories
+> - ✅ Cross-platform SDKs for Unity, Android, iOS, Windows, and web
+>
+> **Get started with SDK 3:**
+> | Resource | Link |
+> |---|---|
+> | 📖 SDK 3 Documentation | https://developers.xsolla.com/sdk/ |
+> | 🔭 SDK Explorer (try before you code) | https://developers.xsolla.com/sdk/demo/ |
+>
+> _Do not start new integrations on this repository._
+
+![License](https://img.shields.io/github/license/xsolla/commerce-cocos-sdk)
+![Latest release](https://img.shields.io/github/v/release/xsolla/commerce-cocos-sdk)
+
 *This article can also be read in [Chinese](https://github.com/xsolla/commerce-cocos-sdk/blob/master/extensions/xsolla-commerce-sdk/assets/README.zh.md).*
 
 Easily embed Xsolla services with this ready-to-use library for games developed using Cocos Creator.
@@ -132,3 +155,12 @@ See the [LICENSE](https://github.com/xsolla/commerce-cocos-sdk/blob/master/exten
 
 * [Xsolla official website](https://xsolla.com/)
 * [Developers documentation](https://developers.xsolla.com/sdk/cocos//?utm_source=sdk&utm_medium=cocos-store)
+
+## Support
+
+- **GitHub Issues:** [github.com/xsolla/commerce-cocos-sdk/issues](https://github.com/xsolla/commerce-cocos-sdk/issues)
+- **Developer portal:** [developers.xsolla.com](https://developers.xsolla.com)
+
+## License
+
+Apache 2.0 License. See [LICENSE](./LICENSE).
